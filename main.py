@@ -47,6 +47,7 @@ if not os.path.exists("./prefixes.json"):
 
     log.critical('Prefixes.json Created, Please Restart the Program')
     exit()
+
 def get_prefix(client, message):
     with open("prefixes.json", "r") as file:
         prefixes = json.load(file)
@@ -97,7 +98,7 @@ async def on_guild_remove(guild):
 # Loading Cogs
 log.info("Loading Cogs")
 for filename in os.listdir("./cogs"):
-    skip_files = ["convertLogging.py"]
+    skip_files = ["convertLogging.py", "commonFunctions.py"]
 
     if filename.endswith('.py'):
         if filename in skip_files:
