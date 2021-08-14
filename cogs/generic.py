@@ -105,12 +105,14 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def prefix_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             log.error("Prefix Not Given")
-            await ctx.send("Please Enter the Prefix You Want to Change To")
+
+            emb = discord.Embed(title=":warning: Prefix not given", description="Usage: prefix <new-prefix>\nExample: !prefix $", color=cf.getRandomColor())
+            await ctx.send(embed=emb)
+
         if isinstance(error, commands.MissingPermissions):
             log.error("Caller Doesn't Have Required Permissions")
-            await ctx.send(
-                "You Do Not Have the Required Permissions for This Command (Administrator)"
-            )
+            emb = discord.Embed(title=":warning: You dont have the required permissions: Administrator", color=cf.getRandomColor())
+            await ctx.send(embed=emb)
 
 def setup(client):
     client.add_cog(Generic(client))
