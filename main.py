@@ -10,6 +10,7 @@ import logging
 import datetime
 
 import cogs.convertLogging as cl
+import cogs.commonFunctions as cf
 
 # Importing Fields from .env
 load_dotenv()
@@ -102,6 +103,13 @@ async def on_guild_remove(guild):
         log.debug("Dumping Prefix Into Json File")
         json.dump(prefixes, file, indent=4)
         file.close()
+
+# Catch all command errors, send them to developrs.
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        emb = discord.Embed(title=":warning: Command not found", color=cf.getRandomColor())
+        await ctx.send(embed=emb)
 
 # Loading Cogs
 log.info("Loading Cogs")
