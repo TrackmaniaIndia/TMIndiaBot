@@ -36,6 +36,11 @@ def getRandomColor():
         0xFFFF00,
         0xFF0000,
         0xFF00FF,
+        0x00FF00,
+        0xAABBCC,
+        0xCCAABB,
+        0xFF2FF2,
+        0x23FFFF,
     )
 
     rInt = random.randint(0, len(colors) - 1)
