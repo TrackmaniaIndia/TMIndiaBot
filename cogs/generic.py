@@ -75,6 +75,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         with open("prefixes.json", "r") as file:
             log.debug("Opening Prefixes JSON")
             prefixes = json.load(file)
+            file.close()
 
         log.debug(f"Changing Prefix")
         prefixes[str(ctx.guild.id)] = [prefix, "*"]
@@ -83,7 +84,8 @@ class Generic(commands.Cog, description="Generic Functions"):
         with open("prefixes.json", "w") as file:
             log.debug("Dumping Prefixes to File")
             json.dump(prefixes, file, indent=4)
-
+            file.close()
+            
         await ctx.send("Prefix Changed to {}".format(prefix))
 
     @commands.command(help="Displays Bot Version", brief="Bot Version")
