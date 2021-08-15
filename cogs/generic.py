@@ -25,12 +25,12 @@ async def record_usage(self, ctx):
     log.info(
         f"{ctx.author} used {ctx.command} at {ctx.message.created_at} in {ctx.guild}"
     )
-    embed = discord.Embed(
-        title=f"We're Working on {ctx.command}, Please Wait...",
-        color=cf.getRandomColor(),
-    )
+    # embed = discord.Embed(
+    #     title=f"We're Working on {ctx.command}, Please Wait...",
+    #     color=cf.getRandomColor(),
+    # )
 
-    await ctx.send(embed=embed, delete_after=0.5)
+    # await ctx.send(embed=embed, delete_after=0.5)
 
 
 async def finish_usage(self, ctx):
@@ -99,6 +99,14 @@ class Generic(commands.Cog, description="Generic Functions"):
         version = os.getenv("BOTVERSION")
 
         await ctx.send(f"Bot Version is {version}")
+
+    @commands.command()
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def causeError(self, ctx):
+        await ctx.send("Causing error")
+
+        raise commands.CommandError(message='Caused error')
 
     # Error Management
     @prefix.error

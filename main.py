@@ -112,19 +112,38 @@ async def on_guild_remove(guild):
 
 # Catch all command errors, send them to developers.
 @client.event
-async def on_command_error(ctx, error):
+async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if isinstance(error, commands.CommandNotFound):
         emb = discord.Embed(
             title=":warning: Command not found", color=cf.getRandomColor()
         )
         await ctx.send(embed=emb)
 
-        channel = client.get_channel(876069587140087828)
-        await channel.send(
-            "*{}* tried to use **{}** in the server *{}* at *{}* UTC".format(
-                ctx.author, ctx.message.content, ctx.guild, ctx.message.created_at
-            )
-        )
+        # Stop further execution
+        return None
+    
+    with open('config.json', 'r') as file:
+        config = json.loads(file.read())
+        file.close()
+    
+    if config['pingDevsOnError']:
+        pingStr = ""
+        for id in config['developers']:
+            pingStr += f"<@!{id}> "
+
+    channel = client.get_channel(876069587140087828)
+    embed = discord.Embed(title=":warning: " + str(error), color=0xff0000)
+
+    embed.add_field(name="Author Username", value=ctx.author, inline=False)
+    embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
+    embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
+    embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
+    embed.add_field(name="Message content", value=ctx.message.content, inline=False)
+    
+    if config['pingDevsOnError']:
+        await channel.send(pingStr, embed=embed)
+    else: 
+        await channel.send(embed=embed)
 
 
 # Loading Cogs

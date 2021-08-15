@@ -6,6 +6,7 @@ import random
 import time
 import discord
 from discord.ext import commands
+import json
 
 try:
     import cogs.convertLogging as cl
@@ -59,7 +60,6 @@ def makeString(my_list: list) -> str:
         list_string += list_item + " "
 
     return list_string
-
 
 if __name__ == "__main__":
     for i in range(0, 100):
