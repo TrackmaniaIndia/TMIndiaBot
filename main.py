@@ -52,7 +52,7 @@ if not os.path.exists("./prefixes.json"):
     )
     log.critical("Edit Prefixes.json to add your own Testing Server ID")
 
-    prefixes = {"876042400005505066": "*"}
+    prefixes = {"876042400005505066": DEFAULT_PREFIX}
 
     with open("./prefixes.json", "w") as file:
         json.dump(prefixes, file, indent=4)
