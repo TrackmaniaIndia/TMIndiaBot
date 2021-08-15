@@ -14,8 +14,16 @@ except:
     import convertLogging as cl
 
 load_dotenv()
-log_level = os.getenv("LOG_LEVEL")
-discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
+# log_level = os.getenv("LOG_LEVEL")
+# discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
+
+log_level, discord_log_level = '', ''
+
+with open("./config.json") as file:
+    config = json.load(file)
+
+    log_level = config['log_level']
+    discord_log_level = config['discord_log_level']
 
 log = logging.getLogger(__name__)
 log = cl.getLogging(log_level, discord_log_level)
