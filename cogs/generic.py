@@ -51,7 +51,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
         log.critical("Bot Logged In")
 
-        channel = self.client.get_channel(876043157303861299)
+        channel = self.client.get_channel(876335103146623016)
         await channel.send(f"Bot is Ready, Version: {version}")
 
     # Commands
