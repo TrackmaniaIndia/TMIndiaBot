@@ -64,10 +64,6 @@ def get_prefix(client, message):
 client = commands.Bot(command_prefix=get_prefix)
 
 
-async def record_usage(ctx):
-    print(ctx.author, "used", ctx.command, "at", ctx.message.created_at)
-
-
 # Events
 
 # Assigning Prefix to Guild Upon Join
@@ -121,29 +117,39 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 
         # Stop further execution
         return None
-    
-    with open('config.json', 'r') as file:
+
+    log.debug(f"Reading Config File for Devs")
+    with open("config.json", "r") as file:
         config = json.loads(file.read())
         file.close()
-    
-    if config['pingDevsOnError']:
-        pingStr = ""
-        for id in config['developers']:
-            pingStr += f"<@!{id}> "
+    log.debug(f"Found Devs")
 
+    pingStr = ""
+
+    log.debug(f"Checking for Ping")
+    for dev in config["developers"]:
+        if dev["ping"]:
+            pingStr += f"<@!{dev['id']}> "
+        log.debug(f"Ping for {dev['id']} set to {dev['ping']}")
+    log.debug(f"Created Ping String")
+
+    log.debug(f"Receiving Error Channel")
     channel = client.get_channel(876069587140087828)
-    embed = discord.Embed(title=":warning: " + str(error), color=0xff0000)
+    log.debug(f"Found Error Channel")
+
+    log.debug(f"Creating Embed")
+    embed = discord.Embed(title=":warning: " + str(error), color=0xFF0000)
 
     embed.add_field(name="Author Username", value=ctx.author, inline=False)
     embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
     embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
     embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
     embed.add_field(name="Message content", value=ctx.message.content, inline=False)
-    
-    if config['pingDevsOnError']:
-        await channel.send(pingStr, embed=embed)
-    else: 
-        await channel.send(embed=embed)
+    log.debug(f"Created Embed")
+
+    log.debug(f"Sending Embed")
+    await channel.send(pingStr, embed=embed)
+    log.debug(f"Embed Sent, Error Handler Quit")
 
 
 # Loading Cogs

@@ -1,4 +1,14 @@
 {   
-    "developers": ["623085987442196503", "250257390643970059"],
-    "pingDevsOnError": true
+    "developers": [
+        {
+            "id": "623085987442196503",
+            "ping": false
+        },
+        {
+            "id": "250257390643970059",
+            "ping": true
+        }
+    ],
+
+    "log_function_usage": false
 }

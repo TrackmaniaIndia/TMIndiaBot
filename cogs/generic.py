@@ -25,12 +25,11 @@ async def record_usage(self, ctx):
     log.info(
         f"{ctx.author} used {ctx.command} at {ctx.message.created_at} in {ctx.guild}"
     )
-    # embed = discord.Embed(
-    #     title=f"We're Working on {ctx.command}, Please Wait...",
-    #     color=cf.getRandomColor(),
-    # )
+    # if 
 
-    # await ctx.send(embed=embed, delete_after=0.5)
+    # log.debug(f'Sending Message to Error Channel')
+    # channel = self.client.get_channel(876442289382248468)
+
 
 
 async def finish_usage(self, ctx):
