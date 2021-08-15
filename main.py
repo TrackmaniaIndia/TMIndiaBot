@@ -37,19 +37,20 @@ log.error()
 """
 
 if not os.path.exists("./prefixes.json"):
-    log.critical('Prefixes.json Doesn\'t Exist, Creating and Dumping Testing Server Stuff')
-    log.critical('Edit Prefixes.json to add your own Testing Server ID')
+    log.critical(
+        "Prefixes.json Doesn't Exist, Creating and Dumping Testing Server Stuff"
+    )
+    log.critical("Edit Prefixes.json to add your own Testing Server ID")
 
-    prefixes = {
-        "876042400005505066": "*"
-    }
+    prefixes = {"876042400005505066": "*"}
 
     with open("./prefixes.json", "w") as file:
         json.dump(prefixes, file, indent=4)
         file.close()
 
-    log.critical('Prefixes.json Created, Please Restart the Program')
+    log.critical("Prefixes.json Created, Please Restart the Program")
     exit()
+
 
 def get_prefix(client, message):
     with open("prefixes.json", "r") as file:
@@ -58,11 +59,14 @@ def get_prefix(client, message):
 
     return prefixes[str(message.guild.id)]
 
+
 # Making the Client
 client = commands.Bot(command_prefix=get_prefix)
 
+
 async def record_usage(ctx):
     print(ctx.author, "used", ctx.command, "at", ctx.message.created_at)
+
 
 # Events
 
@@ -85,6 +89,7 @@ async def on_guild_join(guild):
         json.dump(prefixes, file, indent=4)
         file.close()
 
+
 # Removing Assigned Prefix if Bot is Kicked/Banned from Server
 # Bot has to stay online as usual
 @client.event
@@ -104,19 +109,30 @@ async def on_guild_remove(guild):
         json.dump(prefixes, file, indent=4)
         file.close()
 
-# Catch all command errors, send them to developrs.
+
+# Catch all command errors, send them to developers.
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        emb = discord.Embed(title=":warning: Command not found", color=cf.getRandomColor())
+        emb = discord.Embed(
+            title=":warning: Command not found", color=cf.getRandomColor()
+        )
         await ctx.send(embed=emb)
+
+        channel = client.get_channel(876069587140087828)
+        await channel.send(
+            "*{}* tried to use **{}** in the server *{}* at *{}* UTC".format(
+                ctx.author, ctx.message.content, ctx.guild, ctx.message.created_at
+            )
+        )
+
 
 # Loading Cogs
 log.info("Loading Cogs")
 for filename in os.listdir("./cogs"):
     skip_files = ["convertLogging.py", "commonFunctions.py"]
 
-    if filename.endswith('.py'):
+    if filename.endswith(".py"):
         if filename in skip_files:
             continue
 

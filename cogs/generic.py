@@ -47,12 +47,12 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def on_ready(self):
         await self.client.change_presence(
             status=discord.Status.online,
-            activity=discord.Game(f'Version: {version}! Online and Ready'),
+            activity=discord.Game(f"Version: {version}! Online and Ready"),
         )
-        log.critical('Bot Logged In')
+        log.critical("Bot Logged In")
 
-        channel = self.client.get_channel(876042400731123724)
-        await channel.send(f'Bot is Ready, Version: {version}')
+        channel = self.client.get_channel(876043157303861299)
+        await channel.send(f"Bot is Ready, Version: {version}")
 
     # Commands
     @commands.command(
@@ -85,7 +85,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             log.debug("Dumping Prefixes to File")
             json.dump(prefixes, file, indent=4)
             file.close()
-            
+
         await ctx.send("Prefix Changed to {}".format(prefix))
 
     @commands.command(help="Displays Bot Version", brief="Bot Version")
@@ -106,13 +106,21 @@ class Generic(commands.Cog, description="Generic Functions"):
         if isinstance(error, commands.MissingRequiredArgument):
             log.error("Prefix Not Given")
 
-            emb = discord.Embed(title=":warning: Prefix not given", description="Usage: prefix <new-prefix>\nExample: !prefix $", color=cf.getRandomColor())
+            emb = discord.Embed(
+                title=":warning: Prefix not given",
+                description="Usage: prefix <new-prefix>\nExample: !prefix $",
+                color=cf.getRandomColor(),
+            )
             await ctx.send(embed=emb)
 
         if isinstance(error, commands.MissingPermissions):
             log.error("Caller Doesn't Have Required Permissions")
-            emb = discord.Embed(title=":warning: You dont have the required permissions: Administrator", color=cf.getRandomColor())
+            emb = discord.Embed(
+                title=":warning: You dont have the required permissions: Administrator",
+                color=cf.getRandomColor(),
+            )
             await ctx.send(embed=emb)
+
 
 def setup(client):
     client.add_cog(Generic(client))

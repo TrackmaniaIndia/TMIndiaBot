@@ -19,6 +19,7 @@ discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
 log = logging.getLogger(__name__)
 log = cl.getLogging(log_level, discord_log_level)
 
+
 def getRandomColor():
     log.debug(f"getRandomColor called")
     colors = (
@@ -47,6 +48,7 @@ def getRandomColor():
 
     log.debug(f"Random Number is: {rInt} - Color Being Returned is: {colors[rInt]}")
     return colors[rInt]
+
 
 def makeString(my_list: list) -> str:
     list_string = ""
