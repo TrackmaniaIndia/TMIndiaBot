@@ -1,3 +1,4 @@
+from TMIndiaBot.cogs.common_functions import get_random_color
 import discord
 from discord.ext import commands
 import json
@@ -126,10 +127,15 @@ class TMNFExchngeCommands(
             await ctx.send('TMX Id must be a number')
 
         baseApiUrl = os.getenv('BASE_API_URL')
-        mapUrl = f'{baseApiUrl}/tmnf-x/trackinfo/{tmxId}'
-        response = requests.get(mapUrl).json()
+        leaderboardUrl = f'{baseApiUrl}/tmnf-x/trackinfo/{tmxId}'
+        response = requests.get(leaderboardUrl).json()
 
-        embed=discord.Embed(title=response['name'], description=response['authorComments'], color=cf.get_random_color())
+        embed=discord.Embed(
+            title=response['name'], 
+            description=response['authorComments'], 
+            color=cf.get_random_color(), 
+            url="https://tmnforever.tm-exchange.com/trackshow/" + tmxId
+        )
         
         embed.set_thumbnail(url=f"https://tmnforever.tm-exchange.com/getclean.aspx?action=trackscreenscreens&id={tmxId}&screentype=0")
         
@@ -148,6 +154,39 @@ class TMNFExchngeCommands(
         
         await ctx.send(embed=embed)
 
+    @commands.command(
+        name="leaderboards-tmnf",
+        aliases=['rankings-tmnf', 'maptimes-tmnf'],
+        help="View track/map leaderboards by TMX Id",
+    )
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def leaderboardstmnf(self, ctx: commands.Context, tmxId: str):
+        if not tmxId.isnumeric(): # check if tmxId is an integer
+            await ctx.send('TMX Id must be a number')
+
+        baseApiUrl = os.getenv('BASE_API_URL')
+        leaderboardUrl = f'{baseApiUrl}/tmnf-x/leaderboard/{tmxId}'
+        leaderboards = requests.get(leaderboardUrl).json()
+        mapName = requests.get(f'{baseApiUrl}/tmnf-x/trackinfo/{tmxId}').json()['name']
+
+        times = [
+            '**1) {} | {}**'.format(leaderboards[0]['time'], leaderboards[0]['username'])
+        ]
+
+        for i in range(1, 10):
+            obj = leaderboards[i]
+            times.append('{}) {} | {}'.format(i + 1, obj['time'], obj['username']))
+
+        embed = discord.Embed(
+            title="Leaderboard | " + mapName, 
+            description='\n'.join(times),
+            color=cf.get_random_color()
+        )
+
+        await ctx.send(embed=embed)
+
+    # Error handlers
     @viewtmnfmap.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
