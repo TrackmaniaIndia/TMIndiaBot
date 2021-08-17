@@ -151,8 +151,10 @@ class CommunityContentPromoter(
             return
         channel_id = channel_link[32:]
 
-        log.error(channel_id)
+        if "?" in channel_id:
+            channel_id = channel_id.split('?')[0]
 
+        log.debug(f'Channel Id is: {channel_id}')
 def setup(client):
     client.add_cog(CommunityContentPromoter(client))
     check_for_community_creators_file()
