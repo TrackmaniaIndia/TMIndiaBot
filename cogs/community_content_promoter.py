@@ -143,16 +143,9 @@ class CommunityContentPromoter(
         continue_flag = check_link(channel_link)
 
         if not continue_flag:
-            raise custom_errors.NotAValidYoutubeLink()
-
-    # Error Handling
-    @add_channel.error
-    async def add_channel_error(self, ctx, error):
-        if isinstance(error, custom_errors.NotAValidYoutubeLink):
             log.error('Not a Valid Youtube Link, Sending Embed to User')
-            await ctx.send(embed=discord.Embed(title='Not A Valid Youtube Link, Please Try Again', description='Valid Links have ```https://youtube.com/channel/``` in them', color=0xff0000))
-
-            
+            await ctx.send(embed=discord.Embed(title='Not A Valid Youtube Link, Please Try Again', description='Valid Links have **https:\//youtube.com/channel/** in them', color=0xff0000))
+        
 
 def setup(client):
     client.add_cog(CommunityContentPromoter(client))
