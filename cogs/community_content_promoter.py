@@ -6,6 +6,7 @@ import os
 import datetime
 from dotenv import load_dotenv
 import custom_errors
+import asyncio
 
 try:
     import cogs.convert_logging as cl
@@ -133,19 +134,24 @@ class CommunityContentPromoter(
         )
 
         def check(message):
-            return str(message.author.id) != '876059862788890685'
+            return str(message.author.id) != '876059862788890685' and str(message.author.id) == str(ctx.message.author.id)
 
-        channel_link_message = await self.client.wait_for('message', check=check)
+        try:
+            channel_link_message = await self.client.wait_for('message', timeout=15.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.send(embed=discord.Embed(title='Bot Timed Out, You Took Too Long to Respond', description='', color=0xff0000))
+            return
         channel_link = channel_link_message.content
-        # log.error(channel_link)
 
-        continue_flag = False
         continue_flag = check_link(channel_link)
 
         if not continue_flag:
             log.error('Not a Valid Youtube Link, Sending Embed to User')
-            await ctx.send(embed=discord.Embed(title='Not A Valid Youtube Link, Please Try Again', description='Valid Links have **https:\//youtube.com/channel/** in them', color=0xff0000))
-        
+            await ctx.send(embed=discord.Embed(title='Not A Valid Youtube Link, Please Try Again', description='Valid Links have **https:\//www.youtube.com/channel/** in them', color=0xff0000))
+            return
+        channel_id = channel_link[32:]
+
+        log.error(channel_id)
 
 def setup(client):
     client.add_cog(CommunityContentPromoter(client))
