@@ -7,11 +7,11 @@ import datetime
 from dotenv import load_dotenv
 
 try:
-    import cogs.convertLogging as cl
-    import cogs.commonFunctions as cf
+    import cogs.convert_logging as cl
+    import cogs.common_functions as cf
 except:
-    import commonFunctions as cf
-    import convertLogging as cl
+    import common_functions as cf
+    import convert_logging as cl
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -28,7 +28,7 @@ with open("./config.json") as file:
     version = config['bot_version']
 
 log = logging.getLogger(__name__)
-log = cl.getLogging(log_level, discord_log_level)
+log = cl.get_logging(log_level, discord_log_level)
 
 DEFAULT_PREFIX = "*"
 
@@ -37,17 +37,17 @@ async def record_usage(self, ctx):
         f"{ctx.author} used {ctx.command} at {ctx.message.created_at} in {ctx.guild}"
     )
 
-    logcheck = ''
+    log_check = ''
 
     with open('./config.json') as file:
         data = json.load(file)
-        logcheck = data['log_function_usage']
+        log_check = data['log_function_usage']
         file.close()
 
-    if not logcheck:
-        log.debug(f'Logcheck is False, Returning')
+    if not log_check:
+        log.debug(f'log_check is False, Returning')
         return
-    log.debug(f'Logcheck is True, Sending Message')
+    log.debug(f'log_check is True, Sending Message')
 
     log.debug(f'Sending Message to Error Channel')
     channel = self.client.get_channel(876442289382248468)
@@ -72,17 +72,17 @@ async def record_usage(self, ctx):
 async def finish_usage(self, ctx: commands.Context):
     log.info(f"{ctx.author} finished using {ctx.command} in {ctx.guild}")
 
-    logcheck = ''
+    log_check = ''
 
     with open('./config.json') as file:
         data = json.load(file)
-        logcheck = data['log_function_usage']
+        log_check = data['log_function_usage']
         file.close()
 
-    if not logcheck:
-        log.debug(f'Logcheck is False, Returning')
+    if not log_check:
+        log.debug(f'log_check is False, Returning')
         return
-    log.debug(f'Logcheck is True, Sending Message')
+    log.debug(f'log_check is True, Sending Message')
 
     log.debug(f'Sending Message to Error Channel')
     channel = self.client.get_channel(876442289382248468)
@@ -178,7 +178,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             emb = discord.Embed(
                 title=":warning: Prefix not given",
                 description="Usage: prefix <new-prefix>\nExample: !prefix $",
-                color=cf.getRandomColor(),
+                color=cf.get_random_color(),
             )
             await ctx.send(embed=emb)
 
@@ -186,7 +186,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             log.error("Caller Doesn't Have Required Permissions")
             emb = discord.Embed(
                 title=":warning: You dont have the required permissions: Administrator",
-                color=cf.getRandomColor(),
+                color=cf.get_random_color(),
             )
             await ctx.send(embed=emb)
 

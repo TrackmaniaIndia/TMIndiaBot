@@ -9,8 +9,8 @@ import coloredlogs
 import logging
 import datetime
 
-import cogs.convertLogging as cl
-import cogs.commonFunctions as cf
+import cogs.convert_logging as cl
+import cogs.common_functions as cf
 
 # Importing Fields from .env
 load_dotenv()
@@ -34,7 +34,7 @@ with open("./config.json") as file:
 DEFAULT_PREFIX = "*"
 
 log = logging.getLogger(__name__)
-log = cl.getLogging(log_level, discord_log_level)
+log = cl.get_logging(log_level, discord_log_level)
 
 log.info("Logging Setup")
 
@@ -121,7 +121,7 @@ async def on_guild_remove(guild):
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if isinstance(error, commands.CommandNotFound):
         emb = discord.Embed(
-            title=":warning: Command not found", color=cf.getRandomColor()
+            title=":warning: Command not found", color=cf.get_random_color()
         )
         await ctx.send(embed=emb)
 
@@ -138,9 +138,9 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 
     log.debug(f"Checking for Ping")
     for dev in config["developers"]:
-        if dev["ping"]:
+        if dev["error_ping"]:
             pingStr += f"<@!{dev['id']}> "
-        log.debug(f"Ping for {dev['id']} set to {dev['ping']}")
+        log.debug(f"Ping for {dev['id']} set to {dev['error_ping']}")
     log.debug(f"Created Ping String")
 
     log.debug(f"Receiving Error Channel")
@@ -165,10 +165,10 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 # Loading Cogs
 log.info("Loading Cogs")
 for filename in os.listdir("./cogs"):
-    skip_files = ["convertLogging.py", "commonFunctions.py"]
+    SKIP_FILES = ["convert_logging.py", "common_functions.py"]
 
     if filename.endswith(".py"):
-        if filename in skip_files:
+        if filename in SKIP_FILES:
             continue
 
         log.debug(f"Loading {filename[:-3]}")

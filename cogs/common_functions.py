@@ -1,11 +1,5 @@
 import logging
-import os
-from dotenv import load_dotenv
-from requests import get
 import random
-import time
-import discord
-from discord.ext import commands
 import json
 
 try:
@@ -13,7 +7,6 @@ try:
 except:
     import convertLogging as cl
 
-load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
 # discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
 
@@ -26,11 +19,11 @@ with open("./config.json") as file:
     discord_log_level = config['discord_log_level']
 
 log = logging.getLogger(__name__)
-log = cl.getLogging(log_level, discord_log_level)
+log = cl.get_logging(log_level, discord_log_level)
 
 
-def getRandomColor():
-    log.debug(f"getRandomColor called")
+def get_random_color():
+    log.debug(f"get_random_color called")
     colors = (
         0x000000,
         0xFFFFFF,
@@ -59,7 +52,7 @@ def getRandomColor():
     return colors[rInt]
 
 
-def makeString(my_list: list) -> str:
+def make_string(my_list: list) -> str:
     list_string = ""
 
     for list_item in my_list:
@@ -71,4 +64,4 @@ def makeString(my_list: list) -> str:
 
 if __name__ == "__main__":
     for i in range(0, 100):
-        print(f"{getRandomColor()}")
+        print(f"{get_random_color()}")

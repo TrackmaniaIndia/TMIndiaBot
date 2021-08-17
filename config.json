@@ -3,12 +3,12 @@
         {
             "discord_name": "Artifex#0690",
             "id": "623085987442196503",
-            "ping": false
+            "error_ping": false
         },
         {
             "discord_name": "NottCurious#4351",
             "id": "250257390643970059",
-            "ping": false
+            "error_ping": false
         }
     ],
 

@@ -3,7 +3,7 @@ import coloredlogs
 import discord
 
 
-def getLogging(normlog, discordlog):
+def get_logging(normlog, discordlog):
     logdict = {
         "debug": logging.DEBUG,
         "info": logging.INFO,
