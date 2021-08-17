@@ -127,7 +127,8 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 
         # Stop further execution
         return None
-
+        
+    logging.error(error)
     log.debug(f"Reading Config File for Devs")
     with open("config.json", "r") as file:
         config = json.loads(file.read())
