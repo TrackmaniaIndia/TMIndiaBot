@@ -173,7 +173,7 @@ def check_for_community_creators_file() -> None:
     return
 
 def check_link(link: str) -> bool:
-    if 'https://youtube.com/channel/' not in link:
+    if 'https://www.youtube.com/channel/' not in link:
         return False
     return True
 
