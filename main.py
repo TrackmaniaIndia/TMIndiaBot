@@ -168,7 +168,7 @@ for filename in os.listdir("./cogs"):
     SKIP_FILES = [
         "convert_logging.py",
         "common_functions.py",
-        "community_content_promoter",
+        "community_content_promoter.py",
     ]
 
     if filename.endswith(".py"):
