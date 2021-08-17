@@ -9,10 +9,15 @@
             "discord_name": "NottCurious#4351",
             "id": "250257390643970059",
             "error_ping": false
+        },
+        {
+            "discord_name": "hachikuku#2806",
+            "id": "84628323174461440",
+            "error_ping": false
         }
     ],
 
-    "bot_version": "v0.0.5",
+    "bot_version": "v0.0.6",
 
     "testing_server_id": "876042400005505066",
     "log_level": "debug",
