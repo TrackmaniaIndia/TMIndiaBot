@@ -5,6 +5,7 @@ import logging
 import os
 import datetime
 from dotenv import load_dotenv
+import custom_errors
 
 try:
     import cogs.convert_logging as cl
@@ -136,15 +137,29 @@ class CommunityContentPromoter(
 
         channel_link_message = await self.client.wait_for('message', check=check)
         channel_link = channel_link_message.content
-        log.error(channel_link)
+        # log.error(channel_link)
 
+        continue_flag = False
+        continue_flag = check_link(channel_link)
+
+        if not continue_flag:
+            raise custom_errors.NotAValidYoutubeLink()
+
+    # Error Handling
+    @add_channel.error
+    async def add_channel_error(self, ctx, error):
+        if isinstance(error, custom_errors.NotAValidYoutubeLink):
+            log.error('Not a Valid Youtube Link, Sending Embed to User')
+            await ctx.send(embed=discord.Embed(title='Not A Valid Youtube Link, Please Try Again', description='Valid Links have ```https://youtube.com/channel/``` in them', color=0xff0000))
+
+            
 
 def setup(client):
     client.add_cog(CommunityContentPromoter(client))
     check_for_community_creators_file()
 
 
-def check_for_community_creators_file():
+def check_for_community_creators_file() -> None:
     log.debug(f"Checking for Community Creators File")
     if not os.path.exists("./data"):
         log.critical("Data Directory doesn't Exist, Creating")
@@ -156,3 +171,11 @@ def check_for_community_creators_file():
             print("{}", file=file)
 
     return
+
+def check_link(link: str) -> bool:
+    if 'https://youtube.com/channel/' not in link:
+        return False
+    return True
+
+# def NotAYoutubeLinkException():
+#     raise commands.CommandError(message=f'Not A Valid Youtube Link')

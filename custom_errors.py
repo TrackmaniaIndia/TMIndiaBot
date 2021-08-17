@@ -1,0 +1,2 @@
+class NotAValidYoutubeLink(Exception):
+    pass

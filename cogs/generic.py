@@ -212,7 +212,7 @@ def setup(client):
     client.add_cog(Generic(client))
 
 
-def check_for_times_run():
+def check_for_times_run() -> None:
     log.debug(f"Checking for Times Run File")
     if not os.path.exists("./data"):
         log.critical("Data Directory doesn't Exist, Creating")
