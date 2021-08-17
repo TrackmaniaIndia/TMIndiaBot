@@ -119,23 +119,23 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
         log.critical("Bot Logged In")
 
-        log.debug(f'Checking for Times Run File')
+        log.debug(f"Checking for Times Run File")
         check_for_times_run()
         times_run = 0
 
-        log.debug(f'Reading Value from Times Run File')
-        with open('./Data/times_run.txt', 'r') as file:
+        log.debug(f"Reading Value from Times Run File")
+        with open("./Data/times_run.txt", "r") as file:
             times_run = int(file.readline())
 
         times_run += 1
 
-        log.debug(f'Sending Message to Bot Channel')
+        log.debug(f"Sending Message to Bot Channel")
         channel = self.client.get_channel(876335103146623016)
         await channel.send(f"Bot is Ready, Version: {version} - Times Run: {times_run}")
-        log.debug(f'Sent Message to Bot Channel')
+        log.debug(f"Sent Message to Bot Channel")
 
-        log.debug(f'Writing TimesRun to File')
-        with open('./Data/times_run.txt', 'w') as file:
+        log.debug(f"Writing TimesRun to File")
+        with open("./Data/times_run.txt", "w") as file:
             print(times_run, file=file)
 
     # Commands
@@ -211,13 +211,15 @@ class Generic(commands.Cog, description="Generic Functions"):
 def setup(client):
     client.add_cog(Generic(client))
 
+
 def check_for_times_run():
-    if not os.path.exists('./data'):
-        log.critical('Data Directory doesn\'t Exist, Creating')
-        os.mkdir('./data')
-    if not os.path.exists('./data/times_run.txt'):
-        log.critical('Times Run File doesn\'t Exist, Creating')
-        with open('./data/times_run.txt', 'w') as file:
+    log.debug(f"Checking for Times Run File")
+    if not os.path.exists("./data"):
+        log.critical("Data Directory doesn't Exist, Creating")
+        os.mkdir("./data")
+    if not os.path.exists("./data/times_run.txt"):
+        log.critical("Times Run File doesn't Exist, Creating")
+        with open("./data/times_run.txt", "w") as file:
             print(0, file=file)
 
     return

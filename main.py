@@ -162,13 +162,32 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     log.debug(f"Embed Sent, Error Handler Quit")
 
 
+@client.command(name="reload", hidden=True)
+async def reloadcogs(ctx):
+    log.info("Reloading Cogs")
+    for filename in os.listdir("./cogs"):
+        SKIP_FILES = [
+            "convert_logging.py",
+            "common_functions.py",
+        ]
+
+        if filename.endswith(".py"):
+            if filename in SKIP_FILES:
+                log.debug(f"Skipping {filename}")
+                continue
+
+            log.debug(f"Loading {filename[:-3]}")
+            client.load_extension(f"cogs.{filename[:-3]}")
+
+    log.info("Loaded Cogs")
+
+
 # Loading Cogs
 log.info("Loading Cogs")
 for filename in os.listdir("./cogs"):
     SKIP_FILES = [
         "convert_logging.py",
         "common_functions.py",
-        "community_content_promoter.py",
     ]
 
     if filename.endswith(".py"):

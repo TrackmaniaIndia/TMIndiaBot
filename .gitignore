@@ -130,3 +130,6 @@ dmypy.json
 
 # Prefixes File
 prefixes.json
+
+# Community Creators File
+/data/community_creators.json
