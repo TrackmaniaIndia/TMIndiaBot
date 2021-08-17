@@ -3,20 +3,20 @@ import random
 import json
 
 try:
-    import cogs.convertLogging as cl
+    import cogs.convert_logging as cl
 except:
-    import convertLogging as cl
+    import convert_logging as cl
 
 # log_level = os.getenv("LOG_LEVEL")
 # discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
 
-log_level, discord_log_level = '', ''
+log_level, discord_log_level = "", ""
 
 with open("./config.json") as file:
     config = json.load(file)
 
-    log_level = config['log_level']
-    discord_log_level = config['discord_log_level']
+    log_level = config["log_level"]
+    discord_log_level = config["discord_log_level"]
 
 log = logging.getLogger(__name__)
 log = cl.get_logging(log_level, discord_log_level)
@@ -61,6 +61,7 @@ def make_string(my_list: list) -> str:
         list_string += list_item + " "
 
     return list_string
+
 
 if __name__ == "__main__":
     for i in range(0, 100):

@@ -20,15 +20,15 @@ BOTTOKEN = os.getenv("BOTTOKEN")
 # testing_server_id = os.getenv("TESTING_SERVER_ID")
 # version = os.getenv("VERSION")
 
-log_level, discord_log_level, testing_server_id, version = '', '', '', ''
+log_level, discord_log_level, testing_server_id, version = "", "", "", ""
 
 with open("./config.json") as file:
     config = json.load(file)
 
-    log_level = config['log_level']
-    discord_log_level = config['discord_log_level']
-    testing_server_id = config['testing_server_id']
-    version = config['bot_version']
+    log_level = config["log_level"]
+    discord_log_level = config["discord_log_level"]
+    testing_server_id = config["testing_server_id"]
+    version = config["bot_version"]
 
 # Constants
 DEFAULT_PREFIX = "*"
@@ -165,10 +165,15 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 # Loading Cogs
 log.info("Loading Cogs")
 for filename in os.listdir("./cogs"):
-    SKIP_FILES = ["convert_logging.py", "common_functions.py"]
+    SKIP_FILES = [
+        "convert_logging.py",
+        "common_functions.py",
+        "community_content_promoter",
+    ]
 
     if filename.endswith(".py"):
         if filename in SKIP_FILES:
+            log.debug(f"Skipping {filename}")
             continue
 
         log.debug(f"Loading {filename[:-3]}")
