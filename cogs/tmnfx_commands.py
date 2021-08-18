@@ -178,13 +178,14 @@ class TMNFExchngeCommands(
             obj = leaderboards[i]
             placeStr = ""
 
-            if i < 3:
-                if i == 2:
-                    placeStr = ':second_place:'
-                elif i == 3:
-                    placeStr = ':third_place:'
-                else:
-                    placeStr = f'{i}) '
+            if i == 2:
+                placeStr = ':second_place:'
+            
+            if i == 3:
+                placeStr = ':third_place:'
+            
+            if i > 3:
+                placeStr = f'{i}) '
 
             times.append('{} {} by {}'.format(placeStr, obj['time'], obj['username']))
 
