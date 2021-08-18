@@ -1,4 +1,4 @@
-from TMIndiaBot.cogs.common_functions import get_random_color
+# from common_functions import get_random_color
 import discord
 from discord.ext import commands
 import json
@@ -171,15 +171,26 @@ class TMNFExchngeCommands(
         mapName = requests.get(f'{baseApiUrl}/tmnf-x/trackinfo/{tmxId}').json()['name']
 
         times = [
-            '**1) {} | {}**'.format(leaderboards[0]['time'], leaderboards[0]['username'])
+            '**:first_place: {} by {}**'.format(leaderboards[0]['time'], leaderboards[0]['username'])
         ]
 
-        for i in range(1, 10):
+        for i in range(2, 10):
             obj = leaderboards[i]
-            times.append('{}) {} | {}'.format(i + 1, obj['time'], obj['username']))
+            placeStr = ""
+
+            if i < 3:
+                if i == 2:
+                    placeStr = ':second_place:'
+                elif i == 3:
+                    placeStr = ':third_place:'
+                else:
+                    placeStr = f'{i}) '
+
+            times.append('{} {} by {}'.format(placeStr, obj['time'], obj['username']))
 
         embed = discord.Embed(
             title="Leaderboard | " + mapName, 
+            url='https://tmnforever.tm-exchange.com/trackshow/' + tmxId,
             description='\n'.join(times),
             color=cf.get_random_color()
         )
