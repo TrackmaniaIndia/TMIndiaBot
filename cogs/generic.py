@@ -178,6 +178,12 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def version(self, ctx):
         await ctx.send(f"Bot Version is {version}")
 
+    @commands.command(help="Sends Github Source Code Link", brief="Github Source Code")
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def source(self, ctx):
+        await ctx.send(embed=discord.Embed(title='Source Code', description='https://github.com/NottCurious/TMIndiaBot', color=cf.get_random_color()))
+
     @commands.command()
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
