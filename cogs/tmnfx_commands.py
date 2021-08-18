@@ -178,13 +178,14 @@ class TMNFExchngeCommands(
             obj = leaderboards[i]
             placeStr = ""
 
-            if i < 3:
-                if i == 2:
-                    placeStr = ':second_place:'
-                elif i == 3:
-                    placeStr = ':third_place:'
-                else:
-                    placeStr = f'{i}) '
+            if i == 2:
+                placeStr = ':second_place:'
+            
+            if i == 3:
+                placeStr = ':third_place:'
+            
+            if i > 3:
+                placeStr = f'{i}) '
 
             times.append('{} {} by {}'.format(placeStr, obj['time'], obj['username']))
 
@@ -201,9 +202,20 @@ class TMNFExchngeCommands(
     @viewtmnfmap.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
-            logging.error('Missing required arguments')
-            await ctx.send('Missing required arguments: TMX Id')
+            log.error('Missing required arguments')
 
+            log.debug("Creating error embed")
+            embed = discord.Embed(
+                title=":warning: Missing required argument: TMX Id",
+                description="**TMX Id is an required argument that is missing**,\n\nUsage: viewmap-tmnf <TMX-id>\nExample: viewmap-tmnf 2233",
+                color=cf.get_random_color()
+            )
+            log.debug('Created error embed')
+            log.debug('Sending error embed')
+
+            await ctx.send(embed=embed)
+            
+            log.debug('Sent error embed')
 
 def setup(client):
     client.add_cog(TMNFExchngeCommands(client))
