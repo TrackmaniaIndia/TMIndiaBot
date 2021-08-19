@@ -8,8 +8,6 @@ from dotenv import load_dotenv
 import requests
 import os
 
-from requests.models import Response
-
 try:
     import cogs.convert_logging as cl
     import cogs.common_functions as cf
@@ -128,29 +126,35 @@ class TMNFExchngeCommands(
 
         baseApiUrl = os.getenv('BASE_API_URL')
         leaderboardUrl = f'{baseApiUrl}/tmnf-x/trackinfo/{tmxId}'
-        response = requests.get(leaderboardUrl).json()
+        response = requests.get(leaderboardUrl)
+
+        if int(response.status_code) == 400:
+            if response.json()['error'] == 'INVALID_TMX_ID':
+                await ctx.send('invalid tmx id')
+                return None        
+        apiData = response.json()
 
         embed=discord.Embed(
-            title=response['name'], 
-            description=response['authorComments'], 
+            title=apiData['name'], 
+            description=apiData['authorComments'], 
             color=cf.get_random_color(), 
             url="https://tmnforever.tm-exchange.com/trackshow/" + tmxId
         )
         
         embed.set_thumbnail(url=f"https://tmnforever.tm-exchange.com/getclean.aspx?action=trackscreenscreens&id={tmxId}&screentype=0")
         
-        embed.add_field(name="Author",       value=response['author'],        inline=True)
-        embed.add_field(name="Version",      value=response['version'],  inline=True)
-        embed.add_field(name="Released",     value=response['releaseDate'],   inline=True)
-        embed.add_field(name="LB Rating",    value=response['LBRating'],      inline=True)
-        embed.add_field(name="Game version", value=response['gameVersion'],   inline=True)
-        embed.add_field(name="Map type",     value=response['type'],          inline=True)
-        embed.add_field(name="Map style",    value=response['style'],         inline=True)
-        embed.add_field(name="Environment",  value=response['environment'],   inline=True)
-        embed.add_field(name="Routes",       value=response['routes'],        inline=True)
-        embed.add_field(name="Length",       value=response['length'],        inline=True)
-        embed.add_field(name="Difficulty",   value=response['difficulty'],    inline=True)
-        embed.add_field(name="Mood",         value=response['mood'],          inline=True)
+        embed.add_field(name="Author",       value=apiData['author'],        inline=True)
+        embed.add_field(name="Version",      value=apiData['version'],  inline=True)
+        embed.add_field(name="Released",     value=apiData['releaseDate'],   inline=True)
+        embed.add_field(name="LB Rating",    value=apiData['LBRating'],      inline=True)
+        embed.add_field(name="Game version", value=apiData['gameVersion'],   inline=True)
+        embed.add_field(name="Map type",     value=apiData['type'],          inline=True)
+        embed.add_field(name="Map style",    value=apiData['style'],         inline=True)
+        embed.add_field(name="Environment",  value=apiData['environment'],   inline=True)
+        embed.add_field(name="Routes",       value=apiData['routes'],        inline=True)
+        embed.add_field(name="Length",       value=apiData['length'],        inline=True)
+        embed.add_field(name="Difficulty",   value=apiData['difficulty'],    inline=True)
+        embed.add_field(name="Mood",         value=apiData['mood'],          inline=True)
         
         await ctx.send(embed=embed)
 
