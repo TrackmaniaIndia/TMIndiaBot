@@ -17,7 +17,7 @@
         }
     ],
 
-    "bot_version": "v0.0.7",
+    "bot_version": "v0.0.8",
 
     "testing_server_id": "876042400005505066",
     "log_level": "debug",
