@@ -170,34 +170,32 @@ class TMNFExchngeCommands(
             await ctx.send('TMX Id must be a number')
 
         baseApiUrl = os.getenv('BASE_API_URL')
+
         leaderboardUrl = f'{baseApiUrl}/tmnf-x/leaderboard/{tmxId}'
         leaderboards = requests.get(leaderboardUrl).json()
+
         mapName = requests.get(f'{baseApiUrl}/tmnf-x/trackinfo/{tmxId}').json()['name']
 
         times = [
-            '**:first_place: {} by {}**'.format(leaderboards[0]['time'], leaderboards[0]['username'])
+            '**:first_place: {} by {}**'.format(leaderboards[0]['time'], leaderboards[0]['username']),
+            ':second_place: {} by {}'.format(leaderboards[1]['time'], leaderboards[1]['username']),
+            ':third_place: {} by {}'.format(leaderboards[2]['time'], leaderboards[2]['username']),
+            '4) {} by {}'.format(leaderboards[3]['time'], leaderboards[3]['username']),
+            '5) {} by {}'.format(leaderboards[4]['time'], leaderboards[4]['username']),
+            '6) {} by {}'.format(leaderboards[5]['time'], leaderboards[5]['username']),
+            '7) {} by {}'.format(leaderboards[6]['time'], leaderboards[6]['username']),
+            '8) {} by {}'.format(leaderboards[7]['time'], leaderboards[7]['username']),
+            '9) {} by {}'.format(leaderboards[8]['time'], leaderboards[8]['username']),
+            '10) {} by {}'.format(leaderboards[9]['time'], leaderboards[9]['username']),
         ]
 
-        for i in range(2, 10):
-            obj = leaderboards[i]
-            placeStr = ""
-
-            if i == 2:
-                placeStr = ':second_place:'
-            
-            if i == 3:
-                placeStr = ':third_place:'
-            
-            if i > 3:
-                placeStr = f'{i}) '
-
-            times.append('{} {} by {}'.format(placeStr, obj['time'], obj['username']))
+        descStr = "{}\n[View all replays](https://tmnforever.tm-exchange.com/trackreplayshow/{})".format('\n'.join(times), tmxId)
 
         embed = discord.Embed(
-            title="Leaderboard | " + mapName, 
-            url='https://tmnforever.tm-exchange.com/trackshow/' + tmxId,
-            description='\n'.join(times),
-            color=cf.get_random_color()
+            title = "Leaderboard | " + mapName, 
+            url = 'https://tmnforever.tm-exchange.com/trackshow/' + tmxId,
+            description = descStr,
+            color = cf.get_random_color()
         )
 
         await ctx.send(embed=embed)
