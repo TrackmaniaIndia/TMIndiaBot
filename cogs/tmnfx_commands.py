@@ -122,7 +122,13 @@ class TMNFExchngeCommands(
     @commands.after_invoke(finish_usage)
     async def viewtmnfmap(self, ctx: commands.Context, tmxId: str):
         if not tmxId.isnumeric(): # check if tmxId is an integer
-            await ctx.send('TMX Id must be a number')
+            emb = discord.Embed(
+                title = ":warning: TMX Id must be a number",
+                description = "Example: viewmap-tmnf 2233",
+                color = 0xff0000
+            )
+            await ctx.send(embed=emb)
+            return None
 
         baseApiUrl = os.getenv('BASE_API_URL')
         leaderboardUrl = f'{baseApiUrl}/tmnf-x/trackinfo/{tmxId}'
@@ -130,8 +136,15 @@ class TMNFExchngeCommands(
 
         if int(response.status_code) == 400:
             if response.json()['error'] == 'INVALID_TMX_ID':
-                await ctx.send('invalid tmx id')
+                emb = discord.Embed(
+                    title = ":warning: Invalid TMX Id",
+                    description = "The TMX id provided is invalid, or the map dosnt exist",
+                    color = 0xff0000
+                )
+                await ctx.send(embed=emb)
+
                 return None        
+
         apiData = response.json()
 
         embed=discord.Embed(
@@ -167,12 +180,30 @@ class TMNFExchngeCommands(
     @commands.after_invoke(finish_usage)
     async def leaderboardstmnf(self, ctx: commands.Context, tmxId: str):
         if not tmxId.isnumeric(): # check if tmxId is an integer
-            await ctx.send('TMX Id must be a number')
+            emb = discord.Embed(
+                title = ":warning: TMX Id must be a number",
+                description = "Example: viewmap-tmnf 2233",
+                color = 0xff0000
+            )
+            await ctx.send(embed=emb)
+            return None
 
         baseApiUrl = os.getenv('BASE_API_URL')
 
         leaderboardUrl = f'{baseApiUrl}/tmnf-x/leaderboard/{tmxId}'
-        leaderboards = requests.get(leaderboardUrl).json()
+        response = requests.get(leaderboardUrl)
+        leaderboards = response.json()
+
+        if int(response.status_code) == 400:
+            if response.json()['error'] == 'INVALID_TMX_ID':
+                emb = discord.Embed(
+                    title = ":warning: Invalid TMX Id",
+                    description = "The TMX id provided is invalid, or the map dosnt exist",
+                    color = 0xff0000
+                )
+
+                await ctx.send(embed=emb)
+                return None
 
         mapName = requests.get(f'{baseApiUrl}/tmnf-x/trackinfo/{tmxId}').json()['name']
 
@@ -218,6 +249,25 @@ class TMNFExchngeCommands(
             await ctx.send(embed=embed)
             
             log.debug('Sent error embed')
+
+    @leaderboardstmnf.error
+    async def error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.MissingRequiredArgument):
+            log.error('Missing required arguments')
+
+            log.debug("Creating error embed")
+            embed = discord.Embed(
+                title=":warning: Missing required argument: TMX Id",
+                description="**TMX Id is an required argument that is missing**,\n\nUsage: viewmap-tmnf <TMX-id>\nExample: viewmap-tmnf 2233",
+                color=cf.get_random_color()
+            )
+            log.debug('Created error embed')
+            log.debug('Sending error embed')
+
+            await ctx.send(embed=embed)
+            
+            log.debug('Sent error embed')
+
 
 def setup(client):
     client.add_cog(TMNFExchngeCommands(client))
