@@ -121,112 +121,124 @@ class TMNFExchangeCommands(
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def view_tmnf_map(self, ctx: commands.Context, tmx_id: str):
-        if not tmx_id.isnumeric(): # check if tmx_id is an integer
+        if not tmx_id.isnumeric():  # check if tmx_id is an integer
             embed = discord.Embed(
-                title = ":warning: TMX Id must be a number",
-                description = "Example: viewmap-tmnf 2233",
-                color = 0xff0000
+                title=":warning: TMX Id must be a number",
+                description="Example: viewmap-tmnf 2233",
+                color=0xFF0000,
             )
             await ctx.send(embed=embed)
             return None
 
-        BASE_API_URL = os.getenv('BASE_API_URL')
-        LEADERBOARD_URL = f'{BASE_API_URL}/tmnf-x/trackinfo/{tmx_id}'
+        BASE_API_URL = os.getenv("BASE_API_URL")
+        LEADERBOARD_URL = f"{BASE_API_URL}/tmnf-x/trackinfo/{tmx_id}"
         response = requests.get(LEADERBOARD_URL)
 
         if int(response.status_code) == 400:
-            if response.json()['error'] == 'INVALID_TMX_ID':
+            if response.json()["error"] == "INVALID_TMX_ID":
                 embed = discord.Embed(
-                    title = ":warning: Invalid TMX Id",
-                    description = "The TMX id provided is invalid, or the map dosnt exist",
-                    color = 0xff0000
+                    title=":warning: Invalid TMX Id",
+                    description="The TMX id provided is invalid, or the map dosnt exist",
+                    color=0xFF0000,
                 )
                 await ctx.send(embed=embed)
 
-                return None        
+                return None
 
         api_data = response.json()
 
-        embed=discord.Embed(
-            title=api_data['name'], 
-            description=api_data['authorComments'], 
-            color=cf.get_random_color(), 
-            url="https://tmnforever.tm-exchange.com/trackshow/" + tmx_id
+        embed = discord.Embed(
+            title=api_data["name"],
+            description=api_data["authorComments"],
+            color=cf.get_random_color(),
+            url="https://tmnforever.tm-exchange.com/trackshow/" + tmx_id,
         )
-        
-        embed.set_thumbnail(url=f"https://tmnforever.tm-exchange.com/getclean.aspx?action=trackscreenscreens&id={tmx_id}&screentype=0")
-        
-        embed.add_field(name="Author",       value=api_data['author'],        inline=True)
-        embed.add_field(name="Version",      value=api_data['version'],  inline=True)
-        embed.add_field(name="Released",     value=api_data['releaseDate'],   inline=True)
-        embed.add_field(name="LB Rating",    value=api_data['LBRating'],      inline=True)
-        embed.add_field(name="Game version", value=api_data['gameVersion'],   inline=True)
-        embed.add_field(name="Map type",     value=api_data['type'],          inline=True)
-        embed.add_field(name="Map style",    value=api_data['style'],         inline=True)
-        embed.add_field(name="Environment",  value=api_data['environment'],   inline=True)
-        embed.add_field(name="Routes",       value=api_data['routes'],        inline=True)
-        embed.add_field(name="Length",       value=api_data['length'],        inline=True)
-        embed.add_field(name="Difficulty",   value=api_data['difficulty'],    inline=True)
-        embed.add_field(name="Mood",         value=api_data['mood'],          inline=True)
-        
+
+        embed.set_thumbnail(
+            url=f"https://tmnforever.tm-exchange.com/getclean.aspx?action=trackscreenscreens&id={tmx_id}&screentype=0"
+        )
+
+        embed.add_field(name="Author", value=api_data["author"], inline=True)
+        embed.add_field(name="Version", value=api_data["version"], inline=True)
+        embed.add_field(name="Released", value=api_data["releaseDate"], inline=True)
+        embed.add_field(name="LB Rating", value=api_data["LBRating"], inline=True)
+        embed.add_field(name="Game version", value=api_data["gameVersion"], inline=True)
+        embed.add_field(name="Map type", value=api_data["type"], inline=True)
+        embed.add_field(name="Map style", value=api_data["style"], inline=True)
+        embed.add_field(name="Environment", value=api_data["environment"], inline=True)
+        embed.add_field(name="Routes", value=api_data["routes"], inline=True)
+        embed.add_field(name="Length", value=api_data["length"], inline=True)
+        embed.add_field(name="Difficulty", value=api_data["difficulty"], inline=True)
+        embed.add_field(name="Mood", value=api_data["mood"], inline=True)
+
         await ctx.send(embed=embed)
 
     @commands.command(
         name="leaderboards-tmnf",
-        aliases=['rankings-tmnf', 'maptimes-tmnf'],
+        aliases=["rankings-tmnf", "maptimes-tmnf"],
         help="View track/map leaderboards by TMX Id",
     )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def leaderboardstmnf(self, ctx: commands.Context, tmx_id: str):
-        if not tmx_id.isnumeric(): # check if tmx_id is an integer
+        if not tmx_id.isnumeric():  # check if tmx_id is an integer
             embed = discord.Embed(
-                title = ":warning: TMX Id must be a number",
-                description = "Example: viewmap-tmnf 2233",
-                color = 0xff0000
+                title=":warning: TMX Id must be a number",
+                description="Example: viewmap-tmnf 2233",
+                color=0xFF0000,
             )
             await ctx.send(embed=embed)
             return None
 
-        BASE_API_URL = os.getenv('BASE_API_URL')
+        BASE_API_URL = os.getenv("BASE_API_URL")
 
-        LEADERBOARD_URL = f'{BASE_API_URL}/tmnf-x/leaderboard/{tmx_id}'
+        LEADERBOARD_URL = f"{BASE_API_URL}/tmnf-x/leaderboard/{tmx_id}"
         response = requests.get(LEADERBOARD_URL)
         leaderboards = response.json()
 
         if int(response.status_code) == 400:
-            if response.json()['error'] == 'INVALID_TMX_ID':
+            if response.json()["error"] == "INVALID_TMX_ID":
                 embed = discord.Embed(
-                    title = ":warning: Invalid TMX Id",
-                    description = "The TMX id provided is invalid, or the map dosnt exist",
-                    color = 0xff0000
+                    title=":warning: Invalid TMX Id",
+                    description="The TMX id provided is invalid, or the map dosnt exist",
+                    color=0xFF0000,
                 )
 
                 await ctx.send(embed=embed)
                 return None
 
-        map_name = requests.get(f'{BASE_API_URL}/tmnf-x/trackinfo/{tmx_id}').json()['name']
-
-        times = [
-            '**:first_place: {} by {}**'.format(leaderboards[0]['time'], leaderboards[0]['username']),
-            ':second_place: {} by {}'.format(leaderboards[1]['time'], leaderboards[1]['username']),
-            ':third_place: {} by {}'.format(leaderboards[2]['time'], leaderboards[2]['username']),
-            '4) {} by {}'.format(leaderboards[3]['time'], leaderboards[3]['username']),
-            '5) {} by {}'.format(leaderboards[4]['time'], leaderboards[4]['username']),
-            '6) {} by {}'.format(leaderboards[5]['time'], leaderboards[5]['username']),
-            '7) {} by {}'.format(leaderboards[6]['time'], leaderboards[6]['username']),
-            '8) {} by {}'.format(leaderboards[7]['time'], leaderboards[7]['username']),
-            '9) {} by {}'.format(leaderboards[8]['time'], leaderboards[8]['username']),
-            '10) {} by {}'.format(leaderboards[9]['time'], leaderboards[9]['username']),
+        map_name = requests.get(f"{BASE_API_URL}/tmnf-x/trackinfo/{tmx_id}").json()[
+            "name"
         ]
 
-        descStr = "{}\n[View all replays](https://tmnforever.tm-exchange.com/trackreplayshow/{})".format('\n'.join(times), tmx_id)
+        times = [
+            "**:first_place: {} by {}**".format(
+                leaderboards[0]["time"], leaderboards[0]["username"]
+            ),
+            ":second_place: {} by {}".format(
+                leaderboards[1]["time"], leaderboards[1]["username"]
+            ),
+            ":third_place: {} by {}".format(
+                leaderboards[2]["time"], leaderboards[2]["username"]
+            ),
+            "4) {} by {}".format(leaderboards[3]["time"], leaderboards[3]["username"]),
+            "5) {} by {}".format(leaderboards[4]["time"], leaderboards[4]["username"]),
+            "6) {} by {}".format(leaderboards[5]["time"], leaderboards[5]["username"]),
+            "7) {} by {}".format(leaderboards[6]["time"], leaderboards[6]["username"]),
+            "8) {} by {}".format(leaderboards[7]["time"], leaderboards[7]["username"]),
+            "9) {} by {}".format(leaderboards[8]["time"], leaderboards[8]["username"]),
+            "10) {} by {}".format(leaderboards[9]["time"], leaderboards[9]["username"]),
+        ]
+
+        descStr = "{}\n[View all replays](https://tmnforever.tm-exchange.com/trackreplayshow/{})".format(
+            "\n".join(times), tmx_id
+        )
 
         embed = discord.Embed(
-            title = "Leaderboard | " + map_name, 
-            url = 'https://tmnforever.tm-exchange.com/trackshow/' + tmx_id,
-            description = descStr,
-            color = cf.get_random_color()
+            title="Leaderboard | " + map_name,
+            url="https://tmnforever.tm-exchange.com/trackshow/" + tmx_id,
+            description=descStr,
+            color=cf.get_random_color(),
         )
 
         await ctx.send(embed=embed)
@@ -235,38 +247,38 @@ class TMNFExchangeCommands(
     @view_tmnf_map.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
-            log.error('Missing required arguments')
+            log.error("Missing required arguments")
 
             log.debug("Creating error embed")
             embed = discord.Embed(
                 title=":warning: Missing required argument: TMX Id",
                 description="**TMX Id is an required argument that is missing**,\n\nUsage: viewmap-tmnf <TMX-id>\nExample: viewmap-tmnf 2233",
-                color=cf.get_random_color()
+                color=cf.get_random_color(),
             )
-            log.debug('Created error embed')
-            log.debug('Sending error embed')
+            log.debug("Created error embed")
+            log.debug("Sending error embed")
 
             await ctx.send(embed=embed)
-            
-            log.debug('Sent error embed')
+
+            log.debug("Sent error embed")
 
     @leaderboardstmnf.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
-            log.error('Missing required arguments')
+            log.error("Missing required arguments")
 
             log.debug("Creating error embed")
             embed = discord.Embed(
                 title=":warning: Missing required argument: TMX Id",
                 description="**TMX Id is an required argument that is missing**,\n\nUsage: viewmap-tmnf <TMX-id>\nExample: viewmap-tmnf 2233",
-                color=cf.get_random_color()
+                color=cf.get_random_color(),
             )
-            log.debug('Created error embed')
-            log.debug('Sending error embed')
+            log.debug("Created error embed")
+            log.debug("Sending error embed")
 
             await ctx.send(embed=embed)
-            
-            log.debug('Sent error embed')
+
+            log.debug("Sent error embed")
 
 
 def setup(client):

@@ -182,7 +182,13 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def source(self, ctx):
-        await ctx.send(embed=discord.Embed(title='Source Code', description='https://github.com/NottCurious/TMIndiaBot', color=cf.get_random_color()))
+        await ctx.send(
+            embed=discord.Embed(
+                title="Source Code",
+                description="https://github.com/NottCurious/TMIndiaBot",
+                color=cf.get_random_color(),
+            )
+        )
 
     @commands.command()
     @commands.before_invoke(record_usage)

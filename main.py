@@ -127,10 +127,10 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 
         # Stop further execution
         return None
-    
+
     if isinstance(error, commands.MissingRequiredArgument):
         return None
-        
+
     log.error(error)
     log.debug(f"Reading Config File for Devs")
     with open("config.json", "r") as file:
