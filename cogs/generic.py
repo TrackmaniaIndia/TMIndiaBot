@@ -5,6 +5,7 @@ import logging
 import os
 import datetime
 from dotenv import load_dotenv
+from datetime import datetime
 
 try:
     import cogs.convert_logging as cl
@@ -129,9 +130,12 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         times_run += 1
 
+        time_started = datetime.now()
+        time_started = time_started.strftime("%c %z")
+
         log.debug(f"Sending Message to Bot Channel")
         channel = self.client.get_channel(876335103146623016)
-        await channel.send(f"Bot is Ready, Version: {version} - Times Run: {times_run}")
+        await channel.send(f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}")
         log.debug(f"Sent Message to Bot Channel")
 
         log.debug(f"Writing TimesRun to File")
