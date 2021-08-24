@@ -3,12 +3,12 @@
         {
             "discord_name": "Artifex#0690",
             "id": "623085987442196503",
-            "error_ping": true
+            "error_ping": false
         },
         {
             "discord_name": "NottCurious#4351",
             "id": "250257390643970059",
-            "error_ping": false
+            "error_ping": true
         },
         {
             "discord_name": "hachikuku#2806",
@@ -17,7 +17,7 @@
         }
     ],
 
-    "bot_version": "v0.0.8",
+    "bot_version": "v0.0.9",
 
     "testing_server_id": "876042400005505066",
     "log_level": "debug",
