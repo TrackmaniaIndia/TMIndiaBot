@@ -199,6 +199,17 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         raise commands.CommandError(message="Caused error")
 
+    @commands.command()
+    async def kill(self, ctx):
+        if str(ctx.author.id) not in ["623085987442196503", "250257390643970059"]:
+            log.error(f'{ctx.author} Tried to Kill')
+            await ctx.send(embed=discord.Embed(title='You\'re Not Allowed To Do That', color=discord.Colour.red()))
+            return None
+        else:
+            log.error('KILLING')
+            await ctx.send('***KILLING***')
+            exit()
+
     # Error Management
     @prefix.error
     async def prefix_error(self, ctx, error):
