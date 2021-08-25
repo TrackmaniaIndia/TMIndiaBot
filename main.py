@@ -8,8 +8,6 @@ import json
 import coloredlogs
 import logging
 import datetime
-from discord_slash import SlashCommand, SlashContext
-from dinteractions_Paginator import Paginator
 
 import functions.convert_logging as cl
 import functions.common_functions as cf
@@ -75,7 +73,6 @@ def get_prefix(client, message):
 
 # Making the Client
 client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.default())
-slash = SlashCommand(client)
 
 
 # Events
@@ -121,53 +118,53 @@ async def on_guild_remove(guild):
 
 
 # Catch all command errors, send them to developers.
-# @client.event
-# async def on_command_error(ctx: commands.Context, error: commands.CommandError):
-#     if isinstance(error, commands.CommandNotFound):
-#         emb = discord.Embed(
-#             title=":warning: Command not found", color=cf.get_random_color()
-#         )
-#         await ctx.send(embed=emb)
+@client.event
+async def on_command_error(ctx: commands.Context, error: commands.CommandError):
+    if isinstance(error, commands.CommandNotFound):
+        emb = discord.Embed(
+            title=":warning: Command not found", color=cf.get_random_color()
+        )
+        await ctx.send(embed=emb)
 
-#         # Stop further execution
-#         return None
+        # Stop further execution
+        return None
 
-#     if isinstance(error, commands.MissingRequiredArgument):
-#         return None
+    if isinstance(error, commands.MissingRequiredArgument):
+        return None
 
-#     log.error(error)
-#     log.debug(f"Reading Config File for Devs")
-#     with open("config.json", "r") as file:
-#         config = json.loads(file.read())
-#         file.close()
-#     log.debug(f"Found Devs")
+    log.error(error)
+    log.debug(f"Reading Config File for Devs")
+    with open("config.json", "r") as file:
+        config = json.loads(file.read())
+        file.close()
+    log.debug(f"Found Devs")
 
-#     pingStr = ""
+    pingStr = ""
 
-#     log.debug(f"Checking for Ping")
-#     for dev in config["developers"]:
-#         if dev["error_ping"]:
-#             pingStr += f"<@!{dev['id']}> "
-#         log.debug(f"Ping for {dev['id']} set to {dev['error_ping']}")
-#     log.debug(f"Created Ping String")
+    log.debug(f"Checking for Ping")
+    for dev in config["developers"]:
+        if dev["error_ping"]:
+            pingStr += f"<@!{dev['id']}> "
+        log.debug(f"Ping for {dev['id']} set to {dev['error_ping']}")
+    log.debug(f"Created Ping String")
 
-#     log.debug(f"Receiving Error Channel")
-#     channel = client.get_channel(876069587140087828)
-#     log.debug(f"Found Error Channel")
+    log.debug(f"Receiving Error Channel")
+    channel = client.get_channel(876069587140087828)
+    log.debug(f"Found Error Channel")
 
-#     log.debug(f"Creating Embed")
-#     embed = discord.Embed(title=":warning: " + str(error), color=0xFF0000)
+    log.debug(f"Creating Embed")
+    embed = discord.Embed(title=":warning: " + str(error), color=0xFF0000)
 
-#     embed.add_field(name="Author Username", value=ctx.author, inline=False)
-#     embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
-#     embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
-#     embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
-#     embed.add_field(name="Message content", value=ctx.message.content, inline=False)
-#     log.debug(f"Created Embed")
+    embed.add_field(name="Author Username", value=ctx.author, inline=False)
+    embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
+    embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
+    embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
+    embed.add_field(name="Message content", value=ctx.message.content, inline=False)
+    log.debug(f"Created Embed")
 
-#     log.debug(f"Sending Embed")
-#     await channel.send(pingStr, embed=embed)
-#     log.debug(f"Embed Sent, Error Handler Quit")
+    log.debug(f"Sending Embed")
+    await channel.send(pingStr, embed=embed)
+    log.debug(f"Embed Sent, Error Handler Quit")
 
 
 @client.command(name="reload", hidden=True)

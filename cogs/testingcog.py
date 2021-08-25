@@ -7,8 +7,6 @@ import datetime
 from dotenv import load_dotenv
 from datetime import datetime
 import asyncio
-from discord_slash import cog_ext, SlashContext
-from dinteractions_Paginator import Paginator
 
 import functions.convert_logging as cl
 import functions.common_functions as cf
@@ -105,7 +103,7 @@ async def finish_usage(self, ctx: commands.Context):
     await channel.send(embed=embed)
     log.debug(f"Embed Sent, Error Handler Quit")
 
-class TestingCog(commands.Cog):
+class TestingCog(commands.Cog, name='Testing'):
     def __init__(self, client):
         self.client = client
 
@@ -117,7 +115,7 @@ class TestingCog(commands.Cog):
 
         pages = [page1, page2, page3]
 
-        await Paginator(bot=self.client, ctx=ctx, pages=pages, timeout=30)
+        await ctx.send(embed=page1)
 
 
 
