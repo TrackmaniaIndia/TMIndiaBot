@@ -90,6 +90,8 @@ def get_leaderboards(tmx_id: str) -> discord.Embed:
     response = requests.get(LEADERBOARD_URL)
     leaderboards = response.json()
 
+    print(len(leaderboards))
+
     if int(response.status_code) == 400:
         if response.json()["error"] == "INVALID_TMX_ID":
             log.error("Invalid TMX ID Given")
@@ -99,39 +101,43 @@ def get_leaderboards(tmx_id: str) -> discord.Embed:
     map_name = requests.get(f"{BASE_API_URL}/tmnf-x/trackinfo/{tmx_id}").json()['name']
     
     log.debug(f'Creating Times String')
-    times = [
-            "**:first_place: {} by {}**".format(
-                leaderboards[0]["time"], leaderboards[0]["username"]
-            ),
-            ":second_place: {} by {}".format(
-                leaderboards[1]["time"], leaderboards[1]["username"]
-            ),
-            ":third_place: {} by {}".format(
-                leaderboards[2]["time"], leaderboards[2]["username"]
-            ),
-            "4) {} by {}".format(leaderboards[3]["time"], leaderboards[3]["username"]),
-            "5) {} by {}".format(leaderboards[4]["time"], leaderboards[4]["username"]),
-            "6) {} by {}".format(leaderboards[5]["time"], leaderboards[5]["username"]),
-            "7) {} by {}".format(leaderboards[6]["time"], leaderboards[6]["username"]),
-            "8) {} by {}".format(leaderboards[7]["time"], leaderboards[7]["username"]),
-            "9) {} by {}".format(leaderboards[8]["time"], leaderboards[8]["username"]),
-            "10) {} by {}".format(leaderboards[9]["time"], leaderboards[9]["username"]),
-        ]
-    log.debug(f'Created Times String')
+    times_page_1 = []
+    times_page_2 = []
+    times_page_3 = []
+    times_page_4 = []
+    times_page_5 = []
+
+
+    for i in range(0, 9):
+        times_page_1.append('{}. {} - {}'.format(i + 1, leaderboards[i]['username'], leaderboards[i]['time']))
+        times_page_2.append('{}. {} - {}'.format(i + 11, leaderboards[i + 10]['username'], leaderboards[i + 10]['time']))
+        times_page_3.append('{}. {} - {}'.format(i + 21, leaderboards[i + 20]['username'], leaderboards[i + 20]['time']))
+        times_page_4.append('{}. {} - {}'.format(i + 31, leaderboards[i + 30]['username'], leaderboards[i + 30]['time']))
+        times_page_5.append('{}. {} - {}'.format(i + 41, leaderboards[i + 40]['username'], leaderboards[i + 40]['time']))
+
+    times = [times_page_1, times_page_2, times_page_3, times_page_4, times_page_5]
+    embeds = []
+
+    for i in range(0, 4):
+        embeds.append(discord.Embed(title='Page {}'.format(i + 1), description=times[i], color=cf.get_random_color))
+
+    print(embeds)
+
+    # log.debug(f'Created Times String')
     
-    log.debug(f'Creating Description String')
-    desc_str = "{}\n[View all replays](https://tmnforever.tm-exchange.com/trackreplayshow/{})".format(
-            "\n".join(times), tmx_id
-        )
-    log.debug(f'Created Description String')
+    # log.debug(f'Creating Description String')
+    # desc_str = "{}\n[View all replays](https://tmnforever.tm-exchange.com/trackreplayshow/{})".format(
+    #         "\n".join(times_page_1), tmx_id
+    #     )
+    # log.debug(f'Created Description String')
 
-    log.debug(f'Creating Embed')
-    embed = discord.Embed(
-            title="Leaderboard | " + map_name,
-            url="https://tmnforever.tm-exchange.com/trackshow/" + tmx_id,
-            description=desc_str,
-            color=cf.get_random_color(),
-        )
-    log.debug(f'Created Embed')
+    # log.debug(f'Creating Embed')
+    # embed = discord.Embed(
+    #         title="Leaderboard | " + map_name,
+    #         url="https://tmnforever.tm-exchange.com/trackshow/" + tmx_id,
+    #         description=desc_str,
+    #         color=cf.get_random_color(),
+    #     )
+    # log.debug(f'Created Embed')
 
-    return embed
+    # return embed

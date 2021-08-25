@@ -7,6 +7,7 @@ import datetime
 from dotenv import load_dotenv
 from datetime import datetime
 import asyncio
+from disputils import BotEmbedPaginator
 
 import functions.convert_logging as cl
 import functions.common_functions as cf
@@ -107,15 +108,17 @@ class TestingCog(commands.Cog, name='Testing'):
     def __init__(self, client):
         self.client = client
 
-    @cog_ext.cog_slash(name="test")
-    async def test_embed(self, ctx: SlashContext):
+    @commands.command(name="test")
+    async def test_embed(self, ctx: commands.Context):
         page1 = discord.Embed(title='Page 1', color=discord.Colour.orange())
         page2 = discord.Embed(title='Page 2', color=discord.Colour.red())
         page3 = discord.Embed(title='Page 3', color=discord.Colour.green())
 
         pages = [page1, page2, page3]
 
-        await ctx.send(embed=page1)
+        paginator = BotEmbedPaginator(ctx, pages)
+
+        await paginator.run()
 
 
 
