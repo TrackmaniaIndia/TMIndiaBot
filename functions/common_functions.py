@@ -1,6 +1,7 @@
 import logging
 import random
 import json
+import discord
 
 import functions.convert_logging as cl
 
@@ -20,33 +21,7 @@ log = cl.get_logging(log_level, discord_log_level)
 
 
 def get_random_color():
-    log.debug(f"get_random_color called")
-    colors = (
-        0x000000,
-        0xFFFFFF,
-        0x028C6A,
-        0xFAA2B0,
-        0x82B741,
-        0x00AEEF,
-        0xFF9FF6,
-        0x6289FF,
-        0x41FF00,
-        0x00FFFF,
-        0x800080,
-        0xFFFF00,
-        0xFF0000,
-        0xFF00FF,
-        0x00FF00,
-        0xAABBCC,
-        0xCCAABB,
-        0xFF2FF2,
-        0x23FFFF,
-    )
-
-    rInt = random.randint(0, len(colors) - 1)
-
-    log.debug(f"Random Number is: {rInt} - Color Being Returned is: {colors[rInt]}")
-    return colors[rInt]
+    return discord.Colour.random()
 
 
 def make_string(my_list: list) -> str:
