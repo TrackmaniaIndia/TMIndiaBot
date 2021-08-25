@@ -178,6 +178,10 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             log.debug(f'Received TMX ID from User')
             await ctx.send(embed=functions.tm_commands_functions.get_leaderboards(tmx_id=tmx_id_message.content))
+        if game_flag.lower() == 'tm2020':
+            await ctx.send(embed=discord.Embed(title='Under Construction', color=0xff0000))
+
+    
     @view_map.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
