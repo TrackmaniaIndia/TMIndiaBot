@@ -11,7 +11,7 @@ import os
 try:
     import cogs.convert_logging as cl
     import cogs.common_functions as cf
-except:
+except ModuleNotFoundError:
     import common_functions as cf
     import convert_logging as cl
 

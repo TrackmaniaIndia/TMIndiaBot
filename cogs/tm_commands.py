@@ -3,17 +3,15 @@ from discord.ext import commands
 import json
 import logging
 import datetime
+from discord.utils import valid_icon_size
 from dotenv import load_dotenv
 import requests
 import os
 import asyncio
 
-try:
-    import cogs.convert_logging as cl
-    import cogs.common_functions as cf
-except ModuleNotFoundError:
-    import common_functions as cf
-    import convert_logging as cl
+import functions.tm_commands_functions
+import functions.convert_logging as cl
+import functions.common_functions as cf
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -129,6 +127,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             return None
 
         if game_flag.lower() == 'tmnf':
+            log.debug(f'TMNF Flag Given')
             tmx_id_message = ''
 
             def check(msg):
@@ -145,11 +144,40 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             log.debug(f'Received TMX ID from User')
 
-            await ctx.send(embed=get_tmnf_map(tmx_id=tmx_id_message.content))
+            await ctx.send(embed=functions.tm_commands_functions.get_tmnf_map(tmx_id=tmx_id_message.content))
 
         if game_flag.lower() == 'tm2020':
             await ctx.send(embed=discord.Embed(title='Under Construction', color=0xff0000))
 
+    @commands.command(name='leaderboards', aliases=['lb', 'ld'], help='Leaderboards for a Specific Map')
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def get_leaderboards(self, ctx: commands.Context, game_flag: str) -> None:
+        valid_flags = ["tmnf", "tm2020"]
+
+        if game_flag.lower() not in valid_flags:
+            log.error(f"Not a Valid Flag, Returning")
+            await ctx.send(embed=discord.Embed(title="Not a Valid Flag", description='Valid Flags are: TMNF, TM2020\nUsage: ```leaderboards <game_flag>```'), color=0xff0000)
+            return None
+        
+        if game_flag.lower() == 'tmnf':
+            log.debug(f'TMNF Flag Given')
+            tmx_id_message = ''
+
+            def check(msg):
+                return msg.author == ctx.author and msg.channel == ctx.channel
+
+            log.debug(f'Requesting TMX ID from User')
+
+            try:
+                await ctx.send(embed=discord.Embed(title='Please Enter Map ID', color=cf.get_random_color()))
+                tmx_id_message = await self.client.wait_for('message', check=check, timeout=30)
+            except asyncio.TimeoutError:
+                await ctx.send(embed=discord.Embed(title='Bot Timed Out', color=0xff0000))
+                return None
+
+            log.debug(f'Received TMX ID from User')
+            await ctx.send(embed=functions.tm_commands_functions.get_leaderboards(tmx_id=tmx_id_message.content))
     @view_map.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
@@ -162,60 +190,3 @@ def setup(client):
     client.add_cog(TMCommands(client))
 
 
-def get_tmnf_map(tmx_id: str) -> discord.Embed:
-    if not tmx_id.isnumeric():
-        log.error(f"TMX ID is not Numeric")
-
-        return discord.Embed(
-            title=":warning: TMX ID must be a number",
-            description="Example: 2233",
-            color=0xFF0000,
-        )
-
-    BASE_API_URL = os.getenv("BASE_API_URL")
-    LEADERBOARD_URL = f"{BASE_API_URL}/tmnf-x/trackinfo/{tmx_id}"
-
-    log.debug(f"Requesting Response from API")
-    response = requests.get(LEADERBOARD_URL)
-    log.debug(f"Received Response From Api")
-
-    log.debug(f"Checking API Response")
-    if int(response.status_code) == 400:
-        if response.json["error"] == "INVALID_TMX_ID":
-            log.error("Invalid TMX ID given")
-            return discord.Embed(
-                title=":warning: Invalid TMX Id",
-                description="The TMX ID provided is invalid",
-                color=0xFF0000,
-            )
-    log.debug(f"API Response Checked")
-
-    api_data = response.json()
-
-    log.debug(f'Creating Embed')
-    embed = discord.Embed(
-        title=api_data["name"],
-        description=api_data["authorComments"],
-        color=cf.get_random_color(),
-        url="https://tmnforever.tm-exchange.com/trackshow/" + tmx_id,
-    )
-
-    embed.set_thumbnail(
-        url=f"https://tmnforever.tm-exchange.com/getclean.aspx?action=trackscreenscreens&id={tmx_id}&screentype=0"
-    )
-
-    embed.add_field(name="Author", value=api_data["author"], inline=True)
-    embed.add_field(name="Version", value=api_data["version"], inline=True)
-    embed.add_field(name="Released", value=api_data["releaseDate"], inline=True)
-    embed.add_field(name="LB Rating", value=api_data["LBRating"], inline=True)
-    embed.add_field(name="Game version", value=api_data["gameVersion"], inline=True)
-    embed.add_field(name="Map type", value=api_data["type"], inline=True)
-    embed.add_field(name="Map style", value=api_data["style"], inline=True)
-    embed.add_field(name="Environment", value=api_data["environment"], inline=True)
-    embed.add_field(name="Routes", value=api_data["routes"], inline=True)
-    embed.add_field(name="Length", value=api_data["length"], inline=True)
-    embed.add_field(name="Difficulty", value=api_data["difficulty"], inline=True)
-    embed.add_field(name="Mood", value=api_data["mood"], inline=True)
-    log.debug(f'Embed Created, Returning')
-
-    return embed

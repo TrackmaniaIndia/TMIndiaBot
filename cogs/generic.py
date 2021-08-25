@@ -7,12 +7,9 @@ import datetime
 from dotenv import load_dotenv
 from datetime import datetime
 
-try:
-    import cogs.convert_logging as cl
-    import cogs.common_functions as cf
-except:
-    import common_functions as cf
-    import convert_logging as cl
+import functions.convert_logging as cl
+import functions.common_functions as cf
+import functions.generic_functions
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -121,7 +118,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.critical("Bot Logged In")
 
         log.debug(f"Checking for Times Run File")
-        check_for_times_run()
+        functions.generic_functions.check_for_times_run()
         times_run = 0
 
         log.debug(f"Reading Value from Times Run File")
@@ -228,14 +225,4 @@ def setup(client):
     client.add_cog(Generic(client))
 
 
-def check_for_times_run() -> None:
-    log.debug(f"Checking for Times Run File")
-    if not os.path.exists("./data"):
-        log.critical("Data Directory doesn't Exist, Creating")
-        os.mkdir("./data")
-    if not os.path.exists("./data/times_run.txt"):
-        log.critical("Times Run File doesn't Exist, Creating")
-        with open("./data/times_run.txt", "w") as file:
-            print(0, file=file)
 
-    return

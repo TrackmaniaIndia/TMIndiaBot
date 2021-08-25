@@ -9,8 +9,8 @@ import coloredlogs
 import logging
 import datetime
 
-import cogs.convert_logging as cl
-import cogs.common_functions as cf
+import functions.convert_logging as cl
+import functions.common_functions as cf
 
 # Importing Fields from .env
 load_dotenv()

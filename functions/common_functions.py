@@ -2,10 +2,7 @@ import logging
 import random
 import json
 
-try:
-    import cogs.convert_logging as cl
-except:
-    import convert_logging as cl
+import functions.convert_logging as cl
 
 # log_level = os.getenv("LOG_LEVEL")
 # discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
