@@ -134,7 +134,7 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 
     log.error(error)
     log.debug(f"Reading Config File for Devs")
-    with open("config.json", "r") as file:
+    with open("./json_files/config.json", "r") as file:
         config = json.loads(file.read())
         file.close()
     log.debug(f"Found Devs")

@@ -59,11 +59,18 @@ class Generic(commands.Cog, description="Generic Functions"):
         time_started = time_started.strftime("%c %z")
 
         log.debug(f"Sending Message to Bot Channel")
-        channel = self.client.get_channel(876335103146623016)
-        await channel.send(
-            f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}"
-        )
-        log.debug(f"Sent Message to Bot Channel")
+
+        log.debug(f'Getting Announcement Channels')
+        with open('./json_files/announcement_channels.json', 'r') as file:
+            channels = json.load(file)
+
+        for announcement_channel in channels['announcement_channels']:
+            log.debug(f'Sending Message in {announcement_channel}')
+            channel = self.client.get_channel(int(announcement_channel))
+            await channel.send(
+                f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}"
+            )
+            log.debug(f"Sent Message to {announcement_channel}")
 
         log.debug(f"Writing TimesRun to File")
         with open("./Data/times_run.txt", "w") as file:
