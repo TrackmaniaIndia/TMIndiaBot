@@ -160,7 +160,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             emb = discord.Embed(
                 title=":warning: Prefix not given",
                 description="Usage: prefix <new-prefix>\nExample: !prefix $",
-                color=0xFF0000(),
+                color=0xFF0000,
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             await ctx.send(embed=emb)
 
@@ -168,7 +168,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             log.error("Caller Doesn't Have Required Permissions")
             emb = discord.Embed(
                 title=":warning: You dont have the required permissions: Administrator",
-                color=0xFF0000(),
+                color=0xFF0000,
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             await ctx.send(embed=emb)
 
