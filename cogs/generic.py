@@ -3,9 +3,8 @@ from discord.ext import commands
 import json
 import logging
 import os
-import datetime
-from dotenv import load_dotenv
 from datetime import datetime
+from dotenv import load_dotenv
 
 import functions.convert_logging as cl
 import functions.common_functions as cf
@@ -125,7 +124,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 title="Source Code",
                 description="https://github.com/NottCurious/TMIndiaBot",
                 color=cf.get_random_color(),
-            )
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
         )
 
     @commands.command(hidden=True)
@@ -144,7 +143,8 @@ class Generic(commands.Cog, description="Generic Functions"):
                 embed=discord.Embed(
                     title="You're Not Allowed To Do That", color=discord.Colour.red()
                 )
-            )
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+
             return None
         else:
             log.error("KILLING")
@@ -161,7 +161,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 title=":warning: Prefix not given",
                 description="Usage: prefix <new-prefix>\nExample: !prefix $",
                 color=0xFF0000(),
-            )
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             await ctx.send(embed=emb)
 
         if isinstance(error, commands.MissingPermissions):
@@ -169,7 +169,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             emb = discord.Embed(
                 title=":warning: You dont have the required permissions: Administrator",
                 color=0xFF0000(),
-            )
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             await ctx.send(embed=emb)
 
 
