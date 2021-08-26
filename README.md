@@ -17,7 +17,10 @@ Discord bot for the [TM India Discord Server](https://discord.gg/aztYuhWxgU "TM 
 * Main Bot Dev
 * Backend API Dev
 
-## Invite Link
+## Trackmania India Discord Server Invite Link
 
 Join Here!
+
+TM India Server
+
 https://discord.gg/aztYuhWxgU
