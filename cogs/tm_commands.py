@@ -203,6 +203,14 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f'Creating Error Embed')
             await ctx.send(embed=discord.Embed(title=":warning: Missing required argument: Game Flag", description='**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}', color=0xff0000))
             log.debug(f'Sent Error Embed')
+
+    @get_leaderboards.error
+    async def error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.MissingRequiredArgument):
+            log.error('Missing required argument')
+            
+            log.debug(f'Sending Error Embed')
+            await ctx.send(embed=discord.Embed(title=':warning: Missing required argument: Game Flag', description='**Game Flag is a required argument that is missing**,\n\nUsage: leaderboards {TMNF/TM2020}', color=0xff0000))
 def setup(client):
     client.add_cog(TMCommands(client))
 

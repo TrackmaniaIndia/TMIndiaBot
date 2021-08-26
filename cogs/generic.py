@@ -191,7 +191,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             )
         )
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def causeError(self, ctx):
@@ -199,7 +199,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         raise commands.CommandError(message="Caused error")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def kill(self, ctx):
         if str(ctx.author.id) not in ["623085987442196503", "250257390643970059"]:
             log.error(f'{ctx.author} Tried to Kill')
@@ -219,7 +219,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             emb = discord.Embed(
                 title=":warning: Prefix not given",
                 description="Usage: prefix <new-prefix>\nExample: !prefix $",
-                color=cf.get_random_color(),
+                color=0xff0000(),
             )
             await ctx.send(embed=emb)
 
@@ -227,7 +227,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             log.error("Caller Doesn't Have Required Permissions")
             emb = discord.Embed(
                 title=":warning: You dont have the required permissions: Administrator",
-                color=cf.get_random_color(),
+                color=0xff0000(),
             )
             await ctx.send(embed=emb)
 
