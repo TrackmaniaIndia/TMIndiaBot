@@ -1,8 +1,9 @@
 # TMIndiaBot
 
-Discord bot for the TM India Discord Server
+Discord bot for the [TM India Discord Server](https://discord.gg/aztYuhWxgU "TM India Discord invite")
 
 ## Developers
+<<<<<<< HEAD
 
 1. NottCurious
 
@@ -21,3 +22,8 @@ Backend API Dev
 
 Join Here!
 https://discord.gg/aztYuhWxgU
+=======
+1. [NottCurious#4351](https://github.com/NottCurious "NottCurious")
+
+2. [ARTIFEX#0690](https://github.com/artifexdevstuff/ "artifexdevstuff")
+>>>>>>> main
