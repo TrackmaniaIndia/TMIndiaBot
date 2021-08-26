@@ -68,7 +68,11 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             try:
                 await ctx.send(
-                    embed=discord.Embed(title="Please Enter a TMX ID", color=0x00FF00)
+                    embed=discord.Embed(
+                        title="Please Enter a TMX ID", 
+                        color=0x00FF00,
+                        description="TMX ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**"
+                    )
                 )
                 tmx_id_message = await self.client.wait_for(
                     "message", check=check, timeout=30.0
@@ -104,13 +108,15 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
         if game_flag.lower() not in valid_flags:
             log.error(f"Not a Valid Flag, Returning")
-            await ctx.send(
-                embed=discord.Embed(
+
+            embed = discord.Embed(
                     title="Not a Valid Flag",
                     description="Valid Flags are: TMNF, TM2020\nUsage: ```leaderboards <game_flag>```",
-                ),
-                color=0xFF0000,
-            ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+                    color=0xFF0000,
+                )
+            embed.set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+
+            await ctx.send(embed=embed)
             return None
 
         if game_flag.lower() == "tmnf":
@@ -123,11 +129,15 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Requesting TMX ID from User")
 
             try:
-                await ctx.send(
-                    embed=discord.Embed(
-                        title="Please Enter Map ID", color=cf.get_random_color()
-                    )
-                ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+                embed = discord.Embed(
+                        title="Please Enter Map ID", color=cf.get_random_color(),
+                        description="MAP ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**"
+                )
+                
+                embed.set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+
+                await ctx.send(embed=embed)
+
                 tmx_id_message = await self.client.wait_for(
                     "message", check=check, timeout=30
                 )
