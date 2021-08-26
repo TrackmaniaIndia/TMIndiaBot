@@ -17,10 +17,10 @@
         }
     ],
 
-    "bot_version": "v0.0.9",
+    "bot_version": "v0.1.0",
 
     "testing_server_id": "876042400005505066",
-    "log_level": "debug",
+    "log_level": "info",
     "discord_log_level": "critical",
     "log_function_usage": false
 }

@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 import requests
 import os
 import asyncio
+from disputils import pagination
+from disputils.pagination import BotEmbedPaginator
 
 import functions.tm_commands_functions
 import functions.convert_logging as cl
@@ -177,7 +179,18 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 return None
 
             log.debug(f'Received TMX ID from User')
-            await ctx.send(embed=functions.tm_commands_functions.get_leaderboards(tmx_id=tmx_id_message.content))
+
+            log.debug(f'Asking for Embeds')
+            embeds = functions.tm_commands_functions.get_leaderboards(tmx_id=tmx_id_message.content)
+            log.debug(f'Received Embeds')
+
+            log.debug(f'Creating Paginator')
+            paginator = BotEmbedPaginator(ctx, embeds)
+            log.debug(f'Created Paginator')
+
+            log.debug(f'Running Paginator')
+            await paginator.run()
+
         if game_flag.lower() == 'tm2020':
             await ctx.send(embed=discord.Embed(title='Under Construction', color=0xff0000))
 
