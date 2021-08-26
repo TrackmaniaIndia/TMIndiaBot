@@ -44,7 +44,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def view_map(self, ctx: commands.Context, game_flag: str) -> None:
-        valid_flags = ["tmnf", 'tm2020']
+        valid_flags = ["tmnf", "tm2020"]
 
         if game_flag.lower() not in valid_flags:
             log.error(f"Not a Valid Flag, Returning")
@@ -57,30 +57,46 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             )
             return None
 
-        if game_flag.lower() == 'tmnf':
-            log.debug(f'TMNF Flag Given')
-            tmx_id_message = ''
+        if game_flag.lower() == "tmnf":
+            log.debug(f"TMNF Flag Given")
+            tmx_id_message = ""
 
             def check(msg):
                 return msg.author == ctx.author and msg.channel == ctx.channel
 
-            log.debug(f'Requesting TMX ID from User')
+            log.debug(f"Requesting TMX ID from User")
 
             try:
-                await ctx.send(embed=discord.Embed(title='Please Enter a TMX ID', color=0x00ff00))
-                tmx_id_message = await self.client.wait_for('message', check=check, timeout=30.0)
+                await ctx.send(
+                    embed=discord.Embed(title="Please Enter a TMX ID", color=0x00FF00)
+                )
+                tmx_id_message = await self.client.wait_for(
+                    "message", check=check, timeout=30.0
+                )
             except asyncio.TimeoutError:
-                await ctx.send(embed=discord.Embed(title='Bot Timed Out', color=0xff0000))
+                await ctx.send(
+                    embed=discord.Embed(title="Bot Timed Out", color=0xFF0000)
+                )
                 return
 
-            log.debug(f'Received TMX ID from User')
+            log.debug(f"Received TMX ID from User")
 
-            await ctx.send(embed=functions.tm_commands_functions.get_tmnf_map(tmx_id=tmx_id_message.content))
+            await ctx.send(
+                embed=functions.tm_commands_functions.get_tmnf_map(
+                    tmx_id=tmx_id_message.content
+                )
+            )
 
-        if game_flag.lower() == 'tm2020':
-            await ctx.send(embed=discord.Embed(title='Under Construction', color=0xff0000))
+        if game_flag.lower() == "tm2020":
+            await ctx.send(
+                embed=discord.Embed(title="Under Construction", color=0xFF0000)
+            )
 
-    @commands.command(name='leaderboards', aliases=['lb', 'ld'], help='Leaderboards for a Specific Map')
+    @commands.command(
+        name="leaderboards",
+        aliases=["lb", "ld"],
+        help="Leaderboards for a Specific Map",
+    )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def get_leaderboards(self, ctx: commands.Context, game_flag: str) -> None:
@@ -88,59 +104,88 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
         if game_flag.lower() not in valid_flags:
             log.error(f"Not a Valid Flag, Returning")
-            await ctx.send(embed=discord.Embed(title="Not a Valid Flag", description='Valid Flags are: TMNF, TM2020\nUsage: ```leaderboards <game_flag>```'), color=0xff0000)
+            await ctx.send(
+                embed=discord.Embed(
+                    title="Not a Valid Flag",
+                    description="Valid Flags are: TMNF, TM2020\nUsage: ```leaderboards <game_flag>```",
+                ),
+                color=0xFF0000,
+            )
             return None
-        
-        if game_flag.lower() == 'tmnf':
-            log.debug(f'TMNF Flag Given')
-            tmx_id_message = ''
+
+        if game_flag.lower() == "tmnf":
+            log.debug(f"TMNF Flag Given")
+            tmx_id_message = ""
 
             def check(msg):
                 return msg.author == ctx.author and msg.channel == ctx.channel
 
-            log.debug(f'Requesting TMX ID from User')
+            log.debug(f"Requesting TMX ID from User")
 
             try:
-                await ctx.send(embed=discord.Embed(title='Please Enter Map ID', color=cf.get_random_color()))
-                tmx_id_message = await self.client.wait_for('message', check=check, timeout=30)
+                await ctx.send(
+                    embed=discord.Embed(
+                        title="Please Enter Map ID", color=cf.get_random_color()
+                    )
+                )
+                tmx_id_message = await self.client.wait_for(
+                    "message", check=check, timeout=30
+                )
             except asyncio.TimeoutError:
-                await ctx.send(embed=discord.Embed(title='Bot Timed Out', color=0xff0000))
+                await ctx.send(
+                    embed=discord.Embed(title="Bot Timed Out", color=0xFF0000)
+                )
                 return None
 
-            log.debug(f'Received TMX ID from User')
+            log.debug(f"Received TMX ID from User")
 
-            log.debug(f'Asking for Embeds')
-            embeds = functions.tm_commands_functions.get_leaderboards(tmx_id=tmx_id_message.content)
-            log.debug(f'Received Embeds')
+            log.debug(f"Asking for Embeds")
+            embeds = functions.tm_commands_functions.get_leaderboards(
+                tmx_id=tmx_id_message.content
+            )
+            log.debug(f"Received Embeds")
 
-            log.debug(f'Creating Paginator')
+            log.debug(f"Creating Paginator")
             paginator = BotEmbedPaginator(ctx, embeds)
-            log.debug(f'Created Paginator')
+            log.debug(f"Created Paginator")
 
-            log.debug(f'Running Paginator')
+            log.debug(f"Running Paginator")
             await paginator.run()
 
-        if game_flag.lower() == 'tm2020':
-            await ctx.send(embed=discord.Embed(title='Under Construction', color=0xff0000))
+        if game_flag.lower() == "tm2020":
+            await ctx.send(
+                embed=discord.Embed(title="Under Construction", color=0xFF0000)
+            )
 
-    
     @view_map.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
-            log.error('Missing required arguments')
+            log.error("Missing required arguments")
 
-            log.debug(f'Creating Error Embed')
-            await ctx.send(embed=discord.Embed(title=":warning: Missing required argument: Game Flag", description='**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}', color=0xff0000))
-            log.debug(f'Sent Error Embed')
+            log.debug(f"Creating Error Embed")
+            await ctx.send(
+                embed=discord.Embed(
+                    title=":warning: Missing required argument: Game Flag",
+                    description="**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}",
+                    color=0xFF0000,
+                )
+            )
+            log.debug(f"Sent Error Embed")
 
     @get_leaderboards.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
-            log.error('Missing required argument')
-            
-            log.debug(f'Sending Error Embed')
-            await ctx.send(embed=discord.Embed(title=':warning: Missing required argument: Game Flag', description='**Game Flag is a required argument that is missing**,\n\nUsage: leaderboards {TMNF/TM2020}', color=0xff0000))
+            log.error("Missing required argument")
+
+            log.debug(f"Sending Error Embed")
+            await ctx.send(
+                embed=discord.Embed(
+                    title=":warning: Missing required argument: Game Flag",
+                    description="**Game Flag is a required argument that is missing**,\n\nUsage: leaderboards {TMNF/TM2020}",
+                    color=0xFF0000,
+                )
+            )
+
+
 def setup(client):
     client.add_cog(TMCommands(client))
-
-

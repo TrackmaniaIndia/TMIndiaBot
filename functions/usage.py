@@ -26,6 +26,7 @@ log = cl.get_logging(log_level, discord_log_level)
 
 DEFAULT_PREFIX = "*"
 
+
 async def record_usage(self, ctx):
     log.info(
         f"{ctx.author} used {ctx.command} at {ctx.message.created_at} in {ctx.guild}"

@@ -19,6 +19,7 @@ DEFAULT_PREFIX = "*"
 log = logging.getLogger(__name__)
 log = cl.get_logging(log_level, discord_log_level)
 
+
 def check_for_times_run() -> None:
     log.debug(f"Checking for Times Run File")
     if not os.path.exists("./data"):

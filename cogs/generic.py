@@ -60,7 +60,9 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         log.debug(f"Sending Message to Bot Channel")
         channel = self.client.get_channel(876335103146623016)
-        await channel.send(f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}")
+        await channel.send(
+            f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}"
+        )
         log.debug(f"Sent Message to Bot Channel")
 
         log.debug(f"Writing TimesRun to File")
@@ -130,12 +132,16 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.command(hidden=True)
     async def kill(self, ctx):
         if str(ctx.author.id) not in ["623085987442196503", "250257390643970059"]:
-            log.error(f'{ctx.author} Tried to Kill')
-            await ctx.send(embed=discord.Embed(title='You\'re Not Allowed To Do That', color=discord.Colour.red()))
+            log.error(f"{ctx.author} Tried to Kill")
+            await ctx.send(
+                embed=discord.Embed(
+                    title="You're Not Allowed To Do That", color=discord.Colour.red()
+                )
+            )
             return None
         else:
-            log.error('KILLING')
-            await ctx.send('***KILLING***')
+            log.error("KILLING")
+            await ctx.send("***KILLING***")
             exit()
 
     # Error Management
@@ -147,7 +153,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             emb = discord.Embed(
                 title=":warning: Prefix not given",
                 description="Usage: prefix <new-prefix>\nExample: !prefix $",
-                color=0xff0000(),
+                color=0xFF0000(),
             )
             await ctx.send(embed=emb)
 
@@ -155,13 +161,10 @@ class Generic(commands.Cog, description="Generic Functions"):
             log.error("Caller Doesn't Have Required Permissions")
             emb = discord.Embed(
                 title=":warning: You dont have the required permissions: Administrator",
-                color=0xff0000(),
+                color=0xFF0000(),
             )
             await ctx.send(embed=emb)
 
 
 def setup(client):
     client.add_cog(Generic(client))
-
-
-
