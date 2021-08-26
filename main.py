@@ -22,7 +22,7 @@ BOTTOKEN = os.getenv("BOTTOKEN")
 
 log_level, discord_log_level, testing_server_id, version = "", "", "", ""
 
-with open("./config.json") as file:
+with open("./json_files/config.json") as file:
     config = json.load(file)
 
     log_level = config["log_level"]
