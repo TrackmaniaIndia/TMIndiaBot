@@ -92,8 +92,6 @@ def get_leaderboards(tmx_id: str) -> list[discord.Embed]:
     response = requests.get(LEADERBOARD_URL)
     leaderboards = response.json()
 
-    print(len(leaderboards))
-
     if int(response.status_code) == 400:
         if response.json()["error"] == "INVALID_TMX_ID":
             log.error("Invalid TMX ID Given")
