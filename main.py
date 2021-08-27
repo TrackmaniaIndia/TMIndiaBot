@@ -49,7 +49,7 @@ log.error()
 """
 
 
-if not os.path.exists("./prefixes.json"):
+if not os.path.exists("./json_files/prefixes.json"):
     log.critical(
         "Prefixes.json Doesn't Exist, Creating and Dumping Testing Server Stuff"
     )
@@ -57,7 +57,7 @@ if not os.path.exists("./prefixes.json"):
 
     prefixes = {"876042400005505066": DEFAULT_PREFIX}
 
-    with open("./prefixes.json", "w") as file:
+    with open("./json_files/prefixes.json", "w") as file:
         json.dump(prefixes, file, indent=4)
         file.close()
 
@@ -66,7 +66,7 @@ if not os.path.exists("./prefixes.json"):
 
 
 def get_prefix(client, message):
-    with open("prefixes.json", "r") as file:
+    with open("./json_files/prefixes.json", "r") as file:
         prefixes = json.load(file)
         file.close()
 
@@ -87,7 +87,7 @@ client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.default
 async def on_guild_join(guild):
     log.critical("Joined {}".format(guild.id))
 
-    with open("prefixes.json", "r") as file:
+    with open("./json_files/prefixes.json", "r") as file:
         log.debug("Loading Prefixes File")
         prefixes = json.load(file)
         file.close()
@@ -95,7 +95,7 @@ async def on_guild_join(guild):
     log.info(f"Setting Guild Prefix ({guild.id} -> {DEFAULT_PREFIX})")
     prefixes[str(guild.id)] = DEFAULT_PREFIX
 
-    with open("prefixes.json", "w") as file:
+    with open("./json_files/prefixes.json", "w") as file:
         log.debug("Dumping Prefix Into Json File")
         json.dump(prefixes, file, indent=4)
         file.close()
@@ -107,7 +107,7 @@ async def on_guild_join(guild):
 async def on_guild_remove(guild):
     log.critical("Removed from {}".format(guild.id))
 
-    with open("prefixes.json", "r") as file:
+    with open("./json_files/prefixes.json", "r") as file:
         log.debug("Loading Prefixes File")
         prefixes = json.load(file)
         file.close()
@@ -115,7 +115,7 @@ async def on_guild_remove(guild):
     log.info("Removing Guild Prefix")
     prefixes.pop(str(guild.id))
 
-    with open("prefixes.json", "w") as file:
+    with open("./json_files/prefixes.json", "w") as file:
         log.debug("Dumping Prefix Into Json File")
         json.dump(prefixes, file, indent=4)
         file.close()
