@@ -2,9 +2,7 @@ import discord
 from discord.ext import commands
 import json
 import logging
-import os
 from datetime import datetime
-from discord.ext.commands.errors import CheckAnyFailure
 from dotenv import load_dotenv
 
 import functions.convert_logging as cl

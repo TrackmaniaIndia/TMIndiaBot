@@ -1,14 +1,11 @@
 # Importing Packages
-from typing import Type
 import discord
-from discord.enums import DefaultAvatar
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import json
-import coloredlogs
 import logging
-import datetime
+from datetime import datetime
 
 import functions.convert_logging as cl
 import functions.common_functions as cf
@@ -140,7 +137,7 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
         )
         emb = discord.Embed(
             title=":warning: Command not found", color=discord.Colour.red()
-        )
+        ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
         await ctx.send(embed=emb)
 
         # Stop further execution
@@ -170,7 +167,7 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     log.debug(f"Found Error Channel")
 
     log.debug(f"Creating Embed")
-    embed = discord.Embed(title=":warning: " + str(error), color=discord.Colour.red())
+    embed = discord.Embed(title=":warning: " + str(error), color=discord.Colour.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
 
     embed.add_field(name="Author Username", value=ctx.author, inline=False)
     embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
@@ -182,27 +179,6 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     log.debug(f"Sending Embed")
     await channel.send(pingStr, embed=embed)
     log.debug(f"Embed Sent, Error Handler Quit")
-
-
-@client.command(name="reload", hidden=True)
-async def reloadcogs(ctx):
-    log.info("Reloading Cogs")
-    for filename in os.listdir("./cogs"):
-        SKIP_FILES = [
-            "convert_logging.py",
-            "common_functions.py",
-        ]
-
-        if filename.endswith(".py"):
-            if filename in SKIP_FILES:
-                log.debug(f"Skipping {filename}")
-                continue
-
-            log.debug(f"Loading {filename[:-3]}")
-            client.load_extension(f"cogs.{filename[:-3]}")
-
-    log.info("Loaded Cogs")
-
 
 # Loading Cogs
 log.info("Loading Cogs")

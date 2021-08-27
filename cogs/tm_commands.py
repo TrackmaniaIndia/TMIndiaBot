@@ -3,12 +3,8 @@ from discord.ext import commands
 import json
 import logging
 import datetime
-from discord.utils import valid_icon_size
 from dotenv import load_dotenv
-import requests
-import os
 import asyncio
-from disputils import pagination
 from disputils.pagination import BotEmbedPaginator
 
 import functions.tm_commands_functions
