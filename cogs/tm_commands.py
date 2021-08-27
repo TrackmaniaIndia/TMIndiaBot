@@ -158,9 +158,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 await ctx.send(
                     embed=discord.Embed(
                         title="Bot Timed Out", color=discord.Colour.red()
-                    )
-                ).set_footer(
+                    ).set_footer(
                     text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                )
                 )
                 return None
 
@@ -169,8 +169,6 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Asking for Embeds")
             embeds = functions.tm_commands_functions.get_leaderboards(
                 tmx_id=tmx_id_message.content
-            ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
             )
             log.debug(f"Received Embeds")
 
@@ -185,9 +183,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             await ctx.send(
                 embed=discord.Embed(
                     title="Under Construction", color=discord.Colour.red()
-                )
-            ).set_footer(
+                ).set_footer(
                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
             )
 
     @view_map.error
@@ -202,8 +200,8 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     description="**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}",
                     color=discord.Colour.red(),
                 ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
-            )
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                )
             )
             log.debug(f"Sent Error Embed")
 
@@ -219,8 +217,8 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     description="**Game Flag is a required argument that is missing**,\n\nUsage: leaderboards {TMNF/TM2020}",
                     color=discord.Colour.red(),
                 ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
-            )
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                )
             )
 
 

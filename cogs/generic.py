@@ -147,7 +147,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def joindevs(self, ctx):
         await ctx.send(
             embed=discord.Embed(
-                title=f'Are you sure you want to join the dev team?',
+                title=f"Are you sure you want to join the dev team?",
                 description=f"If you want to join the dev team, you must\n**1. Have knowledge in either Python/Javascript**\n**2. Be a known and trustworthy member of the Trackmania India scene**\n**3. Know x86 Assembly (Required)**\n**4. Know how to build a CPU from scratch (Optional)**\n**5. Know how to build a mini electro magnet which fits inside your chest using tools that you can find inside a cave with a doctor who becomes a friend but dies during your escape**\n**6. 70 Years of Experience in Python**\n\nPlease contact NottCurious#4351 if you want to apply.\n\nYou may also see the source code by using *source",
                 colour=cf.get_random_color(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
