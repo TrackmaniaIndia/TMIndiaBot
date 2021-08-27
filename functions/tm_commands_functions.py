@@ -32,7 +32,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
         return discord.Embed(
             title=":warning: TMX ID must be a number",
             description="Example: 2233",
-            color=0xFF0000,
+            color=discord.Colour.red(),
         )
 
     BASE_API_URL = os.getenv("BASE_API_URL")
@@ -49,7 +49,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
             return discord.Embed(
                 title=":warning: Invalid TMX Id",
                 description="The TMX ID provided is invalid",
-                color=0xFF0000,
+                color=discord.Colour.red(),
             )
     log.debug(f"API Response Checked")
 
@@ -90,7 +90,7 @@ def get_leaderboards(tmx_id: str) -> list[discord.Embed]:
         return discord.Embed(
             title=":warning: TMX ID Must be a number",
             description="Example: 8496396",
-            color=0xFF0000,
+            color=discord.Colour.red(),
         )
 
     BASE_API_URL = os.getenv("BASE_API_URL")
@@ -104,7 +104,7 @@ def get_leaderboards(tmx_id: str) -> list[discord.Embed]:
             return discord.Embed(
                 title=":warning: Invalid TMX ID",
                 description="The TMX ID provided is invalid",
-                color=0xFF0000,
+                color=discord.Colour.red(),
             )
 
     log.debug(f"Requesting Map Name")
