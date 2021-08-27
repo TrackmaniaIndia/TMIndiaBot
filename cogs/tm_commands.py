@@ -168,9 +168,8 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             log.debug(f"Asking for Embeds")
             embeds = functions.tm_commands_functions.get_leaderboards(
-                tmx_id=tmx_id_message.content
-            ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                tmx_id=tmx_id_message.content,
+                authUrl=ctx.author.avatar_url
             )
             log.debug(f"Received Embeds")
 

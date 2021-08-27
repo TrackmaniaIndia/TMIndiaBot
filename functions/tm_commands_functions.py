@@ -7,6 +7,7 @@ import functions.common_functions as cf
 import functions.convert_logging as cl
 import json
 import os
+import datetime
 
 log_level, discord_log_level, testing_server_id, version = "", "", "", ""
 
@@ -84,7 +85,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
     return embed
 
 
-def get_leaderboards(tmx_id: str) -> list[discord.Embed]:
+def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
     if not tmx_id.isnumeric():
         log.error(f"TMX ID Given is Not Numeric")
         return discord.Embed(
@@ -140,6 +141,8 @@ def get_leaderboards(tmx_id: str) -> list[discord.Embed]:
                 title="Map: {} - Page {}".format(map_name, i + 1),
                 description=times[i],
                 color=cf.get_random_color(),
+            ).set_footer(
+                text=datetime.datetime.utcnow(), icon_url=authUrl#
             )
         )
 
