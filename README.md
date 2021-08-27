@@ -2,6 +2,9 @@
 
 Discord bot for the [TM India Discord Server](https://discord.gg/aztYuhWxgU "TM India Discord invite")
 
+## Special Thanks
+Thank you to Trackmania.io developers for their NPM Package!
+
 ## Developers
 
 1. NottCurious
