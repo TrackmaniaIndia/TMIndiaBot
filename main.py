@@ -124,9 +124,19 @@ async def on_guild_remove(guild):
 # Catch all command errors, send them to developers.
 @client.event
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):
+    if hasattr(ctx.command, 'on_error'):
+        log.debug(f'Command has local error handler, returning')
+        return None
+    cog = ctx.cog
+    if cog:
+        if cog._get_overridden_method(cog.cog_command_error) is not None:
+            log.debug(f'Cog has local error handler, returning')
+            return None
+
     if isinstance(error, commands.CommandNotFound):
+        log.error(f'{ctx.author.name} tried to use {ctx.message.content} in {ctx.guild.name}')
         emb = discord.Embed(
-            title=":warning: Command not found", color=cf.get_random_color()
+            title=":warning: Command not found", color=discord.Colour.red()
         )
         await ctx.send(embed=emb)
 
@@ -157,7 +167,7 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     log.debug(f"Found Error Channel")
 
     log.debug(f"Creating Embed")
-    embed = discord.Embed(title=":warning: " + str(error), color=0xFF0000)
+    embed = discord.Embed(title=":warning: " + str(error), color=discord.Colour.red())
 
     embed.add_field(name="Author Username", value=ctx.author, inline=False)
     embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
