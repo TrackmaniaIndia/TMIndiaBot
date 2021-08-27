@@ -192,9 +192,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             await ctx.send(
                 embed=discord.Embed(
                     title="Under Construction", color=discord.Colour.red()
-                )
-            ).set_footer(
+                ).set_footer(
                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
             )
 
     @view_map.error
@@ -208,9 +208,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     title=":warning: Missing required argument: Game Flag",
                     description="**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}",
                     color=discord.Colour.red(),
+                ).set_footer(
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
                 )
-            ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
             )
             log.debug(f"Sent Error Embed")
 
@@ -225,9 +225,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     title=":warning: Missing required argument: Game Flag",
                     description="**Game Flag is a required argument that is missing**,\n\nUsage: leaderboards {TMNF/TM2020}",
                     color=discord.Colour.red(),
+                ).set_footer(
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
                 )
-            ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
             )
 
 
