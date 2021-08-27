@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 import logging
-import datetime
+from datetime import datetime
 from discord.utils import valid_icon_size
 from dotenv import load_dotenv
 import requests
@@ -43,6 +43,7 @@ class ChannelCommands(commands.Cog, description='Administrator Commands for Bot 
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     @commands.has_permissions(administrator=True)
+    @commands.guild_only()
     async def set_announcement_channel(self, ctx, channel: discord.TextChannel):
         log.debug(f'Opening announcement_channels json file')
 
@@ -68,6 +69,7 @@ class ChannelCommands(commands.Cog, description='Administrator Commands for Bot 
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     @commands.has_permissions(administrator=True)
+    @commands.guild_only()
     async def remove_announcement_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         log.debug(f'Reading announcement_channels.json')
 
@@ -94,6 +96,25 @@ class ChannelCommands(commands.Cog, description='Administrator Commands for Bot 
             file.close()
 
         await ctx.send(embed=discord.Embed(title=f'#{channel.name} has been removed from announcements file', color=cf.get_random_color()))
+
+    @set_announcement_channel.error
+    async def set_announcement_channel_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send(embed=discord.Embed(title='Missing Permissions', color=discord.Color.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url))
+            return
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(embed=discord.Embed(title='Please Send a Channel Along With the Command', color=discord.Colour.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url))
+            return
+
+    @remove_announcement_channel.error
+    async def remove_announcement_channel_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send(embed=discord.Embed(title='Missing Permissions', color=discord.Color.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url))
+            return
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(embed=discord.Embed(title='Please Send a Channel Along With the Command', color=discord.Colour.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url))
+            return
+
 
 def setup(client):
     client.add_cog(ChannelCommands(client))
