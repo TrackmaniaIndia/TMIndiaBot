@@ -4,6 +4,7 @@ import json
 import logging
 import os
 from datetime import datetime
+from discord.ext.commands.errors import CheckAnyFailure
 from dotenv import load_dotenv
 
 import functions.convert_logging as cl
@@ -89,7 +90,8 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.command(help="Changes Prefix to Given prefix", brief="Changes Prefix")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    @commands.has_permissions(administrator=True)
+    @commands.has_any_role('admin', 'Moderator', 'Bot Developer')
+    @commands.guild_only()
     async def prefix(self, ctx, prefix: str):
         log.info(f"Changing Prefix in {ctx.guild}")
 
@@ -130,48 +132,69 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.command(hidden=True)
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
+    @commands.is_owner()
     async def causeError(self, ctx):
         await ctx.send("Causing error")
 
         raise commands.CommandError(message="Caused error")
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     async def kill(self, ctx):
-        if str(ctx.author.id) not in ["623085987442196503", "250257390643970059"]:
-            log.error(f"{ctx.author} Tried to Kill")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="You're Not Allowed To Do That", color=discord.Colour.red()
-                )
-            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
-
-            return None
-        else:
-            log.error("KILLING")
-            await ctx.send("***KILLING***")
-            exit()
+        log.error("KILLING")
+        await ctx.send("***KILLING***")
+        exit()
 
     # Error Management
     @prefix.error
     async def prefix_error(self, ctx, error):
+        if isinstance(error, commands.NoPrivateMessage):
+            log.error(f'{ctx.author.name} tried to use prefix in a private message')
+
+            embed = discord.Embed(title="This command cannot be used in a DM, please use a server", colour=discord.Colour.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+
+            await ctx.send(embed=embed)
         if isinstance(error, commands.MissingRequiredArgument):
             log.error("Prefix Not Given")
 
-            emb = discord.Embed(
+            embed = discord.Embed(
                 title=":warning: Prefix not given",
                 description="Usage: prefix <new-prefix>\nExample: !prefix $",
-                color=0xFF0000,
+                color=discord.Colour.red(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=emb)
+            await ctx.send(embed=embed)
 
-        if isinstance(error, commands.MissingPermissions):
-            log.error("Caller Doesn't Have Required Permissions")
-            emb = discord.Embed(
-                title=":warning: You dont have the required permissions: Administrator",
-                color=0xFF0000,
+        if isinstance(error, commands.MissingAnyRole):
+            log.error("Caller Doesn't Have A Required Role")
+            embed = discord.Embed(
+                title=":warning: You dont have a required role: Admin, Moderator, Bot Developer",
+                color=discord.Colour.red(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=emb)
+            await ctx.send(embed=embed)
 
+    @causeError.error
+    async def cause_error_error(self, ctx, error):
+        if isinstance(error, commands.NotOwner):
+            log.error(f"{ctx.author} Tried to Cause an Error")
+            await ctx.send(
+                embed=discord.Embed(
+                    title="You need to be the owner of the bot to do that", description='This commands is only used in testing', color=discord.Colour.red()
+                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            )
+
+            return None
+
+    @kill.error
+    async def kill_error(self, ctx, error):
+        if isinstance(error, commands.NotOwner):
+            log.error(f"{ctx.author} Tried to CauseError")
+            await ctx.send(
+                embed=discord.Embed(
+                    title="You need to be the owner of the bot to do that", description='Please contact NottCurious#4351 or Artifex#0690 if it\'s an emergency that requires them to kill the bot', color=discord.Colour.red()
+                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            )
+
+            return None
 
 def setup(client):
     client.add_cog(Generic(client))
