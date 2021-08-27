@@ -119,6 +119,7 @@ class ChannelCommands(
     @set_announcement_channel.error
     async def set_announcement_channel_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
+            log.error(f'{ctx.author.name} does not have required permissions')
             await ctx.send(
                 embed=discord.Embed(
                     title="Missing Permissions", color=discord.Color.red()
@@ -126,6 +127,7 @@ class ChannelCommands(
             )
             return
         if isinstance(error, commands.MissingRequiredArgument):
+            log.error(f'{ctx.author.name} did not send valid argument')
             await ctx.send(
                 embed=discord.Embed(
                     title="Please Send a Channel Along With the Command",
@@ -133,6 +135,10 @@ class ChannelCommands(
                 ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             )
             return
+
+        if isinstance(error, commands.ChannelNotFound):
+            log.error(f'{ctx.author.name} sent invalid channel/user')
+            await ctx.send(embed=discord.Embed(title="Not a Valid Channel", color=discord.Colour.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url))
 
     @remove_announcement_channel.error
     async def remove_announcement_channel_error(self, ctx, error):
@@ -151,6 +157,11 @@ class ChannelCommands(
                 ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             )
             return
+
+        if isinstance(error, commands.ChannelNotFound):
+            log.error(f'{ctx.author.name} sent invalid channel/user')
+            await ctx.send(embed=discord.Embed(title="Not a Valid Channel", color=discord.Colour.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url))
+
 
 
 def setup(client):
