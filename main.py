@@ -1,4 +1,5 @@
 # Importing Packages
+from typing import Type
 import discord
 from discord.enums import DefaultAvatar
 from discord.ext import commands
@@ -11,6 +12,7 @@ import datetime
 
 import functions.convert_logging as cl
 import functions.common_functions as cf
+from functions.usage import record_usage, finish_usage
 
 # Importing Fields from .env
 load_dotenv()
@@ -68,8 +70,10 @@ def get_prefix(client, message):
         prefixes = json.load(file)
         file.close()
 
-    return prefixes[str(message.guild.id)]
-
+    try:
+        return prefixes[str(message.guild.id)]
+    except:
+        return DEFAULT_PREFIX
 
 # Making the Client
 client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.default())
