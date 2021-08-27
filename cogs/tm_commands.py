@@ -111,7 +111,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
     )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    async def get_leaderboards(self, ctx: commands.Context, game_flag: str) -> None:
+    async def get_leaderboards(self, ctx: commands.Context, game_flag: str, tmx_id: int = None) -> None:
         valid_flags = ["tmnf", "tm2020"]
 
         if game_flag.lower() not in valid_flags:
@@ -138,39 +138,47 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             log.debug(f"Requesting TMX ID from User")
 
-            try:
-                embed = discord.Embed(
-                    title="Please Enter Map ID",
-                    color=cf.get_random_color(),
-                    description="MAP ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**",
-                )
-
-                embed.set_footer(
-                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
-                )
-
-                await ctx.send(embed=embed)
-
-                tmx_id_message = await self.client.wait_for(
-                    "message", check=check, timeout=30
-                )
-            except asyncio.TimeoutError:
-                await ctx.send(
-                    embed=discord.Embed(
-                        title="Bot Timed Out", color=discord.Colour.red()
+            if tmx_id == None:
+                try:
+                    embed = discord.Embed(
+                        title="Please Enter Map ID",
+                        color=cf.get_random_color(),
+                        description="MAP ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**",
                     )
-                ).set_footer(
-                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
-                )
-                return None
+
+                    embed.set_footer(
+                        text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                    )
+
+                    await ctx.send(embed=embed)
+
+                    tmx_id_message = await self.client.wait_for(
+                        "message", check=check, timeout=30
+                    )
+                    tmx_id = tmx_id_message.content
+                except asyncio.TimeoutError:
+                    await ctx.send(
+                        embed=discord.Embed(
+                            title="Bot Timed Out", color=discord.Colour.red()
+                        )
+                    ).set_footer(
+                        text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                    )
+                    return None
 
             log.debug(f"Received TMX ID from User")
 
             log.debug(f"Asking for Embeds")
-            embeds = functions.tm_commands_functions.get_leaderboards(
-                tmx_id=tmx_id_message.content,
-                authUrl=ctx.author.avatar_url
-            )
+            embeds = functions.tm_commands_functions.get_leaderboards(str(tmx_id), ctx.author.avatar_url)
+
+            # Epic Bodge
+            try:
+                new_embed = embeds[0]
+            except:
+                log.error('Invalid TMNF ID Given')
+                await ctx.send(embed=embeds)
+                return None
+
             log.debug(f"Received Embeds")
 
             log.debug(f"Creating Paginator")

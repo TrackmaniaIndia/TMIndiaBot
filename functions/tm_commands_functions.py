@@ -45,7 +45,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
 
     log.debug(f"Checking API Response")
     if int(response.status_code) == 400:
-        if response.json["error"] == "INVALID_TMX_ID":
+        if response.json()["error"] == "INVALID_TMX_ID":
             log.error("Invalid TMX ID given")
             return discord.Embed(
                 title=":warning: Invalid TMX Id",
