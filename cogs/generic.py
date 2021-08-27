@@ -60,12 +60,12 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         log.debug(f"Sending Message to Bot Channel")
 
-        log.debug(f'Getting Announcement Channels')
-        with open('./json_data/announcement_channels.json', 'r') as file:
+        log.debug(f"Getting Announcement Channels")
+        with open("./json_data/announcement_channels.json", "r") as file:
             channels = json.load(file)
 
-        for announcement_channel in channels['announcement_channels']:
-            log.debug(f'Sending Message in {announcement_channel}')
+        for announcement_channel in channels["announcement_channels"]:
+            log.debug(f"Sending Message in {announcement_channel}")
             channel = self.client.get_channel(int(announcement_channel))
             await channel.send(
                 f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}"
@@ -90,7 +90,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.command(help="Changes Prefix to Given prefix", brief="Changes Prefix")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    @commands.has_any_role('admin', 'Moderator', 'Bot Developer')
+    @commands.has_any_role("admin", "Moderator", "Bot Developer")
     @commands.guild_only()
     async def prefix(self, ctx, prefix: str):
         log.info(f"Changing Prefix in {ctx.guild}")
@@ -145,13 +145,26 @@ class Generic(commands.Cog, description="Generic Functions"):
         await ctx.send("***KILLING***")
         exit()
 
+    @commands.command()
+    async def joindevs(self, ctx):
+        await ctx.send(
+            embed=discord.Embed(
+                title=f"If you want to join the dev team, you must\n1. Have knowledge in either Python/Javascript\n2. Be a known and trustworthy member of the Trackmania India scene",
+                description="Please contact NottCurious#4351 if you want to apply.\n\nYou may also see the source code by using *source",
+                colour=cf.get_random_color(),
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+        )
+
     # Error Management
     @prefix.error
     async def prefix_error(self, ctx, error):
         if isinstance(error, commands.NoPrivateMessage):
-            log.error(f'{ctx.author.name} tried to use prefix in a private message')
+            log.error(f"{ctx.author.name} tried to use prefix in a private message")
 
-            embed = discord.Embed(title="This command cannot be used in a DM, please use a server", colour=discord.Colour.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="This command cannot be used in a DM, please use a server",
+                colour=discord.Colour.red(),
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
 
             await ctx.send(embed=embed)
         if isinstance(error, commands.MissingRequiredArgument):
@@ -178,7 +191,9 @@ class Generic(commands.Cog, description="Generic Functions"):
             log.error(f"{ctx.author} Tried to Cause an Error")
             await ctx.send(
                 embed=discord.Embed(
-                    title="You need to be the owner of the bot to do that", description='This commands is only used in testing', color=discord.Colour.red()
+                    title="You need to be the owner of the bot to do that",
+                    description="This commands is only used in testing",
+                    color=discord.Colour.red(),
                 ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             )
 
@@ -190,11 +205,14 @@ class Generic(commands.Cog, description="Generic Functions"):
             log.error(f"{ctx.author} Tried to CauseError")
             await ctx.send(
                 embed=discord.Embed(
-                    title="You need to be the owner of the bot to do that", description='Please contact NottCurious#4351 or Artifex#0690 if it\'s an emergency that requires them to kill the bot', color=discord.Colour.red()
+                    title="You need to be the owner of the bot to do that",
+                    description="Please contact NottCurious#4351 or Artifex#0690 if it's an emergency that requires them to kill the bot",
+                    color=discord.Colour.red(),
                 ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             )
 
             return None
+
 
 def setup(client):
     client.add_cog(Generic(client))

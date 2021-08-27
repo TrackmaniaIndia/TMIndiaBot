@@ -54,7 +54,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     description="Valid Flags are: TMNF, TM2020\nUsage ```viewmap <game_flag>```",
                     color=discord.Colour.red(),
                 )
-            ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            ).set_footer(
+                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
             return None
 
         if game_flag.lower() == "tmnf":
@@ -69,9 +71,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             try:
                 await ctx.send(
                     embed=discord.Embed(
-                        title="Please Enter a TMX ID", 
+                        title="Please Enter a TMX ID",
                         color=0x00FF00,
-                        description="TMX ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**"
+                        description="TMX ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**",
                     )
                 )
                 tmx_id_message = await self.client.wait_for(
@@ -79,22 +81,32 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 )
             except asyncio.TimeoutError:
                 await ctx.send(
-                    embed=discord.Embed(title="Bot Timed Out", color=discord.Colour.red())
+                    embed=discord.Embed(
+                        title="Bot Timed Out", color=discord.Colour.red()
+                    )
                 )
                 return
 
             log.debug(f"Received TMX ID from User")
 
-            log.debug(f'Sending Final Embed')
-            embed = functions.tm_commands_functions.get_tmnf_map(tmx_id=tmx_id_message.content)
-            embed.set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            log.debug(f"Sending Final Embed")
+            embed = functions.tm_commands_functions.get_tmnf_map(
+                tmx_id=tmx_id_message.content
+            )
+            embed.set_footer(
+                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
             await ctx.send(embed=embed)
-            log.debug(f'Sent final embed')
+            log.debug(f"Sent final embed")
 
         if game_flag.lower() == "tm2020":
             await ctx.send(
-                embed=discord.Embed(title="Under Construction", color=discord.Colour.red())
-            ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+                embed=discord.Embed(
+                    title="Under Construction", color=discord.Colour.red()
+                )
+            ).set_footer(
+                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
 
     @commands.command(
         name="leaderboards",
@@ -110,11 +122,13 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.error(f"Not a Valid Flag, Returning")
 
             embed = discord.Embed(
-                    title="Not a Valid Flag",
-                    description="Valid Flags are: TMNF, TM2020\nUsage: ```leaderboards <game_flag>```",
-                    color=discord.Colour.red(),
-                )
-            embed.set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+                title="Not a Valid Flag",
+                description="Valid Flags are: TMNF, TM2020\nUsage: ```leaderboards <game_flag>```",
+                color=discord.Colour.red(),
+            )
+            embed.set_footer(
+                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
 
             await ctx.send(embed=embed)
             return None
@@ -130,11 +144,14 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             try:
                 embed = discord.Embed(
-                        title="Please Enter Map ID", color=cf.get_random_color(),
-                        description="MAP ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**"
+                    title="Please Enter Map ID",
+                    color=cf.get_random_color(),
+                    description="MAP ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**",
                 )
-                
-                embed.set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+
+                embed.set_footer(
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                )
 
                 await ctx.send(embed=embed)
 
@@ -143,8 +160,12 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 )
             except asyncio.TimeoutError:
                 await ctx.send(
-                    embed=discord.Embed(title="Bot Timed Out", color=discord.Colour.red())
-                ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+                    embed=discord.Embed(
+                        title="Bot Timed Out", color=discord.Colour.red()
+                    )
+                ).set_footer(
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                )
                 return None
 
             log.debug(f"Received TMX ID from User")
@@ -152,7 +173,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Asking for Embeds")
             embeds = functions.tm_commands_functions.get_leaderboards(
                 tmx_id=tmx_id_message.content
-            ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            ).set_footer(
+                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
             log.debug(f"Received Embeds")
 
             log.debug(f"Creating Paginator")
@@ -164,8 +187,12 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
         if game_flag.lower() == "tm2020":
             await ctx.send(
-                embed=discord.Embed(title="Under Construction", color=discord.Colour.red())
-            ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+                embed=discord.Embed(
+                    title="Under Construction", color=discord.Colour.red()
+                )
+            ).set_footer(
+                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
 
     @view_map.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
@@ -179,7 +206,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     description="**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}",
                     color=discord.Colour.red(),
                 )
-            ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            ).set_footer(
+                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
             log.debug(f"Sent Error Embed")
 
     @get_leaderboards.error
@@ -194,7 +223,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     description="**Game Flag is a required argument that is missing**,\n\nUsage: leaderboards {TMNF/TM2020}",
                     color=discord.Colour.red(),
                 )
-            ).set_footer(text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            ).set_footer(
+                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
 
 
 def setup(client):

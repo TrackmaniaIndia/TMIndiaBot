@@ -75,6 +75,7 @@ def get_prefix(client, message):
     except:
         return DEFAULT_PREFIX
 
+
 # Making the Client
 client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.default())
 
@@ -124,17 +125,19 @@ async def on_guild_remove(guild):
 # Catch all command errors, send them to developers.
 @client.event
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):
-    if hasattr(ctx.command, 'on_error'):
-        log.debug(f'Command has local error handler, returning')
+    if hasattr(ctx.command, "on_error"):
+        log.debug(f"Command has local error handler, returning")
         return None
     cog = ctx.cog
     if cog:
         if cog._get_overridden_method(cog.cog_command_error) is not None:
-            log.debug(f'Cog has local error handler, returning')
+            log.debug(f"Cog has local error handler, returning")
             return None
 
     if isinstance(error, commands.CommandNotFound):
-        log.error(f'{ctx.author.name} tried to use {ctx.message.content} in {ctx.guild.name}')
+        log.error(
+            f"{ctx.author.name} tried to use {ctx.message.content} in {ctx.guild.name}"
+        )
         emb = discord.Embed(
             title=":warning: Command not found", color=discord.Colour.red()
         )
