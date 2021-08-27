@@ -133,3 +133,5 @@ prefixes.json
 
 # Community Creators File
 /data/community_creators.json
+
+/data/times_run.txt
