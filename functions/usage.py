@@ -14,7 +14,7 @@ load_dotenv()
 
 log_level, discord_log_level, version = "", "", ""
 
-with open("./json_files/config.json") as file:
+with open("./json_data/config.json") as file:
     config = json.load(file)
 
     log_level = config["log_level"]
@@ -34,7 +34,7 @@ async def record_usage(self, ctx):
 
     log_check = ""
 
-    with open("./json_files/config.json") as file:
+    with open("./json_data/config.json") as file:
         data = json.load(file)
         log_check = data["log_function_usage"]
         file.close()
@@ -69,7 +69,7 @@ async def finish_usage(self, ctx: commands.Context):
 
     log_check = ""
 
-    with open("./json_files/config.json") as file:
+    with open("./json_data/config.json") as file:
         data = json.load(file)
         log_check = data["log_function_usage"]
         file.close()

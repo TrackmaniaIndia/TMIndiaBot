@@ -19,7 +19,7 @@ load_dotenv()
 
 log_level, discord_log_level, version = "", "", ""
 
-with open("./json_files/config.json") as file:
+with open("./json_data/config.json") as file:
     config = json.load(file)
 
     log_level = config["log_level"]
@@ -61,7 +61,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.debug(f"Sending Message to Bot Channel")
 
         log.debug(f'Getting Announcement Channels')
-        with open('./json_files/announcement_channels.json', 'r') as file:
+        with open('./json_data/announcement_channels.json', 'r') as file:
             channels = json.load(file)
 
         for announcement_channel in channels['announcement_channels']:
@@ -95,7 +95,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def prefix(self, ctx, prefix: str):
         log.info(f"Changing Prefix in {ctx.guild}")
 
-        with open("./json_files/prefixes.json", "r") as file:
+        with open("./json_data/prefixes.json", "r") as file:
             log.debug("Opening Prefixes JSON")
             prefixes = json.load(file)
             file.close()
@@ -104,7 +104,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         prefixes[str(ctx.guild.id)] = [prefix, DEFAULT_PREFIX]
         log.debug(f"Changed Prefix")
 
-        with open("./json_files/prefixes.json", "w") as file:
+        with open("./json_data/prefixes.json", "w") as file:
             log.debug("Dumping Prefixes to File")
             json.dump(prefixes, file, indent=4)
             file.close()

@@ -10,7 +10,7 @@ import functions.convert_logging as cl
 
 log_level, discord_log_level = "", ""
 
-with open("./json_files/config.json") as file:
+with open("./json_data/config.json") as file:
     config = json.load(file)
 
     log_level = config["log_level"]

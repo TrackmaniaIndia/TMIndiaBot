@@ -23,7 +23,7 @@ load_dotenv()
 
 log_level, discord_log_level, version = "", "", ""
 
-with open("./json_files/config.json") as file:
+with open("./json_data/config.json") as file:
     config = json.load(file)
 
     log_level = config["log_level"]
@@ -47,7 +47,7 @@ class ChannelCommands(commands.Cog, description='Administrator Commands for Bot 
     async def set_announcement_channel(self, ctx, channel: discord.TextChannel):
         log.debug(f'Opening announcement_channels json file')
 
-        with open('./json_files/announcement_channels.json', 'r') as file:
+        with open('./json_data/announcement_channels.json', 'r') as file:
             log.debug(f'Reading json file')
             channels = json.load(file)
             log.debug(f'Read json file')
@@ -56,7 +56,7 @@ class ChannelCommands(commands.Cog, description='Administrator Commands for Bot 
         channels["announcement_channels"].append(str(channel.id))
 
         log.debug(f'Writing to announcement_channels.json')
-        with open('./json_files/announcement_channels.json', 'w') as file:
+        with open('./json_data/announcement_channels.json', 'w') as file:
             log.debug(f'Dumping Prefixes to File')
             json.dump(channels, file, indent=4)
             file.close()
@@ -73,7 +73,7 @@ class ChannelCommands(commands.Cog, description='Administrator Commands for Bot 
     async def remove_announcement_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         log.debug(f'Reading announcement_channels.json')
 
-        with open('./json_files/announcement_channels.json', 'r')as file:
+        with open('./json_data/announcement_channels.json', 'r')as file:
             log.debug(f'Reading json file')
             announcement_channels = json.load(file)
             log.debug(f'Read json file')
@@ -89,7 +89,7 @@ class ChannelCommands(commands.Cog, description='Administrator Commands for Bot 
         log.debug(f'Removed {channel.id}')
 
         log.debug(f'Writing to JSON File')
-        with open('./json_files/announcement_channels.json', 'w') as file:
+        with open('./json_data/announcement_channels.json', 'w') as file:
             log.debug(f'Dumping to JSON File')
             json.dump(announcement_channels, file, indent=4)
             log.debug(f'Dumped to JSON file')
