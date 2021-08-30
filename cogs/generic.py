@@ -67,7 +67,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         times_run = 0
 
         log.debug(f"Reading Value from Times Run File")
-        with open("./Data/times_run.txt", "r") as file:
+        with open("./data/times_run.txt", "r") as file:
             times_run = int(file.readline())
 
         times_run += 1
@@ -99,7 +99,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 log.debug(f'Can\'t Send Message to {announcement_channel}')
                 continue
         log.debug(f"Writing TimesRun to File")
-        with open("./Data/times_run.txt", "w") as file:
+        with open("./data/times_run.txt", "w") as file:
             print(times_run, file=file)
 
     # Tasks
