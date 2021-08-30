@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import json
 import logging
 from datetime import datetime
@@ -9,6 +9,7 @@ import functions.convert_logging as cl
 import functions.common_functions as cf
 import functions.generic_functions
 from functions.usage import record_usage, finish_usage
+from functions.task_helpers import ping_api
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -56,6 +57,9 @@ class Generic(commands.Cog, description="Generic Functions"):
         time_started = datetime.now()
         time_started = time_started.strftime("%c %z")
 
+        log.info(f"Starting Keep Alive Loop")
+        self.keep_alive.start()
+
         log.debug(f"Sending Message to Bot Channel")
 
         log.debug(f"Getting Announcement Channels")
@@ -73,6 +77,20 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.debug(f"Writing TimesRun to File")
         with open("./Data/times_run.txt", "w") as file:
             print(times_run, file=file)
+
+    # Tasks
+    @tasks.loop(minutes=30)
+    async def keep_alive(self):
+        log.info(f"30 Minutes have passed, Task activated - at {datetime.utcnow()}")
+        log.debug(f"Pinging API")
+        ping_api()
+        log.debug(f"API Ping Successful")
+        log.debug(f"Sending Message to Channel to Keep This Damned Thing Alive")
+        log.debug(f"Got Channel Successfully")
+        channel = self.client.get_channel(881732050451849216)
+        log.debug(f"Sending Message to Channel")
+        await channel.send(f"Bot is still alive at {datetime.utcnow()}")
+        log.debug(f"Sent Message to Channel")
 
     # Commands
     @commands.command(
