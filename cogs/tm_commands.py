@@ -36,10 +36,16 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(name="viewmap", aliases=['map', 'track'], help="Views Track/Map Details By ID Given")
+    @commands.command(
+        name="viewmap",
+        aliases=["map", "track"],
+        help="Views Track/Map Details By ID Given",
+    )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    async def view_map(self, ctx: commands.Context, game_flag: str, tmx_id: int = None) -> None:
+    async def view_map(
+        self, ctx: commands.Context, game_flag: str, tmx_id: int = None
+    ) -> None:
         valid_flags = ["tmnf", "tm2020"]
 
         if game_flag.lower() not in valid_flags:
@@ -88,9 +94,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Received TMX ID from User")
 
             log.debug(f"Sending Final Embed")
-            embed = functions.tm_commands_functions.get_tmnf_map(
-                tmx_id=str(tmx_id)
-            )
+            embed = functions.tm_commands_functions.get_tmnf_map(tmx_id=str(tmx_id))
             embed.set_footer(
                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
             )
@@ -113,7 +117,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
     )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    async def get_leaderboards(self, ctx: commands.Context, game_flag: str, tmx_id: int = None) -> None:
+    async def get_leaderboards(
+        self, ctx: commands.Context, game_flag: str, tmx_id: int = None
+    ) -> None:
         valid_flags = ["tmnf", "tm2020"]
 
         if game_flag.lower() not in valid_flags:
@@ -171,13 +177,15 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Received TMX ID from User")
 
             log.debug(f"Asking for Embeds")
-            embeds = functions.tm_commands_functions.get_leaderboards(str(tmx_id), ctx.author.avatar_url)
+            embeds = functions.tm_commands_functions.get_leaderboards(
+                str(tmx_id), ctx.author.avatar_url
+            )
 
             # Epic Bodge
             try:
                 new_embed = embeds[0]
             except:
-                log.error('Invalid TMNF ID Given')
+                log.error("Invalid TMNF ID Given")
                 await ctx.send(embed=embeds)
                 return None
 
@@ -195,8 +203,8 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 embed=discord.Embed(
                     title="Under Construction", color=discord.Colour.red()
                 ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
-            )
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                )
             )
 
     # @view_map.error

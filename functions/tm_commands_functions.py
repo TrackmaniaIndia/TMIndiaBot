@@ -142,7 +142,7 @@ def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
                 description=times[i],
                 color=cf.get_random_color(),
             ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=authUrl#
+                text=datetime.datetime.utcnow(), icon_url=authUrl  #
             )
         )
 
