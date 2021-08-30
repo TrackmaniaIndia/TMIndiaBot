@@ -27,7 +27,7 @@ log = cl.get_logging(log_level, discord_log_level)
 DEFAULT_PREFIX = "*"
 
 
-async def record_usage(self, ctx):
+async def record_usage(self, ctx: commands.Context) -> None:
     log.info(
         f"{ctx.author} used {ctx.command} at {ctx.message.created_at} in {ctx.guild}"
     )
@@ -64,7 +64,7 @@ async def record_usage(self, ctx):
     log.debug(f"Embed Sent, Error Handler Quit")
 
 
-async def finish_usage(self, ctx: commands.Context):
+async def finish_usage(self, ctx: commands.Context) -> None:
     log.info(f"{ctx.author} finished using {ctx.command} in {ctx.guild}")
 
     log_check = ""

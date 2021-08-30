@@ -1,5 +1,4 @@
 import logging
-import random
 import json
 import discord
 
@@ -20,7 +19,7 @@ log = logging.getLogger(__name__)
 log = cl.get_logging(log_level, discord_log_level)
 
 
-def get_random_color():
+def get_random_color() -> discord.Colour:
     return discord.Colour.random()
 
 
