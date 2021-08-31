@@ -1,5 +1,6 @@
 # Importing Packages
 import discord
+from discord import colour
 from discord.ext import commands, tasks
 import os
 from dotenv import load_dotenv
@@ -139,7 +140,7 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if isinstance(error, commands.DisabledCommand):
         log.error(f'{ctx.command} has been disabled - used by {ctx.author.name}')
         try:
-            await ctx.send(embed=discord.Embed(f'{ctx.command} has been disabled'))
+            await ctx.send(embed=discord.Embed(f'{ctx.command} has been disabled'), colour=discord.Colour.red())
         except discord.HTTPException:
             pass
 
