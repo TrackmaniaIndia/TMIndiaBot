@@ -23,17 +23,6 @@ def get_random_color() -> discord.Colour:
     return discord.Colour.random()
 
 
-def make_string(my_list: list) -> str:
-    list_string = ""
-
-    for list_item in my_list:
-        log.debug(f"Adding {list_item} to String")
-
-        list_string += list_item + " "
-
-    return list_string
-
-
 if __name__ == "__main__":
     for i in range(0, 100):
         print(f"{get_random_color()}")
