@@ -125,11 +125,23 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if hasattr(ctx.command, "on_error"):
         log.debug(f"Command has local error handler, returning")
         return None
+    log.debug(f'Command Doesn\'t have local error handler')
     cog = ctx.cog
     if cog:
         if cog._get_overridden_method(cog.cog_command_error) is not None:
             log.debug(f"Cog has local error handler, returning")
             return None
+    log.debug(f'Cog does not have local error handler')
+
+    log.debug(f'Recieving Original Exception Raised')
+    error = getattr(error, 'original', error)
+
+    if isinstance(error, commands.DisabledCommand):
+        log.error(f'{ctx.command} has been disabled - used by {ctx.author.name}')
+        try:
+            await ctx.send(embed=discord.Embed(f'{ctx.command} has been disabled'))
+        except discord.HTTPException:
+            pass
 
     if isinstance(error, commands.CommandNotFound):
         log.error(
