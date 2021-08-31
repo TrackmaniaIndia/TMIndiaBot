@@ -27,6 +27,6 @@ def ping_api() -> None:
     try:
         my_request = requests.get(BASE_API_URL)
     except:
-        log.error('API is OFFLINE')
-        raise Exception('API is OFFLINE')
+        log.error("API is OFFLINE")
+        raise Exception("API is OFFLINE")
     log.debug(f"Successfully Received Data from API")

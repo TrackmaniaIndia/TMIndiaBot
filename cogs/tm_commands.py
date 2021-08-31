@@ -94,7 +94,9 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Received TMX ID from User")
 
             log.debug(f"Sending Final Embed")
-            embed = functions.cog_helpers.tm_commands_functions.get_tmnf_map(tmx_id=str(tmx_id))
+            embed = functions.cog_helpers.tm_commands_functions.get_tmnf_map(
+                tmx_id=str(tmx_id)
+            )
             embed.set_footer(
                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
             )

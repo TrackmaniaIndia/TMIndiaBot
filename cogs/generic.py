@@ -37,22 +37,22 @@ DEFAULT_PREFIX = "*"
 class Generic(commands.Cog, description="Generic Functions"):
     first_time = True
     statuses = []
-    
+
     def __init__(self, client):
         self.client = client
         self.first_time = True
 
-        log.debug(f'Getting Statuses')
+        log.debug(f"Getting Statuses")
         self.statuses = cycle([])
-        with open('./json_data/statuses.json', 'r') as file:
-            log.debug(f'Status Loading File')
-            self.statuses = json.load(file)['statuses']
+        with open("./json_data/statuses.json", "r") as file:
+            log.debug(f"Status Loading File")
+            self.statuses = json.load(file)["statuses"]
             self.statuses.append(f"Version: {version}! Online and Ready")
             self.statuses = cycle(self.statuses)
-            log.debug(f'Status File Loaded')
+            log.debug(f"Status File Loaded")
             file.close()
-        log.debug(f'Received Statuses')
-        
+        log.debug(f"Received Statuses")
+
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
@@ -78,7 +78,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.info(f"Starting Keep Alive Loop")
         self.keep_alive.start()
 
-        log.info(f'Starting Change Status Loop')
+        log.info(f"Starting Change Status Loop")
         self.change_status.start()
 
         log.debug(f"Sending Message to Bot Channel")
@@ -96,7 +96,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 )
                 log.debug(f"Sent Message to {announcement_channel}")
             except:
-                log.debug(f'Can\'t Send Message to {announcement_channel}')
+                log.debug(f"Can't Send Message to {announcement_channel}")
                 continue
         log.debug(f"Writing TimesRun to File")
         with open("./data/times_run.txt", "w") as file:
@@ -118,24 +118,18 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @tasks.loop(minutes=10)
     async def change_status(self):
-        log.debug(f'10 Minutes have Passed, Changing Status at - {datetime.utcnow()}')
-        log.debug(f'Checking for First Time')
+        log.debug(f"10 Minutes have Passed, Changing Status at - {datetime.utcnow()}")
+        log.debug(f"Checking for First Time")
         if self.first_time:
-            log.debug(f'First Time is True, returning')
+            log.debug(f"First Time is True, returning")
             self.first_time = False
             return None
-        
-        log.debug(f'Changing Status')
+
+        log.debug(f"Changing Status")
 
         await self.client.change_presence(activity=discord.Game(next(self.statuses)))
 
-        log.debug(f'Changed Status')
-
-
-
-
-
-
+        log.debug(f"Changed Status")
 
     # Commands
     @commands.command(

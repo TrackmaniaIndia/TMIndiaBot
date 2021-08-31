@@ -126,21 +126,24 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if hasattr(ctx.command, "on_error"):
         log.debug(f"Command has local error handler, returning")
         return None
-    log.debug(f'Command Doesn\'t have local error handler')
+    log.debug(f"Command Doesn't have local error handler")
     cog = ctx.cog
     if cog:
         if cog._get_overridden_method(cog.cog_command_error) is not None:
             log.debug(f"Cog has local error handler, returning")
             return None
-    log.debug(f'Cog does not have local error handler')
+    log.debug(f"Cog does not have local error handler")
 
-    log.debug(f'Recieving Original Exception Raised')
-    error = getattr(error, 'original', error)
+    log.debug(f"Recieving Original Exception Raised")
+    error = getattr(error, "original", error)
 
     if isinstance(error, commands.DisabledCommand):
-        log.error(f'{ctx.command} has been disabled - used by {ctx.author.name}')
+        log.error(f"{ctx.command} has been disabled - used by {ctx.author.name}")
         try:
-            await ctx.send(embed=discord.Embed(f'{ctx.command} has been disabled'), colour=discord.Colour.red())
+            await ctx.send(
+                embed=discord.Embed(f"{ctx.command} has been disabled"),
+                colour=discord.Colour.red(),
+            )
         except discord.HTTPException:
             pass
 
@@ -180,7 +183,9 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     log.debug(f"Found Error Channel")
 
     log.debug(f"Creating Embed")
-    embed = discord.Embed(title=":warning: " + str(error), color=discord.Colour.red()).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+    embed = discord.Embed(
+        title=":warning: " + str(error), color=discord.Colour.red()
+    ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
 
     embed.add_field(name="Author Username", value=ctx.author, inline=False)
     embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
@@ -192,6 +197,7 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     log.debug(f"Sending Embed")
     await channel.send(pingStr, embed=embed)
     log.debug(f"Embed Sent, Error Handler Quit")
+
 
 # Loading Cogs
 log.info("Loading Cogs")
