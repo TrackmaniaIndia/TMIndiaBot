@@ -105,7 +105,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     # Tasks
     @tasks.loop(minutes=30)
     async def keep_alive(self):
-        log.info(f"30 Minutes have passed, Task activated - at {datetime.utcnow()}")
+        log.debug(f"30 Minutes have passed, Task activated - at {datetime.utcnow()}")
         log.debug(f"Pinging API")
         ping_api()
         log.debug(f"API Ping Successful")
@@ -118,7 +118,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @tasks.loop(minutes=10)
     async def change_status(self):
-        log.info(f'10 Minutes have Passed, Changing Status at - {datetime.utcnow()}')
+        log.debug(f'10 Minutes have Passed, Changing Status at - {datetime.utcnow()}')
         log.debug(f'Checking for First Time')
         if self.first_time:
             log.debug(f'First Time is True, returning')
