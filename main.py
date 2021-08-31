@@ -8,9 +8,9 @@ import json
 import logging
 from datetime import datetime
 
-import functions.convert_logging as cl
-import functions.common_functions as cf
-from functions.usage import record_usage, finish_usage
+import functions.logging.convert_logging as cl
+import functions.common_functions.common_functions as cf
+from functions.logging.usage import record_usage, finish_usage
 
 # Importing Fields from .env
 load_dotenv()

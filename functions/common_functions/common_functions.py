@@ -2,7 +2,7 @@ import logging
 import json
 import discord
 
-import functions.convert_logging as cl
+import functions.logging.convert_logging as cl
 
 # log_level = os.getenv("LOG_LEVEL")
 # discord_log_level = os.getenv("DISCORD_LOG_LEVEL")

@@ -3,8 +3,8 @@ from disputils import pagination
 from disputils.pagination import BotEmbedPaginator
 import requests
 import logging
-import functions.common_functions as cf
-import functions.convert_logging as cl
+import functions.common_functions.common_functions as cf
+import functions.logging.convert_logging as cl
 import json
 import os
 import datetime

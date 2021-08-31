@@ -7,10 +7,10 @@ from dotenv import load_dotenv
 import asyncio
 from disputils.pagination import BotEmbedPaginator
 
-import functions.tm_commands_functions
-import functions.convert_logging as cl
-import functions.common_functions as cf
-from functions.usage import record_usage, finish_usage
+import functions.cog_helpers.tm_commands_functions
+import functions.logging.convert_logging as cl
+import functions.common_functions.common_functions as cf
+from functions.logging.usage import record_usage, finish_usage
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -94,7 +94,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Received TMX ID from User")
 
             log.debug(f"Sending Final Embed")
-            embed = functions.tm_commands_functions.get_tmnf_map(tmx_id=str(tmx_id))
+            embed = functions.cog_helpers.tm_commands_functions.get_tmnf_map(tmx_id=str(tmx_id))
             embed.set_footer(
                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
             )
@@ -177,7 +177,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Received TMX ID from User")
 
             log.debug(f"Asking for Embeds")
-            embeds = functions.tm_commands_functions.get_leaderboards(
+            embeds = functions.cog_helpers.tm_commands_functions.get_leaderboards(
                 str(tmx_id), ctx.author.avatar_url
             )
 

@@ -1,7 +1,7 @@
 import os
 import json
 import logging
-import functions.convert_logging as cl
+import functions.logging.convert_logging as cl
 
 log_level, discord_log_level, testing_server_id, version = "", "", "", ""
 

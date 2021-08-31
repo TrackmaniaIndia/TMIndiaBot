@@ -8,11 +8,11 @@ from datetime import datetime
 from dotenv import load_dotenv
 from itertools import cycle
 
-import functions.convert_logging as cl
-import functions.common_functions as cf
-import functions.generic_functions
-from functions.usage import record_usage, finish_usage
-from functions.task_helpers import ping_api
+import functions.logging.convert_logging as cl
+import functions.common_functions.common_functions as cf
+import functions.cog_helpers.generic_functions
+from functions.logging.usage import record_usage, finish_usage
+from functions.task_helpers.pingapi import ping_api
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -63,7 +63,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.critical("Bot Logged In")
 
         log.debug(f"Checking for Times Run File")
-        functions.generic_functions.check_for_times_run()
+        functions.cog_helpers.generic_functions.check_for_times_run()
         times_run = 0
 
         log.debug(f"Reading Value from Times Run File")

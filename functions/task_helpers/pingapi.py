@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 import os
 
-import functions.convert_logging as cl
+import functions.logging.convert_logging as cl
 
 log_level, discord_log_level = "", ""
 

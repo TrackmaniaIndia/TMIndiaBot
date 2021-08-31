@@ -5,7 +5,7 @@ import json
 from dotenv import load_dotenv
 from datetime import datetime
 
-import functions.convert_logging as cl
+import functions.logging.convert_logging as cl
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")

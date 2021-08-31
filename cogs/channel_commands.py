@@ -5,9 +5,9 @@ import logging
 from datetime import datetime
 from dotenv import load_dotenv
 
-import functions.convert_logging as cl
-import functions.common_functions as cf
-from functions.usage import record_usage, finish_usage
+import functions.logging.convert_logging as cl
+import functions.common_functions.common_functions as cf
+from functions.logging.usage import record_usage, finish_usage
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
