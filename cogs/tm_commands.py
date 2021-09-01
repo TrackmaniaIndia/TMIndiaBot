@@ -8,8 +8,8 @@ import asyncio
 from disputils.pagination import BotEmbedPaginator
 
 import functions.cog_helpers.tm_commands_functions
-import functions.logging.convert_logging as cl
-import functions.common_functions.common_functions as cf
+import functions.logging.convert_logging as convert_logging
+import functions.common_functions.common_functions as common_functions
 from functions.logging.usage import record_usage, finish_usage
 
 load_dotenv()
@@ -27,7 +27,7 @@ with open("./json_data/config.json") as file:
     version = config["bot_version"]
 
 log = logging.getLogger(__name__)
-log = cl.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging(log_level, discord_log_level)
 
 DEFAULT_PREFIX = "*"
 
@@ -152,7 +152,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 try:
                     embed = discord.Embed(
                         title="Please Enter Map ID",
-                        color=cf.get_random_color(),
+                        color=common_functions.get_random_color(),
                         description="MAP ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**",
                     )
 

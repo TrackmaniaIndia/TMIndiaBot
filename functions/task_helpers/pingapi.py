@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 import os
 
-import functions.logging.convert_logging as cl
+import functions.logging.convert_logging as convert_logging
 
 log_level, discord_log_level = "", ""
 
@@ -15,7 +15,7 @@ with open("./json_data/config.json") as file:
     discord_log_level = config["discord_log_level"]
 
 log = logging.getLogger(__name__)
-log = cl.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging(log_level, discord_log_level)
 
 
 def ping_api() -> None:

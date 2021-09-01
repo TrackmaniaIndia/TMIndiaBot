@@ -3,8 +3,8 @@ from disputils import pagination
 from disputils.pagination import BotEmbedPaginator
 import requests
 import logging
-import functions.common_functions.common_functions as cf
-import functions.logging.convert_logging as cl
+import functions.common_functions.common_functions as common_functions
+import functions.logging.convert_logging as convert_logging
 import json
 import os
 import datetime
@@ -23,7 +23,7 @@ with open("./json_data/config.json") as file:
 DEFAULT_PREFIX = "*"
 
 log = logging.getLogger(__name__)
-log = cl.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging(log_level, discord_log_level)
 
 
 def get_tmnf_map(tmx_id: str) -> discord.Embed:
@@ -60,7 +60,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
     embed = discord.Embed(
         title=api_data["name"],
         description=api_data["authorComments"],
-        color=cf.get_random_color(),
+        color=common_functions.get_random_color(),
         url="https://tmnforever.tm-exchange.com/trackshow/" + tmx_id,
     )
 
@@ -140,7 +140,7 @@ def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
             discord.Embed(
                 title="Map: {} - Page {}".format(map_name, i + 1),
                 description=times[i],
-                color=cf.get_random_color(),
+                color=common_functions.get_random_color(),
             ).set_footer(
                 text=datetime.datetime.utcnow(), icon_url=authUrl  #
             )

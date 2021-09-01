@@ -8,8 +8,8 @@ from datetime import datetime
 from dotenv import load_dotenv
 from itertools import cycle
 
-import functions.logging.convert_logging as cl
-import functions.common_functions.common_functions as cf
+import functions.logging.convert_logging as convert_logging
+import functions.common_functions.common_functions as common_functions
 import functions.cog_helpers.generic_functions
 from functions.logging.usage import record_usage, finish_usage
 from functions.task_helpers.pingapi import ping_api
@@ -29,7 +29,7 @@ with open("./json_data/config.json") as file:
     version = config["bot_version"]
 
 log = logging.getLogger(__name__)
-log = cl.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging(log_level, discord_log_level)
 
 DEFAULT_PREFIX = "*"
 
@@ -180,7 +180,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             embed=discord.Embed(
                 title="Source Code",
                 description="https://github.com/NottCurious/TMIndiaBot",
-                color=cf.get_random_color(),
+                color=common_functions.get_random_color(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
         )
 
@@ -206,7 +206,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             embed=discord.Embed(
                 title=f"Are you sure you want to join the dev team?",
                 description=f"If you want to join the dev team, you must\n**1. Have knowledge in either Python/Javascript**\n**2. Be a known and trustworthy member of the Trackmania India scene**\n**3. Know x86 Assembly (Required)**\n**4. Know how to build a CPU from scratch (Optional)**\n**5. Know how to build a mini electro magnet which fits inside your chest using tools that you can find inside a cave with a doctor who becomes a friend but dies during your escape**\n**6. 70 Years of Experience in Python**\n\nPlease contact NottCurious#4351 if you want to apply.\n\nYou may also see the source code by using *source",
-                colour=cf.get_random_color(),
+                colour=common_functions.get_random_color(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
         )
 

@@ -5,7 +5,7 @@ import json
 from dotenv import load_dotenv
 from datetime import datetime
 
-import functions.logging.convert_logging as cl
+import functions.logging.convert_logging as convert_logging
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -22,7 +22,7 @@ with open("./json_data/config.json") as file:
     version = config["bot_version"]
 
 log = logging.getLogger(__name__)
-log = cl.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging(log_level, discord_log_level)
 
 DEFAULT_PREFIX = "*"
 

@@ -5,8 +5,8 @@ import logging
 from datetime import datetime
 from dotenv import load_dotenv
 
-import functions.logging.convert_logging as cl
-import functions.common_functions.common_functions as cf
+import functions.logging.convert_logging as convert_logging
+import functions.common_functions.common_functions as common_functions
 from functions.logging.usage import record_usage, finish_usage
 
 load_dotenv()
@@ -24,7 +24,7 @@ with open("./json_data/config.json") as file:
     version = config["bot_version"]
 
 log = logging.getLogger(__name__)
-log = cl.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging(log_level, discord_log_level)
 
 DEFAULT_PREFIX = "*"
 
@@ -65,7 +65,7 @@ class ChannelCommands(
         await ctx.send(
             embed=discord.Embed(
                 title=f"#{channel.name} has been added to announcements file",
-                color=cf.get_random_color(),
+                color=common_functions.get_random_color(),
             )
         )
 
@@ -112,7 +112,7 @@ class ChannelCommands(
         await ctx.send(
             embed=discord.Embed(
                 title=f"#{channel.name} has been removed from announcements file",
-                color=cf.get_random_color(),
+                color=common_functions.get_random_color(),
             )
         )
 

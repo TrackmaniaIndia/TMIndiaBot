@@ -1,7 +1,7 @@
 import os
 import json
 import logging
-import functions.logging.convert_logging as cl
+import functions.logging.convert_logging as convert_logging
 
 log_level, discord_log_level, testing_server_id, version = "", "", "", ""
 
@@ -17,7 +17,7 @@ with open("./json_data/config.json") as file:
 DEFAULT_PREFIX = "*"
 
 log = logging.getLogger(__name__)
-log = cl.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging(log_level, discord_log_level)
 
 
 def check_for_times_run() -> None:
