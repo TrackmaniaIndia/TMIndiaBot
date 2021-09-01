@@ -18,7 +18,7 @@ with open("./json_data/config.json") as file:
 DEFAULT_PREFIX = "*"
 
 log = logging.getLogger(__name__)
-log = convert_logging.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging()
 
 lower_case_letters = (
     "a",
@@ -79,7 +79,7 @@ upper_case_letters = (
 letters = lower_case_letters + upper_case_letters
 
 
-def encrypt(input_string: str) -> tuple[str]:
+def encrypt(input_string: str):
     log.info(f"Encrypting {input_string}")
     log.debug(f"Receiving Random Number")
     xor_key = random.randint(1, 52) - 1  # 52 Characters, -1 for indicing

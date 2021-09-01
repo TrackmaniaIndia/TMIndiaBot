@@ -9,21 +9,11 @@ import json
 import os
 import datetime
 
-log_level, discord_log_level, testing_server_id, version = "", "", "", ""
-
-with open("./json_data/config.json") as file:
-    config = json.load(file)
-
-    log_level = config["log_level"]
-    discord_log_level = config["discord_log_level"]
-    testing_server_id = config["testing_server_id"]
-    version = config["bot_version"]
-
 # Constants
 DEFAULT_PREFIX = "*"
 
 log = logging.getLogger(__name__)
-log = convert_logging.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging()
 
 
 def get_tmnf_map(tmx_id: str) -> discord.Embed:

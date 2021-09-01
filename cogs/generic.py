@@ -13,23 +13,19 @@ import functions.common_functions.common_functions as common_functions
 import functions.cog_helpers.generic_functions
 from functions.logging.usage import record_usage, finish_usage
 from functions.task_helpers.pingapi import ping_api
+from functions.trackmania2020_username_functions.store_username import store_trackmania_username
+from functions.other_functions.get_data import get_version
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
 # version = os.getenv("VERSION")
 # discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
 
-log_level, discord_log_level, version = "", "", ""
-
-with open("./json_data/config.json") as file:
-    config = json.load(file)
-
-    log_level = config["log_level"]
-    discord_log_level = config["discord_log_level"]
-    version = config["bot_version"]
 
 log = logging.getLogger(__name__)
-log = convert_logging.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging()
+
+version = get_version()
 
 DEFAULT_PREFIX = "*"
 
@@ -209,6 +205,11 @@ class Generic(commands.Cog, description="Generic Functions"):
                 colour=common_functions.get_random_color(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
         )
+
+    @commands.command()
+    async def storeusername(self, ctx, username: str):
+        store_trackmania_username(ctx, username)
+
 
     # Error Management
     @prefix.error

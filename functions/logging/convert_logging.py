@@ -1,9 +1,16 @@
 import logging
 import coloredlogs
 import discord
+import json
 
 
-def get_logging(normlog: str, discordlog: str) -> logging.Logger:
+def get_logging() -> logging.Logger:
+    with open("./json_data/config.json") as file:
+        config = json.load(file)
+
+        normlog = config["log_level"]
+        discordlog = config["discord_log_level"]
+
     logdict = {
         "debug": logging.DEBUG,
         "info": logging.INFO,

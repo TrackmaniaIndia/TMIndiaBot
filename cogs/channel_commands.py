@@ -8,26 +8,19 @@ from dotenv import load_dotenv
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
 from functions.logging.usage import record_usage, finish_usage
+from functions.other_functions.get_data import get_version
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
 # version = os.getenv("VERSION")
 # discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
 
-log_level, discord_log_level, version = "", "", ""
-
-with open("./json_data/config.json") as file:
-    config = json.load(file)
-
-    log_level = config["log_level"]
-    discord_log_level = config["discord_log_level"]
-    version = config["bot_version"]
-
 log = logging.getLogger(__name__)
-log = convert_logging.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging()
 
 DEFAULT_PREFIX = "*"
 
+version = get_version()
 
 class ChannelCommands(
     commands.Cog, description="Administrator Commands for Bot Functions"
