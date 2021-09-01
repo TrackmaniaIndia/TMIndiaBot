@@ -199,7 +199,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             log.debug(f"Running Paginator")
             await paginator.run()
-            log.debug(f'Finished Paginator, Sending Finished Embed')
+            log.debug(f"Finished Paginator, Sending Finished Embed")
 
             await ctx.send(
                 embed=discord.Embed(
@@ -210,7 +210,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 )
             )
 
-            log.debug(f'Sent Finished Embed')
+            log.debug(f"Sent Finished Embed")
 
         if game_flag.lower() == "tm2020":
             await ctx.send(
