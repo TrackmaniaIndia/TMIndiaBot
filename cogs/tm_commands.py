@@ -199,6 +199,18 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             log.debug(f"Running Paginator")
             await paginator.run()
+            log.debug(f'Finished Paginator, Sending Finished Embed')
+
+            await ctx.send(
+                embed=discord.Embed(
+                    title=f"{ctx.command} successfully run",
+                    colour=discord.Colour.green(),
+                ).set_footer(
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                )
+            )
+
+            log.debug(f'Sent Finished Embed')
 
         if game_flag.lower() == "tm2020":
             await ctx.send(
@@ -209,22 +221,22 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 )
             )
 
-    # @view_map.error
-    # async def error(self, ctx: commands.Context, error: commands.CommandError):
-    #     if isinstance(error, commands.MissingRequiredArgument):
-    #         log.error("Missing required arguments")
+    @view_map.error
+    async def error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.MissingRequiredArgument):
+            log.error("Missing required arguments")
 
-    #         log.debug(f"Creating Error Embed")
-    #         await ctx.send(
-    #             embed=discord.Embed(
-    #                 title=":warning: Missing required argument: Game Flag",
-    #                 description="**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}",
-    #                 color=discord.Colour.red(),
-    #             ).set_footer(
-    #                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
-    #             )
-    #         )
-    #         log.debug(f"Sent Error Embed")
+            log.debug(f"Creating Error Embed")
+            await ctx.send(
+                embed=discord.Embed(
+                    title=":warning: Missing required argument: Game Flag",
+                    description="**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}",
+                    color=discord.Colour.red(),
+                ).set_footer(
+                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+                )
+            )
+            log.debug(f"Sent Error Embed")
 
     @get_leaderboards.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
