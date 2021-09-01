@@ -1,35 +1,54 @@
-import os
-import json
 import logging
 import random
 import functions.logging.convert_logging as convert_logging
-from functions.other_functions.get_letter_lists import get_lower_case, get_upper_case
-
-log_level, discord_log_level, testing_server_id, version = "", "", "", ""
-
-with open("./json_data/config.json") as file:
-    config = json.load(file)
-
-    log_level = config["log_level"]
-    discord_log_level = config["discord_log_level"]
-    testing_server_id = config["testing_server_id"]
-    version = config["bot_version"]
 
 # Constants
 DEFAULT_PREFIX = "*"
 
 log = logging.getLogger(__name__)
-log = convert_logging.get_logging(log_level, discord_log_level)
+log = convert_logging.get_logging()
 
-log.debug(f'Getting Lower Case Letters')
-lower_case_letters = get_lower_case()
+LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-log.debug(f'Getting Upper Case Letters')
-upper_case_letters = get_upper_case()
+def encrypt(input_string: str):
+    log.debug(f'Getting Random Number')
+    encryption_key_int = random.randint(1, 26) - 1
+    log.debug(f'Random Key is {LETTERS[encryption_key_int]}')
 
-letters = lower_case_letters + upper_case_letters
+    encryption_key = LETTERS[encryption_key_int]
 
-log.debug(f'Randomizing Letter List')
-letters = random.shuffle(letters)
-log.debug(f'Randomized Letter List')
+    return translate_message(input_string, encryption_key, 'encrypt'), encryption_key
 
+def decrypt(input_string: str, decryption_key: str):
+    return translate_message(input_string, decryption_key, 'decrypt')
+
+
+def translate_message(message: str, key: str, mode: str) -> str:
+    translated = []
+    key_index = 0
+    key = key.upper()
+
+    for symbol in message:
+        num = LETTERS.find(symbol.upper())
+
+        if num != -1:
+            if mode == 'encrypt':
+                num += LETTERS.find(key[key_index])
+            elif mode == 'decrypt':
+                num -= LETTERS.find(key[key_index])
+
+            num %= len(LETTERS)
+
+            if symbol.isupper():
+                translated.append(LETTERS[num])
+            elif symbol.islower():
+                translated.append(LETTERS[num].lower())
+
+            key_index += 1
+            if key_index == len(key):
+                key_index = 0
+
+        else:
+            translated.append(symbol)
+
+    return "".join(translated)

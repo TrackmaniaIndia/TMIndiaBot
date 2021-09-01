@@ -13,7 +13,7 @@ import functions.common_functions.common_functions as common_functions
 import functions.cog_helpers.generic_functions
 from functions.logging.usage import record_usage, finish_usage
 from functions.task_helpers.pingapi import ping_api
-from functions.trackmania2020_username_functions.store_username import store_trackmania_username
+from functions.tm_username_functions.store_username import store_trackmania_username
 from functions.other_functions.get_data import get_version
 
 load_dotenv()
@@ -97,6 +97,8 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.debug(f"Writing TimesRun to File")
         with open("./data/times_run.txt", "w") as file:
             print(times_run, file=file)
+
+        log.info(f'Bot now Usable')
 
     # Tasks
     @tasks.loop(minutes=30)

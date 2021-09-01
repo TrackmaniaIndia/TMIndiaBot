@@ -4,7 +4,7 @@ import requests
 import logging
 import functions.common_functions.common_functions as common_functions
 import functions.logging.convert_logging as convert_logging
-import functions.ciphers.xor_cipher
+from functions.ciphers.vigenere_cipher import encrypt, decrypt
 import json
 import os
 import datetime
@@ -27,14 +27,12 @@ log = convert_logging.get_logging()
 
 def store_trackmania_username(ctx: commands.Context, unencrypted_string: str) -> None:
     log.debug(f'Getting Encrypted String and Encryption Key')
-    encrypted_string, encryption_key = functions.ciphers.xor_cipher.encrypt(unencrypted_string)
+    encrypted_string, encryption_key = encrypt(unencrypted_string)
     log.debug(f'Received Encryption String and Encryption Key')
     
-    username = ctx.author.name
-    log.debug(f'Encrypting Username')
-    username_encrypted, username_key = functions.ciphers.xor_cipher.encrypt(username)
+    username_id = ctx.author.id
 
-    user_dict = {"Username": username_encrypted, "Username Key": username_key, "TM2020 Username": encrypted_string, "TM2020 Username Key": encryption_key}
+    user_dict = {"TM2020 Username": encrypted_string, "TM2020 Username Key": encryption_key}
 
     log.debug(f'Loading Username JSON File')
     with open('./json_data/tm2020_usernames.json', 'r') as file:
@@ -42,8 +40,15 @@ def store_trackmania_username(ctx: commands.Context, unencrypted_string: str) ->
         all_usernames = json.load(file)
         log.debug(f'Stored Usernames into a Variable')
 
+    dont_append = False
+
+    log.debug(f'Checking if User Is Already In File')
+    if str(username_id) in all_usernames:
+        log.debug(f'Username is already in all_usernames, popping')
+        all_usernames.pop(str(username_id))
+
     log.debug(f'Adding User Dictionary to Existing File')
-    all_usernames['participants'].append(user_dict)
+    all_usernames[username_id] = user_dict
     log.debug(f'Added User Dictionary to Existing File')
 
     log.debug(f'Opening TM2020 Usernames File and Dumping')
