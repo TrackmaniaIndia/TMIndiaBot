@@ -8,19 +8,21 @@ DEFAULT_PREFIX = "*"
 log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
-LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 
 def encrypt(input_string: str):
-    log.debug(f'Getting Random Number')
+    log.debug(f"Getting Random Number")
     encryption_key_int = random.randint(1, 26) - 1
-    log.debug(f'Random Key is {LETTERS[encryption_key_int]}')
+    log.debug(f"Random Key is {LETTERS[encryption_key_int]}")
 
     encryption_key = LETTERS[encryption_key_int]
 
-    return translate_message(input_string, encryption_key, 'encrypt'), encryption_key
+    return translate_message(input_string, encryption_key, "encrypt"), encryption_key
+
 
 def decrypt(input_string: str, decryption_key: str):
-    return translate_message(input_string, decryption_key, 'decrypt')
+    return translate_message(input_string, decryption_key, "decrypt")
 
 
 def translate_message(message: str, key: str, mode: str) -> str:
@@ -32,9 +34,9 @@ def translate_message(message: str, key: str, mode: str) -> str:
         num = LETTERS.find(symbol.upper())
 
         if num != -1:
-            if mode == 'encrypt':
+            if mode == "encrypt":
                 num += LETTERS.find(key[key_index])
-            elif mode == 'decrypt':
+            elif mode == "decrypt":
                 num -= LETTERS.find(key[key_index])
 
             num %= len(LETTERS)

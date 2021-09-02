@@ -22,6 +22,7 @@ DEFAULT_PREFIX = "*"
 
 version = get_version()
 
+
 class ChannelCommands(
     commands.Cog, description="Administrator Commands for Bot Functions"
 ):

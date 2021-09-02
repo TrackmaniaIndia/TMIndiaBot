@@ -1,3 +1,7 @@
+from functions.tm_username_functions.username_functions import (
+    check_trackmania_username,
+    remove_trackmania_username,
+)
 from os import stat
 import discord
 from discord import activity
@@ -13,7 +17,6 @@ import functions.common_functions.common_functions as common_functions
 import functions.cog_helpers.generic_functions
 from functions.logging.usage import record_usage, finish_usage
 from functions.task_helpers.pingapi import ping_api
-from functions.tm_username_functions.store_username import store_trackmania_username
 from functions.other_functions.get_data import get_version
 
 load_dotenv()
@@ -98,7 +101,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         with open("./data/times_run.txt", "w") as file:
             print(times_run, file=file)
 
-        log.info(f'Bot now Usable')
+        log.info(f"Bot now Usable")
 
     # Tasks
     @tasks.loop(minutes=30)
@@ -207,11 +210,6 @@ class Generic(commands.Cog, description="Generic Functions"):
                 colour=common_functions.get_random_color(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
         )
-
-    @commands.command()
-    async def storeusername(self, ctx, username: str):
-        store_trackmania_username(ctx, username)
-
 
     # Error Management
     @prefix.error
