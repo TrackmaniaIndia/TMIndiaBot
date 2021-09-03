@@ -4,6 +4,7 @@ from discord.ext.commands.core import after_invoke, before_invoke
 from functions.tm_username_functions.username_functions import (
     check_trackmania_username,
     remove_trackmania_username,
+    check_username,
 )
 import discord
 from discord.ext import commands
@@ -46,13 +47,21 @@ class UsernameCommands(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def store_username(self, ctx: commands.Context, username: str):
+        log.debug(f"Checking Username")
+        if not check_username(username):
+            log.debug(f"Username not found")
+            await ctx.send(
+                embed=discord.Embed(
+                    title="Username not found or does not exist",
+                    colour=discord.Colour.red(),
+                )
+            )
+            return None
+        log.debug(f"User Exists, Continuing")
+
         log.debug(f"Storing {username} for {ctx.author.name}. ID: {ctx.author.id}")
         store_trackmania_username(ctx, username)
         log.debug(f"Stored Username for {ctx.author.name}")
-
-        #
-        # Make sure to ping api and check for valid username
-        #
 
         log.debug(f"Sending Success Message")
         await ctx.send(
@@ -110,6 +119,17 @@ class UsernameCommands(commands.Cog):
             embed=discord.Embed(title="SUCCESS!!", colour=discord.Colour.green())
         )
 
+    @store_username.error
+    async def store_username_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            log.error("Prefix Not Given")
+
+            embed = discord.Embed(
+                title=":warning: Prefix not given",
+                description="Usage: prefix <new-prefix>\nExample: !prefix $",
+                color=discord.Colour.red(),
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(UsernameCommands(client))
