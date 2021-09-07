@@ -131,5 +131,6 @@ class UsernameCommands(commands.Cog):
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
 
+
 def setup(client):
     client.add_cog(UsernameCommands(client))
