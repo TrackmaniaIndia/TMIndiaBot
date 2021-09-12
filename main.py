@@ -1,7 +1,7 @@
 # Importing Packages
 import discord
 from discord import colour
-from discord.ext import commands, tasks
+from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import json

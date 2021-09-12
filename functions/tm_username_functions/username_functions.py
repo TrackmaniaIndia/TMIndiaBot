@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
 
-def check_trackmania_username(ctx: commands.Context) -> bool:
+def check_trackmania_username_in_file(ctx: commands.Context) -> bool:
     log.debug(f"Opening File")
     with open("./json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Checking for Discord ID")
@@ -58,7 +58,7 @@ def store_trackmania_username(ctx: commands.Context, unencrypted_string: str) ->
     dont_append = False
 
     log.debug(f"Checking if User Is Already In File")
-    if check_trackmania_username(ctx):
+    if check_trackmania_username_in_file(ctx):
         log.debug(f"Username is already in all_usernames, popping")
         all_usernames.pop(str(username_id))
 
@@ -73,7 +73,7 @@ def store_trackmania_username(ctx: commands.Context, unencrypted_string: str) ->
 
 
 def remove_trackmania_username(ctx: commands.Context):
-    if not check_trackmania_username(ctx):
+    if not check_trackmania_username_in_file(ctx):
         log.debug(f"User not in JSON File, Returning")
         return None
 
@@ -92,6 +92,9 @@ def remove_trackmania_username(ctx: commands.Context):
 
 
 def check_username(username: str) -> bool:
+    """
+    This function checks if the username is valid in the api
+    """
     log.debug(f"Checking {username}")
 
     USERNAME_URL = BASE_API_URL + f"/tm2020/player/{username}"
@@ -112,7 +115,7 @@ def get_username(ctx: commands.Command) -> str:
     log.debug(f"Getting Trackmania Username for {ctx.author.name}")
 
     log.debug(f"Checking if Username Exists in File")
-    if not check_trackmania_username(ctx):
+    if not check_trackmania_username_in_file(ctx):
         log.error(f"User does not exist in file")
         return None
 
@@ -130,27 +133,28 @@ def get_trackmania_id(ctx: commands.Command) -> str:
     log.debug(f"Getting Trackmania ID for {ctx.author.name}")
 
     log.debug(f"Checking if Username Exists in File")
-    if not check_trackmania_username(ctx):
+    if not check_trackmania_username_in_file(ctx):
         log.error(f"User does not exist in file")
         return None
 
     log.debug(f"User exists in file")
     log.debug(f"Opening File")
     with open("./json_data/tm2020_usernames.json", "r") as file:
+        log.debug(f"Parsing JSON File")
+        ids = json.load(file)
         log.debug(f"Returning ID")
-        return file[str(ctx.author.id)]["TM2020 ID"]
+        return str(ids[str(ctx.author.id)]["TM2020 ID"])
 
-def get_trackmania_id_from_api(ctx: commands.Context) -> str:
-    log.debug(f'Getting Trackmania ID for {ctx.author.name} from api')
 
-    log.debug(f'Checking if User is in the file')
-    if check_trackmania_username(ctx):
-        log.error(f'User exists in the file')
+def get_trackmania_id_from_api(ctx: commands.Context, username: str) -> str:
+    log.debug(f"Getting Trackmania ID for {ctx.author.name} from api")
+
+    log.debug(f"Checking if User is in the file")
+    if check_trackmania_username_in_file(ctx):
+        log.error(f"User exists in the file")
         return None
-        
-    log.debug(f'User does not exist in the file, pinging API')
-    username = ctx.message.content
-    
+
+    log.debug(f"User does not exist in the file, pinging API")
     USERNAME_URL = BASE_API_URL + f"/tm2020/player/{username}"
 
     log.debug(f"Requesting from Url")
@@ -159,5 +163,5 @@ def get_trackmania_id_from_api(ctx: commands.Context) -> str:
     log.debug(f"Parsing Data for ID")
     user_id = player_details[0]["player"]["id"]
 
-    log.debug(f'Returning User Id')
+    log.debug(f"Returning User Id")
     return user_id

@@ -2,9 +2,10 @@ from re import L
 
 from discord.ext.commands.core import after_invoke, before_invoke
 from functions.tm_username_functions.username_functions import (
-    check_trackmania_username,
+    check_trackmania_username_in_file,
     remove_trackmania_username,
     check_username,
+    store_trackmania_username,
 )
 import discord
 from discord.ext import commands
@@ -14,11 +15,6 @@ from dotenv import load_dotenv
 
 import functions.logging.convert_logging as convert_logging
 from functions.logging.usage import record_usage, finish_usage
-from functions.tm_username_functions.username_functions import (
-    store_trackmania_username,
-    check_trackmania_username,
-    remove_trackmania_username,
-)
 from functions.other_functions.get_data import get_version
 
 load_dotenv()
@@ -79,7 +75,7 @@ class UsernameCommands(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def check_username(self, ctx: commands.Context):
-        if check_trackmania_username(ctx):
+        if check_trackmania_username_in_file(ctx):
             log.debug(f"Username in json file")
             await ctx.send(
                 embed=discord.Embed(
@@ -102,7 +98,7 @@ class UsernameCommands(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def remove_username(self, ctx: commands.Context):
-        if not check_trackmania_username(ctx):
+        if not check_trackmania_username_in_file(ctx):
             log.debug(f"User does not exist in file")
             await ctx.send(
                 embed=discord.Embed(
