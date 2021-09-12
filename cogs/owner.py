@@ -1,14 +1,9 @@
 import discord
-from discord import colour
 from discord.ext import commands
-import json
 import logging
-from datetime import datetime
 from dotenv import load_dotenv
 
 import functions.logging.convert_logging as convert_logging
-import functions.common_functions.common_functions as common_functions
-import functions.cog_helpers.generic_functions
 from functions.logging.usage import record_usage, finish_usage
 
 load_dotenv()

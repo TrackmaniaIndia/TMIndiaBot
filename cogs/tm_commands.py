@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import json
 import logging
 import datetime
 from dotenv import load_dotenv

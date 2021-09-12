@@ -1,6 +1,4 @@
-from os import stat
 import discord
-from discord import activity
 from discord.ext import commands, tasks
 import json
 import logging

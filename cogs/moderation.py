@@ -1,18 +1,11 @@
-from os import stat
 import discord
-from discord import activity
-from discord.ext import commands, tasks
-import json
+from discord.ext import commands
 import logging
 from datetime import datetime
 from dotenv import load_dotenv
-from itertools import cycle
 
 import functions.logging.convert_logging as convert_logging
-import functions.common_functions.common_functions as common_functions
-import functions.cog_helpers.generic_functions
 from functions.logging.usage import record_usage, finish_usage
-from functions.task_helpers.pingapi import ping_api
 from functions.other_functions.get_data import get_version
 
 load_dotenv()

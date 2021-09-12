@@ -1,6 +1,5 @@
 from discord.ext import commands
 import logging
-import discord
 import functions.logging.convert_logging as convert_logging
 from functions.ciphers.vigenere_cipher import encrypt, decrypt
 import requests
