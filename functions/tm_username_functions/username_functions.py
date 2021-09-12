@@ -139,3 +139,25 @@ def get_trackmania_id(ctx: commands.Command) -> str:
     with open("./json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Returning ID")
         return file[str(ctx.author.id)]["TM2020 ID"]
+
+def get_trackmania_id_from_api(ctx: commands.Context) -> str:
+    log.debug(f'Getting Trackmania ID for {ctx.author.name} from api')
+
+    log.debug(f'Checking if User is in the file')
+    if check_trackmania_username(ctx):
+        log.error(f'User exists in the file')
+        return None
+        
+    log.debug(f'User does not exist in the file, pinging API')
+    username = ctx.message.content
+    
+    USERNAME_URL = BASE_API_URL + f"/tm2020/player/{username}"
+
+    log.debug(f"Requesting from Url")
+    player_details = requests.get(USERNAME_URL).json()
+
+    log.debug(f"Parsing Data for ID")
+    user_id = player_details[0]["player"]["id"]
+
+    log.debug(f'Returning User Id')
+    return user_id
