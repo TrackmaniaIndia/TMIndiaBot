@@ -137,3 +137,6 @@ prefixes.json
 /data/times_run.txt
 
 format.bat
+
+# Temp File, Remove Before Merging
+username_functions_old.py
