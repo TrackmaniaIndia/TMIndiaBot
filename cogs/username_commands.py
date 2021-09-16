@@ -70,7 +70,7 @@ class UsernameCommands(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def check_username(self, ctx: commands.Context):
-        if username_functions.check_discord_id_in_file(ctx.author.id):
+        if username_functions.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"Username in json file")
             await ctx.send(
                 embed=discord.Embed(
@@ -93,7 +93,7 @@ class UsernameCommands(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def remove_username(self, ctx: commands.Context):
-        if not username_functions.check_discord_id_in_file(ctx.author.id):
+        if not username_functions.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"User does not exist in file")
             await ctx.send(
                 embed=discord.Embed(
