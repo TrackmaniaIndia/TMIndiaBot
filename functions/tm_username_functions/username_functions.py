@@ -62,10 +62,9 @@ def check_username_in_file(username: str) -> bool:
     """
     Checks if given username is in the tm2020_usernames.json file
     """
-    log.debug(f'Converting Username to String')
+    log.debug(f"Converting Username to String")
     username = str(username)
-    log.debug(f'Converted Username to String')
-
+    log.debug(f"Converted Username to String")
 
     log.debug(f"Getting all Useranmes")
     all_usernames = get_all_usernames()
@@ -83,13 +82,13 @@ def check_discord_id_in_file(discord_id: str) -> bool:
     """
     Checks if the given discord id is in the file
     """
-    log.debug(f'Converting Discord ID to String')
+    log.debug(f"Converting Discord ID to String")
     discord_id = str(discord_id)
-    log.debug(f'Converted Discord ID to String')
+    log.debug(f"Converted Discord ID to String")
 
-    log.debug(f'Getting all Discord IDs')
+    log.debug(f"Getting all Discord IDs")
     all_discord_ids = get_all_discord_ids()
-    log.debug(f'Got all Discord IDs')
+    log.debug(f"Got all Discord IDs")
 
     if discord_id in all_discord_ids:
         log.debug(f"Discord Id in file")
