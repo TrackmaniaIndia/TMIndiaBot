@@ -63,9 +63,9 @@ def check_username_in_file(username: str) -> bool:
     Checks if given username is in the tm2020_usernames.json file
     """
 
-    log.debug(f'Getting all Useranmes')
+    log.debug(f"Getting all Useranmes")
     all_usernames = get_all_usernames()
-    log.debug(f'Got all Usernames')
+    log.debug(f"Got all Usernames")
 
     if username in all_usernames:
         log.debug(f"Username in File")
@@ -102,7 +102,7 @@ def check_valid_trackmania_username(username: str) -> bool:
     try:
         check_player = requests.get(USERNAME_URL).json()
     except:
-        log.error(f'API is Offline')
+        log.error(f"API is Offline")
         exit()
 
     log.debug(f"Checking check_player")
@@ -168,9 +168,9 @@ def remove_trackmania_username(discord_id: str):
         all_usernames = json.load(file)
         log.debug(f"Stored Usernames into a Variable")
 
-    log.debug(f'Popping {discord_id}')
+    log.debug(f"Popping {discord_id}")
     all_usernames.pop(str(discord_id))
-    log.debug(f'Popped {discord_id}')
+    log.debug(f"Popped {discord_id}")
 
     log.debug(f"Opening TM2020 Usernames File and Dumping")
     with open("./json_data/tm2020_usernames.json", "w") as file:
@@ -180,54 +180,56 @@ def remove_trackmania_username(discord_id: str):
 
 def get_trackmania_username(discord_id: str) -> str:
     if not check_discord_id_in_file(discord_id):
-        log.debug(f'Discord ID not in file, returning none')
+        log.debug(f"Discord ID not in file, returning none")
         return None
 
-    log.debug(f'Discord Id in Username')
+    log.debug(f"Discord Id in Username")
     all_usernames = get_all_usernames()
     all_discord_ids = get_all_discord_ids()
 
-    log.debug(f'Returning Username')
+    log.debug(f"Returning Username")
     return all_usernames[all_discord_ids.index(discord_id)]
+
 
 def get_trackmania_id(discord_id: str) -> str:
     """
     Gets trackmania id with discord_id
     """
-    
+
     if not check_discord_id_in_file(discord_id):
-        log.debug(f'Discord ID not in file, returning none')
+        log.debug(f"Discord ID not in file, returning none")
         return None
 
-    log.debug(f'Discord ID in File')
-    log.debug(f'Opening File')
+    log.debug(f"Discord ID in File")
+    log.debug(f"Opening File")
 
-    with open('./json_data/tm2020_usernames.json', 'r') as file:
-        log.debug(f'Loading JSON File')
+    with open("./json_data/tm2020_usernames.json", "r") as file:
+        log.debug(f"Loading JSON File")
         all_data = json.load(file)
-        log.debug(f'Loaded JSON File')
+        log.debug(f"Loaded JSON File")
 
-        log.debug(f'Returning ID')
-        return all_data[discord_id]['TM2020 ID']
+        log.debug(f"Returning ID")
+        return all_data[discord_id]["TM2020 ID"]
+
 
 def get_trackmania_id_with_username(username: str) -> str:
     """
     Gets trackmania2020 id with username given
     """
-    
-    log.debug(f'Checking if Username Exists in File')
+
+    log.debug(f"Checking if Username Exists in File")
     if not check_username_in_file(username):
-        log.debug(f'Username not in File')
+        log.debug(f"Username not in File")
         return None
 
-    log.debug(f'Username Exists in File')
-    log.debug(f'Getting All Usernames and Discord Ids')
+    log.debug(f"Username Exists in File")
+    log.debug(f"Getting All Usernames and Discord Ids")
     all_usernames = get_all_usernames()
     all_ids = get_all_discord_ids()
-    log.debug(f'Got All Usernames and Discord Ids')
+    log.debug(f"Got All Usernames and Discord Ids")
 
-    log.debug(f'Getting Discord ID')
+    log.debug(f"Getting Discord ID")
     discord_id = all_ids[all_usernames.index(username)]
-    log.debug(f'Returning Discord Id w/ Other Function')
+    log.debug(f"Returning Discord Id w/ Other Function")
 
     return get_trackmania_id(discord_id)
