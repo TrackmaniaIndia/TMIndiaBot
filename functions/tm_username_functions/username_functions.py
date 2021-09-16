@@ -198,7 +198,7 @@ def get_trackmania_username(discord_id: str) -> str:
     return all_usernames[all_discord_ids.index(discord_id)]
 
 
-def get_trackmania_id(discord_id: str) -> str:
+def get_trackmania_id_from_file(discord_id: str) -> str:
     """
     Gets trackmania id with discord_id
     """
@@ -219,7 +219,7 @@ def get_trackmania_id(discord_id: str) -> str:
         return all_data[discord_id]["TM2020 ID"]
 
 
-def get_trackmania_id_with_username(username: str) -> str:
+def get_trackmania_id_with_username_from_file(username: str) -> str:
     """
     Gets trackmania2020 id with username given
     """
@@ -239,4 +239,39 @@ def get_trackmania_id_with_username(username: str) -> str:
     discord_id = all_ids[all_usernames.index(username)]
     log.debug(f"Returning Discord Id w/ Other Function")
 
-    return get_trackmania_id(discord_id)
+    return get_trackmania_id_from_file(discord_id)
+
+
+def get_trackmania_id_from_api(username: str) -> str:
+    log.debug(f'Checking if Username is Valid')
+    if not check_valid_trackmania_username(username):
+        log.debug(f'Not a valid username')
+        return None
+
+    PLAYER_URL = BASE_API_URL + f"/tm2020/player/{username}"
+
+    log.debug(f"Getting Player Id")
+    player_details = requests.get(PLAYER_URL).json()
+    log.debug(f"Got Player Details")
+
+    log.debug(f"Parsing Data for ID")
+    user_id = player_details[0]["player"]["id"]
+
+    log.debug(f'Returning User ID')
+    return user_id
+
+def get_id(username: str) -> str:
+    log.debug(f'Checking {username}')
+    if not check_username_in_file(username):
+        log.debug(f'{username} not in file')
+        log.debug(f'Checking if Username is Valid')
+
+        if not check_valid_trackmania_username(username):
+            log.debug('Not a Valid Username, returning None')
+            return None
+        
+        log.debug(f'Pinging API and Getting Trackmania ID')
+        return get_trackmania_id_from_api(username)
+    else:
+        log.debug(f'{username} is in file')
+        return get_trackmania_id_with_username_from_file(username)
