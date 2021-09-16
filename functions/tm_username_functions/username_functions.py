@@ -1,5 +1,3 @@
-from functions.tm_username_functions.username_functions_old import BASE_API_URL
-from discord.ext import commands
 import logging
 import functions.logging.convert_logging as convert_logging
 from functions.ciphers.vigenere_cipher import encrypt, decrypt
