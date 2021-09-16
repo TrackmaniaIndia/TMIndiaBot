@@ -15,13 +15,13 @@ log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
 
-def get_all_usernames() -> tuple[str]:
+def get_all_usernames() -> list[str]:
     """
     Gets all usernames stored in tm2020_usernames.json file
     """
     log.debug(f"Opening File")
 
-    usernames = ()
+    usernames = []
 
     with open("./json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Opened File")
@@ -38,13 +38,13 @@ def get_all_usernames() -> tuple[str]:
     return usernames
 
 
-def get_all_discord_ids() -> tuple[str]:
+def get_all_discord_ids() -> list[str]:
     """
     Gets all the stored discord ids in the tm2020_usernames.json file
     """
 
     log.debug(f"Opening File")
-    discord_ids = ()
+    discord_ids = []
 
     with open("./json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Opened File")
