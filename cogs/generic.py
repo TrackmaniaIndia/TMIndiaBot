@@ -1,10 +1,4 @@
-from functions.tm_username_functions.username_functions import (
-    check_trackmania_username,
-    remove_trackmania_username,
-)
-from os import stat
 import discord
-from discord import activity
 from discord.ext import commands, tasks
 import json
 import logging
