@@ -26,12 +26,15 @@ def get_all_usernames() -> list[str]:
         all_usernames = json.load(file)
 
         log.debug(f"Loaded JSON Data, Getting Usernames")
-        for author_id in all_usernames:
+        for author_id in all_usernames["Usernames"]:
             log.debug(f"Decrypting {author_id}'s username and appending")
             usernames.append(
-                decrypt(author_id["TM2020 Username"], author_id["TM2020 Username Key"])
+                decrypt(all_usernames["Usernames"][author_id]["TM2020 Username"], all_usernames["Usernames"][author_id]["TM2020 Username Key"])
             )
+            # print(author_id)
+        # print(all_usernames)
 
+    log.debug(f'Closed File')
     log.debug(f"Returning list of usernames")
     return usernames
 
@@ -48,7 +51,7 @@ def get_all_discord_ids() -> list[str]:
         log.debug(f"Opened File")
         all_data = json.load(file)
 
-        for discord_id in all_data:
+        for discord_id in all_data["Usernames"]:
             log.debug(f"Appending {discord_id}")
             discord_ids.append(str(discord_id))
 
@@ -152,10 +155,10 @@ def store_trackmania_username(discord_id: str, unencrypted_string: str) -> None:
     log.debug(f"Checking if User Is Already In File")
     if check_discord_id_in_file(discord_id=discord_id):
         log.debug(f"Username is already in all_usernames, popping")
-        all_usernames.pop(str(username_id))
+        all_usernames["Usernames"].pop(str(username_id))
 
     log.debug(f"Adding User Dictionary to Existing File")
-    all_usernames[username_id] = user_dict
+    all_usernames["Usernames"][username_id] = user_dict
     log.debug(f"Added User Dictionary to Existing File")
 
     log.debug(f"Opening TM2020 Usernames File and Dumping")
@@ -176,7 +179,7 @@ def remove_trackmania_username(discord_id: str):
         log.debug(f"Stored Usernames into a Variable")
 
     log.debug(f"Popping {discord_id}")
-    all_usernames.pop(str(discord_id))
+    all_usernames["Usernames"].pop(str(discord_id))
     log.debug(f"Popped {discord_id}")
 
     log.debug(f"Opening TM2020 Usernames File and Dumping")
@@ -216,7 +219,7 @@ def get_trackmania_id_from_file(discord_id: str) -> str:
         log.debug(f"Loaded JSON File")
 
         log.debug(f"Returning ID")
-        return all_data[discord_id]["TM2020 ID"]
+        return all_data["Usernames"][discord_id]["TM2020 ID"]
 
 
 def get_trackmania_id_with_username_from_file(username: str) -> str:
