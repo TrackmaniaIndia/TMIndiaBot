@@ -116,8 +116,8 @@ class UsernameCommands(commands.Cog):
             log.error("Username Not Given")
 
             embed = discord.Embed(
-                title=":warning: Prefix not given",
-                description="Usage: prefix <new-prefix>\nExample: !prefix $",
+                title=":warning: Trackmania Username not given",
+                description="Usage: storeusername <trackmania-username>\nExample: --storeusername ",
                 color=discord.Colour.red(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
