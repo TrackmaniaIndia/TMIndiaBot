@@ -15,7 +15,7 @@
     "bot_version": "v0.3.1",
 
     "testing_server_id": "876042400005505066",
-    "log_level": "info",
+    "log_level": "debug",
     "discord_log_level": "critical",
     "log_function_usage": false
 }
