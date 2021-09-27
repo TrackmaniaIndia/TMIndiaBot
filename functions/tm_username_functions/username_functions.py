@@ -29,12 +29,15 @@ def get_all_usernames() -> list[str]:
         for author_id in all_usernames["Usernames"]:
             log.debug(f"Decrypting {author_id}'s username and appending")
             usernames.append(
-                decrypt(all_usernames["Usernames"][author_id]["TM2020 Username"], all_usernames["Usernames"][author_id]["TM2020 Username Key"])
+                decrypt(
+                    all_usernames["Usernames"][author_id]["TM2020 Username"],
+                    all_usernames["Usernames"][author_id]["TM2020 Username Key"],
+                )
             )
             # print(author_id)
         # print(all_usernames)
 
-    log.debug(f'Closed File')
+    log.debug(f"Closed File")
     log.debug(f"Returning list of usernames")
     return usernames
 
@@ -246,9 +249,9 @@ def get_trackmania_id_with_username_from_file(username: str) -> str:
 
 
 def get_trackmania_id_from_api(username: str) -> str:
-    log.debug(f'Checking if Username is Valid')
+    log.debug(f"Checking if Username is Valid")
     if not check_valid_trackmania_username(username):
-        log.debug(f'Not a valid username')
+        log.debug(f"Not a valid username")
         return None
 
     PLAYER_URL = BASE_API_URL + f"/tm2020/player/{username}"
@@ -260,21 +263,22 @@ def get_trackmania_id_from_api(username: str) -> str:
     log.debug(f"Parsing Data for ID")
     user_id = player_details[0]["player"]["id"]
 
-    log.debug(f'Returning User ID')
+    log.debug(f"Returning User ID")
     return user_id
 
+
 def get_id(username: str) -> str:
-    log.debug(f'Checking {username}')
+    log.debug(f"Checking {username}")
     if not check_username_in_file(username):
-        log.debug(f'{username} not in file')
-        log.debug(f'Checking if Username is Valid')
+        log.debug(f"{username} not in file")
+        log.debug(f"Checking if Username is Valid")
 
         if not check_valid_trackmania_username(username):
-            log.debug('Not a Valid Username, returning None')
+            log.debug("Not a Valid Username, returning None")
             return None
-        
-        log.debug(f'Pinging API and Getting Trackmania ID')
+
+        log.debug(f"Pinging API and Getting Trackmania ID")
         return get_trackmania_id_from_api(username)
     else:
-        log.debug(f'{username} is in file')
+        log.debug(f"{username} is in file")
         return get_trackmania_id_with_username_from_file(username)

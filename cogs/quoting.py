@@ -25,28 +25,36 @@ log = convert_logging.get_logging()
 
 version = get_version()
 
-class Quote(commands.Cog, description='Quoting Functions'):
+
+class Quote(commands.Cog, description="Quoting Functions"):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['q'], help='Quotes a Message -> Format "Message" - Author')
-    @commands.has_any_role('admin', 'Bot Developer')
+    @commands.command(
+        aliases=["q"], help='Quotes a Message -> Format "Message" - Author'
+    )
+    @commands.has_any_role("admin", "Bot Developer")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def quote(self, ctx: commands.Context, *, message):
-        message, author = message.split(' - ')
+        message, author = message.split(" - ")
 
         quote_functions.save(message, author)
-        await ctx.send('done', delete_after=3)
+        await ctx.send("done", delete_after=3)
 
-    @commands.command(help='Quotes a Random Quote')
+    @commands.command(help="Quotes a Random Quote")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def randquote(self, ctx: commands.Context):
-        log.debug(f'Getting Random Quote')
-        log.debug(f'Sending Random Quote')
+        log.debug(f"Getting Random Quote")
+        log.debug(f"Sending Random Quote")
 
-        await ctx.send(embed=quote_functions.get_random_quote_dict_to_embed(quote_functions.get_random_quote_dict()))
+        await ctx.send(
+            embed=quote_functions.get_random_quote_dict_to_embed(
+                quote_functions.get_random_quote_dict()
+            )
+        )
+
 
 def setup(client):
     client.add_cog(Quote(client))

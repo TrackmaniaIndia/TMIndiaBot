@@ -111,7 +111,9 @@ class UsernameCommands(commands.Cog):
         )
 
     @store_username.error
-    async def store_username_error(self, ctx: commands.Context, error: commands.CommandError):
+    async def store_username_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
         if isinstance(error, commands.MissingRequiredArgument):
             log.error("Username Not Given")
 

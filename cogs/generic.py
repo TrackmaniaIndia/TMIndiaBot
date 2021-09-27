@@ -106,7 +106,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             ping_api()
             log.debug(f"API Ping Successful")
         except:
-            log.error('API is Offline')
+            log.error("API is Offline")
         log.debug(f"Sending Message to Channel to Keep This Damned Thing Alive")
         log.debug(f"Got Channel Successfully")
         channel = self.client.get_channel(881732050451849216)
