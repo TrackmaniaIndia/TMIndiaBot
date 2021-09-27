@@ -5,8 +5,6 @@ import functions.logging.convert_logging as cl
 log = logging.getLogger(__name__)
 log = cl.get_logging()
 
-log.info("Logging Setup")
-
 
 def check():
     log.debug(f"Checking files")

@@ -11,7 +11,7 @@ from datetime import datetime
 import functions.logging.convert_logging as cl
 import functions.common_functions.common_functions as cf
 from functions.logging.usage import record_usage, finish_usage
-import functions.file_checks.file_check as file_check
+import functions.checks.file_check as file_check
 
 # Importing Fields from .env
 load_dotenv()
