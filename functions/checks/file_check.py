@@ -5,8 +5,6 @@ import functions.logging.convert_logging as cl
 log = logging.getLogger(__name__)
 log = cl.get_logging()
 
-log.info("Logging Setup")
-
 
 def check():
     log.debug(f"Checking files")
@@ -48,46 +46,46 @@ def check():
         ),  # TM Username Functions
     )
 
-    log.debug(f'Beginning Check')
-    log.debug(f'Checking all JSON Files')
+    log.debug(f"Beginning Check")
+    log.debug(f"Checking all JSON Files")
 
     for filename in json_files:
         if not os.path.exists(filename):
-            log.error(f'{filename} does not exist, exiting')
+            log.error(f"{filename} does not exist, exiting")
             exit()
         else:
-            log.debug(f'{filename} exists')
+            log.debug(f"{filename} exists")
 
-    log.debug(f'Checked all JSON Files')
-    log.debug(f'Checking all Cog Files')
+    log.debug(f"Checked all JSON Files")
+    log.debug(f"Checking all Cog Files")
 
     for filename in cog_files:
         if not os.path.exists(filename):
-            log.error(f'{filename} does not exist, exiting')
+            log.error(f"{filename} does not exist, exiting")
             exit()
         else:
-            log.debug(f'{filename} exists')
+            log.debug(f"{filename} exists")
 
-    log.debug(f'Checked all Cog Files')
-    log.debug(f'Checking all Data Files')
+    log.debug(f"Checked all Cog Files")
+    log.debug(f"Checking all Data Files")
 
     for filename in data_files:
         if not os.path.exists(filename):
-            log.error(f'{filename} does not exist, exiting')
+            log.error(f"{filename} does not exist, exiting")
             exit()
         else:
-            log.debug(f'{filename} exists')
+            log.debug(f"{filename} exists")
 
-    log.debug(f'Checked all Data Files')
-    log.debug(f'Checking all Functions')
+    log.debug(f"Checked all Data Files")
+    log.debug(f"Checking all Functions")
 
     for function_group in functions:
         for filename in function_group:
             if not os.path.exists(filename):
-                log.error(f'{filename} does not exist, exiting')
+                log.error(f"{filename} does not exist, exiting")
                 exit()
             else:
-                log.debug(f'{filename} exists')
+                log.debug(f"{filename} exists")
 
-    log.debug(f'Checked all Functions')
-    log.debug(f'All files exist, goodluck')
+    log.debug(f"Checked all Functions")
+    log.debug(f"All files exist, goodluck")

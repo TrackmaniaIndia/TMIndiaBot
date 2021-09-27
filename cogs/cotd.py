@@ -14,7 +14,7 @@ from functions.logging.usage import record_usage, finish_usage
 import functions.tm_username_functions.username_functions as username_functions
 
 load_dotenv()
-BASE_API_URL = os.getenv('BASE_API_URL')
+BASE_API_URL = os.getenv("BASE_API_URL")
 
 log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
@@ -35,17 +35,17 @@ class COTD(commands.Cog, description="Commands related to COTD Standings"):
         # if username is None:
         #     log.debug(f'No Username is Given, Getting Username from File')
         #     username = username_functions.get_trackmania_username(str(ctx.author.id))
-        
-        log.debug(f'Getting ID for {username}')
+
+        log.debug(f"Getting ID for {username}")
         user_id = username_functions.get_id(username)
 
         if user_id is None:
-            raise NotAValidTrackmaniaUsername('A Valid Username was not Given')
-        
-        log.debug(f'Getting COTD Data')
-        PLAYER_URL = BASE_API_URL + '/tm2020/player/' + user_id + '/cotd'
+            raise NotAValidTrackmaniaUsername("A Valid Username was not Given")
+
+        log.debug(f"Getting COTD Data")
+        PLAYER_URL = BASE_API_URL + "/tm2020/player/" + user_id + "/cotd"
         cotd_data = requests.get(PLAYER_URL).json()
-        log.debug(f'Got COTD Data')
+        log.debug(f"Got COTD Data")
 
         # print(user_id)
 
