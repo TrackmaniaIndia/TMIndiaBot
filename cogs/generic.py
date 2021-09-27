@@ -1,10 +1,4 @@
-from functions.tm_username_functions.username_functions import (
-    check_trackmania_username,
-    remove_trackmania_username,
-)
-from os import stat
 import discord
-from discord import activity
 from discord.ext import commands, tasks
 import json
 import logging
@@ -108,8 +102,11 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def keep_alive(self):
         log.debug(f"30 Minutes have passed, Task activated - at {datetime.utcnow()}")
         log.debug(f"Pinging API")
-        ping_api()
-        log.debug(f"API Ping Successful")
+        try:
+            ping_api()
+            log.debug(f"API Ping Successful")
+        except:
+            log.error('API is Offline')
         log.debug(f"Sending Message to Channel to Keep This Damned Thing Alive")
         log.debug(f"Got Channel Successfully")
         channel = self.client.get_channel(881732050451849216)

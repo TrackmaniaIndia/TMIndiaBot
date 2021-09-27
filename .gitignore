@@ -137,3 +137,5 @@ prefixes.json
 /data/times_run.txt
 
 format.bat
+
+.idea/

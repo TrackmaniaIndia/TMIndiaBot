@@ -1,11 +1,7 @@
 from re import L
 
 from discord.ext.commands.core import after_invoke, before_invoke
-from functions.tm_username_functions.username_functions import (
-    check_trackmania_username,
-    remove_trackmania_username,
-    check_username,
-)
+import functions.tm_username_functions.username_functions as username_functions
 import discord
 from discord.ext import commands
 import logging
@@ -14,11 +10,6 @@ from dotenv import load_dotenv
 
 import functions.logging.convert_logging as convert_logging
 from functions.logging.usage import record_usage, finish_usage
-from functions.tm_username_functions.username_functions import (
-    store_trackmania_username,
-    check_trackmania_username,
-    remove_trackmania_username,
-)
 from functions.other_functions.get_data import get_version
 
 load_dotenv()
@@ -48,7 +39,7 @@ class UsernameCommands(commands.Cog):
     @commands.after_invoke(finish_usage)
     async def store_username(self, ctx: commands.Context, username: str):
         log.debug(f"Checking Username")
-        if not check_username(username):
+        if not username_functions.check_valid_trackmania_username(username):
             log.debug(f"Username not found")
             await ctx.send(
                 embed=discord.Embed(
@@ -60,7 +51,7 @@ class UsernameCommands(commands.Cog):
         log.debug(f"User Exists, Continuing")
 
         log.debug(f"Storing {username} for {ctx.author.name}. ID: {ctx.author.id}")
-        store_trackmania_username(ctx, username)
+        username_functions.store_trackmania_username(ctx.author.id, username)
         log.debug(f"Stored Username for {ctx.author.name}")
 
         log.debug(f"Sending Success Message")
@@ -79,7 +70,7 @@ class UsernameCommands(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def check_username(self, ctx: commands.Context):
-        if check_trackmania_username(ctx):
+        if username_functions.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"Username in json file")
             await ctx.send(
                 embed=discord.Embed(
@@ -102,7 +93,7 @@ class UsernameCommands(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def remove_username(self, ctx: commands.Context):
-        if not check_trackmania_username(ctx):
+        if not username_functions.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"User does not exist in file")
             await ctx.send(
                 embed=discord.Embed(
@@ -112,7 +103,7 @@ class UsernameCommands(commands.Cog):
             return
 
         log.debug(f"Removing Trackmania Username")
-        remove_trackmania_username(ctx)
+        username_functions.remove_trackmania_username(ctx.author.id)
         log.debug(f"Removed Trackmania Username")
 
         await ctx.send(
@@ -120,16 +111,17 @@ class UsernameCommands(commands.Cog):
         )
 
     @store_username.error
-    async def store_username_error(self, ctx, error):
+    async def store_username_error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingRequiredArgument):
-            log.error("Prefix Not Given")
+            log.error("Username Not Given")
 
             embed = discord.Embed(
-                title=":warning: Prefix not given",
-                description="Usage: prefix <new-prefix>\nExample: !prefix $",
+                title=":warning: Trackmania Username not given",
+                description="Usage: storeusername <trackmania-username>\nExample: --storeusername ",
                 color=discord.Colour.red(),
             ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(UsernameCommands(client))

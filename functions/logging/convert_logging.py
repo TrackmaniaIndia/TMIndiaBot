@@ -1,6 +1,5 @@
 import logging
 import coloredlogs
-import discord
 import json
 
 

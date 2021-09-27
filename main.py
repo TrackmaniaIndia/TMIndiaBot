@@ -1,7 +1,7 @@
 # Importing Packages
 import discord
 from discord import colour
-from discord.ext import commands, tasks
+from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import json
@@ -11,6 +11,7 @@ from datetime import datetime
 import functions.logging.convert_logging as cl
 import functions.common_functions.common_functions as cf
 from functions.logging.usage import record_usage, finish_usage
+import functions.file_checks.file_check as file_check
 
 # Importing Fields from .env
 load_dotenv()
@@ -189,23 +190,28 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     log.debug(f"Embed Sent, Error Handler Quit")
 
 
-# Loading Cogs
-log.info("Loading Cogs")
-for filename in os.listdir("./cogs"):
-    SKIP_FILES = [
-        "convert_logging.py",
-        "common_functions.py",
-    ]
+if __name__ == '__main__':
+    log.debug(f'Checking files')
+    file_check.check()
+    log.debug(f'File Check Done')
 
-    if filename.endswith(".py"):
-        if filename in SKIP_FILES:
-            log.debug(f"Skipping {filename}")
-            continue
+    # Loading Cogs
+    log.info("Loading Cogs")
+    for filename in os.listdir("./cogs"):
+        SKIP_FILES = [
+            "convert_logging.py",
+            "common_functions.py",
+        ]
 
-        log.debug(f"Loading {filename[:-3]}")
-        client.load_extension(f"cogs.{filename[:-3]}")
+        if filename.endswith(".py"):
+            if filename in SKIP_FILES:
+                log.debug(f"Skipping {filename}")
+                continue
 
-log.info("Loaded Cogs")
+            log.debug(f"Loading {filename[:-3]}")
+            client.load_extension(f"cogs.{filename[:-3]}")
 
-# Running Client
-client.run(BOTTOKEN)
+    log.info("Loaded Cogs")
+
+    # Running Client
+    client.run(BOTTOKEN)
