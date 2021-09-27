@@ -12,6 +12,7 @@ import functions.cog_helpers.generic_functions
 from functions.logging.usage import record_usage, finish_usage
 from functions.task_helpers.pingapi import ping_api
 from functions.other_functions.get_data import get_version
+import functions.cog_helpers.quote_functions as quote_functions
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -35,7 +36,8 @@ class Quote(commands.Cog, description='Quoting Functions'):
     async def quote(self, ctx: commands.Context, *, message):
         message, author = message.split(' - ')
 
-        print(f'{message}, {author}')
+        quote_functions.save(message, author)
+        await ctx.send('done', delete_after=3)
 
     @commands.command(help='Quotes a Random Quote')
     @commands.before_invoke(record_usage)

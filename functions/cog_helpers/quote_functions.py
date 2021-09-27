@@ -28,7 +28,7 @@ def save(message, author):
         "Number": int(get_number_of_quotes() + 1)
     }
 
-    quotes += new_quote_dict
+    quotes['quotes'].append(new_quote_dict)
 
     log.debug(f'Dumping to File')
     with open('./json_data/quotes.json', 'w') as file:
