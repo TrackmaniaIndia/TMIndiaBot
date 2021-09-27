@@ -43,7 +43,10 @@ class Quote(commands.Cog, description='Quoting Functions'):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def randquote(self, ctx: commands.Context):
-        pass
+        log.debug(f'Getting Random Quote')
+        log.debug(f'Sending Random Quote')
+
+        await ctx.send(embed=quote_functions.get_random_quote_dict_to_embed(quote_functions.get_random_quote_dict()))
 
 def setup(client):
     client.add_cog(Quote(client))
