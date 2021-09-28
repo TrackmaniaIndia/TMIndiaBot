@@ -20,7 +20,7 @@ load_dotenv()
 log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
-DEFAULT_PREFIX = "*"
+guild_ids=[876042400005505066, 805313762663333919]
 
 
 class TMCommands(commands.Cog, description="Commands for Trackmania"):
@@ -103,7 +103,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
             )
 
-    @commands.command(
+    @commands.slash_command(
         name="leaderboards",
         aliases=["lb", "ld"],
         help="Leaderboards for a Specific Map",

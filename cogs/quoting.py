@@ -24,7 +24,7 @@ log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
 version = get_version()
-
+guild_ids=[876042400005505066, 805313762663333919]
 
 class Quote(commands.Cog, description="Quoting Functions"):
     def __init__(self, client):
