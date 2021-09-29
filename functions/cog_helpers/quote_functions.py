@@ -84,10 +84,13 @@ def getQuotesById(id: str):
 
     with open("./json_data/quotes.json", "r") as file:
         quotes = json.load(file)["quotes"]
-
-        authorQuotes = []
-        for quote in quotes:
-            if quote['authorId'] == b64id:
-                authorQuotes.append(quote)
         
-        return authorQuotes
+        userQuotes = []
+        for quote in quotes:
+            try:
+                if quote['authorId'] == b64id:
+                    userQuotes.append(quote)
+            except KeyError:
+                continue
+        
+        return userQuotes
