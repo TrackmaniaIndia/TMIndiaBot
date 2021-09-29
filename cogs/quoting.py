@@ -36,7 +36,7 @@ class Quote(commands.Cog, description='Quoting Functions'):
     async def quote(self, ctx: commands.Context, *, message):
         message, author = message.split(' - ')
 
-        quote_functions.save(message, author)
+        quote_functions.save(message, author, ctx.author.id)
         await ctx.send('done', delete_after=3)
 
     @commands.command(help='Quotes a Random Quote')

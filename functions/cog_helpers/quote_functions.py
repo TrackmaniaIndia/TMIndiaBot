@@ -5,12 +5,14 @@ import functions.logging.convert_logging as convert_logging
 from datetime import datetime
 import random
 import discord
+from functions.other_functions.b64_wrapper import b64encodeStr
+from uuid import uuid4
 
 log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
 
-def save(message: str, author: str) -> None:
+def save(message: str, author: str, authorId: str) -> None:
     log.debug(f"Saving {message} by {author} at {datetime.now()}")
     log.debug(f"Opening JSON File")
 
@@ -29,6 +31,8 @@ def save(message: str, author: str) -> None:
         "Author": author,
         "Date Created": date_created,
         "Number": int(get_number_of_quotes() + 1),
+        "authorId": b64encodeStr(str(authorId)),
+        "quoteId": str(uuid4())
     }
 
     quotes["quotes"].append(new_quote_dict)
@@ -74,3 +78,16 @@ def get_number_of_quotes():
         log.debug(f"Read JSON file, returning length of quotes array")
 
         return len(quotes["quotes"])
+
+def getQuotesById(id: str):
+    b64id = b64encodeStr(id)
+
+    with open("./json_data/quotes.json", "r") as file:
+        quotes = json.load(file)["quotes"]
+
+        authorQuotes = []
+        for quote in quotes:
+            if quote['authorId'] == b64id:
+                authorQuotes.append(quote)
+        
+        return authorQuotes
