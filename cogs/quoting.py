@@ -44,9 +44,13 @@ class Quote(commands.Cog, description='Quoting Functions'):
     @commands.after_invoke(finish_usage)
     async def randquote(self, ctx: commands.Context):
         log.debug(f'Getting Random Quote')
-        log.debug(f'Sending Random Quote')
+        randQuote = quote_functions.get_random_quote_dict()
 
-        await ctx.send(embed=quote_functions.get_random_quote_dict_to_embed(quote_functions.get_random_quote_dict()))
+        log.debug(f'Getting Quote Embed')
+        embed = quote_functions.get_random_quote_dict_to_embed(randQuote)
+
+        log.debug(f'Sending Random Quote')
+        await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Quote(client))
