@@ -75,7 +75,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
             await ctx.send(embed=embed)
             return None
 
-        embed=discord.Embed(title=f"Quotes by {user.name}", description=f"{user.name} Has uploaded {len(userQuotes)} Quotes")
+        embed=discord.Embed(title=f"Quotes by {user.name}", description=f"{user.name} Has uploaded {len(userQuotes)} Quotes", colour=discord.Colour.random())
 
         if len(userQuotes) > 1:
             loopAmount = 2 
