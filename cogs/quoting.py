@@ -58,10 +58,10 @@ class Quote(commands.Cog, description="Quoting Functions"):
         log.debug(f"Sending Random Quote")
         await ctx.send(embed=embed)
 
-    @commands.command(help="View all your quotes, or someone else's by pinging them")
+    @commands.command(name='viewquotes', help="View all your quotes, or someone else's by pinging them")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    async def viewquotes(self, ctx: commands.Context, mention: discord.User = None):
+    async def view_quotes(self, ctx: commands.Context, mention: discord.User = None):
         if mention != None:
             user_id = mention.id
             user = mention
