@@ -1,5 +1,6 @@
 from re import T
 import discord
+from discord import colour
 from discord.ext import commands, tasks
 import json
 import logging
@@ -88,7 +89,14 @@ class Quote(commands.Cog, description="Quoting Functions"):
         if len(userQuotes) > 1:
             embed.set_footer(text=f"{len(userQuotes) - loopAmount} More...")
 
-        await ctx.send(embed=embed)        
+        await ctx.send(embed=embed)
+
+    @quote.error
+    async def quote_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.MissingAnyRole):
+            log.error("Missing Required Role")
+            await ctx.send(embed=discord.Embed(title='You do not have the required role to use this command', description=f'You need the following roles: bot developer, admin',colour=discord.Colour.red()))
+        
 
 def setup(client):
     client.add_cog(Quote(client))
