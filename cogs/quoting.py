@@ -45,15 +45,15 @@ class Quote(commands.Cog, description="Quoting Functions"):
         quote_functions.save(message, author, ctx.author.id)
         await ctx.send("done", delete_after=3)
 
-    @commands.command(help="Quotes a Random Quote")
+    @commands.command(name='randquote', help="Quotes a Random Quote")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    async def randquote(self, ctx: commands.Context):
+    async def rand_quote(self, ctx: commands.Context):
         log.debug(f"Getting Random Quote")
-        randQuote = quote_functions.get_random_quote_dict()
+        rand_quote = quote_functions.get_random_quote_dict()
 
         log.debug(f"Getting Quote Embed")
-        embed = quote_functions.get_random_quote_dict_to_embed(randQuote)
+        embed = quote_functions.get_random_quote_dict_to_embed(rand_quote)
 
         log.debug(f"Sending Random Quote")
         await ctx.send(embed=embed)
