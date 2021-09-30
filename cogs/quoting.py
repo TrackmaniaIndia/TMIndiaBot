@@ -71,7 +71,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         userQuotes = quote_functions.getQuotesById(userId)
 
         if not userQuotes:
-            embed = discord.Embed(title="No quotes for " + user.name, description="Add one by using `$quote`")
+            embed = discord.Embed(title="No quotes for " + user.name, description="Add one by using `$quote`", color=discord.Colour.random())
             await ctx.send(embed=embed)
             return None
 
