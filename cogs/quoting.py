@@ -44,9 +44,16 @@ class Quote(commands.Cog, description="Quoting Functions"):
 
         quote_functions.save(message, author, ctx.author.id)
         # await ctx.send("done", delete_after=3)
-        await ctx.send(embed=discord.Embed(title=':white_check_mark: Saved', description=f'Saved {message} by {author}', color=discord.Colour.green()), delete_after=20)
+        await ctx.send(
+            embed=discord.Embed(
+                title=":white_check_mark: Saved",
+                description=f"Saved {message} by {author}",
+                color=discord.Colour.green(),
+            ),
+            delete_after=20,
+        )
 
-    @commands.command(name='randquote', help="Quotes a Random Quote")
+    @commands.command(name="randquote", help="Quotes a Random Quote")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def rand_quote(self, ctx: commands.Context):
@@ -59,7 +66,10 @@ class Quote(commands.Cog, description="Quoting Functions"):
         log.debug(f"Sending Random Quote")
         await ctx.send(embed=embed)
 
-    @commands.command(name='viewquotes', help="View all your quotes, or someone else's by pinging them")
+    @commands.command(
+        name="viewquotes",
+        help="View all your quotes, or someone else's by pinging them",
+    )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def view_quotes(self, ctx: commands.Context, mention: discord.User = None):
