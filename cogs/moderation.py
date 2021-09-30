@@ -19,7 +19,8 @@ log = convert_logging.get_logging()
 
 version = get_version()
 
-guild_ids=[876042400005505066, 805313762663333919]
+guild_ids = [876042400005505066, 805313762663333919]
+
 
 class Moderation(commands.Cog):
     def __init__(self, client):

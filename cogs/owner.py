@@ -14,7 +14,8 @@ load_dotenv()
 log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
-guild_ids=[876042400005505066, 805313762663333919]
+guild_ids = [876042400005505066, 805313762663333919]
+
 
 class Owner(commands.Cog, description="Owner Functions"):
     def __init__(self, client):

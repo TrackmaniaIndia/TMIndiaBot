@@ -19,7 +19,8 @@ BASE_API_URL = os.getenv("BASE_API_URL")
 log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
-guild_ids=[876042400005505066, 805313762663333919]
+guild_ids = [876042400005505066, 805313762663333919]
+
 
 class COTD(commands.Cog, description="Commands related to COTD Standings"):
     def __init__(self, client):

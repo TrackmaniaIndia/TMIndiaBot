@@ -32,7 +32,7 @@ def save(message: str, author: str, authorId: str) -> None:
         "Date Created": date_created,
         "Number": int(get_number_of_quotes() + 1),
         "authorId": b64encodeStr(str(authorId)),
-        "quoteId": str(uuid4())
+        "quoteId": str(uuid4()),
     }
 
     quotes["quotes"].append(new_quote_dict)
@@ -79,18 +79,19 @@ def get_number_of_quotes():
 
         return len(quotes["quotes"])
 
+
 def get_quotes_by_id(id: str):
     b64id = b64encode_string(id)
 
     with open("./json_data/quotes.json", "r") as file:
         quotes = json.load(file)["quotes"]
-        
+
         userQuotes = []
         for quote in quotes:
             try:
-                if quote['authorId'] == b64id:
+                if quote["authorId"] == b64id:
                     userQuotes.append(quote)
             except KeyError:
                 continue
-        
+
         return userQuotes
