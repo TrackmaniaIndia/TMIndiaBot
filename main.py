@@ -149,6 +149,16 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 
         # Stop further execution
         return None
+    
+    if isinstance(error, commands.UserNotFound):
+        
+        emb = discord.Embed(
+            title=":warning: Mentioned user not found", color=discord.Colour.red()
+        ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=emb)
+
+        # Stop further execution
+        return None
 
     if isinstance(error, commands.MissingRequiredArgument):
         return None

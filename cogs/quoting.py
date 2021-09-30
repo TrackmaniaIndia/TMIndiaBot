@@ -1,3 +1,4 @@
+from re import T
 import discord
 from discord.ext import commands, tasks
 import json
@@ -39,22 +40,55 @@ class Quote(commands.Cog, description="Quoting Functions"):
     async def quote(self, ctx: commands.Context, *, message):
         message, author = message.split(" - ")
 
-        quote_functions.save(message, author)
-        await ctx.send("done", delete_after=3)
+        quote_functions.save(message, author, ctx.author.id)
+        await ctx.send('done', delete_after=3)
 
     @commands.command(help="Quotes a Random Quote")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def randquote(self, ctx: commands.Context):
-        log.debug(f"Getting Random Quote")
-        log.debug(f"Sending Random Quote")
+        log.debug(f'Getting Random Quote')
+        randQuote = quote_functions.get_random_quote_dict()
 
-        await ctx.send(
-            embed=quote_functions.get_random_quote_dict_to_embed(
-                quote_functions.get_random_quote_dict()
-            )
-        )
+        log.debug(f'Getting Quote Embed')
+        embed = quote_functions.get_random_quote_dict_to_embed(randQuote)
 
+        log.debug(f'Sending Random Quote')
+        await ctx.send(embed=embed)
+
+    @commands.command(help='View all your quotes, or someone else\'s by pinging them')
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def viewquotes(self, ctx: commands.Context, mention: discord.User = None):
+        if mention != None:
+            userId = mention.id
+            user = mention
+        else: 
+            userId = ctx.author.id
+            user = ctx.message.author
+
+        userQuotes = quote_functions.getQuotesById(userId)
+
+        if not userQuotes:
+            embed = discord.Embed(title="No quotes for " + user.name, description="Add one by using `$quote`")
+            await ctx.send(embed=embed)
+            return None
+
+        embed=discord.Embed(title=f"Quotes by {user.name}", description=f"{user.name} Has uploaded {len(userQuotes)} Quotes")
+
+        if len(userQuotes) > 1:
+            loopAmount = 2 
+        else:
+            loopAmount = len(userQuotes)
+
+        for i in range(loopAmount):
+            quote = userQuotes[i]
+            embed.add_field(name=f'{quote["Message"]}', value=f' - {quote["Author"]}', inline=True)
+        
+        if len(userQuotes) > 1:
+            embed.set_footer(text=f"{len(userQuotes) - loopAmount} More...")
+
+        await ctx.send(embed=embed)        
 
 def setup(client):
     client.add_cog(Quote(client))
