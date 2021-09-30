@@ -43,7 +43,8 @@ class Quote(commands.Cog, description="Quoting Functions"):
         message, author = message.split(" - ")
 
         quote_functions.save(message, author, ctx.author.id)
-        await ctx.send("done", delete_after=3)
+        # await ctx.send("done", delete_after=3)
+        await ctx.send(embed=discord.Embed(title=':white_check_mark: Saved', description=f'Saved {message} by {author}', color=discord.Colour.green()))
 
     @commands.command(name='randquote', help="Quotes a Random Quote")
     @commands.before_invoke(record_usage)
