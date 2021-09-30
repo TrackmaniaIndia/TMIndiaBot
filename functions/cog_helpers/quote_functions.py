@@ -5,7 +5,7 @@ import functions.logging.convert_logging as convert_logging
 from datetime import datetime
 import random
 import discord
-from functions.other_functions.b64_wrapper import b64encodeStr
+from functions.other_functions.b64_wrapper import b64encode_string
 from uuid import uuid4
 
 log = logging.getLogger(__name__)
@@ -80,7 +80,7 @@ def get_number_of_quotes():
         return len(quotes["quotes"])
 
 def get_quotes_by_id(id: str):
-    b64id = b64encodeStr(id)
+    b64id = b64encode_string(id)
 
     with open("./json_data/quotes.json", "r") as file:
         quotes = json.load(file)["quotes"]
