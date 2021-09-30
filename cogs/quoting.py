@@ -39,6 +39,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
     @commands.has_any_role("admin", "Bot Developer")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
+    @commands.cooldown(1, 5, commands.BucketType.default)
     async def quote(self, ctx: commands.Context, *, message):
         message, author = message.split(" - ")
 

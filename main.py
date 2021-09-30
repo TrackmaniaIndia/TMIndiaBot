@@ -151,10 +151,18 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
         return None
     
     if isinstance(error, commands.UserNotFound):
-        
         emb = discord.Embed(
             title=":warning: Mentioned user not found", color=discord.Colour.red()
         ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=emb)
+
+        # Stop further execution
+        return None
+
+    if isinstance(error, commands.CommandOnCooldown):
+        emb = discord.Embed(
+            title=":warning: Still on cooldown", color=discord.Colour.red(),
+        ).set_footer(text="Try again in {:.2f}s".format(error.retry_after), icon_url=ctx.author.avatar_url)
         await ctx.send(embed=emb)
 
         # Stop further execution
