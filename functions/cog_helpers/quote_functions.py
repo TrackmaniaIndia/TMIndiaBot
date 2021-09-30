@@ -5,7 +5,7 @@ import functions.logging.convert_logging as convert_logging
 from datetime import datetime
 import random
 import discord
-from functions.other_functions.b64_wrapper import b64encodeStr
+from functions.other_functions.b64_wrapper import b64encode_string
 from uuid import uuid4
 
 log = logging.getLogger(__name__)
@@ -31,8 +31,8 @@ def save(message: str, author: str, authorId: str) -> None:
         "Author": author,
         "Date Created": date_created,
         "Number": int(get_number_of_quotes() + 1),
-        "authorId": b64encodeStr(str(authorId)),
-        "quoteId": str(uuid4())
+        "authorId": b64encode_string(str(authorId)),
+        "quoteId": str(uuid4()),
     }
 
     quotes["quotes"].append(new_quote_dict)
@@ -79,18 +79,19 @@ def get_number_of_quotes():
 
         return len(quotes["quotes"])
 
-def getQuotesById(id: str):
-    b64id = b64encodeStr(id)
+
+def get_quotes_by_id(id: str):
+    b64id = b64encode_string(id)
 
     with open("./json_data/quotes.json", "r") as file:
         quotes = json.load(file)["quotes"]
-        
+
         userQuotes = []
         for quote in quotes:
             try:
-                if quote['authorId'] == b64id:
+                if quote["authorId"] == b64id:
                     userQuotes.append(quote)
             except KeyError:
                 continue
-        
+
         return userQuotes

@@ -19,7 +19,7 @@ log = convert_logging.get_logging()
 
 version = get_version()
 
-DEFAULT_PREFIX = "*"
+guild_ids = [876042400005505066, 805313762663333919]
 
 
 class Moderation(commands.Cog):

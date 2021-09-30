@@ -23,7 +23,7 @@ log = convert_logging.get_logging()
 
 version = get_version()
 
-DEFAULT_PREFIX = "*"
+guild_ids = [876042400005505066, 805313762663333919]
 
 
 class UsernameCommands(commands.Cog):
@@ -111,7 +111,9 @@ class UsernameCommands(commands.Cog):
         )
 
     @store_username.error
-    async def store_username_error(self, ctx: commands.Context, error: commands.CommandError):
+    async def store_username_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
         if isinstance(error, commands.MissingRequiredArgument):
             log.error("Username Not Given")
 
