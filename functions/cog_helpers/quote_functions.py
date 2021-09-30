@@ -31,7 +31,7 @@ def save(message: str, author: str, authorId: str) -> None:
         "Author": author,
         "Date Created": date_created,
         "Number": int(get_number_of_quotes() + 1),
-        "authorId": b64encodeStr(str(authorId)),
+        "authorId": b64encode_string(str(authorId)),
         "quoteId": str(uuid4()),
     }
 
