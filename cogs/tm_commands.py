@@ -103,7 +103,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
             )
 
-    @commands.slash_command(
+    @commands.command(
         name="leaderboards",
         aliases=["lb", "ld"],
         help="Leaderboards for a Specific Map",
