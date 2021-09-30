@@ -79,7 +79,7 @@ def get_number_of_quotes():
 
         return len(quotes["quotes"])
 
-def getQuotesById(id: str):
+def get_quotes_by_id(id: str):
     b64id = b64encodeStr(id)
 
     with open("./json_data/quotes.json", "r") as file:

@@ -68,7 +68,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
             user_id = ctx.author.id
             user = ctx.message.author
 
-        user_quotes = quote_functions.getQuotesById(user_id)
+        user_quotes = quote_functions.get_quotes_by_id(user_id)
 
         if not user_quotes:
             embed = discord.Embed(title="No quotes for " + user.name, description="Add one by using `$quote`", color=discord.Colour.red())
