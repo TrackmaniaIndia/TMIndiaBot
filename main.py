@@ -111,101 +111,107 @@ async def on_guild_remove(guild):
         file.close()
 
 
+with open('./json_data/config.json', 'r') as file:
+    global config
+    config = json.load(file)
+    file.close()
+
 # Catch all command errors, send them to developers.
-@client.event
-async def on_command_error(ctx: commands.Context, error: commands.CommandError):
-    if hasattr(ctx.command, "on_error"):
-        log.debug(f"Command has local error handler, returning")
-        return None
-    log.debug(f"Command Doesn't have local error handler")
-    cog = ctx.cog
-    if cog:
-        if cog._get_overridden_method(cog.cog_command_error) is not None:
-            log.debug(f"Cog has local error handler, returning")
+if config['showStackTrace']:
+    @client.event
+    async def on_command_error(ctx: commands.Context, error: commands.CommandError):
+        if hasattr(ctx.command, "on_error"):
+            log.debug(f"Command has local error handler, returning")
             return None
-    log.debug(f"Cog does not have local error handler")
+        log.debug(f"Command Doesn't have local error handler")
+        cog = ctx.cog
+        if cog:
+            if cog._get_overridden_method(cog.cog_command_error) is not None:
+                log.debug(f"Cog has local error handler, returning")
+                return None
+        log.debug(f"Cog does not have local error handler")
 
-    log.debug(f"Recieving Original Exception Raised")
-    error = getattr(error, "original", error)
+        log.debug(f"Recieving Original Exception Raised")
+        error = getattr(error, "original", error)
 
-    if isinstance(error, commands.DisabledCommand):
-        log.error(f"{ctx.command} has been disabled - used by {ctx.author.name}")
-        try:
-            await ctx.send(
-                embed=discord.Embed(f"{ctx.command} has been disabled"),
-                colour=discord.Colour.red(),
+        if isinstance(error, commands.DisabledCommand):
+            log.error(f"{ctx.command} has been disabled - used by {ctx.author.name}")
+            try:
+                await ctx.send(
+                    embed=discord.Embed(f"{ctx.command} has been disabled"),
+                    colour=discord.Colour.red(),
+                )
+            except discord.HTTPException:
+                pass
+
+        if isinstance(error, commands.CommandNotFound):
+            log.error(
+                f"{ctx.author.name} tried to use {ctx.message.content} in {ctx.guild.name}"
             )
-        except discord.HTTPException:
-            pass
+            emb = discord.Embed(
+                title=":warning: Command not found", color=discord.Colour.red()
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=emb)
 
-    if isinstance(error, commands.CommandNotFound):
-        log.error(
-            f"{ctx.author.name} tried to use {ctx.message.content} in {ctx.guild.name}"
-        )
-        emb = discord.Embed(
-            title=":warning: Command not found", color=discord.Colour.red()
+            # Stop further execution
+            return None
+        
+        if isinstance(error, commands.UserNotFound):
+            emb = discord.Embed(
+                title=":warning: Mentioned user not found", color=discord.Colour.red()
+            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=emb)
+
+            # Stop further execution
+            return None
+
+        if isinstance(error, commands.CommandOnCooldown):
+            emb = discord.Embed(
+                title=":warning: Still on cooldown", color=discord.Colour.red(),
+            ).set_footer(text="Try again in {:.2f}s".format(error.retry_after), icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=emb)
+
+            # Stop further execution
+            return None
+
+        if isinstance(error, commands.MissingRequiredArgument):
+            return None
+
+        log.error(error)
+        log.debug(f"Reading Config File for Devs")
+        with open("./json_data/config.json", "r") as file:
+            config = json.loads(file.read())
+            file.close()
+        log.debug(f"Found Devs")
+
+        pingStr = ""
+
+        log.debug(f"Checking for Ping")
+        for dev in config["developers"]:
+            if dev["error_ping"]:
+                pingStr += f"<@!{dev['id']}> "
+            log.debug(f"Ping for {dev['id']} set to {dev['error_ping']}")
+        log.debug(f"Created Ping String")
+
+        log.debug(f"Receiving Error Channel")
+        channel = client.get_channel(876069587140087828)
+        log.debug(f"Found Error Channel")
+
+        log.debug(f"Creating Embed")
+        embed = discord.Embed(
+            title=":warning: " + str(error), color=discord.Colour.red()
         ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=emb)
 
-        # Stop further execution
-        return None
-    
-    if isinstance(error, commands.UserNotFound):
-        emb = discord.Embed(
-            title=":warning: Mentioned user not found", color=discord.Colour.red()
-        ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=emb)
+        embed.add_field(name="Author Username", value=ctx.author, inline=False)
+        embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
+        embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
+        embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
+        embed.add_field(name="Message content", value=ctx.message.content, inline=False)
+        log.debug(f"Created Embed")
 
-        # Stop further execution
-        return None
-
-    if isinstance(error, commands.CommandOnCooldown):
-        emb = discord.Embed(
-            title=":warning: Still on cooldown", color=discord.Colour.red(),
-        ).set_footer(text="Try again in {:.2f}s".format(error.retry_after), icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=emb)
-
-        # Stop further execution
-        return None
-
-    if isinstance(error, commands.MissingRequiredArgument):
-        return None
-
-    log.error(error)
-    log.debug(f"Reading Config File for Devs")
-    with open("./json_data/config.json", "r") as file:
-        config = json.loads(file.read())
-        file.close()
-    log.debug(f"Found Devs")
-
-    pingStr = ""
-
-    log.debug(f"Checking for Ping")
-    for dev in config["developers"]:
-        if dev["error_ping"]:
-            pingStr += f"<@!{dev['id']}> "
-        log.debug(f"Ping for {dev['id']} set to {dev['error_ping']}")
-    log.debug(f"Created Ping String")
-
-    log.debug(f"Receiving Error Channel")
-    channel = client.get_channel(876069587140087828)
-    log.debug(f"Found Error Channel")
-
-    log.debug(f"Creating Embed")
-    embed = discord.Embed(
-        title=":warning: " + str(error), color=discord.Colour.red()
-    ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
-
-    embed.add_field(name="Author Username", value=ctx.author, inline=False)
-    embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
-    embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
-    embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
-    embed.add_field(name="Message content", value=ctx.message.content, inline=False)
-    log.debug(f"Created Embed")
-
-    log.debug(f"Sending Embed")
-    await channel.send(pingStr, embed=embed)
-    log.debug(f"Embed Sent, Error Handler Quit")
+        log.debug(f"Sending Embed")
+        await channel.send(pingStr, embed=embed)
+        log.debug(f"Embed Sent, Error Handler Quit")
 
 
 if __name__ == '__main__':

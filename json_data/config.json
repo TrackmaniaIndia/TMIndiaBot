@@ -17,5 +17,6 @@
     "testing_server_id": "876042400005505066",
     "log_level": "debug",
     "discord_log_level": "critical",
-    "log_function_usage": false
+    "log_function_usage": false,
+    "showStackTrace": true
 }
