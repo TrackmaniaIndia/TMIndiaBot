@@ -4,7 +4,7 @@ import logging
 import functions.common_functions.common_functions as common_functions
 import functions.logging.convert_logging as convert_logging
 import os
-import datetime
+from datetime import datetime, timezone, timedelta
 
 # Constants
 DEFAULT_PREFIX = "*"
@@ -191,6 +191,7 @@ def getTm2020Map(tmx_id: str) -> discord.Embed:
     embed.set_author(
         name=tag + author["name"],
         url=f"https://trackmania.io/#/player/{author['id']}" + str(exchange["UserID"]),
+        timestamp=datetime.now(timezone(timedelta(hours=5, minutes=30)))
     )
     embed.add_field(name="Medals", value=medals, inline=False)
     embed.add_field(name="Mood", value=exchange["Mood"], inline=True)

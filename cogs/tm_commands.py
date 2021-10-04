@@ -86,7 +86,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
 
             embed = functions.cog_helpers.tm_commands_functions.getTm2020Map(
                 tmx_id
-            ).timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            )
             await ctx.send(embed=embed)
 
         elif game_flag.lower() == "tmnf":
