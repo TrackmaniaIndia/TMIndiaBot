@@ -35,7 +35,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def view_map(
-        self, ctx: commands.Context, game_flag: str, tmx_id: int = None
+        self, ctx: commands.Context, game_flag: str, tmx_id: str = None
     ) -> None:
         valid_flags = ["tmnf", "tm2020"]
 
@@ -46,13 +46,47 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     title="Not A Valid Flag",
                     description="Valid Flags are: TMNF, TM2020\nUsage ```viewmap <game_flag>```",
                     color=discord.Colour.red(),
-                )
-            ).set_footer(
+                ).set_footer(
                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+            )
             )
             return None
 
-        if game_flag.lower() == "tmnf":
+        if game_flag.lower() == "tm2020":
+            log.debug(f"TM2020 Flag Given")
+            tmioIdMessage = ""
+
+            def check(msg):
+                return msg.author == ctx.author and msg.channel == ctx.channel
+
+            log.debug(f"Requesting TMIO ID from User")
+
+            if tmx_id == None:
+                try:
+                    await ctx.send(
+                        embed=discord.Embed(
+                            title="Please Enter a TMIO UID",
+                            color=0x00FF00,
+                            description="TMIO UID can be found in the map's TMIO page.\nExample ([Fall 2021 01](https://trackmania.io/#/campaigns/leaderboard/45569279-a101-446d-b5d6-649471deadcf/Nhg8q0K47asKBYRVBCNC8OguB8)):",
+                        ).set_image(url="https://cdn.discordapp.com/attachments/746693237112176703/894243672193916978/unknown.png")
+                    )
+                    tmioIdMessage = await self.client.wait_for(
+                        "message", check=check, timeout=30.0
+                    )
+                    tmx_id = tmioIdMessage.content
+                    log.debug(f"Received tmio ID from User")
+                except asyncio.TimeoutError:
+                    await ctx.send(
+                        embed=discord.Embed(
+                            title="Bot Timed Out", color=discord.Colour.red()
+                        )
+                    )
+                    return
+            
+            embed = functions.cog_helpers.tm_commands_functions.getTm2020Map(tmx_id)
+            await ctx.send(embed=embed)
+
+        elif game_flag.lower() == "tmnf":
             log.debug(f"TMNF Flag Given")
             tmx_id_message = ""
 
@@ -93,15 +127,6 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             )
             await ctx.send(embed=embed)
             log.debug(f"Sent final embed")
-
-        if game_flag.lower() == "tm2020":
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Under Construction", color=discord.Colour.red()
-                )
-            ).set_footer(
-                text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
-            )
 
     @commands.command(
         name="leaderboards",
@@ -212,22 +237,25 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 )
             )
 
-    @view_map.error
-    async def error(self, ctx: commands.Context, error: commands.CommandError):
-        if isinstance(error, commands.MissingRequiredArgument):
-            log.error("Missing required arguments")
+    # @view_map.error
+    # async def error(self, ctx: commands.Context, error: commands.CommandError):
+    #     log.error(error)
+    #     if isinstance(error, commands.MissingRequiredArgument):
+    #         log.error("Missing required arguments")
 
-            log.debug(f"Creating Error Embed")
-            await ctx.send(
-                embed=discord.Embed(
-                    title=":warning: Missing required argument: Game Flag",
-                    description="**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}",
-                    color=discord.Colour.red(),
-                ).set_footer(
-                    text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
-                )
-            )
-            log.debug(f"Sent Error Embed")
+    #         log.debug(f"Creating Error Embed")
+    #         await ctx.send(
+    #             embed=discord.Embed(
+    #                 title=":warning: Missing required argument: Game Flag",
+    #                 description="**Game Flag is a required argument that is missing**,\n\nUsage: viewmap {TMNF/TM2020}",
+    #                 color=discord.Colour.red(),
+    #             ).set_footer(
+    #                 text=datetime.datetime.utcnow(), icon_url=ctx.author.avatar_url
+    #             )
+    #         )
+    #         log.debug(f"Sent Error Embed")
+    #         return None
+
 
     @get_leaderboards.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
