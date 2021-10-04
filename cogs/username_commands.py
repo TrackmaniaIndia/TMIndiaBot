@@ -75,7 +75,7 @@ class UsernameCommands(commands.Cog):
             )
             embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
 
-            await ctx.send()
+            await ctx.send(embed=embed)
         else:
             log.debug(f"Username not in json file")
             embed = discord.Embed(
