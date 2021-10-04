@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import logging
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 import functions.logging.convert_logging as convert_logging
 from functions.logging.usage import record_usage, finish_usage
@@ -36,13 +36,14 @@ class Owner(commands.Cog, description="Owner Functions"):
             embed = discord.Embed(
                 title=f"**`ERROR:`** {type(e).__name__} - {e}",
                 colour=discord.Colour.red(),
-            ).timestamp = datetime.now()
+            )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
             await ctx.send(embed=embed)
         else:
             log.debug(f"Successfully Completed, Sending Embed")
-            await ctx.send(
-                embed=discord.Embed(title=f"Success!", colour=discord.Colour.green())
-            )
+            embed = discord.Embed(title=f"Success!", colour=discord.Colour.green())
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
 
     @commands.command(name="unload", hidden=True)
     @commands.is_owner()
@@ -58,7 +59,8 @@ class Owner(commands.Cog, description="Owner Functions"):
             embed = discord.Embed(
                 title=f"**`ERROR:`** {type(e).__name__} - {e}",
                 colour=discord.Colour.red(),
-            ).timestamp = datetime.now()
+            )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
             await ctx.send(embed=embed)
         else:
             log.debug(f"Successfully Completed, Sending Embed")
@@ -83,13 +85,13 @@ class Owner(commands.Cog, description="Owner Functions"):
             embed = discord.Embed(
                 title=f"**`ERROR:`** {type(e).__name__} - {e}",
                 colour=discord.Colour.red(),
-            ).timestamp = datetime.now()
+            )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
             await ctx.send(embed=embed)
         else:
             log.debug(f"Successfully Completed, Sending Embed")
-            embed = discord.Embed(
-                title=f"Success!", colour=discord.Colour.green()
-            ).timestamp = datetime.now()
+            embed = discord.Embed(title=f"Success!", colour=discord.Colour.green())
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
             await ctx.send(embed=embed)
 
 
