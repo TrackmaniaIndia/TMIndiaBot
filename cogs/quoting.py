@@ -67,52 +67,52 @@ class Quote(commands.Cog, description="Quoting Functions"):
         log.debug(f"Sending Random Quote")
         await ctx.send(embed=embed)
 
-    @commands.command(
-        name="viewquotes",
-        help="View all your quotes, or someone else's by pinging them",
-    )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
-    async def view_quotes(self, ctx: commands.Context, mention: discord.User = None):
-        if mention != None:
-            user_id = mention.id
-            user = mention
-        else:
-            user_id = ctx.author.id
-            user = ctx.message.author
+    # @commands.command(
+    #     name="viewquotes",
+    #     help="View all your quotes, or someone else's by pinging them",
+    # )
+    # @commands.before_invoke(record_usage)
+    # @commands.after_invoke(finish_usage)
+    # async def view_quotes(self, ctx: commands.Context, mention: discord.User = None):
+    #     if mention != None:
+    #         user_id = mention.id
+    #         user = mention
+    #     else:
+    #         user_id = ctx.author.id
+    #         user = ctx.message.author
 
-        user_quotes = quote_functions.get_quotes_by_id(user_id)
+    #     user_quotes = quote_functions.get_quotes_by_id(user_id)
 
-        if not user_quotes:
-            embed = discord.Embed(
-                title="No quotes for " + user.name,
-                description="Add one by using `$quote`",
-                color=discord.Colour.red(),
-            )
-            await ctx.send(embed=embed)
-            return None
+    #     if not user_quotes:
+    #         embed = discord.Embed(
+    #             title="No quotes for " + user.name,
+    #             description="Add one by using `$quote`",
+    #             color=discord.Colour.red(),
+    #         )
+    #         await ctx.send(embed=embed)
+    #         return None
 
-        embed = discord.Embed(
-            title=f"Quotes by {user.name}",
-            description=f"{user.name} Has uploaded {len(user_quotes)} Quotes",
-            colour=discord.Colour.random(),
-        )
+    #     embed = discord.Embed(
+    #         title=f"Quotes by {user.name}",
+    #         description=f"{user.name} Has uploaded {len(user_quotes)} Quotes",
+    #         colour=discord.Colour.random(),
+    #     )
 
-        if len(user_quotes) > 1:
-            loop_amount = 2
-        else:
-            loop_amount = len(user_quotes)
+    #     if len(user_quotes) > 1:
+    #         loop_amount = 2
+    #     else:
+    #         loop_amount = len(user_quotes)
 
-        for i in range(loop_amount):
-            quote = user_quotes[i]
-            embed.add_field(
-                name=f'{quote["Message"]}', value=f' - {quote["Author"]}', inline=True
-            )
+    #     for i in range(loop_amount):
+    #         quote = user_quotes[i]
+    #         embed.add_field(
+    #             name=f'{quote["Message"]}', value=f' - {quote["Author"]}', inline=True
+    #         )
 
-        if len(user_quotes) > 1:
-            embed.set_footer(text=f"{len(user_quotes) - loop_amount} More...")
+    #     if len(user_quotes) > 1:
+    #         embed.set_footer(text=f"{len(user_quotes) - loop_amount} More...")
 
-        await ctx.send(embed=embed)
+    #     await ctx.send(embed=embed)
 
     @quote.error
     async def quote_error(self, ctx: commands.Context, error: commands.CommandError):
