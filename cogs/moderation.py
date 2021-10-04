@@ -43,11 +43,13 @@ class Moderation(commands.Cog):
         log.debug(f"Cleared {amount} messages")
 
         log.debug(f"Creating and Sending Embed")
+        embed = discord.Embed(
+            title=f"Cleared {amount} message(s) from {ctx.channel}",
+            color=discord.Colour.red(),
+        )
+        embed.timestamp = datetime.combine(datetime.today(), datetime.now())
         await ctx.send(
-            embed=discord.Embed(
-                title=f"Cleared {amount} message(s) from {ctx.channel}",
-                color=discord.Colour.red(),
-            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url),
+            embed=embed,
             delete_after=4,
         )
         log.debug(f"Sent Embed")
@@ -65,10 +67,10 @@ class Moderation(commands.Cog):
         log.debug(f"Kicked {member}")
 
         log.debug(f"Creating and Sending Embed")
+        embed = discord.Embed(title=f"Kicked {member}", color=discord.Colour.red())
+        embed.timestamp = datetime.now()
         await ctx.send(
-            embed=discord.Embed(
-                title=f"Kicked {member}", color=discord.Colour.red()
-            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url),
+            embed=embed,
             delete_after=4,
         )
         log.debug(f"Sent Embed")
@@ -86,7 +88,7 @@ class Moderation(commands.Cog):
         log.debug(f"Creating Embed")
         embed = discord.Embed(
             title=f"Banned {member}", color=discord.Colour.red()
-        ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+        ).timestamp = datetime.now()
         log.debug(f"Created Embed")
 
         log.debug(f"Sending Embed")
@@ -119,7 +121,7 @@ class Moderation(commands.Cog):
                 log.debug(f"[Successful] - Creating Embed")
                 embed = discord.Embed(
                     title=f"Unbanned {user}", color=discord.Colour.red()
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+                ).timestamp = datetime.now()
                 log.debug(f"[Successful] - Created Embed")
 
                 log.debug(f"[Successful] - Sending Embed")
@@ -132,7 +134,7 @@ class Moderation(commands.Cog):
         log.debug(f"[Unsuccessful] - Creating Embed")
         embed = discord.Embed(
             title=f"User Not Found in Ban List", color=discord.Colour.red()
-        )
+        ).timestamp = datetime.now()
         log.debug(f"[Unsuccessful] - Created Embed")
 
         log.debug(f"[Unsuccessful] - Sending Embed")

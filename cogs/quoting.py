@@ -45,12 +45,13 @@ class Quote(commands.Cog, description="Quoting Functions"):
 
         quote_functions.save(message, author, ctx.author.id)
         # await ctx.send("done", delete_after=3)
+        embed = discord.Embed(
+            title=":white_check_mark: Saved",
+            description=f"Saved {message} by {author}",
+            color=discord.Colour.green(),
+        ).timestamp = datetime.now()
         await ctx.send(
-            embed=discord.Embed(
-                title=":white_check_mark: Saved",
-                description=f"Saved {message} by {author}",
-                color=discord.Colour.green(),
-            ),
+            embed=embed,
             delete_after=20,
         )
 
@@ -62,7 +63,9 @@ class Quote(commands.Cog, description="Quoting Functions"):
         rand_quote = quote_functions.get_random_quote_dict()
 
         log.debug(f"Getting Quote Embed")
-        embed = quote_functions.get_random_quote_dict_to_embed(rand_quote)
+        embed = quote_functions.get_random_quote_dict_to_embed(
+            rand_quote
+        ).timestamp = datetime.now()
 
         log.debug(f"Sending Random Quote")
         await ctx.send(embed=embed)
@@ -88,7 +91,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
                 title="No quotes for " + user.name,
                 description="Add one by using `$quote`",
                 color=discord.Colour.red(),
-            )
+            ).timestamp = datetime.now()
             await ctx.send(embed=embed)
             return None
 
@@ -96,7 +99,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
             title=f"Quotes by {user.name}",
             description=f"{user.name} Has uploaded {len(user_quotes)} Quotes",
             colour=discord.Colour.random(),
-        )
+        ).timestamp = datetime.now()
 
         if len(user_quotes) > 1:
             loop_amount = 2
@@ -118,13 +121,13 @@ class Quote(commands.Cog, description="Quoting Functions"):
     async def quote_error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingAnyRole):
             log.error("Missing Required Role")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="You do not have the required role to use this command",
-                    description=f"You need the following roles: bot developer, admin",
-                    colour=discord.Colour.red(),
-                )
+            embed = discord.Embed(
+                title="You do not have the required role to use this command",
+                description=f"You need the following roles: bot developer, admin",
+                colour=discord.Colour.red(),
             )
+            embed.timestamp = datetime.now()
+            await ctx.send(embed=embed)
 
 
 def setup(client):

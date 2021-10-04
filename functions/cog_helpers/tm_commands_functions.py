@@ -159,7 +159,7 @@ def getTm2020Map(tmx_id: str) -> discord.Embed:
     api_data = response.json()
 
     log.debug(f"Creating Embed")
-    
+
     exchange = api_data["exchange"]
     author = api_data["authorplayer"]
 
@@ -171,21 +171,27 @@ def getTm2020Map(tmx_id: str) -> discord.Embed:
     }
 
     tag = ""
-    
+
     try:
-        if author['tag']:
+        if author["tag"]:
             tag = f'[{author["tag"]}] '
-        else: 
-            tag = ''
+        else:
+            tag = ""
     except KeyError as e:
         pass
 
     medals = getMapMedals(times)
-    uploadedAt = parseTmioTimeString(exchange['UploadedAt'])
-    updatedAt = parseTmioTimeString(exchange['UpdatedAt'])
+    uploadedAt = parseTmioTimeString(exchange["UploadedAt"])
+    updatedAt = parseTmioTimeString(exchange["UpdatedAt"])
 
-    embed=discord.Embed(title=api_data["name"], description=exchange["Comments"] if exchange["Comments"] else "No Comments")
-    embed.set_author(name=tag + author["name"], url=f"https://trackmania.io/#/player/{author['id']}" + str(exchange["UserID"]))
+    embed = discord.Embed(
+        title=api_data["name"],
+        description=exchange["Comments"] if exchange["Comments"] else "No Comments",
+    )
+    embed.set_author(
+        name=tag + author["name"],
+        url=f"https://trackmania.io/#/player/{author['id']}" + str(exchange["UserID"]),
+    )
     embed.add_field(name="Medals", value=medals, inline=False)
     embed.add_field(name="Mood", value=exchange["Mood"], inline=True)
     embed.add_field(name="Type", value=exchange["MapType"], inline=True)
@@ -195,12 +201,17 @@ def getTm2020Map(tmx_id: str) -> discord.Embed:
     embed.add_field(name="Difficulty", value=exchange["DifficultyName"], inline=True)
     embed.add_field(name="Uploaded at ", value=uploadedAt, inline=True)
     embed.add_field(name="Updated at ", value=updatedAt, inline=True)
-    embed.add_field(name="Links", value=f"[Download]({api_data['fileUrl']}) | [TMX](https://trackmania.exchange/maps/{exchange['TrackID']}/) | [Trackmania.io](https://trackmania.io/#/leaderboard/{tmx_id})", inline=False)
+    embed.add_field(
+        name="Links",
+        value=f"[Download]({api_data['fileUrl']}) | [TMX](https://trackmania.exchange/maps/{exchange['TrackID']}/) | [Trackmania.io](https://trackmania.io/#/leaderboard/{tmx_id})",
+        inline=False,
+    )
 
-    embed.set_image(url=api_data['thumbnailUrl'])
+    embed.set_image(url=api_data["thumbnailUrl"])
 
     log.debug(f"Embed Created, Returning")
     return embed
+
 
 def getMapMedals(times: dict) -> str:
     return f"""
@@ -210,17 +221,19 @@ def getMapMedals(times: dict) -> str:
     <:bronze:894268580181458975> {times['bronze']}
     """
 
+
 def formatTimeInt(time: int) -> str:
     time = str(time)
 
-    return f"0:{time[:2]}.{time[2:]}"    
+    return f"0:{time[:2]}.{time[2:]}"
+
 
 def parseTmioTimeString(string: str) -> str:
     # 020-07-02T01:23:50.87
-    date, time = string.split('T')
-    
-    day, month, year = date.split('-')
-    hour, minute, seconds = time.split(':')
+    date, time = string.split("T")
+
+    day, month, year = date.split("-")
+    hour, minute, seconds = time.split(":")
 
     minute = f"{minute}PM" if int(minute) > 12 else f"{minute}AM"
 
