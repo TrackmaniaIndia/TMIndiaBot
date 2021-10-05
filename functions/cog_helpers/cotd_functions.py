@@ -1,4 +1,3 @@
-from cogs.cotd import BASE_API_URL
 import os
 import json
 import logging
@@ -10,7 +9,7 @@ load_dotenv()
 BASE_API_URL = os.getenv("BASE_API_URL")
 
 # Constants
-DEFAULT_PREFIX = "*"
+# DEFAULT_PREFIX = "*"
 
 log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
@@ -63,3 +62,67 @@ def get_cotd_stats(user_id: str) -> dict:
     log.debug(f"Returning Dict")
 
     return cotd_data_for_played
+
+
+def get_average_global_rank(data: dict) -> float:
+    log.debug(f'Looping through Data')
+    sum = 0
+    total_num_of_cotds = len(data)
+
+    for cotd_dict in data:
+        if cotd_dict['serverRank'] == "DNF":
+            # log.debug(f'Player did not finish this COTD, reducing total num by 1')
+            total_num_of_cotds -= 1
+            continue
+        else:
+            sum += int(cotd_dict['globalRank'])
+
+    log.debug(f'Average Global Rank is {round((sum / total_num_of_cotds), 2)}')
+    return round((sum / total_num_of_cotds), 2)
+
+
+def get_average_server_rank(data: dict) -> float:
+    log.debug(f'Looping through data to get average server rank')
+    sum = 0
+    total_num_of_cotds = len(data)
+
+    for cotd_dict in data:
+        if cotd_dict['serverRank'] == "DNF":
+            total_num_of_cotds -= 1
+            continue
+        else:
+            sum += int(cotd_dict['serverRank'])
+        
+    log.debug(f'Average Server Rank is {round((sum / total_num_of_cotds), 2)}')
+    return round((sum / total_num_of_cotds), 2)
+
+
+def get_average_div(data: dict) -> float:
+    log.debug(f'Looping through data to get average server rank')
+    sum = 0
+    total_num_of_cotds = len(data)
+
+    for cotd_dict in data:
+        if cotd_dict['serverRank'] == "DNF":
+            total_num_of_cotds -= 1
+            continue
+        else:
+            sum += int(cotd_dict['server'])
+        
+    log.debug(f'Average Division is {round((sum / total_num_of_cotds), 2)}')
+    return round((sum / total_num_of_cotds), 2)
+
+
+def get_total_cotds(data: dict) -> int:
+    total_num_of_cotds = len(data)
+
+    for cotd_dict in data:
+        if cotd_dict['serverRank'] == "DNF":
+            total_num_of_cotds -= 1
+            continue
+        
+    log.debug(f'COTDs Participating in {total_num_of_cotds}')
+    return total_num_of_cotds
+
+def get_average_data(data: dict):
+    return get_average_global_rank(data), get_average_server_rank(data), get_average_div(data), get_total_cotds(data)
