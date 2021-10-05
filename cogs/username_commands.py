@@ -1,5 +1,3 @@
-from re import L
-
 from discord.ext.commands.core import after_invoke, before_invoke
 import functions.tm_username_functions.username_functions as username_functions
 import discord
@@ -11,6 +9,8 @@ from dotenv import load_dotenv
 import functions.logging.convert_logging as convert_logging
 from functions.logging.usage import record_usage, finish_usage
 from functions.other_functions.get_data import get_version
+from functions.other_functions.timestamp import curr_time
+
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -45,7 +45,7 @@ class UsernameCommands(commands.Cog):
                 title="Username not found or does not exist",
                 colour=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
             return None
         log.debug(f"User Exists, Continuing")
@@ -56,7 +56,7 @@ class UsernameCommands(commands.Cog):
 
         log.debug(f"Sending Success Message")
         embed = discord.Embed(title="SUCCESS!", color=discord.Colour.green())
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         await ctx.send(embed=embed)
         log.debug(f"Sent Success Message")
 
@@ -73,7 +73,7 @@ class UsernameCommands(commands.Cog):
             embed = discord.Embed(
                 title="Your Username Exists", colour=discord.Colour.green()
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
 
             await ctx.send(embed=embed)
         else:
@@ -81,7 +81,7 @@ class UsernameCommands(commands.Cog):
             embed = discord.Embed(
                 title="Your Username does not Exist", colour=discord.Colour.red()
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
 
             await ctx.send(embed=embed)
 
@@ -98,7 +98,7 @@ class UsernameCommands(commands.Cog):
             embed = discord.Embed(
                 title="User does not exist", colour=discord.Colour.red()
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
             return
 
@@ -106,7 +106,7 @@ class UsernameCommands(commands.Cog):
         username_functions.remove_trackmania_username(ctx.author.id)
         log.debug(f"Removed Trackmania Username")
         embed = discord.Embed(title="SUCCESS!!", colour=discord.Colour.green())
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         await ctx.send(embed=embed)
 
     @store_username.error
@@ -121,7 +121,7 @@ class UsernameCommands(commands.Cog):
                 description="Usage: storeusername <trackmania-username>\nExample: --storeusername ",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
 

@@ -15,6 +15,8 @@ from functions.logging.usage import record_usage, finish_usage
 from functions.task_helpers.pingapi import ping_api
 from functions.other_functions.get_data import get_version
 import functions.cog_helpers.quote_functions as quote_functions
+from functions.other_functions.timestamp import curr_time
+
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -50,7 +52,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
             description=f"Saved {message} by {author}",
             color=discord.Colour.green(),
         )
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         await ctx.send(
             embed=embed,
             delete_after=20,
@@ -65,7 +67,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
 
         log.debug(f"Getting Quote Embed")
         embed = quote_functions.get_random_quote_dict_to_embed(rand_quote)
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
 
         log.debug(f"Sending Random Quote")
         await ctx.send(embed=embed)
@@ -92,7 +94,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
                 description="Add one by using `$quote`",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
             return None
 
@@ -101,7 +103,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
             description=f"{user.name} Has uploaded {len(user_quotes)} Quotes",
             colour=discord.Colour.random(),
         )
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
 
         if len(user_quotes) > 1:
             loop_amount = 2
@@ -128,7 +130,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
                 description=f"You need the following roles: bot developer, admin",
                 colour=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
 

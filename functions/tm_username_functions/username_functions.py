@@ -108,6 +108,10 @@ def check_valid_trackmania_username(username: str) -> bool:
     """
     log.debug(f"Checking {username}")
 
+    if username is None:
+        log.debug(f'Username is None, Returning')
+        return False
+
     USERNAME_URL = BASE_API_URL + f"/tm2020/player/{username}"
 
     log.debug(f"Requesting from Url")
@@ -267,8 +271,13 @@ def get_trackmania_id_from_api(username: str) -> str:
     return user_id
 
 
-def get_id(username: str) -> str:
+def get_id(username: str = None) -> str:
     log.debug(f"Checking {username}")
+
+    if username is None:
+        log.debug(f'Username is None, Returning None')
+        return None
+
     if not check_username_in_file(username):
         log.debug(f"{username} not in file")
         log.debug(f"Checking if Username is Valid")

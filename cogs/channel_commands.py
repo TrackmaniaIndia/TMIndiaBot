@@ -9,6 +9,7 @@ import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
 from functions.logging.usage import record_usage, finish_usage
 from functions.other_functions.get_data import get_version
+from functions.other_functions.timestamp import curr_time
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -60,7 +61,7 @@ class ChannelCommands(
             title=f"#{channel.name} has been added to announcements file",
             color=common_functions.get_random_color(),
         )
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         await ctx.send(embed=embed)
 
     @commands.command(
@@ -88,7 +89,7 @@ class ChannelCommands(
             embed = discord.Embed(
                 title="That channel is not in the json file", color=0xFF0000
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
             return None
 
@@ -107,7 +108,7 @@ class ChannelCommands(
             title=f"#{channel.name} has been removed from announcements file",
             color=common_functions.get_random_color(),
         )
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         await ctx.send(embed=embed)
 
     @set_announcement_channel.error
@@ -117,7 +118,7 @@ class ChannelCommands(
             embed = discord.Embed(
                 title="Missing Permissions", color=discord.Color.red()
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
             return
@@ -127,7 +128,7 @@ class ChannelCommands(
                 title="Please Send a Channel Along With the Command",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
             return
 
@@ -136,7 +137,7 @@ class ChannelCommands(
             embed = discord.Embed(
                 title="Not a Valid Channel", color=discord.Colour.red()
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
     @remove_announcement_channel.error
@@ -145,7 +146,7 @@ class ChannelCommands(
             embed = discord.Embed(
                 title="Missing Permissions", color=discord.Color.red()
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
             return
         if isinstance(error, commands.MissingRequiredArgument):
@@ -153,7 +154,7 @@ class ChannelCommands(
                 title="Please Send a Channel Along With the Command",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
             return
 
@@ -162,7 +163,7 @@ class ChannelCommands(
             embed = discord.Embed(
                 title="Not a Valid Channel", color=discord.Colour.red()
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
 
