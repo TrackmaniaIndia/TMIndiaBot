@@ -4,6 +4,10 @@ import logging
 import functions.logging.convert_logging as convert_logging
 import requests
 from dotenv import load_dotenv
+import matplotlib.pyplot as plt
+import PIL
+
+from functions.other_functions.list_reverse import reverse
 
 load_dotenv()
 BASE_API_URL = os.getenv("BASE_API_URL")
@@ -124,5 +128,58 @@ def get_total_cotds(data: dict) -> int:
     log.debug(f'COTDs Participating in {total_num_of_cotds}')
     return total_num_of_cotds
 
+
 def get_average_data(data: dict):
     return get_average_global_rank(data), get_average_server_rank(data), get_average_div(data), get_total_cotds(data)
+
+
+def get_list_of_global_ranks(data: dict) -> list[int]:
+    global_ranks = []
+    
+    for cotd_dict in data:
+        if cotd_dict['serverRank'] == "DNF":
+            continue
+        global_ranks.append(cotd_dict['globalRank'])
+
+    return global_ranks
+
+
+def get_list_of_cotd_ids(data: dict) -> list[int]:
+    cotd_ids = []
+
+    for cotd_dict in data:
+        if cotd_dict['serverRank'] == "DNF":
+            continue
+        cotd_ids.append(cotd_dict['compID'])
+
+    return cotd_ids
+
+
+def make_global_rank_plot_graph(data: dict):
+    log.debug(f'Getting List of Global Ranks and COTD Ids')
+    global_ranks = reverse(get_list_of_global_ranks(data))
+    cotd_ids = reverse(get_list_of_cotd_ids(data))
+    y_axis = 'Rank'
+    x_axis = 'COTD Ids'
+
+    log.debug(f'Creating Line Plot')
+    # plt.plot(global_ranks, cotd_ids)
+    plt.plot(cotd_ids, global_ranks)
+    plt.title(f'COTD Graph for Player')
+    plt.xlabel(x_axis)
+    plt.ylabel(y_axis)
+    plt.xticks(rotation=90)
+    plt.grid(True)
+    log.debug(f'Created Line Plot')
+    # plot_image = PLT.Image.from_bytes('RGB', plt.canvas.get_width_height(), plt.canvas.tostring_rgb())
+    log.debug(f'Saving Plot to File')
+    plt.savefig('./data/cotddata.png')
+    log.debug(f'Saved Plot to File')
+
+    plt.clf()
+    plt.cla()
+    plt.close()
+        
+    return "DONE"
+    # except:
+        # return None
