@@ -139,3 +139,5 @@ prefixes.json
 format.bat
 
 .idea/
+
+.vscode/
