@@ -5,6 +5,8 @@ import logging
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from itertools import cycle
+import platform
+import psutil
 
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
@@ -38,7 +40,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         log.debug(f"Getting Statuses")
         self.statuses = cycle([])
-        with open("./json_data/statuses.json", "r") as file:
+        with open("./data/json_data/statuses.json", "r") as file:
             log.debug(f"Status Loading File")
             self.statuses = json.load(file)["statuses"]
             self.statuses.append(f"Version: {version}! Online and Ready")
@@ -78,17 +80,56 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.debug(f"Sending Message to Bot Channel")
 
         log.debug(f"Getting Announcement Channels")
-        with open("./json_data/announcement_channels.json", "r") as file:
+        with open("./data/json_data//announcement_channels.json", "r") as file:
             channels = json.load(file)
+
+        architecture = platform.machine()
+        hostname = 'tmindiabot@' + platform.node()
+        platform_details = platform.platform()
+        processor = platform.processor()
+        # python_build = platform.python_build()
+        system = str(platform.system()) + " " + str(platform.release())
+        avail_ram = str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB"
+
+        full_system_info = (
+            "------------------------------\n"
+            + f"Hostname: {hostname}\n"
+            + f"Platform: {platform_details}\n"
+            + f"Processor: {processor}\n"
+            + f"System: {system}\n"
+            + f"Architecture: {architecture}\n"
+            + f"Available Ram: {avail_ram}\n"
+            + f"------------------------------"
+        )
+        
+        log.info("------------------------------")
+        log.info(f"Hostname: {hostname}")
+        log.info(f"Platform: {platform_details}")
+        log.info(f"Processor: {processor}")
+        log.info(f"System: {system}")
+        log.info(f"Architecture: {architecture}")
+        log.info(f"Available Ram: {avail_ram}")
+        log.info("------------------------------")
+
+        log.debug(f"Creating Machine Details Embed")
+        machine_details = discord.Embed(
+            title="Machine Details", colour=discord.Colour.random()
+        )
+        log.debug(f"Created Machine Details Embed")
 
         for announcement_channel in channels["announcement_channels"]:
             log.debug(f"Sending Message in {announcement_channel}")
+            
             channel = self.client.get_channel(int(announcement_channel))
             try:
                 await channel.send(
                     f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}"
                 )
                 log.debug(f"Sent Message to {announcement_channel}")
+                if int(announcement_channel) == 880771916099641364 or int(announcement_channel) == 880628511512096778:
+                    continue
+                await channel.send(full_system_info)
+                
             except:
                 log.debug(f"Can't Send Message to {announcement_channel}")
                 continue
@@ -149,7 +190,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def prefix(self, ctx, prefix: str):
         log.info(f"Changing Prefix in {ctx.guild}")
 
-        with open("./json_data/prefixes.json", "r") as file:
+        with open("./data/json_data/prefixes.json", "r") as file:
             log.debug("Opening Prefixes JSON")
             prefixes = json.load(file)
             file.close()
@@ -158,7 +199,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         prefixes[str(ctx.guild.id)] = [prefix, DEFAULT_PREFIX]
         log.debug(f"Changed Prefix")
 
-        with open("./json_data/prefixes.json", "w") as file:
+        with open("./data/json_data/prefixes.json", "w") as file:
             log.debug("Dumping Prefixes to File")
             json.dump(prefixes, file, indent=4)
             file.close()

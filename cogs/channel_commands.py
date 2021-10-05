@@ -41,7 +41,7 @@ class ChannelCommands(
     async def set_announcement_channel(self, ctx, channel: discord.TextChannel):
         log.debug(f"Opening announcement_channels json file")
 
-        with open("./json_data/announcement_channels.json", "r") as file:
+        with open("./data/json_data/announcement_channels.json", "r") as file:
             log.debug(f"Reading json file")
             channels = json.load(file)
             log.debug(f"Read json file")
@@ -50,7 +50,7 @@ class ChannelCommands(
         channels["announcement_channels"].append(str(channel.id))
 
         log.debug(f"Writing to announcement_channels.json")
-        with open("./json_data/announcement_channels.json", "w") as file:
+        with open("./data/json_data/announcement_channels.json", "w") as file:
             log.debug(f"Dumping Prefixes to File")
             json.dump(channels, file, indent=4)
             file.close()
@@ -77,7 +77,7 @@ class ChannelCommands(
     ):
         log.debug(f"Reading announcement_channels.json")
 
-        with open("./json_data/announcement_channels.json", "r") as file:
+        with open("./data/json_data/announcement_channels.json", "r") as file:
             log.debug(f"Reading json file")
             announcement_channels = json.load(file)
             log.debug(f"Read json file")
@@ -97,7 +97,7 @@ class ChannelCommands(
         log.debug(f"Removed {channel.id}")
 
         log.debug(f"Writing to JSON File")
-        with open("./json_data/announcement_channels.json", "w") as file:
+        with open("./data/json_data/announcement_channels.json", "w") as file:
             log.debug(f"Dumping to JSON File")
             json.dump(announcement_channels, file, indent=4)
             log.debug(f"Dumped to JSON file")
