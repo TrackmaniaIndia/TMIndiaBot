@@ -5,6 +5,7 @@ import logging
 from datetime import datetime
 from dotenv import load_dotenv
 from itertools import cycle
+import platform
 
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
@@ -79,6 +80,17 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.debug(f"Getting Announcement Channels")
         with open("./json_data/announcement_channels.json", "r") as file:
             channels = json.load(file)
+        
+        architecture = platform.machine()
+        hostname = platform.node()
+        platform_details = platform.platform()
+
+        log.debug(f'Outputting Machine Details to Screen')
+        log.debug(f'Outputted Machine Details to Screen')
+
+        log.debug(f'Creating Machine Details Embed')
+        machine_details = discord.Embed(title='Machine Details', colour=discord.Colour.random())
+        log.debug(f'Created Machine Details Embed')
 
         for announcement_channel in channels["announcement_channels"]:
             log.debug(f"Sending Message in {announcement_channel}")
