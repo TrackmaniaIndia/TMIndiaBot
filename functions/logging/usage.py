@@ -26,7 +26,7 @@ async def record_usage(self, ctx: commands.Context) -> None:
 
     log_check = ""
 
-    with open("./json_data/config.json") as file:
+    with open("./data/json_data/config.json") as file:
         data = json.load(file)
         log_check = data["log_function_usage"]
         file.close()
@@ -61,7 +61,7 @@ async def finish_usage(self, ctx: commands.Context) -> None:
 
     log_check = ""
 
-    with open("./json_data/config.json") as file:
+    with open("./data/json_data/config.json") as file:
         data = json.load(file)
         log_check = data["log_function_usage"]
         file.close()

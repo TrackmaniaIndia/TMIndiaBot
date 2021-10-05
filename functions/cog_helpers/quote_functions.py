@@ -21,7 +21,7 @@ def save(message: str, author: str, authorId: str) -> None:
     # date_created = date_created_unformatted.strftime('%d %B, %Y - %I:%M:%S %p')
     date_created = date_created_unformatted.strftime("%c")
 
-    with open("./json_data/quotes.json", "r") as file:
+    with open("./data/json_data/quotes.json", "r") as file:
         log.debug(f"Loading JSON file")
         quotes = json.load(file)
         log.debug(f"Opened JSON File")
@@ -38,7 +38,7 @@ def save(message: str, author: str, authorId: str) -> None:
     quotes["quotes"].append(new_quote_dict)
 
     log.debug(f"Dumping to File")
-    with open("./json_data/quotes.json", "w") as file:
+    with open("./data/json_data/quotes.json", "w") as file:
         json.dump(quotes, file, indent=4)
     log.debug(f"Dumped to File")
     log.debug(f"Returning")
@@ -64,7 +64,7 @@ def get_random_quote_dict() -> dict:
     number = random.randint(0, get_number_of_quotes() - 1)
 
     log.debug(f"Opening Files")
-    with open("./json_data/quotes.json", "r") as file:
+    with open("./data/json_data/quotes.json", "r") as file:
         quotes = json.load(file)["quotes"]
         log.debug(f"Returning quote #{number}")
         return quotes[number]
@@ -72,7 +72,7 @@ def get_random_quote_dict() -> dict:
 
 def get_number_of_quotes():
     log.debug(f"Opening JSON File")
-    with open("./json_data/quotes.json", "r") as file:
+    with open("./data/json_data/quotes.json", "r") as file:
         log.debug(f"Loading JSON file")
         quotes = json.load(file)
         log.debug(f"Read JSON file, returning length of quotes array")
@@ -83,7 +83,7 @@ def get_number_of_quotes():
 # def get_quotes_by_id(id: str):
 #     b64id = b64encode_string(id)
 
-#     with open("./json_data/quotes.json", "r") as file:
+#     with open("./data/json_data/quotes.json", "r") as file:
 #         quotes = json.load(file)["quotes"]
 
 #         userQuotes = []

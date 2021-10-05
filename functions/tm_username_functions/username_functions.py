@@ -21,7 +21,7 @@ def get_all_usernames() -> list[str]:
 
     usernames = []
 
-    with open("./json_data/tm2020_usernames.json", "r") as file:
+    with open("./data/json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Opened File")
         all_usernames = json.load(file)
 
@@ -50,7 +50,7 @@ def get_all_discord_ids() -> list[str]:
     log.debug(f"Opening File")
     discord_ids = []
 
-    with open("./json_data/tm2020_usernames.json", "r") as file:
+    with open("./data/json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Opened File")
         all_data = json.load(file)
 
@@ -150,7 +150,7 @@ def store_trackmania_username(discord_id: str, unencrypted_string: str) -> None:
     }
 
     log.debug(f"Loading Username JSON File")
-    with open("./json_data/tm2020_usernames.json", "r") as file:
+    with open("./data/json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Storing Usernames into a Variable")
         all_usernames = json.load(file)
         log.debug(f"Stored Usernames into a Variable")
@@ -165,7 +165,7 @@ def store_trackmania_username(discord_id: str, unencrypted_string: str) -> None:
     log.debug(f"Added User Dictionary to Existing File")
 
     log.debug(f"Opening TM2020 Usernames File and Dumping")
-    with open("./json_data/tm2020_usernames.json", "w") as file:
+    with open("./data/json_data/tm2020_usernames.json", "w") as file:
         json.dump(all_usernames, file, indent=4)
         log.debug(f"Dumped to JSON File")
 
@@ -176,7 +176,7 @@ def remove_trackmania_username(discord_id: str):
         return None
 
     log.debug(f"Loading Username JSON File")
-    with open("./json_data/tm2020_usernames.json", "r") as file:
+    with open("./data/json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Storing Usernames into a Variable")
         all_usernames = json.load(file)
         log.debug(f"Stored Usernames into a Variable")
@@ -186,7 +186,7 @@ def remove_trackmania_username(discord_id: str):
     log.debug(f"Popped {discord_id}")
 
     log.debug(f"Opening TM2020 Usernames File and Dumping")
-    with open("./json_data/tm2020_usernames.json", "w") as file:
+    with open("./data/json_data/tm2020_usernames.json", "w") as file:
         json.dump(all_usernames, file, indent=4)
         log.debug(f"Dumped to JSON File")
 
@@ -216,7 +216,7 @@ def get_trackmania_id_from_file(discord_id: str) -> str:
     log.debug(f"Discord ID in File")
     log.debug(f"Opening File")
 
-    with open("./json_data/tm2020_usernames.json", "r") as file:
+    with open("./data/json_data/tm2020_usernames.json", "r") as file:
         log.debug(f"Loading JSON File")
         all_data = json.load(file)
         log.debug(f"Loaded JSON File")

@@ -10,11 +10,11 @@ def check():
     log.debug(f"Checking files")
 
     json_files = (
-        "./json_data/announcement_channels.json",
-        "./json_data/config.json",
-        "./json_data/prefixes.json",
-        "./json_data/statuses.json",
-        "./json_data/tm2020_usernames.json",
+        "./data/json_data/announcement_channels.json",
+        "./data/json_data/config.json",
+        "./data/json_data/prefixes.json",
+        "./data/json_data/statuses.json",
+        "./data/json_data/tm2020_usernames.json",
     )
     cog_files = (
         "./cogs/channel_commands.py",

@@ -40,7 +40,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         log.debug(f"Getting Statuses")
         self.statuses = cycle([])
-        with open("./json_data/statuses.json", "r") as file:
+        with open("./data/json_data/statuses.json", "r") as file:
             log.debug(f"Status Loading File")
             self.statuses = json.load(file)["statuses"]
             self.statuses.append(f"Version: {version}! Online and Ready")
@@ -80,7 +80,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.debug(f"Sending Message to Bot Channel")
 
         log.debug(f"Getting Announcement Channels")
-        with open("./json_data/announcement_channels.json", "r") as file:
+        with open("./data/json_data//announcement_channels.json", "r") as file:
             channels = json.load(file)
 
         architecture = platform.machine()
@@ -186,7 +186,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def prefix(self, ctx, prefix: str):
         log.info(f"Changing Prefix in {ctx.guild}")
 
-        with open("./json_data/prefixes.json", "r") as file:
+        with open("./data/json_data/prefixes.json", "r") as file:
             log.debug("Opening Prefixes JSON")
             prefixes = json.load(file)
             file.close()
@@ -195,7 +195,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         prefixes[str(ctx.guild.id)] = [prefix, DEFAULT_PREFIX]
         log.debug(f"Changed Prefix")
 
-        with open("./json_data/prefixes.json", "w") as file:
+        with open("./data/json_data/prefixes.json", "w") as file:
             log.debug("Dumping Prefixes to File")
             json.dump(prefixes, file, indent=4)
             file.close()
