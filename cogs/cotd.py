@@ -91,7 +91,7 @@ class COTD(commands.Cog, description="Commands related to COTD Standings"):
             await ctx.send("AN ERROR HAS OCCURED")
             return
 
-        embed=discord.Embed(title=f"COTD Data for {username}", description="COTD Data does not consider cotds where you did not complete/left the match early")
+        embed=discord.Embed(title=f"COTD Data for {username}", description="COTD Data does not consider cotds where you did not complete/left the match early\nPlease Note: Your graph only shows the previous 30 COTDs")
         embed.add_field(name="Average Global Rank", value=avg_global_rank, inline=False)
         embed.add_field(name="Average Division", value=avg_div, inline=True)
         embed.add_field(name="Average Server Rank", value=avg_server_rank, inline=True)

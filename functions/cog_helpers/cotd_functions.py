@@ -133,6 +133,13 @@ def get_average_data(data: dict):
     return get_average_global_rank(data), get_average_server_rank(data), get_average_div(data), get_total_cotds(data)
 
 
+def get_average_data_last_twenty(data: dict):
+    glob_rank, serv_rank, div_rank, tot = get_average_data(data)
+
+    try:
+        return glob_rank[-20:], serv_rank[-20:], div_rank[-20:], tot
+    except:
+        return glob_rank, serv_rank, div_rank, tot
 def get_list_of_global_ranks(data: dict) -> list[int]:
     global_ranks = []
     
@@ -157,8 +164,12 @@ def get_list_of_cotd_ids(data: dict) -> list[int]:
 
 def make_global_rank_plot_graph(data: dict):
     log.debug(f'Getting List of Global Ranks and COTD Ids')
-    global_ranks = reverse(get_list_of_global_ranks(data))
-    cotd_ids = reverse(get_list_of_cotd_ids(data))
+    try:
+        global_ranks = reverse(get_list_of_global_ranks(data))[-30:]
+        cotd_ids = reverse(get_list_of_cotd_ids(data))[-30:]
+    except:
+        global_ranks = reverse(get_list_of_global_ranks(data))
+        cotd_ids = reverse(get_list_of_cotd_ids(data))
     y_axis = 'Rank'
     x_axis = 'COTD Ids'
 
