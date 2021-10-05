@@ -127,8 +127,9 @@ class Generic(commands.Cog, description="Generic Functions"):
                 )
                 log.debug(f"Sent Message to {announcement_channel}")
                 if int(announcement_channel) == 880771916099641364 or int(announcement_channel) == 880628511512096778:
-                    continue
-                await channel.send(full_system_info)
+                    break
+                else:
+                    await channel.send(full_system_info)
                 
             except:
                 log.debug(f"Can't Send Message to {announcement_channel}")
