@@ -5,7 +5,7 @@ import functions.tm_username_functions.username_functions as username_functions
 import discord
 from discord.ext import commands
 import logging
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 
 import functions.logging.convert_logging as convert_logging
@@ -41,12 +41,12 @@ class UsernameCommands(commands.Cog):
         log.debug(f"Checking Username")
         if not username_functions.check_valid_trackmania_username(username):
             log.debug(f"Username not found")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Username not found or does not exist",
-                    colour=discord.Colour.red(),
-                )
+            embed = discord.Embed(
+                title="Username not found or does not exist",
+                colour=discord.Colour.red(),
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
             return None
         log.debug(f"User Exists, Continuing")
 
@@ -55,11 +55,9 @@ class UsernameCommands(commands.Cog):
         log.debug(f"Stored Username for {ctx.author.name}")
 
         log.debug(f"Sending Success Message")
-        await ctx.send(
-            embed=discord.Embed(
-                title="SUCCESS!", color=discord.Colour.green()
-            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
-        )
+        embed = discord.Embed(title="SUCCESS!", color=discord.Colour.green())
+        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        await ctx.send(embed=embed)
         log.debug(f"Sent Success Message")
 
     @commands.command(
@@ -72,18 +70,20 @@ class UsernameCommands(commands.Cog):
     async def check_username(self, ctx: commands.Context):
         if username_functions.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"Username in json file")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Your Username Exists", colour=discord.Colour.green()
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="Your Username Exists", colour=discord.Colour.green()
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+
+            await ctx.send(embed=embed)
         else:
             log.debug(f"Username not in json file")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Your Username does not Exist", colour=discord.Colour.red()
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="Your Username does not Exist", colour=discord.Colour.red()
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+
+            await ctx.send(embed=embed)
 
     @commands.command(
         name="removeusername",
@@ -95,20 +95,19 @@ class UsernameCommands(commands.Cog):
     async def remove_username(self, ctx: commands.Context):
         if not username_functions.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"User does not exist in file")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="User does not exist", colour=discord.Colour.red()
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="User does not exist", colour=discord.Colour.red()
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
             return
 
         log.debug(f"Removing Trackmania Username")
         username_functions.remove_trackmania_username(ctx.author.id)
         log.debug(f"Removed Trackmania Username")
-
-        await ctx.send(
-            embed=discord.Embed(title="SUCCESS!!", colour=discord.Colour.green())
-        )
+        embed = discord.Embed(title="SUCCESS!!", colour=discord.Colour.green())
+        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        await ctx.send(embed=embed)
 
     @store_username.error
     async def store_username_error(
@@ -121,7 +120,8 @@ class UsernameCommands(commands.Cog):
                 title=":warning: Trackmania Username not given",
                 description="Usage: storeusername <trackmania-username>\nExample: --storeusername ",
                 color=discord.Colour.red(),
-            ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
             await ctx.send(embed=embed)
 
 

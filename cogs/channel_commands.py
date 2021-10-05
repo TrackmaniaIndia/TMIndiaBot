@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 
 import functions.logging.convert_logging as convert_logging
@@ -56,12 +56,12 @@ class ChannelCommands(
             file.close()
 
         log.debug("Finished setting channel for {}".format(ctx.guild.id))
-        await ctx.send(
-            embed=discord.Embed(
-                title=f"#{channel.name} has been added to announcements file",
-                color=common_functions.get_random_color(),
-            )
+        embed = discord.Embed(
+            title=f"#{channel.name} has been added to announcements file",
+            color=common_functions.get_random_color(),
         )
+        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        await ctx.send(embed=embed)
 
     @commands.command(
         name="RemoveAnnouncementChannel",
@@ -85,11 +85,11 @@ class ChannelCommands(
 
         if str(channel.id) not in announcement_channels["announcement_channels"]:
             log.error(f"{str(channel.id)} is not in the json file")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="That channel is not in the json file", color=0xFF0000
-                )
+            embed = discord.Embed(
+                title="That channel is not in the json file", color=0xFF0000
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
             return None
 
         log.debug(f"Removing {channel.id}")
@@ -103,66 +103,67 @@ class ChannelCommands(
             log.debug(f"Dumped to JSON file")
             file.close()
 
-        await ctx.send(
-            embed=discord.Embed(
-                title=f"#{channel.name} has been removed from announcements file",
-                color=common_functions.get_random_color(),
-            )
+        embed = discord.Embed(
+            title=f"#{channel.name} has been removed from announcements file",
+            color=common_functions.get_random_color(),
         )
+        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        await ctx.send(embed=embed)
 
     @set_announcement_channel.error
     async def set_announcement_channel_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             log.error(f"{ctx.author.name} does not have required permissions")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Missing Permissions", color=discord.Color.red()
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="Missing Permissions", color=discord.Color.red()
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
+
             return
         if isinstance(error, commands.MissingRequiredArgument):
             log.error(f"{ctx.author.name} did not send valid argument")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Please Send a Channel Along With the Command",
-                    color=discord.Colour.red(),
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="Please Send a Channel Along With the Command",
+                color=discord.Colour.red(),
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
             return
 
         if isinstance(error, commands.ChannelNotFound):
             log.error(f"{ctx.author.name} sent invalid channel/user")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Not a Valid Channel", color=discord.Colour.red()
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="Not a Valid Channel", color=discord.Colour.red()
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
 
     @remove_announcement_channel.error
     async def remove_announcement_channel_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Missing Permissions", color=discord.Color.red()
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="Missing Permissions", color=discord.Color.red()
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
             return
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Please Send a Channel Along With the Command",
-                    color=discord.Colour.red(),
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="Please Send a Channel Along With the Command",
+                color=discord.Colour.red(),
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
             return
 
         if isinstance(error, commands.ChannelNotFound):
             log.error(f"{ctx.author.name} sent invalid channel/user")
-            await ctx.send(
-                embed=discord.Embed(
-                    title="Not a Valid Channel", color=discord.Colour.red()
-                ).set_footer(text=datetime.utcnow(), icon_url=ctx.author.avatar_url)
+            embed = discord.Embed(
+                title="Not a Valid Channel", color=discord.Colour.red()
             )
+            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            await ctx.send(embed=embed)
 
 
 def setup(client):
