@@ -68,8 +68,6 @@ def get_prefix(client, message):
 # Making the Client
 client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.default())
 
-#Testing
-
 # Events
 
 # Assigning Prefix to Guild Upon Join
