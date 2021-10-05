@@ -6,6 +6,7 @@ from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from itertools import cycle
 import platform
+import psutil
 
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
@@ -81,17 +82,40 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.debug(f"Getting Announcement Channels")
         with open("./json_data/announcement_channels.json", "r") as file:
             channels = json.load(file)
-        
+
         architecture = platform.machine()
-        hostname = platform.node()
+        hostname = 'tmindiabot@' + platform.node()
         platform_details = platform.platform()
+        processor = platform.processor()
+        # python_build = platform.python_build()
+        system = str(platform.system()) + " " + str(platform.release())
+        avail_ram = str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB"
 
-        log.debug(f'Outputting Machine Details to Screen')
-        log.debug(f'Outputted Machine Details to Screen')
+        full_system_info = (
+            "------------------------------\n"
+            + f"Hostname: {hostname}\n"
+            + f"Platform: {platform_details}\n"
+            + f"Processor: {processor}\n"
+            + f"System: {system}\n"
+            + f"Architecture: {architecture}\n"
+            + f"Available Ram: {avail_ram}\n"
+            + f"------------------------------"
+        )
+        
+        log.info("------------------------------")
+        log.info(f"Hostname: {hostname}")
+        log.info(f"Platform: {platform_details}")
+        log.info(f"Processor: {processor}")
+        log.info(f"System: {system}")
+        log.info(f"Architecture: {architecture}")
+        log.info(f"Available Ram: {avail_ram}")
+        log.info("------------------------------")
 
-        log.debug(f'Creating Machine Details Embed')
-        machine_details = discord.Embed(title='Machine Details', colour=discord.Colour.random())
-        log.debug(f'Created Machine Details Embed')
+        log.debug(f"Creating Machine Details Embed")
+        machine_details = discord.Embed(
+            title="Machine Details", colour=discord.Colour.random()
+        )
+        log.debug(f"Created Machine Details Embed")
 
         for announcement_channel in channels["announcement_channels"]:
             log.debug(f"Sending Message in {announcement_channel}")
@@ -100,6 +124,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 await channel.send(
                     f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}"
                 )
+                await channel.send(full_system_info)
                 log.debug(f"Sent Message to {announcement_channel}")
             except:
                 log.debug(f"Can't Send Message to {announcement_channel}")
