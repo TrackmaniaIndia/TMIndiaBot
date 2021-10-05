@@ -140,6 +140,6 @@ format.bat
 
 .idea/
 
-.vscode/
+/.vscode/
 
-./data/cotddata.png
+/data/cotddata.png
