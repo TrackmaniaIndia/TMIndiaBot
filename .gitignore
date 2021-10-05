@@ -141,3 +141,5 @@ format.bat
 .idea/
 
 .vscode/
+
+./data/cotddata.png
