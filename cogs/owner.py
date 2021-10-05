@@ -6,6 +6,8 @@ from datetime import datetime, timezone, timedelta
 
 import functions.logging.convert_logging as convert_logging
 from functions.logging.usage import record_usage, finish_usage
+from functions.other_functions.timestamp import curr_time
+
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -37,12 +39,12 @@ class Owner(commands.Cog, description="Owner Functions"):
                 title=f"**`ERROR:`** {type(e).__name__} - {e}",
                 colour=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
         else:
             log.debug(f"Successfully Completed, Sending Embed")
             embed = discord.Embed(title=f"Success!", colour=discord.Colour.green())
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
     @commands.command(name="unload", hidden=True)
@@ -60,7 +62,7 @@ class Owner(commands.Cog, description="Owner Functions"):
                 title=f"**`ERROR:`** {type(e).__name__} - {e}",
                 colour=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
         else:
             log.debug(f"Successfully Completed, Sending Embed")
@@ -86,12 +88,12 @@ class Owner(commands.Cog, description="Owner Functions"):
                 title=f"**`ERROR:`** {type(e).__name__} - {e}",
                 colour=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
         else:
             log.debug(f"Successfully Completed, Sending Embed")
             embed = discord.Embed(title=f"Success!", colour=discord.Colour.green())
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
 

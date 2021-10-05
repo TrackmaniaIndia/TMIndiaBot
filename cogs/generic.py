@@ -11,9 +11,11 @@ import psutil
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
 import functions.cog_helpers.generic_functions
-from functions.logging.usage import DEFAULT_PREFIX, record_usage, finish_usage
+from functions.logging.usage import record_usage, finish_usage
 from functions.task_helpers.pingapi import ping_api
 from functions.other_functions.get_data import get_version
+from functions.other_functions.timestamp import curr_time
+
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -68,7 +70,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         times_run += 1
 
-        time_started = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        time_started = curr_time()
         time_started = time_started.strftime("%c %z")
 
         log.info(f"Starting Keep Alive Loop")
@@ -221,7 +223,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             description="https://github.com/NottCurious/TMIndiaBot",
             color=common_functions.get_random_color(),
         )
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         await ctx.send(embed=embed)
 
     @commands.command(hidden=True)
@@ -247,7 +249,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             description=f"If you want to join the dev team, you must\n**1. Have knowledge in either Python/Javascript**\n**2. Be a known and trustworthy member of the Trackmania India scene**\n**3. Know x86 Assembly (Required)**\n**4. Know how to build a CPU from scratch (Optional)**\n**5. Know how to build a mini electro magnet which fits inside your chest using tools that you can find inside a cave with a doctor who becomes a friend but dies during your escape**\n**6. 70 Years of Experience in Python**\n\nPlease contact NottCurious#4351 if you want to apply.\n\nYou may also see the source code by using *source",
             colour=common_functions.get_random_color(),
         )
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         await ctx.send(embed=embed)
 
     # Error Management
@@ -260,7 +262,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 title="This command cannot be used in a DM, please use a server",
                 colour=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
 
             await ctx.send(embed=embed)
         if isinstance(error, commands.MissingRequiredArgument):
@@ -271,7 +273,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 description="Usage: prefix <new-prefix>\nExample: !prefix $",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
         if isinstance(error, commands.MissingAnyRole):
@@ -280,7 +282,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 title=":warning: You dont have a required role: Admin, Moderator, Bot Developer",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
     @causeError.error
@@ -292,7 +294,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 description="This commands is only used in testing",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
             return None
@@ -306,7 +308,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 description="Please contact NottCurious#4351 or Artifex#0690 if it's an emergency that requires them to kill the bot",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
             return None

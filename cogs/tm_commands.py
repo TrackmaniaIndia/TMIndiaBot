@@ -10,6 +10,8 @@ import functions.cog_helpers.tm_commands_functions
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
 from functions.logging.usage import record_usage, finish_usage
+from functions.other_functions.timestamp import curr_time
+
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -45,7 +47,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 title="Not A Valid Flag",
                 description="Valid Flags are: TMNF, TM2020\nUsage ```viewmap <game_flag>```",
                 color=discord.Colour.red(),
-            ).timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            ).timestamp = curr_time()
             await ctx.send(embed=embed)
             return None
 
@@ -70,7 +72,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                             url="https://cdn.discordapp.com/attachments/746693237112176703/894243672193916978/unknown.png"
                         )
                         .timestamp
-                    ) = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+                    ) = curr_time()
                     await ctx.send(embed=embed)
                     tmioIdMessage = await self.client.wait_for(
                         "message", check=check, timeout=30.0
@@ -80,7 +82,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 except asyncio.TimeoutError:
                     embed = discord.Embed(
                         title="Bot Timed Out", color=discord.Colour.red()
-                    ).timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+                    ).timestamp = curr_time()
                     await ctx.send(embed=embed)
                     return
 
@@ -104,7 +106,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                         title="Please Enter a TMX ID",
                         color=0x00FF00,
                         description="TMX ID can be found at the end of map url.\nExample: tmnforever.tm-exchange.com/trackshow/**2233**",
-                    ).timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+                    ).timestamp = curr_time()
                     await ctx.send(embed=embed)
                     tmx_id_message = await self.client.wait_for(
                         "message", check=check, timeout=30.0
@@ -113,7 +115,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 except asyncio.TimeoutError:
                     embed = discord.Embed(
                         title="Bot Timed Out", color=discord.Colour.red()
-                    ).timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+                    ).timestamp = curr_time()
                     await ctx.send(embed=embed)
                     return
 
@@ -148,7 +150,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 color=discord.Colour.red(),
             )
 
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
 
             await ctx.send(embed=embed)
             return None
@@ -219,7 +221,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 title=f"{ctx.command} successfully run",
                 colour=discord.Colour.green(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
 
             await ctx.send(embed=embed)
 
@@ -229,7 +231,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             embed = discord.Embed(
                 title="Under Construction", color=discord.Colour.red()
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
     @view_map.error
@@ -262,7 +264,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                 description="**Game Flag is a required argument that is missing**,\n\nUsage: leaderboards {TMNF/TM2020}",
                 color=discord.Colour.red(),
             )
-            embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            embed.timestamp = curr_time()
             await ctx.send(embed=embed)
 
 

@@ -13,6 +13,8 @@ import functions.logging.convert_logging as convert_logging
 from functions.logging.usage import record_usage, finish_usage
 import functions.tm_username_functions.username_functions as username_functions
 from functions.cog_helpers.cotd_functions import get_average_data
+from functions.other_functions.timestamp import curr_time
+
 
 load_dotenv()
 BASE_API_URL = os.getenv("BASE_API_URL")

@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 import functions.logging.convert_logging as convert_logging
 from functions.logging.usage import record_usage, finish_usage
 from functions.other_functions.get_data import get_version
+from functions.other_functions.timestamp import curr_time
+
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -48,7 +50,7 @@ class Moderation(commands.Cog):
             color=discord.Colour.red(),
         )
         embed.timestamp = datetime.combine(
-            datetime.today(), datetime.now(timezone(timedelta(hours=5, minutes=30)))
+            datetime.today(), curr_time()
         )
         await ctx.send(
             embed=embed,
@@ -70,7 +72,7 @@ class Moderation(commands.Cog):
 
         log.debug(f"Creating and Sending Embed")
         embed = discord.Embed(title=f"Kicked {member}", color=discord.Colour.red())
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         await ctx.send(
             embed=embed,
             delete_after=4,
@@ -89,7 +91,7 @@ class Moderation(commands.Cog):
 
         log.debug(f"Creating Embed")
         embed = discord.Embed(title=f"Banned {member}", color=discord.Colour.red())
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         log.debug(f"Created Embed")
 
         log.debug(f"Sending Embed")
@@ -123,7 +125,7 @@ class Moderation(commands.Cog):
                 embed = discord.Embed(
                     title=f"Unbanned {user}", color=discord.Colour.red()
                 )
-                embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+                embed.timestamp = curr_time()
                 log.debug(f"[Successful] - Created Embed")
 
                 log.debug(f"[Successful] - Sending Embed")
@@ -137,7 +139,7 @@ class Moderation(commands.Cog):
         embed = discord.Embed(
             title=f"User Not Found in Ban List", color=discord.Colour.red()
         )
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        embed.timestamp = curr_time()
         log.debug(f"[Unsuccessful] - Created Embed")
 
         log.debug(f"[Unsuccessful] - Sending Embed")
