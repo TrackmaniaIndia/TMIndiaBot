@@ -36,6 +36,7 @@ class COTD(commands.Cog, description="Commands related to COTD Standings"):
     )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def cotd(self, ctx: commands.Command, username: str = None) -> None:
         if username is None:
             log.debug(f"No Username is Given, Getting Username from File")
@@ -103,17 +104,10 @@ class COTD(commands.Cog, description="Commands related to COTD Standings"):
         await ctx.send(file=discord.File('./data/cotddata.png'))
 
 
-    # @cotd.error
-    # async def cotd_error(self, ctx: commands.Context, error):
-    #     if isinstance(error, NotAValidTrackmaniaUsername):
-    #         embed = discord.Embed(
-    #             title="Not a Valid Trackmania Username/Your Username is not stored in the file",
-    #             description="If your username is not in the file, please use `--storeusername \{tm2020_username\}`",
-    #             color=discord.Colour.red(),
-    #         )
-    #         embed.timestamp = curr_time()
-    #         await ctx.send(embed=embed)
-
+    @cotd.error
+    async def cotd_error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f'Command is Still on Cooldown for {round(error.retry_after, 2)}s')
 
 def setup(client):
     client.add_cog(COTD(client))
