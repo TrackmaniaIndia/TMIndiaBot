@@ -119,13 +119,17 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         for announcement_channel in channels["announcement_channels"]:
             log.debug(f"Sending Message in {announcement_channel}")
+            
             channel = self.client.get_channel(int(announcement_channel))
             try:
                 await channel.send(
                     f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {time_started}"
                 )
-                await channel.send(full_system_info)
                 log.debug(f"Sent Message to {announcement_channel}")
+                if int(announcement_channel) == 880771916099641364 or int(announcement_channel) == 880628511512096778:
+                    continue
+                await channel.send(full_system_info)
+                
             except:
                 log.debug(f"Can't Send Message to {announcement_channel}")
                 continue
