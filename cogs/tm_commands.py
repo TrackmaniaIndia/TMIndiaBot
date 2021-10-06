@@ -1,3 +1,4 @@
+from inspect import indentsize
 import discord
 from discord.ext import commands
 import logging
@@ -5,13 +6,17 @@ from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 import asyncio
 from disputils.pagination import BotEmbedPaginator
+import os
+import requests
 
 import functions.cog_helpers.tm_commands_functions
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
 from functions.logging.usage import record_usage, finish_usage
 from functions.other_functions.timestamp import curr_time
-
+import functions.tm_username_functions.username_functions as username_functions
+from functions.other_functions.timestamp import curr_time
+from functions.cog_helpers.cotd_functions import get_cotd_stats
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -233,6 +238,120 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             )
             embed.timestamp = curr_time()
             await ctx.send(embed=embed)
+        
+    @commands.command(
+        name="player",
+        aliases=["pl"],
+        help="Stats for a given player, if none is given it will use your stored username",
+    )
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def player(self, ctx: commands.Command, inUsername: str = None) -> None:
+        global playerData
+        playerData = None
+        
+        BASE_API_URL = os.getenv('BASE_API_URL')
+        PLAYER_DATA_URL = BASE_API_URL + '/tm2020/player/{}'
+
+        fileUsername = username_functions.get_trackmania_username(ctx.author.id)
+
+        log.debug("Checking if username in file")
+        if fileUsername == None:
+            log.debug("Username not found in file, checking API")
+            apiResponse = requests.get(PLAYER_DATA_URL.format(inUsername)).json()
+
+            foundUsername = common_functions.checkKey(apiResponse[0], 'player')
+            log.debug('Checking if username in API response')
+            if foundUsername:
+                log.debug("Username found in API response")
+                playerData = apiResponse[0]
+            else:
+                log.debug("Username not found in API response")
+        else:
+            log.debug('Getting API response with file username')
+            apiResponse = requests.get(PLAYER_DATA_URL.format(fileUsername)).json()
+
+            foundUsername = common_functions.checkKey(apiResponse[0], 'player')
+            log.debug('Checking if username in API response')
+            if foundUsername:
+                log.debug("Username found in API response")
+                playerData = apiResponse[0]
+            else:
+                log.debug("Username not found in API response")
+        
+        if playerData == None:
+            log.debug("Player not found")
+            embed = discord.Embed(  
+                title="Not a Valid Trackmania Username/Your Username is not stored in the file",
+                description="If your username is not in the file, please use `--storeusername *username*`",
+                color=discord.Colour.red(),
+            )
+            embed.timestamp = curr_time()
+            
+            await ctx.send(embed=embed)
+            log.debug("Sent embed")
+            return
+
+        log.debug("Player found")
+
+
+        global tag
+        tag = ""
+
+        global player, zone, meta, matchmaking
+        player, zone, meta, matchmaking = {}, {}, {}, []
+        try:
+            player = playerData['player']
+            zone = player['zone']
+            meta = player['meta']
+            matchmaking = playerData['matchmaking']
+        except KeyError as e:
+            pass
+
+        try:
+            flagEmoji = requests.get(BASE_API_URL + '/flag/' + zone['flag']).json()['emoji']
+        except KeyError:
+            flagEmoji = '🌎'
+
+        hasTwitch = common_functions.checkKey(meta, 'twitch')
+        hasYoutube = common_functions.checkKey(meta, 'youtube')
+        hasTwitter = common_functions.checkKey(meta, 'twitter')
+        hasTag  = common_functions.checkKey(player, 'tag')
+        
+        links = ""
+        if hasTwitch:
+            links += f"[<:twitch:895250576751853598>](https://www.twitch.tv/{meta['twitch']}) "
+        
+        if hasYoutube:
+            links += f"[<:youtube:895250572599513138>](https://www.youtube.com/c/{meta['youtube']}) "
+        
+        if hasTwitter:
+            links += f'[<:twitter:895250587157946388>](https://www.twitter.com/{meta["twitter"]})'
+        
+        if not hasTwitch or not hasYoutube or not hasTwitter:
+            links = "No Links"
+
+        if hasTag:
+            tag = f"[{player['tag']}] "
+        
+
+
+        log.debug("Making embed")
+        embed = discord.Embed(
+            title=f"{tag}{player['name']} {flagEmoji}",
+            timestamp=curr_time(),
+            color = discord.Color.random()
+        )
+
+        embed.add_field(name="Links", value=links, inline=False)
+        embed.add_field(name="Matchmaking", value=f"Rounds played - {len(matchmaking)}", inline=True)
+
+        embed.set_footer(text="More data will be added as Trackmania.io updates")
+
+        log.debug("Made embed, sending")
+        await ctx.send(embed=embed)
+        log.debug("Sent embed")
 
     @view_map.error
     async def error(self, ctx: commands.Context, error: commands.CommandError):
