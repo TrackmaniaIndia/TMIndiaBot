@@ -92,16 +92,18 @@ class COTD(commands.Cog, description="Commands related to COTD Standings"):
             await ctx.send("AN ERROR HAS OCCURED")
             return
 
-        embed=discord.Embed(title=f"COTD Data for {username}", description="COTD Data does not consider cotds where you did not complete/left the match early\nPlease Note: Your graph only shows the previous 30 COTDs")
-        embed.add_field(name="Average Global Rank", value=avg_global_rank, inline=False)
+        embed=discord.Embed(title=f"COTD Data for {username}", description="COTD Data does not consider cotds where you did not complete/left the match early\nPlease Note: Your graph only shows the previous 30 COTDs\n~~----~~")
+        embed.add_field(name="Total COTDs Completed", value=total_cotds, inline=False)
+        embed.add_field(name="Average Global Rank", value=avg_global_rank, inline=True)
         embed.add_field(name="Average Division", value=avg_div, inline=True)
         embed.add_field(name="Average Server Rank", value=avg_server_rank, inline=True)
-        embed.add_field(name="Total COTDs Completed", value=total_cotds, inline=True)
         embed.timestamp = curr_time()
 
-        log.debug(f'Sending Embed and PNG File')
-        await ctx.send(embed=embed)
-        await ctx.send(file=discord.File('./data/cotddata.png'))
+        log.debug(f'Sending Embed')
+
+        file = discord.File('./data/cotddata.png', filename="cotd.png") 
+        embed.set_image(url="attachment://cotd.png")
+        await ctx.send(file=file, embed=embed)
 
 
     @cotd.error
