@@ -9,7 +9,7 @@ from disputils.pagination import BotEmbedPaginator
 import os
 import requests
 
-import functions.cog_helpers.tm_commands_functions
+from functions.cog_helpers.tm_commands_functions import getTm2020Map, get_tmnf_map, get_leaderboards, removeManiaTextFormatting
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
 from functions.logging.usage import record_usage, finish_usage
@@ -91,7 +91,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
                     await ctx.send(embed=embed)
                     return
 
-            embed = functions.cog_helpers.tm_commands_functions.getTm2020Map(
+            embed = getTm2020Map(
                 tmx_id
             )
             await ctx.send(embed=embed)
@@ -127,7 +127,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Received TMX ID from User")
 
             log.debug(f"Sending Final Embed")
-            embed = functions.cog_helpers.tm_commands_functions.get_tmnf_map(
+            embed = get_tmnf_map(
                 tmx_id=str(tmx_id)
             )
 
@@ -200,7 +200,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             log.debug(f"Received TMX ID from User")
 
             log.debug(f"Asking for Embeds")
-            embeds = functions.cog_helpers.tm_commands_functions.get_leaderboards(
+            embeds = get_leaderboards(
                 str(tmx_id), ctx.author.avatar_url
             )
 
@@ -299,13 +299,13 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
         global tag
         tag = ""
 
-        global player, zone, meta, matchmaking
-        player, zone, meta, matchmaking = {}, {}, {}, []
+        global player, zone, meta, matchmaking, royal
+        player, zone, meta, matchmaking, royal = {}, {}, {}, {}, {}
         try:
             player = playerData['player']
             zone = player['zone']
             meta = player['meta']
-            matchmaking = playerData['matchmaking']
+            matchmaking, royal = playerData['matchmaking']
         except KeyError as e:
             pass
 
@@ -318,6 +318,7 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
         hasYoutube = common_functions.checkKey(meta, 'youtube')
         hasTwitter = common_functions.checkKey(meta, 'twitter')
         hasTag  = common_functions.checkKey(player, 'tag')
+        hasVanity = common_functions.checkKey(meta, 'vanity')
         
         links = ""
         if hasTwitch:
@@ -327,25 +328,36 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
             links += f"[<:youtube:895250572599513138>](https://www.youtube.com/c/{meta['youtube']}) "
         
         if hasTwitter:
-            links += f'[<:twitter:895250587157946388>](https://www.twitter.com/{meta["twitter"]})'
-        
-        if not hasTwitch or not hasYoutube or not hasTwitter:
-            links = "No Links"
+            links += f'[<:twitter:895250587157946388>](https://www.twitter.com/{meta["twitter"]}) '
+
+        playerUrl = f"https://trackmania.io/#/player/{meta['vanity']}" if hasVanity else f"https://trackmania.io/#/player/{player['id']}"
+        links += f"[<:tmio:895664664057356378>]({playerUrl})"
 
         if hasTag:
-            tag = f"[{player['tag']}] "
+            tag = f"[{removeManiaTextFormatting(player['tag'])}] "
         
 
+        matchData = f"""
+          - Score: {common_functions.addCommas(matchmaking['score'])}
+          - Rank:  {common_functions.getOrdinalNumber(matchmaking['rank'])}
+        """
+
+        royalData = f"""
+          - Rank:  {common_functions.getOrdinalNumber(royal['rank'])}
+          - Score: {common_functions.getOrdinalNumber(royal['score'])}
+          - Wins:  {common_functions.addCommas(royal['progression'])}
+        """
 
         log.debug("Making embed")
         embed = discord.Embed(
-            title=f"{tag}{player['name']} {flagEmoji}",
+            title=f"{tag}{removeManiaTextFormatting(player['name'])} {flagEmoji}",
             timestamp=curr_time(),
             color = discord.Color.random()
         )
 
         embed.add_field(name="Links", value=links, inline=False)
-        embed.add_field(name="Matchmaking", value=f"Rounds played - {len(matchmaking)}", inline=True)
+        embed.add_field(name="Royal", value=royalData, inline=True)
+        embed.add_field(name="Ranked", value=matchData, inline=True)
 
         embed.set_footer(text="More data will be added as Trackmania.io updates")
 

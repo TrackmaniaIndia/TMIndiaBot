@@ -22,6 +22,11 @@ def checkKey(d: dict, key: str) -> bool:
     
     return found
 
+def getOrdinalNumber(num: int) -> str:
+    return str(num) + {1: 'st', 2: 'numd', 3: 'rd'}.get(4 if 10 <= num % 100 < 20 else num % 10, "th")
+
+def addCommas(num: int) -> str:
+    return "{:,}".format(num)
 
 if __name__ == "__main__":
     for i in range(0, 100):

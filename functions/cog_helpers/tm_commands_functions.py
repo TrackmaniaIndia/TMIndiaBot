@@ -4,6 +4,7 @@ import logging
 import functions.common_functions.common_functions as common_functions
 import functions.logging.convert_logging as convert_logging
 import os
+import re
 from datetime import datetime, timezone, timedelta
 
 # Constants
@@ -239,3 +240,9 @@ def parseTmioTimeString(string: str) -> str:
     minute = f"{minute}PM" if int(minute) > 12 else f"{minute}AM"
 
     return f"{month}/{day}/{year} {hour}:{minute}"
+
+def removeManiaTextFormatting(text: str) -> str:
+    regex = r'(\$[0-9a-fA-F]{3})|(\$[wWtTzZiIoOsSgGnNmM])|(\$[hHlL](\[.*\])?)'
+    result = re.sub(regex, '', text)
+
+    return str(result.strip())
