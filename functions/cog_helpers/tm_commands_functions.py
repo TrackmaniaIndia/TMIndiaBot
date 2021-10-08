@@ -192,7 +192,7 @@ def getTm2020Map(tmx_id: str) -> discord.Embed:
     embed.set_author(
         name=tag + author["name"],
         url=f"https://trackmania.io/#/player/{author['id']}" + str(exchange["UserID"]),
-        timestamp=datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        timestamp=datetime.now(timezone(timedelta(hours=5, minutes=30))),
     )
     embed.add_field(name="Medals", value=medals, inline=False)
     embed.add_field(name="Mood", value=exchange["Mood"], inline=True)
@@ -241,8 +241,9 @@ def parseTmioTimeString(string: str) -> str:
 
     return f"{month}/{day}/{year} {hour}:{minute}"
 
-def removeManiaTextFormatting(text: str) -> str:
-    regex = r'(\$[0-9a-fA-F]{3})|(\$[wWtTzZiIoOsSgGnNmM])|(\$[hHlL](\[.*\])?)'
-    result = re.sub(regex, '', text)
+
+def remove_mania_text_formatting(text: str) -> str:
+    regex = r"(\$[0-9a-fA-F]{3})|(\$[wWtTzZiIoOsSgGnNmM])|(\$[hHlL](\[.*\])?)"
+    result = re.sub(regex, "", text)
 
     return str(result.strip())

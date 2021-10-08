@@ -12,7 +12,10 @@ from functions.custom_errors.custom_errors import NotAValidTrackmaniaUsername
 import functions.logging.convert_logging as convert_logging
 from functions.logging.usage import record_usage, finish_usage
 import functions.tm_username_functions.username_functions as username_functions
-from functions.cog_helpers.cotd_functions import get_average_data, make_global_rank_plot_graph
+from functions.cog_helpers.cotd_functions import (
+    get_average_data,
+    make_global_rank_plot_graph,
+)
 from functions.other_functions.timestamp import curr_time
 
 
@@ -62,17 +65,19 @@ class COTD(commands.Cog, description="Commands related to COTD Standings"):
         cotd_data = requests.get(PLAYER_URL).json()
         log.debug(f"Got COTD Data")
 
-        log.debug(f'Checking if COTD Data actually exists')
+        log.debug(f"Checking if COTD Data actually exists")
         try:
-            if cotd_data['error'] == 'INVALID_PLAYER_ID':
-                log.error(f'{username} has not played any cotds')
-                embed = discord.Embed(title=f'{username} has not played any cotds', color=discord.Colour.red())
+            if cotd_data["error"] == "INVALID_PLAYER_ID":
+                log.error(f"{username} has not played any cotds")
+                embed = discord.Embed(
+                    title=f"{username} has not played any cotds",
+                    color=discord.Colour.red(),
+                )
                 embed.timestamp = curr_time()
                 await ctx.send(embed=embed)
                 return
         except:
             pass
-
 
         log.debug(f"Parsing through the data and getting average values")
         avg_global_rank, avg_server_rank, avg_div, total_cotds = get_average_data(
@@ -80,36 +85,45 @@ class COTD(commands.Cog, description="Commands related to COTD Standings"):
         )
 
         if total_cotds == 0:
-            log.error(f'{username} has not played any cotds')
-            embed = discord.Embed(title=f'{username} has not played any cotds', color=discord.Colour.red())
+            log.error(f"{username} has not played any cotds")
+            embed = discord.Embed(
+                title=f"{username} has not played any cotds", color=discord.Colour.red()
+            )
             embed.timestamp = curr_time()
             await ctx.send(embed=embed)
             return
 
         PILString = make_global_rank_plot_graph(cotd_data)
         if PILString != "DONE":
-            log.error("AN ERROR HAS OCCURED, IDK WHAT WILL CAUSE THIS, BUT IT'S HERE JUST IN CASE")
+            log.error(
+                "AN ERROR HAS OCCURED, IDK WHAT WILL CAUSE THIS, BUT IT'S HERE JUST IN CASE"
+            )
             await ctx.send("AN ERROR HAS OCCURED")
             return
 
-        embed=discord.Embed(title=f"COTD Data for {username}", description="COTD Data does not consider cotds where you did not complete/left the match early\nPlease Note: Your graph only shows the previous 30 COTDs\n~~----~~")
+        embed = discord.Embed(
+            title=f"COTD Data for {username}",
+            description="COTD Data does not consider cotds where you did not complete/left the match early\nPlease Note: Your graph only shows the previous 30 COTDs\n~~----~~",
+        )
         embed.add_field(name="Total COTDs Completed", value=total_cotds, inline=False)
         embed.add_field(name="Average Global Rank", value=avg_global_rank, inline=True)
         embed.add_field(name="Average Division", value=avg_div, inline=True)
         embed.add_field(name="Average Server Rank", value=avg_server_rank, inline=True)
         embed.timestamp = curr_time()
 
-        log.debug(f'Sending Embed')
+        log.debug(f"Sending Embed")
 
-        file = discord.File('./data/cotddata.png', filename="cotd.png") 
+        file = discord.File("./data/cotddata.png", filename="cotd.png")
         embed.set_image(url="attachment://cotd.png")
         await ctx.send(file=file, embed=embed)
-
 
     @cotd.error
     async def cotd_error(self, ctx: commands.Context, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send(f'Command is Still on Cooldown for {round(error.retry_after, 2)}s')
+            await ctx.send(
+                f"Command is Still on Cooldown for {round(error.retry_after, 2)}s"
+            )
+
 
 def setup(client):
     client.add_cog(COTD(client))
