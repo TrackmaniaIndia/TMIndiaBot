@@ -247,18 +247,20 @@ class TMCommands(commands.Cog, description="Commands for Trackmania"):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def player(self, ctx: commands.Command, inUsername: str = None) -> None:
+    async def player(self, ctx: commands.Command, username: str = None) -> None:
         player_data = None
         
         BASE_API_URL = os.getenv('BASE_API_URL')
         PLAYER_DATA_URL = BASE_API_URL + '/tm2020/player/{}'
 
-        file_username = username_functions.get_trackmania_username(str(ctx.author.id))
-
+        if username == None:
+            file_username = username_functions.get_trackmania_username(str(ctx.author.id))
+        else:
+            file_username = username
         log.debug("Checking if username in file")
         if file_username == None:
             log.debug("Username not found in file, checking API")
-            apiResponse = requests.get(PLAYER_DATA_URL.format(inUsername)).json()
+            apiResponse = requests.get(PLAYER_DATA_URL.format(username)).json()
 
             found_username = common_functions.check_key(apiResponse[0], 'player')
             log.debug('Checking if username in API response')
