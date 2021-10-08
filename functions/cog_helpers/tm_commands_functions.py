@@ -241,7 +241,7 @@ def parseTmioTimeString(string: str) -> str:
 
     return f"{month}/{day}/{year} {hour}:{minute}"
 
-def removeManiaTextFormatting(text: str) -> str:
+def remove_mania_text_formatting(text: str) -> str:
     regex = r'(\$[0-9a-fA-F]{3})|(\$[wWtTzZiIoOsSgGnNmM])|(\$[hHlL](\[.*\])?)'
     result = re.sub(regex, '', text)
 
