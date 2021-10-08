@@ -49,9 +49,7 @@ class Moderation(commands.Cog):
             title=f"Cleared {amount} message(s) from {ctx.channel}",
             color=discord.Colour.red(),
         )
-        embed.timestamp = datetime.combine(
-            datetime.today(), curr_time()
-        )
+        embed.timestamp = datetime.combine(datetime.today(), curr_time())
         await ctx.send(
             embed=embed,
             delete_after=4,
