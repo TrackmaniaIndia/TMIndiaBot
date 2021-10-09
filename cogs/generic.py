@@ -54,6 +54,8 @@ class Generic(commands.Cog, description="Generic Functions"):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
+        """What the bot does when it connects to discord servers
+        """
         await self.client.change_presence(
             status=discord.Status.online,
             activity=discord.Game(f"Version: {version}! Online and Ready"),
@@ -185,6 +187,11 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def ping(self, ctx):
+        """Ping Command
+
+        Args:
+            ctx ([type]): [description]
+        """
         await ctx.send("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
     @commands.command(help="Changes Prefix to Given prefix", brief="Changes Prefix")
@@ -193,6 +200,12 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.has_any_role("admin", "Moderator", "Bot Developer")
     @commands.guild_only()
     async def prefix(self, ctx, prefix: str):
+        """Changes the Prefix for the Current Server the Bot is In
+
+        Args:
+            ctx ([type]): [description]
+            prefix (str): [description]
+        """
         log.info(f"Changing Prefix in {ctx.guild}")
 
         with open("./data/json_data/prefixes.json", "r") as file:
@@ -215,12 +228,22 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def version(self, ctx):
+        """Returns Version of Bot
+
+        Args:
+            ctx ([type]): [description]
+        """
         await ctx.send(f"Bot Version is {version}")
 
     @commands.command(help="Sends Github Source Code Link", brief="Github Source Code")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def source(self, ctx):
+        """Returns Source Code of Bot
+
+        Args:
+            ctx ([type]): [description]
+        """
         embed = discord.Embed(
             title="Source Code",
             description="https://github.com/NottCurious/TMIndiaBot",
@@ -234,6 +257,14 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.after_invoke(finish_usage)
     @commands.is_owner()
     async def causeError(self, ctx):
+        """Causes an Error, Mostly only for Testing Purposes
+
+        Args:
+            ctx ([type]): [description]
+
+        Raises:
+            commands.CommandError: [description]
+        """
         await ctx.send("Causing error")
 
         raise commands.CommandError(message="Caused error")
@@ -241,12 +272,22 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.command(hidden=True)
     @commands.is_owner()
     async def kill(self, ctx):
+        """Kills the Bot
+
+        Args:
+            ctx ([type]): [description]
+        """
         log.error("KILLING")
         await ctx.send("***KILLING***")
         exit()
 
     @commands.command()
     async def joindevs(self, ctx):
+        """Sends the Requirements to Join the Dev Team
+
+        Args:
+            ctx ([type]): [description]
+        """
         embed = discord.Embed(
             title=f"Are you sure you want to join the dev team?",
             description=f"If you want to join the dev team, you must\n**1. Have knowledge in either Python/Javascript**\n**2. Be a known and trustworthy member of the Trackmania India scene**\n**3. Know x86 Assembly (Required)**\n**4. Know how to build a CPU from scratch (Optional)**\n**5. Know how to build a mini electro magnet which fits inside your chest using tools that you can find inside a cave with a doctor who becomes a friend but dies during your escape**\n**6. 70 Years of Experience in Python**\n\nPlease contact NottCurious#4351 if you want to apply.\n\nYou may also see the source code by using *source",

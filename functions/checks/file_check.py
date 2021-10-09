@@ -7,6 +7,8 @@ log = cl.get_logging()
 
 
 def check():
+    """Checks if the Files Exists
+    """
     log.debug(f"Checking files")
 
     json_files = (

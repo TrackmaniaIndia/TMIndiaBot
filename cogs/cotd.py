@@ -41,6 +41,12 @@ class COTD(commands.Cog, description="Commands related to COTD Standings"):
     @commands.after_invoke(finish_usage)
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def cotd(self, ctx: commands.Command, username: str = None) -> None:
+        """Get COTD Data for a Given Player
+
+        Args:
+            ctx (commands.Command): [description]
+            username (str, optional): [description]. Defaults to None.
+        """
         if username is None:
             log.debug(f"No Username is Given, Getting Username from File")
             username = username_functions.get_trackmania_username(str(ctx.author.id))

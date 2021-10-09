@@ -20,6 +20,14 @@ log = convert_logging.get_logging()
 
 
 def get_cotd_data(user_id: str) -> dict:
+    """Gets COTD Data for the Given User ID in a Dictionary
+
+    Args:
+        user_id (str): [description]
+
+    Returns:
+        dict: [description]
+    """
     log.debug(f"Getting COTD Data for {user_id}")
     PLAYER_URL = BASE_API_URL + "/tm2020/player/" + user_id + "/cotd"
     cotd_data = requests.get(PLAYER_URL).json()
@@ -29,6 +37,14 @@ def get_cotd_data(user_id: str) -> dict:
 
 
 def get_cotd_stats(user_id: str) -> dict:
+    """Gets COTD Stats for the Given User ID
+
+    Args:
+        user_id (str): [description]
+
+    Returns:
+        dict: [description]
+    """
     log.debug(f"Parsing COTD Data for {user_id}")
 
     log.debug(f"Requesting Data")
@@ -69,6 +85,14 @@ def get_cotd_stats(user_id: str) -> dict:
 
 
 def get_average_global_rank(data: dict) -> float:
+    """Gets the Average Global Rank from The Given Data
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        float: [description]
+    """
     log.debug(f"Looping through Data")
     sum = 0
     total_num_of_cotds = len(data)
@@ -86,6 +110,14 @@ def get_average_global_rank(data: dict) -> float:
 
 
 def get_average_server_rank(data: dict) -> float:
+    """Gets Average Server Rank from the Given Data
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        float: [description]
+    """
     log.debug(f"Looping through data to get average server rank")
     sum = 0
     total_num_of_cotds = len(data)
@@ -102,6 +134,14 @@ def get_average_server_rank(data: dict) -> float:
 
 
 def get_average_div(data: dict) -> float:
+    """Gets the Average Division from the Given Data
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        float: [description]
+    """
     log.debug(f"Looping through data to get average server rank")
     sum = 0
     total_num_of_cotds = len(data)
@@ -118,6 +158,14 @@ def get_average_div(data: dict) -> float:
 
 
 def get_total_cotds(data: dict) -> int:
+    """Gets total cotds played from the given data
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        int: [description]
+    """
     total_num_of_cotds = len(data)
 
     for cotd_dict in data:
@@ -130,6 +178,14 @@ def get_total_cotds(data: dict) -> int:
 
 
 def get_average_data(data: dict):
+    """Gets the AvgGlobalRank, AvgServerRank, AvgDiv and Total Cotds Played
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        [type]: [description]
+    """
     return (
         get_average_global_rank(data),
         get_average_server_rank(data),
@@ -139,8 +195,18 @@ def get_average_data(data: dict):
 
 
 def get_average_data_last_twenty(data: dict):
+    """Gets the AvgGlobalRank, AvgServerRank, AvgDiv and Total Cotds Played for the last 20 games
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        [type]: [description]
+    """
     glob_rank, serv_rank, div_rank, tot = get_average_data(data)
 
+
+    # This doesn't give the last 20 games data, this ain't how it works chief - FIX IMPORTANT
     try:
         return glob_rank[-20:], serv_rank[-20:], div_rank[-20:], tot
     except:
@@ -148,6 +214,14 @@ def get_average_data_last_twenty(data: dict):
 
 
 def get_list_of_global_ranks(data: dict) -> list[int]:
+    """Gets List of Global Ranks
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        list[int]: [description]
+    """
     global_ranks = []
 
     for cotd_dict in data:
@@ -159,6 +233,14 @@ def get_list_of_global_ranks(data: dict) -> list[int]:
 
 
 def get_list_of_cotd_ids(data: dict) -> list[int]:
+    """Gets List of Cotd IDs
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        list[int]: [description]
+    """
     cotd_ids = []
 
     for cotd_dict in data:
@@ -170,6 +252,14 @@ def get_list_of_cotd_ids(data: dict) -> list[int]:
 
 
 def make_global_rank_plot_graph(data: dict):
+    """Generates a Graph With the Given COTD Data
+
+    Args:
+        data (dict): [description]
+
+    Returns:
+        [type]: [description]
+    """
     log.debug(f"Getting List of Global Ranks and COTD Ids")
     try:
         global_ranks = reverse(get_list_of_global_ranks(data))[-30:]

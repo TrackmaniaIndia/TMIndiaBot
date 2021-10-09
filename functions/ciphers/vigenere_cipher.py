@@ -12,6 +12,14 @@ LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def encrypt(input_string: str):
+    """Encrypts the Given String With Vigenere Cipher
+
+    Args:
+        input_string (str): [description]
+
+    Returns:
+        [type]: [description]
+    """
     log.debug(f"Getting Random Number")
     encryption_key_int = random.randint(1, 26) - 1
     log.debug(f"Random Key is {LETTERS[encryption_key_int]}")
@@ -22,10 +30,29 @@ def encrypt(input_string: str):
 
 
 def decrypt(input_string: str, decryption_key: str):
+    """Decrypts the given string with Vigenere Cipher
+
+    Args:
+        input_string (str): [description]
+        decryption_key (str): [description]
+
+    Returns:
+        [type]: [description]
+    """
     return translate_message(input_string, decryption_key, "decrypt")
 
 
 def translate_message(message: str, key: str, mode: str) -> str:
+    """It's Been so Long I fucking Forgot About this command and what it does
+
+    Args:
+        message (str): [description]
+        key (str): [description]
+        mode (str): [description]
+
+    Returns:
+        str: [description]
+    """
     translated = []
     key_index = 0
     key = key.upper()

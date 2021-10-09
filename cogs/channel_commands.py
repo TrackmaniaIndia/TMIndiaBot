@@ -40,6 +40,12 @@ class ChannelCommands(
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
     async def set_announcement_channel(self, ctx, channel: discord.TextChannel):
+        """Sets an Announcement Channel to Send Bot Update Messages
+
+        Args:
+            ctx ([type]): [description]
+            channel (discord.TextChannel): [description]
+        """
         log.debug(f"Opening announcement_channels json file")
 
         with open("./data/json_data/announcement_channels.json", "r") as file:
@@ -76,6 +82,15 @@ class ChannelCommands(
     async def remove_announcement_channel(
         self, ctx: commands.Context, channel: discord.TextChannel
     ):
+        """Removes an Announcement Channel to Send Bot Update Messages
+
+        Args:
+            ctx (commands.Context): [description]
+            channel (discord.TextChannel): [description]
+
+        Returns:
+            [None]: [description]
+        """
         log.debug(f"Reading announcement_channels.json")
 
         with open("./data/json_data/announcement_channels.json", "r") as file:
