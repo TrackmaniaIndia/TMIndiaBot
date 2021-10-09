@@ -84,7 +84,7 @@ def get_cotd_stats(user_id: str) -> dict:
     return cotd_data_for_played
 
 
-def get_average_global_rank(data: dict) -> float:
+def get_average_global_rank(data: dict, twenty: bool = False) -> float:
     """Gets the Average Global Rank from The Given Data
 
     Args:
@@ -94,8 +94,16 @@ def get_average_global_rank(data: dict) -> float:
         float: [description]
     """
     log.debug(f"Looping through Data")
+    
+    if twenty:
+        try:
+            data = data[-20:]
+            total_num_of_cotds = 20
+        except:
+            data = data
+            total_num_of_cotds = len(data)
+    
     sum = 0
-    total_num_of_cotds = len(data)
 
     for cotd_dict in data:
         if cotd_dict["serverRank"] == "DNF":
@@ -109,7 +117,26 @@ def get_average_global_rank(data: dict) -> float:
     return round((sum / total_num_of_cotds), 2)
 
 
-def get_average_server_rank(data: dict) -> float:
+def get_average_global_rank_rewrite(data: dict, twenty: bool = False) -> float:
+    log.debug(f"Last Twenty Check -> {twenty}")
+    
+    if twenty:
+        cotd = 20
+        last_twenty = {}
+        cnt = 0
+        i = 0
+        
+        while cnt < 20 and i < len(data):
+            if data[i]["serverRank"] == "DNF":
+                continue
+            else:
+                last_twenty += data[i]
+                cnt += 1
+                
+        
+
+
+def get_average_server_rank(data: dict, twenty: bool = False) -> float:
     """Gets Average Server Rank from the Given Data
 
     Args:
@@ -118,9 +145,16 @@ def get_average_server_rank(data: dict) -> float:
     Returns:
         float: [description]
     """
+    if twenty:
+        try:
+            data = data[-20:]
+            total_num_of_cotds = 20
+        except:
+            data = data
+            total_num_of_cotds = len(data)
+
     log.debug(f"Looping through data to get average server rank")
     sum = 0
-    total_num_of_cotds = len(data)
 
     for cotd_dict in data:
         if cotd_dict["serverRank"] == "DNF":
@@ -133,7 +167,7 @@ def get_average_server_rank(data: dict) -> float:
     return round((sum / total_num_of_cotds), 2)
 
 
-def get_average_div(data: dict) -> float:
+def get_average_div(data: dict, twenty: bool = False) -> float:
     """Gets the Average Division from the Given Data
 
     Args:
@@ -142,9 +176,17 @@ def get_average_div(data: dict) -> float:
     Returns:
         float: [description]
     """
+    if twenty:
+        try:
+            data = data[-20:]
+            total_num_of_cotds = 20
+        except:
+            data = data
+            total_num_of_cotds = len(data)
+
+    
     log.debug(f"Looping through data to get average server rank")
     sum = 0
-    total_num_of_cotds = len(data)
 
     for cotd_dict in data:
         if cotd_dict["serverRank"] == "DNF":
