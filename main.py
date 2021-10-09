@@ -22,7 +22,7 @@ BOTTOKEN = os.getenv("BOTTOKEN")
 # version = os.getenv("VERSION")
 
 # Constants
-DEFAULT_PREFIX = "*"
+DEFAULT_PREFIX = "--"
 
 log = logging.getLogger(__name__)
 log = cl.get_logging()
