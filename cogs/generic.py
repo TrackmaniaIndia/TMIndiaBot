@@ -54,8 +54,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        """What the bot does when it connects to discord servers
-        """
+        """What the bot does when it connects to discord servers"""
         await self.client.change_presence(
             status=discord.Status.online,
             activity=discord.Game(f"Version: {version}! Online and Ready"),

@@ -110,13 +110,14 @@ async def on_guild_remove(guild):
         file.close()
 
 
-with open('./data/json_data/config.json', 'r') as file:
+with open("./data/json_data/config.json", "r") as file:
     global config
     config = json.load(file)
     file.close()
 
 # Catch all command errors, send them to developers.
-if config['showStackTrace']:
+if config["showStackTrace"]:
+
     @client.event
     async def on_command_error(ctx: commands.Context, error: commands.CommandError):
         if hasattr(ctx.command, "on_error"):
@@ -154,7 +155,7 @@ if config['showStackTrace']:
 
             # Stop further execution
             return None
-        
+
         if isinstance(error, commands.UserNotFound):
             emb = discord.Embed(
                 title=":warning: Mentioned user not found", color=discord.Colour.red()
@@ -166,8 +167,12 @@ if config['showStackTrace']:
 
         if isinstance(error, commands.CommandOnCooldown):
             emb = discord.Embed(
-                title=":warning: Still on cooldown", color=discord.Colour.red(),
-            ).set_footer(text="Try again in {:.2f}s".format(error.retry_after), icon_url=ctx.author.avatar_url)
+                title=":warning: Still on cooldown",
+                color=discord.Colour.red(),
+            ).set_footer(
+                text="Try again in {:.2f}s".format(error.retry_after),
+                icon_url=ctx.author.avatar_url,
+            )
             await ctx.send(embed=emb)
 
             # Stop further execution
@@ -213,10 +218,10 @@ if config['showStackTrace']:
         log.debug(f"Embed Sent, Error Handler Quit")
 
 
-if __name__ == '__main__':
-    log.debug(f'Checking files')
+if __name__ == "__main__":
+    log.debug(f"Checking files")
     file_check.check()
-    log.debug(f'File Check Done')
+    log.debug(f"File Check Done")
 
     # Loading Cogs
     log.info("Loading Cogs")

@@ -94,7 +94,7 @@ def get_average_global_rank(data: dict, twenty: bool = False) -> float:
         float: [description]
     """
     log.debug(f"Looping through Data")
-    
+
     if twenty:
         try:
             data = data[-20:]
@@ -102,7 +102,7 @@ def get_average_global_rank(data: dict, twenty: bool = False) -> float:
         except:
             data = data
             total_num_of_cotds = len(data)
-    
+
     sum = 0
 
     for cotd_dict in data:
@@ -119,21 +119,19 @@ def get_average_global_rank(data: dict, twenty: bool = False) -> float:
 
 def get_average_global_rank_rewrite(data: dict, twenty: bool = False) -> float:
     log.debug(f"Last Twenty Check -> {twenty}")
-    
+
     if twenty:
         cotd = 20
         last_twenty = {}
         cnt = 0
         i = 0
-        
+
         while cnt < 20 and i < len(data):
             if data[i]["serverRank"] == "DNF":
                 continue
             else:
                 last_twenty += data[i]
                 cnt += 1
-                
-        
 
 
 def get_average_server_rank(data: dict, twenty: bool = False) -> float:
@@ -184,7 +182,6 @@ def get_average_div(data: dict, twenty: bool = False) -> float:
             data = data
             total_num_of_cotds = len(data)
 
-    
     log.debug(f"Looping through data to get average server rank")
     sum = 0
 
@@ -246,7 +243,6 @@ def get_average_data_last_twenty(data: dict):
         [type]: [description]
     """
     glob_rank, serv_rank, div_rank, tot = get_average_data(data)
-
 
     # This doesn't give the last 20 games data, this ain't how it works chief - FIX IMPORTANT
     try:
