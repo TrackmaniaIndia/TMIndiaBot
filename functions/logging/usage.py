@@ -23,6 +23,11 @@ async def record_usage(self, ctx: commands.Context) -> None:
     log.info(
         f"{ctx.author} used {ctx.command} at {ctx.message.created_at} in {ctx.guild}"
     )
+    
+    log.debug("Checking if Author is Lord Aveesh")
+    if str(ctx.author.id) == "739088360814936064":
+        log.info("AUTHOR IS LORD AVEESH, PRAISE THE LORD")
+        await ctx.send("Please Wait a Moment, Lord Aveesh", delete_after=10)
 
     log_check = ""
 

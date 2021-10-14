@@ -7,6 +7,10 @@ from dotenv import load_dotenv
 from itertools import cycle
 import platform
 import psutil
+import asyncio
+from jishaku.codeblocks import codeblock_converter
+import os
+import sys
 
 import functions.logging.convert_logging as convert_logging
 import functions.common_functions.common_functions as common_functions
@@ -249,6 +253,39 @@ class Generic(commands.Cog, description="Generic Functions"):
             color=common_functions.get_random_color(),
         )
         embed.timestamp = curr_time()
+        await ctx.send(embed=embed)
+        
+    @commands.command(name='refresh')
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    @commands.is_owner()
+    async def _refresh(self, ctx):
+        """Refresh the bot by invoking `jsk git pull` and `restart`"""
+        cog = self.client.get_cog("Jishaku")
+        await cog.jsk_git(ctx, argument=codeblock_converter('pull'))
+        await asyncio.sleep(2)  # allow jsk git pull to finish
+        restart = self.client.get_command('restart')
+        await ctx.invoke(restart)
+        
+    @commands.command(name='restart')
+    async def _restart(self, ctx):
+        """
+        Restart the bot.
+        """
+        self.client.cache['restart_channel'] = ctx.channel.id
+        if sys.stdin.isatty():
+            await ctx.send("Logging out now...")
+            try:
+                p = psutil.Process(os.getpid())
+                for handler in p.open_files() + p.connections():
+                    os.close(handler.fd)
+            except Exception as e:
+                logging.error(e)
+            python = sys.executable
+            os.execl(python, python, *sys.argv)
+        cog = self.bot.get_cog("Jishaku")
+        await cog.jsk_shutdown(ctx)
+        embed = ctx.error('Failed to restart')
         await ctx.send(embed=embed)
 
     @commands.command(hidden=True)

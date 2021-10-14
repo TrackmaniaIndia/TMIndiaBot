@@ -239,6 +239,7 @@ if __name__ == "__main__":
             log.debug(f"Loading {filename[:-3]}")
             client.load_extension(f"cogs.{filename[:-3]}")
 
+    client.load_extension('jishaku')
     log.info("Loaded Cogs")
 
     # Running Client
