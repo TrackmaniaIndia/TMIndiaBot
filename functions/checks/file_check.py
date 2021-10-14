@@ -46,8 +46,8 @@ def check():
                       ),
     }
 
-    print(f"Beginning Check")
-    print(f"Checking all JSON Files")
+    log.debug(f"Beginning Check")
+    log.debug(f"Checking all JSON Files")
 
     # checking for the existence of files
     for types in files:
