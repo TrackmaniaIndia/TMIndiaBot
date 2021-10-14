@@ -7,7 +7,7 @@ Thank you to Trackmania.io developers for their NPM Package!
 
 ## Developers
 
-1. NottCurious
+NottCurious
 
 * Github: <https://github.com/NottCurious>
 * Discord: NottCurious#4351
