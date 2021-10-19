@@ -15,7 +15,7 @@ def get_prefix(client, message: discord.Message) -> list[str]:
         list[str]: Returns all the Prefixes for that Guild
     """
 
-    with open("./data/json_data/prefixes.json", "r") as file:
+    with open("./data/json/prefixes.json", "r") as file:
         prefixes = json.load(file)
         file.close()
 

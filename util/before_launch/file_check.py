@@ -4,7 +4,7 @@ import json
 
 DEFAULT_PREFIX = "--"
 
-log = cl.get_logger()
+log = cl.get_logging()
 
 
 def file_check():
@@ -20,9 +20,10 @@ def file_check():
 
         prefixes = {"876042400005505066": DEFAULT_PREFIX}
 
-        with open("./data/json_data/prefixes.json", "w") as file:
+        with open("./data/json/prefixes.json", "w") as file:
             json.dump(prefixes, file, indent=4)
             file.close()
 
         log.critical("Prefixes.json Created, Please Restart the Program")
         exit()
+    log.info("All Files Exist")
