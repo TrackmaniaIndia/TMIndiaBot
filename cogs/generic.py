@@ -60,13 +60,13 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.debug(f"Start Change Status Loop")
         change_status.start(self.client, self.first_time, self.statuses)
         log.debug(f"Started Change Status Loop")
-        
+
         log.debug(f"Getting Announcement Channels")
         with open("./data/json/announcement_channels.json", "r") as file:
             channels = json.load(file)
-            
+
         print_system_info()
-        
+
         for announcement_channel in channels["announcement_channels"]:
             log.debug(f"Sending Message in {announcement_channel}")
 
