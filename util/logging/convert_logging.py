@@ -44,9 +44,9 @@ def get_logging() -> logging.Logger:
 
     levelstyles = {
         "critical": {"bold": True, "color": "red"},
-        "debug": {"italic": True, "bold": True, "color": "green"},
+        "debug": {"color": "green"},
         "error": {"color": "red"},
-        "info": {"bold": True, "color": "white"},
+        "info": {"bold": True, "color": "magenta"},
         "warning": {"bold": True, "color": "yellow"},
     }
 

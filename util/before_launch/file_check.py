@@ -26,4 +26,14 @@ def file_check():
 
         log.critical("Prefixes.json Created, Please Restart the Program")
         exit()
+    log.debug(f"Checking for Times Run File")
+    if not os.path.exists("./data"):
+        log.critical("Data Directory doesn't Exist, Creating")
+        os.mkdir("./data")
+    if not os.path.exists("./data/times_run.txt"):
+        log.critical("Times Run File doesn't Exist, Creating")
+        with open("./data/times_run.txt", "w") as file:
+            print(0, file=file)
+
+    return
     log.info("All Files Exist")
