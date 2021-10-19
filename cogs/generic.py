@@ -19,6 +19,8 @@ from util.tasks.status_change import change_status
 log = convert_logging.get_logging()
 version = get_version()
 
+guild_ids = [876042400005505066, 805313762663333919]
+
 
 class Generic(commands.Cog, description="Generic Functions"):
     first_time = True
@@ -89,6 +91,16 @@ class Generic(commands.Cog, description="Generic Functions"):
             print(times_run, file=file)
 
         log.info(f"Bot now Usable")
+        
+    @commands.Bot.slash_command(
+        aliases=["latency", "pong", "connection"],
+        help="Shows the Ping/Latency of the Bot in milliseconds.",
+        brief="Shows Bot Ping.",
+    )
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def ping(self, ctx: commands.Context):
+        await ctx.reply("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
 
 def setup(client):
