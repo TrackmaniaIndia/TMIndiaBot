@@ -20,6 +20,11 @@ DEFAULT_PREFIX = "*"
 
 
 async def record_usage(self, ctx: commands.Context) -> None:
+    """Records Usage of Commands
+
+    Args:
+        ctx (commands.Context): The Message Context
+    """
     log.info(
         f"{ctx.author} used {ctx.command} at {ctx.message.created_at} in {ctx.guild}"
     )
@@ -57,6 +62,11 @@ async def record_usage(self, ctx: commands.Context) -> None:
 
 
 async def finish_usage(self, ctx: commands.Context) -> None:
+    """Records Finish Usage of Commands
+
+    Args:
+        ctx (commands.Context): Message Context
+    """
     log.info(f"{ctx.author} finished using {ctx.command} in {ctx.guild}")
 
     log_check = ""

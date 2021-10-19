@@ -4,6 +4,11 @@ import json
 
 
 def get_logging() -> logging.Logger:
+    """Makes a Logging.Logger to Avoid Copy Paste in Files
+
+    Returns:
+        logging.Logger: The Logger
+    """
     with open("./data/config.json") as file:
         config = json.load(file)
 
