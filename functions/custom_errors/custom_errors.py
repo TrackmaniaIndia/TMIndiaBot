@@ -1,2 +1,0 @@
-class NotAValidTrackmaniaUsername(Exception):
-    pass
