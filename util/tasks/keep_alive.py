@@ -1,5 +1,4 @@
 import util.logging.convert_logging as cl
-import discord
 from discord.ext import tasks, commands
 from datetime import datetime
 from dotenv import load_dotenv

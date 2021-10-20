@@ -1,13 +1,9 @@
-from os import times
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 import json
-import logging
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
 from dotenv import load_dotenv
 from itertools import cycle
-import platform
-import psutil
 
 import util.logging.convert_logging as convert_logging
 from util.cog_helpers.generic_helper import *
