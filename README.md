@@ -7,18 +7,11 @@ Thank you to Trackmania.io developers for their NPM Package!
 
 ## Developers
 
-1. NottCurious
+NottCurious
 
 * Github: <https://github.com/NottCurious>
 * Discord: NottCurious#4351
 * Main Bot Dev
-
-2. Artifex
-
-* Github: <https://github.com/artifexdevstuff/>
-* Discord: ARTIFEX#0690
-* Main Bot Dev
-* Backend API Dev
 
 ## Trackmania India Discord Server Invite Link
 
