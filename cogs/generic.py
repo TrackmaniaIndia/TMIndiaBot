@@ -4,7 +4,6 @@ from discord.ext import commands, tasks
 import json
 import logging
 from datetime import datetime, timezone, timedelta
-from discord.utils import get
 from dotenv import load_dotenv
 from itertools import cycle
 import platform
@@ -15,11 +14,10 @@ from util.cog_helpers.generic_helper import *
 from util.logging.usage import record_usage, finish_usage
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
+from util.guild_ids import guild_ids
 
 log = convert_logging.get_logging()
 version = get_version()
-
-guild_ids = [876042400005505066, 805313762663333919]
 
 
 class Generic(commands.Cog, description="Generic Functions"):
@@ -91,16 +89,17 @@ class Generic(commands.Cog, description="Generic Functions"):
             print(times_run, file=file)
 
         log.info(f"Bot now Usable")
-        
-    @commands.Bot.slash_command(
+
+    @commands.slash_command(
+        guild_ids=guild_ids,
         aliases=["latency", "pong", "connection"],
         help="Shows the Ping/Latency of the Bot in milliseconds.",
         brief="Shows Bot Ping.",
     )
-    @commands.before_invoke(record_usage)
+    @commands.before_invoke(record_usage) # Doesn't Work With Slash Commands, Must Check or Change
     @commands.after_invoke(finish_usage)
     async def ping(self, ctx: commands.Context):
-        await ctx.reply("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
+        await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
 
 def setup(client):

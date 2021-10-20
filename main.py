@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import json
 import logging
 from datetime import datetime
-import jishaku
+# import jishaku
 
 import util.logging.convert_logging as cl
 import util.discord.easy_embed as ezembed
@@ -46,9 +46,9 @@ if __name__ == '__main__':
 
     log.info("Loaded Cogs")
     
-    log.debug("Loading JISHAKU")
-    client.load_extension('jishaku')
-    log.debug("Loaded JISHAKU")
+    # log.debug("Loading JISHAKU")
+    # client.load_extension('jishaku')
+    # log.debug("Loaded JISHAKU")
 
     # Running Client
     client.run(BOT_TOKEN)
