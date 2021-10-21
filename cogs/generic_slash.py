@@ -117,6 +117,12 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
         change_prefix(ctx, prefix)
         await ctx.respond("Prefix Changed to {}".format(prefix))
         log.info(f"prefix successfully changed to {prefix} for {ctx.guild.name}")
+        
+    @commands.slash_command(guild_ids=guild_ids, name='version', description='Displays bot version')
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def _version(self, ctx: commands.Context):
+        await ctx.respond(f"Bot Version is {version}")
 
 
 def setup(client):

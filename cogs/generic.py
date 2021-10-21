@@ -51,6 +51,12 @@ class Generic(commands.Cog, description="Generic Functions"):
         change_prefix(ctx, prefix)
         await ctx.reply("Prefix Changed to {}".format(prefix), mention_author=False)
         log.info(f"prefix successfully changed to {prefix} for {ctx.guild.name}")
+        
+    @commands.command(name='version', help="Displays Bot Version", brief="Bot Version")
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def _version(self, ctx: commands.Context):
+        await ctx.reply(f"Bot Version is {version}", mention_author=False)
 
 
 def setup(client):
