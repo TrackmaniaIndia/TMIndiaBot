@@ -11,6 +11,7 @@ from util.logging.usage import record_usage, finish_usage
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
 from util.guild_ids import guild_ids
+import util.discord.easy_embed as ezembed
 
 log = convert_logging.get_logging()
 version = get_version()
@@ -57,6 +58,13 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.after_invoke(finish_usage)
     async def _version(self, ctx: commands.Context):
         await ctx.reply(f"Bot Version is {version}", mention_author=False)
+        
+    @commands.command(name='source', help="Sends Github Source Code Link", brief="Github Source Code")
+    @commands.before_invoke(record_usage)
+    @commands.after_invoke(finish_usage)
+    async def _source(self, ctx):
+        embed=ezembed.create_embed(title='Source Code', description="https://github.com/NottCurious/TMIndiaBot", color=discord.Colour.random())
+        await ctx.reply(embed=embed, mention_author=False)
 
 
 def setup(client):

@@ -27,3 +27,4 @@
 * Each COG will now have both slash and normal command, indicated by _slash for *slash cogs*
 * using `ctx.reply(mention_author=False)` instead of `ctx.send`
 * Version command
+* Source Code command
