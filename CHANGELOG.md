@@ -35,3 +35,4 @@
 <small>22nd October, 2021</small>
 
 * Fix variable names in `util.logging.convert_logging.py`
+* Reworked `util.logging.usage.py` commands
