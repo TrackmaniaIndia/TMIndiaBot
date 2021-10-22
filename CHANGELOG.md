@@ -36,3 +36,4 @@
 
 * Fix variable names in `util.logging.convert_logging.py`
 * Reworked `util.logging.usage.py` commands
+* Username Storage Commands Finished
