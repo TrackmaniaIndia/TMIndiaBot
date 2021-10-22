@@ -45,8 +45,11 @@ async def record_usage_slash(self, ctx: commands.Context) -> None:
     Args:
         ctx (commands.Context): Message Context
     """
-    log.info(f"{ctx.author.name} used slash command -> {ctx.command} at {ctx.message.created_at} in {ctx.guild}")
-    
+    log.info(
+        f"{ctx.author.name} used slash command -> {ctx.command} at {ctx.message.created_at} in {ctx.guild}"
+    )
+
+
 async def finish_usage_slash(self, ctx: commands.Context) -> None:
     """Records Finish Usage of Commands
 

@@ -24,13 +24,11 @@ class Generic(commands.Cog, description="Generic Functions"):
         self.client = client
 
     @commands.command(
-        # guild_ids=guild_ids,
         name="ping",
         aliases=["latency", "pong", "connection"],
         help="Shows the Ping/Latency of the Bot in milliseconds.",
         brief="Shows Bot Ping.",
     )
-    # @commands.slash_command(guild_ids=guild_ids, name='ping', description='Get ping of bot to discord api in milliseconds')
     @commands.before_invoke(
         record_usage
     )  # Doesn't Work With Slash Commands, Must Check or Change
@@ -52,18 +50,24 @@ class Generic(commands.Cog, description="Generic Functions"):
         change_prefix(ctx, prefix)
         await ctx.reply("Prefix Changed to {}".format(prefix), mention_author=False)
         log.info(f"prefix successfully changed to {prefix} for {ctx.guild.name}")
-        
-    @commands.command(name='version', help="Displays Bot Version", brief="Bot Version")
+
+    @commands.command(name="version", help="Displays Bot Version", brief="Bot Version")
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def _version(self, ctx: commands.Context):
         await ctx.reply(f"Bot Version is {version}", mention_author=False)
-        
-    @commands.command(name='source', help="Sends Github Source Code Link", brief="Github Source Code")
+
+    @commands.command(
+        name="source", help="Sends Github Source Code Link", brief="Github Source Code"
+    )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def _source(self, ctx):
-        embed=ezembed.create_embed(title='Source Code', description="https://github.com/NottCurious/TMIndiaBot", color=discord.Colour.random())
+        embed = ezembed.create_embed(
+            title="Source Code",
+            description="https://github.com/NottCurious/TMIndiaBot",
+            color=discord.Colour.random(),
+        )
         await ctx.reply(embed=embed, mention_author=False)
 
 

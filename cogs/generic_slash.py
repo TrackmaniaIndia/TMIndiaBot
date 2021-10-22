@@ -89,12 +89,6 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
 
         log.info(f"Bot now Usable")
 
-    # @commands.slash_command(
-    #     guild_ids=guild_ids,
-    #     aliases=["latency", "pong", "connection"],
-    #     help="Shows the Ping/Latency of the Bot in milliseconds.",
-    #     brief="Shows Bot Ping.",
-    # )
     @commands.slash_command(
         guild_ids=guild_ids,
         name="ping",
@@ -118,18 +112,26 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
         change_prefix(ctx, prefix)
         await ctx.respond("Prefix Changed to {}".format(prefix))
         log.info(f"prefix successfully changed to {prefix} for {ctx.guild.name}")
-        
-    @commands.slash_command(guild_ids=guild_ids, name='version', description='Displays bot version')
+
+    @commands.slash_command(
+        guild_ids=guild_ids, name="version", description="Displays bot version"
+    )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def _version(self, ctx: commands.Context):
         await ctx.respond(f"Bot Version is {version}")
-        
-    @commands.slash_command(guild_ids=guild_ids, name='source', description='Displays Github Source Code')
+
+    @commands.slash_command(
+        guild_ids=guild_ids, name="source", description="Displays Github Source Code"
+    )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def _source(self, ctx):
-        embed=ezembed.create_embed(title='Source Code', description="https://github.com/NottCurious/TMIndiaBot", color=discord.Colour.random())
+        embed = ezembed.create_embed(
+            title="Source Code",
+            description="https://github.com/NottCurious/TMIndiaBot",
+            color=discord.Colour.random(),
+        )
         await ctx.respond(embed=embed)
 
 
