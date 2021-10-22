@@ -12,8 +12,8 @@ def get_logging() -> logging.Logger:
     with open("./data/config.json") as file:
         config = json.load(file)
 
-        normlog = config["log_level"]
-        discordlog = config["discord_log_level"]
+        normal_logging_level = config["log_level"]
+        discord_logging_level = config["discord_log_level"]
 
     logdict = {
         "debug": logging.DEBUG,
@@ -22,27 +22,27 @@ def get_logging() -> logging.Logger:
         "warning": logging.WARNING,
         "error": logging.ERROR,
     }
-    log_level = logdict[normlog]
-    discord_log_level = logdict[discordlog]
+    log_level = logdict[normal_logging_level]
+    discord_log_level = logdict[discord_logging_level]
 
-    DiscordLogger = logging.getLogger("discord")
-    DiscordLogger.setLevel(discord_log_level)
+    discord_logger = logging.getLogger("discord")
+    discord_logger.setLevel(discord_log_level)
     handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
     handler.setFormatter(
         logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
     )
-    DiscordLogger.addHandler(handler)
+    discord_logger.addHandler(handler)
 
     log = logging.getLogger(__name__)
 
-    fieldstyle = {
+    field_style = {
         "asctime": {"color": "green"},
         "levelname": {"bold": True, "color": "black"},
         "filename": {"color": "cyan"},
         "funcName": {"color": "blue"},
     }
 
-    levelstyles = {
+    level_styles = {
         "critical": {"bold": True, "color": "red"},
         "debug": {"color": "green"},
         "error": {"color": "red"},
@@ -55,8 +55,8 @@ def get_logging() -> logging.Logger:
         logger=log,
         fmt="%(asctime)s [%(levelname)s] - [%(filename)s > %(funcName)s() > %(lineno)s] - %(message)s",
         datefmt="%H:%M:%S",
-        field_styles=fieldstyle,
-        level_styles=levelstyles,
+        field_styles=field_style,
+        level_styles=level_styles,
     )
 
     return log
