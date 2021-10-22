@@ -1,18 +1,13 @@
 {
     "developers": [
         {
-            "discord_name": "Artifex#0690",
-            "id": "623085987442196503",
-            "error_ping": false
-        },
-        {
             "discord_name": "NottCurious#4351",
             "id": "250257390643970059",
             "error_ping": false
         }
     ],
 
-    "bot_version": "v1.0.0-b1.2",
+    "bot_version": "v1.0.0-b1.3",
 
     "testing_server_id": "876042400005505066",
     "log_level": "debug",
