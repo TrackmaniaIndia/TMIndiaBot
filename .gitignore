@@ -143,3 +143,6 @@ format.bat
 /.vscode/
 
 /data/cotddata.png
+
+# Now we don't have to keep changing it
+/util/guild_ids.py
