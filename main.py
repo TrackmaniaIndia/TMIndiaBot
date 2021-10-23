@@ -30,25 +30,17 @@ if __name__ == '__main__':
 
     # Loading Cogs
     log.info("Loading Cogs")
-    for filename in os.listdir("./cogs"):
-        SKIP_FILES = [
-            "convert_logging.py",
-            "common_functions.py",
-        ]
-
+    for filename in os.listdir("./cogs/normal_cogs"):
         if filename.endswith(".py"):
-            if filename in SKIP_FILES:
-                log.debug(f"Skipping {filename}")
-                continue
-
-            log.debug(f"Loading {filename[:-3]}")
-            client.load_extension(f"cogs.{filename[:-3]}")
-
-    log.info("Loaded Cogs")
+            log.debug(f"Loading cogs.normal_cogs.{filename[:-3]}")
+            client.load_extension(f"cogs.normal_cogs.{filename[:-3]}")
+    log.info('Loaded Cogs')
+    log.info('Loading Slash Cogs')
+    for filename in os.listdir('./cogs/slash_cogs'):
+        if filename.endswith('.py'):
+            log.debug(f'Loading cogs.slash_cogs.{filename[:-3]}')
+            client.load_extension(f'cogs.slash_cogs.{filename[:-3]}')
+    log.info("Loaded Slash Cogs")
     
-    # log.debug("Loading JISHAKU")
-    # client.load_extension('jishaku')
-    # log.debug("Loaded JISHAKU")
-
     # Running Client
     client.run(BOT_TOKEN)

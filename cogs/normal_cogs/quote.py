@@ -41,9 +41,9 @@ class Quote(commands.Cog, description="Quoting Functions"):
             description=f"Saved {message} by {author}",
             color=discord.Colour.green(),
         )
-        await ctx.send(
+        await ctx.reply(
             embed=embed,
-            delete_after=20,
+            mention_author=False
         )
 
     @commands.command(name="randquote", help="Quotes a Random Quote")
@@ -54,7 +54,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         rand_quote = quote_functions.get_random_quote_dict()
 
         log.debug(f"Getting Quote Embed")
-        embed = quote_functions.get_random_quote_dict_to_embed(rand_quote)
+        embed = quote_functions.quote_dict_to_embed(rand_quote)
 
         log.debug(f"Sending Random Quote")
         await ctx.reply(embed=embed, mention_author=False)
@@ -68,16 +68,16 @@ class Quote(commands.Cog, description="Quoting Functions"):
         
         await ctx.reply(embed=quote_embed, mention_author=False)
 
-    # @_quote.error
-    # async def _quote_error(self, ctx: commands.Context, error: commands.CommandError):
-    #     if isinstance(error, commands.MissingAnyRole):
-    #         log.error("Missing Required Role")
-    #         embed = ezembed.create_embed(
-    #             title="You do not have the required role to use this command",
-    #             description=f"You need the following roles: bot developer, admin",
-    #             colour=discord.Colour.red(),
-    #         )
-    #         await ctx.reply(embed=embed, mention_author=False)
+    @_quote.error
+    async def _quote_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.MissingAnyRole):
+            log.error("Missing Required Role")
+            embed = ezembed.create_embed(
+                title="You do not have the required role to use this command",
+                description=f"You need the following roles: bot developer, admin",
+                colour=discord.Colour.red(),
+            )
+            await ctx.reply(embed=embed, mention_author=False)
 
 
 def setup(client):
