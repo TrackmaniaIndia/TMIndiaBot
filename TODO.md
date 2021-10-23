@@ -25,12 +25,6 @@ Notes:
 * 10:30pm, 6:30am and 2:30pm reminders for COTD
 * 11:30pm, 7:30am and 3:30pm reminders for Super Royale
 
-## Quote Commands
-
-* QuoteSave
-* RandomQuote
-* LatestQuote
-
 ## Trackmania Commands
 
 * Player Command
