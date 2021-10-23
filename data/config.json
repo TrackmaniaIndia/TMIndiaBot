@@ -1,0 +1,16 @@
+{
+    "developers": [
+        {
+            "discord_name": "NottCurious#4351",
+            "id": "250257390643970059",
+            "error_ping": false
+        }
+    ],
+
+    "bot_version": "v1.0.0",
+
+    "testing_server_id": "876042400005505066",
+    "log_level": "debug",
+    "discord_log_level": "critical",
+    "showStackTrace": true
+}
