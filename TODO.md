@@ -37,8 +37,3 @@ Notes:
 * Leaderboards Command
 * ViewMaps Command
 
-## Username Commands
-
-* Store Username
-* Remove Username
-* Check Username
