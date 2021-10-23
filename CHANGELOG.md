@@ -37,3 +37,9 @@
 * Fix variable names in `util.logging.convert_logging.py`
 * Reworked `util.logging.usage.py` commands
 * Username Storage Commands Finished
+
+#### **v1.0-b1.4**
+
+<small>23rd October, 2021</small>
+
+* Quote Functions
