@@ -43,3 +43,4 @@
 <small>23rd October, 2021</small>
 
 * Quote Functions
+* Split Slash and Normal Cogs

@@ -5,6 +5,7 @@ from datetime import datetime
 import random
 import discord
 import util.discord.easy_embed as ezembed
+import numpy as np
 
 log = convert_logging.get_logging()
 
@@ -57,7 +58,7 @@ def quote_dict_to_embed(quote: dict) -> discord.Embed:
 
 def get_random_quote_dict() -> dict:
     log.debug(f"Generating Random Number Between 0 and {get_number_of_quotes()}")
-    number = random.randint(0, get_number_of_quotes() - 1)
+    number = np.random.randint(low=0, high=get_number_of_quotes() - 1)
 
     log.debug(f"Opening Files")
     with open("./data/json/quotes.json", "r") as file:
