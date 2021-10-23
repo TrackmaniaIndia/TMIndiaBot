@@ -7,6 +7,7 @@ import numpy as np
 
 log = convert_logging.get_logging()
 
+
 def save(message: str, author: str) -> None:
     """Save a Quote to the JSON File
 
@@ -42,8 +43,11 @@ def save(message: str, author: str) -> None:
     log.debug(f"Returning")
     return None
 
+
 def quote_dict_to_embed(quote: dict) -> discord.Embed:
-    embed = ezembed.create_embed(title='***Quote #{}***'.format(quote["Number"]), color=discord.Colour.random())
+    embed = ezembed.create_embed(
+        title="***Quote #{}***".format(quote["Number"]), color=discord.Colour.random()
+    )
     embed.add_field(name=f"***Message***", value=quote["Message"], inline=False)
     embed.add_field(name=f"***Author***", value=quote["Author"], inline=True)
     embed.add_field(
@@ -66,13 +70,14 @@ def get_random_quote_dict() -> dict:
 
 
 def get_last_quote() -> discord.Embed:
-    log.debug(f'Opening JSON File')
-    with open('./data/json/quotes.json', 'r') as file:
-        log.debug(f'Loading JSON file')
+    log.debug(f"Opening JSON File")
+    with open("./data/json/quotes.json", "r") as file:
+        log.debug(f"Loading JSON file")
         quotes = json.load(file)
-        log.debug(f'Read JSON file, returning last quote')
-        
-        return quote_dict_to_embed(quotes['quotes'][-1])
+        log.debug(f"Read JSON file, returning last quote")
+
+        return quote_dict_to_embed(quotes["quotes"][-1])
+
 
 def get_number_of_quotes():
     log.debug(f"Opening JSON File")

@@ -1,4 +1,3 @@
-
 import coloredlogs
 import json
 import logging
@@ -15,9 +14,9 @@ def get_logging() -> logging.Logger:
 
         normal_logging_level = config["log_level"]
         discord_logging_level = config["discord_log_level"]
-    
+
     log = logging.getLogger(__name__)
-    
+
     logdict = {
         "debug": logging.DEBUG,
         "info": logging.INFO,
@@ -36,7 +35,6 @@ def get_logging() -> logging.Logger:
     )
     discord_logger.addHandler(handler)
 
-    
     field_style = {
         "asctime": {"color": "green"},
         "levelname": {"bold": True, "color": "black"},

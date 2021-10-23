@@ -5,7 +5,7 @@ import os
 from util.trackmania_username.get_stored import get_stored_usernames
 
 load_dotenv()
-BASE_URL = os.getenv('BASE_API_URL')
+BASE_URL = os.getenv("BASE_API_URL")
 
 log = cl.get_logging()
 
@@ -21,7 +21,7 @@ def check_valid_trackmania_username(username: str) -> bool:
         return False
 
     if username in get_stored_usernames():
-        log.debug(f'Username is in stored Usernames')
+        log.debug(f"Username is in stored Usernames")
         return True
 
     USERNAME_URL = BASE_URL + f"/tm2020/player/{username}"
@@ -41,6 +41,7 @@ def check_valid_trackmania_username(username: str) -> bool:
 
     log.debug(f"User exists, returning")
     return True
+
 
 def get_trackmania_id_from_api(username: str) -> str:
     log.debug(f"Checking if Username is Valid")

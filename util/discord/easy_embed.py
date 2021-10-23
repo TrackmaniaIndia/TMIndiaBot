@@ -5,9 +5,7 @@ from util.logging import convert_logging as cl
 log = cl.get_logging()
 
 
-def create_embed(
-    title: str, description: str = "", color: str = None
-) -> discord.Embed:
+def create_embed(title: str, description: str = "", color: str = None) -> discord.Embed:
     """Creates an Embed with Basic Data Fields Filled Out
 
     Args:

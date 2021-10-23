@@ -2,11 +2,17 @@ import json
 import util.logging.convert_logging as cl
 from dotenv import load_dotenv
 import os
-from util.trackmania_username.checks import check_valid_trackmania_username, get_trackmania_id_from_api
-from util.trackmania_username.get_stored import get_stored_usernames, get_stored_discord_ids
+from util.trackmania_username.checks import (
+    check_valid_trackmania_username,
+    get_trackmania_id_from_api,
+)
+from util.trackmania_username.get_stored import (
+    get_stored_usernames,
+    get_stored_discord_ids,
+)
 
 load_dotenv()
-BASE_URL = os.getenv('BASE_API_URL')
+BASE_URL = os.getenv("BASE_API_URL")
 
 log = cl.get_logging()
 
@@ -50,6 +56,7 @@ def check_discord_id_in_file(discord_id: str) -> bool:
     log.debug(f"Discord id not in file")
     return False
 
+
 def get_trackmania_username(discord_id: str) -> str:
     if not check_discord_id_in_file(discord_id):
         log.debug(f"Discord ID not in file, returning none")
@@ -61,6 +68,7 @@ def get_trackmania_username(discord_id: str) -> str:
 
     log.debug(f"Returning Username")
     return all_usernames[all_discord_ids.index(discord_id)]
+
 
 def get_trackmania_id_from_file(discord_id: str) -> str:
     """
@@ -81,7 +89,8 @@ def get_trackmania_id_from_file(discord_id: str) -> str:
 
         log.debug(f"Returning ID")
         return all_data["Usernames"][discord_id]["TM2020 ID"]
-    
+
+
 def get_trackmania_id_with_username_from_file(username: str) -> str:
     """
     Gets trackmania2020 id with username given
@@ -103,6 +112,7 @@ def get_trackmania_id_with_username_from_file(username: str) -> str:
     log.debug(f"Returning Discord Id w/ Other Function")
 
     return get_trackmania_id_from_file(discord_id)
+
 
 def get_id(username: str = None) -> str:
     log.debug(f"Checking {username}")

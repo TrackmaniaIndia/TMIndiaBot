@@ -3,12 +3,16 @@ import requests
 import util.logging.convert_logging as cl
 from dotenv import load_dotenv
 import os
-from util.trackmania_username.get_stored import get_stored_usernames, get_stored_discord_ids
+from util.trackmania_username.get_stored import (
+    get_stored_usernames,
+    get_stored_discord_ids,
+)
 
 load_dotenv()
-BASE_URL = os.getenv('BASE_API_URL')
+BASE_URL = os.getenv("BASE_API_URL")
 
 log = cl.get_logging()
+
 
 def check_valid_trackmania_username(username: str) -> bool:
     """
@@ -21,7 +25,7 @@ def check_valid_trackmania_username(username: str) -> bool:
         return False
 
     if username in get_stored_usernames():
-        log.debug(f'Username is in stored Usernames')
+        log.debug(f"Username is in stored Usernames")
         return True
 
     USERNAME_URL = BASE_URL + f"/tm2020/player/{username}"
@@ -44,7 +48,7 @@ def check_valid_trackmania_username(username: str) -> bool:
 
 
 def store_trackmania_username(discord_id: str, username: str) -> None:
-    log.debug(f'Storing {username} for {discord_id}')
+    log.debug(f"Storing {username} for {discord_id}")
     username_id = str(discord_id)
 
     PLAYER_URL = BASE_URL + f"/tm2020/player/{username}"
@@ -80,8 +84,8 @@ def store_trackmania_username(discord_id: str, username: str) -> None:
     with open("./data/json/tm2020_usernames.json", "w") as file:
         json.dump(all_usernames, file, indent=4)
         log.debug(f"Dumped to JSON File")
-        log.debug(f'Current Username JSON file = {all_usernames}')
-        
+        log.debug(f"Current Username JSON file = {all_usernames}")
+
 
 def remove_trackmania_username(discord_id: str):
     if str(discord_id) not in get_stored_discord_ids():
@@ -102,7 +106,7 @@ def remove_trackmania_username(discord_id: str):
     with open("./data/json/tm2020_usernames.json", "w") as file:
         json.dump(all_usernames, file, indent=4)
         log.debug(f"Dumped to JSON File")
-        
+
 
 def get_trackmania_id_from_api(username: str) -> str:
     log.debug(f"Checking if Username is Valid")
