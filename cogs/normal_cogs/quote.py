@@ -2,7 +2,7 @@ import discord
 from discord import colour
 from discord.ext import commands, tasks
 import json
-import logging
+
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from itertools import cycle
@@ -13,8 +13,6 @@ from util.logging.usage import record_usage, finish_usage
 import util.quoting.quote as quote_functions
 import util.discord.easy_embed as ezembed
 
-
-log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
 guild_ids = [876042400005505066, 805313762663333919]

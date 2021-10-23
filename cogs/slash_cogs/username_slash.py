@@ -2,7 +2,7 @@ import util.trackmania_username.retrieving as ret
 import util.trackmania_username.storing as stor
 import discord
 from discord.ext import commands
-import logging
+
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 import util.logging.convert_logging as convert_logging

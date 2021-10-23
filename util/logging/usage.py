@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import logging
+
 import json
 from dotenv import load_dotenv
 from datetime import datetime
@@ -13,7 +13,6 @@ load_dotenv()
 # discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
 
 
-log = logging.getLogger(__name__)
 log = cl.get_logging()
 
 DEFAULT_PREFIX = "*"

@@ -2,7 +2,7 @@ import discord
 from discord import colour
 from discord.ext import commands, tasks
 import json
-import logging
+
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from itertools import cycle
@@ -15,7 +15,6 @@ import util.quoting.quote as quote_functions
 import util.discord.easy_embed as ezembed
 from util.guild_ids import guild_ids
 
-log = logging.getLogger(__name__)
 log = convert_logging.get_logging()
 
 class QuoteSlash(commands.Cog, description="Quoting Functions"):

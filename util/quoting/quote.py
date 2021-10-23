@@ -1,8 +1,6 @@
 import json
-import logging
 import util.logging.convert_logging as convert_logging
 from datetime import datetime
-import random
 import discord
 import util.discord.easy_embed as ezembed
 import numpy as np
