@@ -12,6 +12,7 @@ def create_embed(title: str, description: str = "", color: str = None) -> discor
         title (str): Title of the Embed
         description (str, optional): Description of the Embed. Defaults to None.
         color (str, optional): Color of the Embed. Defaults to None.
+        url (str, url): Url to be added to the embed
 
     Returns:
         discord.Embed: Final Embed Returned with Data Fields Inside

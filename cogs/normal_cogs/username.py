@@ -1,5 +1,5 @@
-import util.trackmania_username.retrieving as ret
-import util.trackmania_username.storing as stor
+import util.trackmania.trackmania_username.retrieving as ret
+import util.trackmania.trackmania_username.storing as stor
 import discord
 from discord.ext import commands
 
