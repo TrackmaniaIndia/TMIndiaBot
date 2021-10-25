@@ -31,12 +31,12 @@ class Quote(commands.Cog, description="Quoting Functions"):
     async def _quote(self, ctx: commands.Context, *, message):
         message, author = message.split(" - ")
 
-        log.debug(f'Saving {message} by {author}')
+        log.debug(f'Saving \"{message}\" by \"{author}\"')
 
         quote_functions.save(message, author)
         embed = ezembed.create_embed(
             title=":white_check_mark: Saved",
-            description=f"Saved {message} by {author}",
+            description=f"Saved **\"{message}\"** by **\"{author}\"**",
             color=discord.Colour.green(),
         )
         await ctx.reply(
