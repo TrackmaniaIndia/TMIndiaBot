@@ -2,7 +2,7 @@ import requests
 import util.logging.convert_logging as cl
 from dotenv import load_dotenv
 import os
-from util.trackmania_username.get_stored import get_stored_usernames
+from util.trackmania.trackmania_username.get_stored import get_stored_usernames
 
 load_dotenv()
 BASE_URL = os.getenv("BASE_API_URL")

@@ -2,11 +2,11 @@ import json
 import util.logging.convert_logging as cl
 from dotenv import load_dotenv
 import os
-from util.trackmania_username.checks import (
+from util.trackmania.trackmania_username.checks import (
     check_valid_trackmania_username,
     get_trackmania_id_from_api,
 )
-from util.trackmania_username.get_stored import (
+from util.trackmania.trackmania_username.get_stored import (
     get_stored_usernames,
     get_stored_discord_ids,
 )

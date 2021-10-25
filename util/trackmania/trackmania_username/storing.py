@@ -3,7 +3,7 @@ import requests
 import util.logging.convert_logging as cl
 from dotenv import load_dotenv
 import os
-from util.trackmania_username.get_stored import (
+from util.trackmania.trackmania_username.get_stored import (
     get_stored_usernames,
     get_stored_discord_ids,
 )

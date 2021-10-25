@@ -1,9 +1,11 @@
+from requests.api import request
 import util.logging.convert_logging as cl
 from discord.ext import tasks, commands
 from datetime import datetime
 from dotenv import load_dotenv
 import os
 import requests
+import threading
 
 log = cl.get_logging()
 
@@ -30,10 +32,15 @@ def ping_api():
     load_dotenv()
     BASE_API_URL = os.getenv("BASE_API_URL")
 
-    log.debug(f"Requesting from API")
+    log.info(f"Requesting from API")
     try:
-        my_request = requests.get(BASE_API_URL)
+        log.debug(f'Creating Thread for API Ping')
+        request_thread = threading.Thread(target=requests.get, args=(str(BASE_API_URL),))
+        log.info(f'Created Thread for Pinging API, Starting')
+        my_request = request_thread.start()
+        log.info(f'Request Successful, Joining Thread')
+        request_thread.join()
+        log.debug(f'Thread Joined')
     except:
-        log.error("API is OFFLINE")
         raise Exception("API is OFFLINE")
-    log.debug(f"Successfully Received Data from API")
+    log.info(f"Successfully Received Data from API")
