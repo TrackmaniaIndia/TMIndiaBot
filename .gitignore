@@ -148,3 +148,5 @@ format.bat
 /util/guild_ids.py
 
 /node_modules
+
+/util/node
