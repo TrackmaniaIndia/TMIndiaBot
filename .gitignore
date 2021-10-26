@@ -146,3 +146,5 @@ format.bat
 
 # Now we don't have to keep changing it
 /util/guild_ids.py
+
+/node_modules
