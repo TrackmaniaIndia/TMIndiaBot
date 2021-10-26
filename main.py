@@ -3,6 +3,9 @@ from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import json
+import subprocess
+import threading
+import time
 
 from datetime import datetime
 # import jishaku
@@ -27,6 +30,15 @@ log.info(f'Created Client')
 
 if __name__ == '__main__':
     file_check()
+    
+    log.info('Creating Thread for NPM Module')
+    npm_module = threading.Thread(target=subprocess.run, args=(['npm', 'run', 'start'],), kwargs={'shell': True})
+    log.info('Thread Created for NPM Module, Starting Process')
+    npm_module.start()
+    log.info('NPM Module Thread Started, Waiting 2s before we continue')
+    time.sleep(2)
+    
+    log.info('NPM Module Initialized, Resuming Bot INIT')
 
     # Loading Cogs
     log.info("Loading Cogs")
