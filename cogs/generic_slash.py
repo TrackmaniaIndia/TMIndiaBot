@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.commands.commands import Option
 import json
 from datetime import datetime
 from dotenv import load_dotenv
@@ -100,18 +101,6 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
     @commands.after_invoke(finish_usage)
     async def _ping(self, ctx: commands.Context):
         await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
-
-    @commands.slash_command(
-        guild_ids=guild_ids,
-        name="prefix",
-        description="Change the default prefix for the server\nIf no Prefix is given it reverts to default prefix '--'",
-    )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
-    async def _prefix(self, ctx: commands.Context, prefix: str = ""):
-        change_prefix(ctx, prefix)
-        await ctx.respond("Prefix Changed to {}".format(prefix))
-        log.info(f"prefix successfully changed to {prefix} for {ctx.guild.name}")
 
     @commands.slash_command(
         guild_ids=guild_ids, name="version", description="Displays bot version"

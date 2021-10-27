@@ -47,32 +47,3 @@ def get_version():
 
     return version
 
-
-def change_prefix(ctx: commands.Context, prefix: str) -> bool:
-    """Changes the Prefix for a Given Server
-
-    Args:
-        ctx (commands.Context): Application Context for ID and Name
-        prefix (str): The Prefix to Change to
-
-    Returns:
-        bool: > True if Success, > False if failure
-    """
-    log.info(f"Changing Prefix in {ctx.guild}")
-
-    with open("./data/json/prefixes.json", "r") as file:
-        log.debug("Opening Prefixes JSON")
-        prefixes = json.load(file)
-        file.close()
-
-    log.debug(f"Changing Prefix")
-    if prefix != "":
-        prefixes[str(ctx.guild.id)] = [prefix, DEFAULT_PREFIX]
-    else:
-        prefixes[str(ctx.guild.id)] = DEFAULT_PREFIX
-    log.debug(f"Changed Prefix")
-
-    with open("./data/json/prefixes.json", "w") as file:
-        log.debug("Dumping Prefixes to File")
-        json.dump(prefixes, file, indent=4)
-        file.close()
