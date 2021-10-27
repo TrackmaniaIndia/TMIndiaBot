@@ -1,16 +1,8 @@
-from typing_extensions import Required
 import discord
-from discord import colour
-from discord.ext import commands, tasks
+from discord.ext import commands
 from discord.commands.commands import Option
-import json
-
-from datetime import datetime, timezone, timedelta
-from dotenv import load_dotenv
-from itertools import cycle
 
 import util.logging.convert_logging as convert_logging
-import util.cog_helpers.generic_helper as generic_functions
 from util.logging.usage import record_usage, finish_usage
 import util.quoting.quote as quote_functions
 import util.discord.easy_embed as ezembed
