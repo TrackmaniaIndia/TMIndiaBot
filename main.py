@@ -3,6 +3,9 @@ from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import json
+import subprocess
+import threading
+import time
 
 from datetime import datetime
 # import jishaku
@@ -27,19 +30,22 @@ log.info(f'Created Client')
 
 if __name__ == '__main__':
     file_check()
+    
+    # log.info('Creating Thread for NPM Module')
+    # npm_module = threading.Thread(target=subprocess.run, args=(['npm', 'run', 'start'],), kwargs={'shell': True})
+    # log.info('Thread Created for NPM Module, Starting Process')
+    # npm_module.start()
+    # log.info('NPM Module Thread Started, Waiting 2s before we continue')
+    # time.sleep(2)
+    
+    # log.info('NPM Module Initialized, Resuming Bot INIT')
 
     # Loading Cogs
-    log.info("Loading Cogs")
-    for filename in os.listdir("./cogs/normal_cogs"):
-        if filename.endswith(".py"):
-            log.debug(f"Loading cogs.normal_cogs.{filename[:-3]}")
-            client.load_extension(f"cogs.normal_cogs.{filename[:-3]}")
-    log.info('Loaded Cogs')
     log.info('Loading Slash Cogs')
-    for filename in os.listdir('./cogs/slash_cogs'):
+    for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
-            log.debug(f'Loading cogs.slash_cogs.{filename[:-3]}')
-            client.load_extension(f'cogs.slash_cogs.{filename[:-3]}')
+            log.debug(f'Loading cogs.{filename[:-3]}')
+            client.load_extension(f'cogs.{filename[:-3]}')
     log.info("Loaded Slash Cogs")
     
     # Running Client

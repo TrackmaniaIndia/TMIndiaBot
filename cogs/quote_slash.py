@@ -6,7 +6,6 @@ import json
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from itertools import cycle
-from cogs.normal_cogs.quote import Quote
 
 import util.logging.convert_logging as convert_logging
 import util.cog_helpers.generic_helper as generic_functions
