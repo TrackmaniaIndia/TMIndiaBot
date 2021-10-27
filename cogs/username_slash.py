@@ -1,3 +1,4 @@
+from discord.commands.commands import Option
 import util.trackmania.trackmania_username.retrieving as ret
 import util.trackmania.trackmania_username.storing as stor
 import discord
@@ -19,7 +20,7 @@ class UsernameSlash(commands.Cog):
     @commands.slash_command(guild_ids=guild_ids, name='storeusername', description='Stores Username in JSON File for Future Use and Speed')
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    async def _store_username(self, ctx: commands.Context, username: str):
+    async def _store_username(self, ctx: commands.Context, username: Option(str, "Your Trackmania2020 Username", required=True)):
         log.debug(f"Checking Username")
         if not stor.check_valid_trackmania_username(username):
             log.debug(f"Username not found")
