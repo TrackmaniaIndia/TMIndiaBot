@@ -1,6 +1,8 @@
+from typing_extensions import Required
 import discord
 from discord import colour
 from discord.ext import commands, tasks
+from discord.commands.commands import Option
 import json
 
 from datetime import datetime, timezone, timedelta
@@ -25,7 +27,7 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     @commands.cooldown(1, 5, commands.BucketType.default)
-    async def _quote(self, ctx: commands.Context, *, message: str):
+    async def _quote(self, ctx: commands.Context, *, message: Option(str, "Message you want to quote in format \"Message - Author\"", required=True)):
         message, author = message.split(" - ")
 
         log.debug(f'Saving {message} by {author}')

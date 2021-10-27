@@ -115,7 +115,7 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
     )
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
-    async def _source(self, ctx):
+    async def _source(self, ctx: commands.Context):
         embed = ezembed.create_embed(
             title="Source Code",
             description="https://github.com/NottCurious/TMIndiaBot",
