@@ -41,17 +41,11 @@ if __name__ == '__main__':
     log.info('NPM Module Initialized, Resuming Bot INIT')
 
     # Loading Cogs
-    log.info("Loading Cogs")
-    for filename in os.listdir("./cogs/normal_cogs"):
-        if filename.endswith(".py"):
-            log.debug(f"Loading cogs.normal_cogs.{filename[:-3]}")
-            client.load_extension(f"cogs.normal_cogs.{filename[:-3]}")
-    log.info('Loaded Cogs')
     log.info('Loading Slash Cogs')
-    for filename in os.listdir('./cogs/slash_cogs'):
+    for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
-            log.debug(f'Loading cogs.slash_cogs.{filename[:-3]}')
-            client.load_extension(f'cogs.slash_cogs.{filename[:-3]}')
+            log.debug(f'Loading cogs.{filename[:-3]}')
+            client.load_extension(f'cogs.{filename[:-3]}')
     log.info("Loaded Slash Cogs")
     
     # Running Client
