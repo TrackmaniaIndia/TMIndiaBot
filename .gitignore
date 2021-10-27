@@ -149,4 +149,4 @@ format.bat
 
 /node_modules
 
-/util/node
+/util/node/*
