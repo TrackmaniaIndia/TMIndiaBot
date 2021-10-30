@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.utils import get
 
 import util.logging.convert_logging as convert_logging
 from util.cog_helpers.generic_helper import get_version

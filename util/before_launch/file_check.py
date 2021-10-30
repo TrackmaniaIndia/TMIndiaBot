@@ -1,6 +1,5 @@
 import os
 import util.logging.convert_logging as cl
-import json
 
 DEFAULT_PREFIX = "--"
 

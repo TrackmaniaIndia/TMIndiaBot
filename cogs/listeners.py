@@ -9,6 +9,7 @@ from util.cog_helpers.generic_helper import *
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
 import util.discord.easy_embed as ezembed
+import time
 
 log = convert_logging.get_logging()
 version = get_version()
@@ -56,6 +57,14 @@ class Listeners(commands.Cog, description="Generic Functions"):
         log.debug(f"Start Change Status Loop")
         change_status.start(self.client, self.first_time, self.statuses)
         log.debug(f"Started Change Status Loop")
+        
+        log.debug(f'Starting Loop to Wait for a correct time')
+        curr_time = str(datetime.now().strftime('%M'))
+        while curr_time != "36" and curr_time != '00':
+            log.debug(f'Not Yet')
+            time.sleep(0.5)
+            curr_time = str(datetime.now().strftime('%M'))
+        log.debug(f'Current Time is {datetime.now()}')
 
         log.debug(f"Getting Announcement Channels")
         with open("./data/json/announcement_channels.json", "r") as file:
