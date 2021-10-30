@@ -1,17 +1,13 @@
 import discord
 from discord.ext import commands
-from discord.commands.commands import Option
 import json
 from datetime import datetime
-from dotenv import load_dotenv
 from itertools import cycle
 
 import util.logging.convert_logging as convert_logging
 from util.cog_helpers.generic_helper import *
-from util.logging.usage import record_usage, finish_usage
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
-from util.guild_ids import guild_ids
 import util.discord.easy_embed as ezembed
 
 log = convert_logging.get_logging()

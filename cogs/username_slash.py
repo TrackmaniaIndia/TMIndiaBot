@@ -4,8 +4,6 @@ import util.trackmania.trackmania_username.storing as stor
 import discord
 from discord.ext import commands
 
-from datetime import datetime, timezone, timedelta
-from dotenv import load_dotenv
 import util.logging.convert_logging as convert_logging
 from util.guild_ids import guild_ids
 from util.logging.usage import record_usage, finish_usage
