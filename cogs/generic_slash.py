@@ -1,31 +1,23 @@
 import discord
 from discord.ext import commands
-from discord.commands.commands import Option
-import json
-from datetime import datetime
-from dotenv import load_dotenv
-from itertools import cycle
+from discord.utils import get
 
 import util.logging.convert_logging as convert_logging
-from util.cog_helpers.generic_helper import *
+from util.cog_helpers.generic_helper import get_version
 from util.logging.usage import record_usage, finish_usage
-from util.tasks.keep_alive import keep_alive
-from util.tasks.status_change import change_status
 from util.guild_ids import guild_ids
 import util.discord.easy_embed as ezembed
 
 log = convert_logging.get_logging()
-version = get_version()
-
-DEFAULT_PREFIX = "--"
 
 
 class GenericSlash(commands.Cog, description="Generic Functions"):
-    first_time = True
     statuses = []
+    version = ""
 
     def __init__(self, client):
         self.client = client
+        self.version = get_version()
 
     @commands.slash_command(
         guild_ids=guild_ids,
@@ -45,7 +37,7 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
     @commands.before_invoke(record_usage)
     @commands.after_invoke(finish_usage)
     async def _version(self, ctx: commands.Context):
-        await ctx.respond(f"Bot Version is {version}")
+        await ctx.respond(f"Bot Version is {self.version}")
 
     @commands.slash_command(
         guild_ids=guild_ids, name="source", description="Displays Github Source Code"

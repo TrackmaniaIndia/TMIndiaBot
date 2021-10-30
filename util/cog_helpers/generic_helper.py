@@ -46,4 +46,3 @@ def get_version():
         file.close()
 
     return version
-

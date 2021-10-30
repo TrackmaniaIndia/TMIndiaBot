@@ -19,6 +19,7 @@ version = get_version()
 
 DEFAULT_PREFIX = "--"
 
+
 class Listeners(commands.Cog, description="Generic Functions"):
     first_time = True
     statuses = []
@@ -88,13 +89,17 @@ class Listeners(commands.Cog, description="Generic Functions"):
             print(times_run, file=file)
 
         log.info(f"Bot now Usable")
-        
+
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        log.critical(f'The Bot has Joined {guild.name} with id {guild.id}')
-        
+        log.critical(f"The Bot has Joined {guild.name} with id {guild.id}")
+
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
-        log.critical(f'The bot has left/been kicked/been banned from {guild.name} with id {guild.id}')
+        log.critical(
+            f"The bot has left/been kicked/been banned from {guild.name} with id {guild.id}"
+        )
+
+
 def setup(client):
     client.add_cog(Listeners(client))
