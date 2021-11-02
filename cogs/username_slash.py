@@ -1,6 +1,6 @@
 from discord.commands.commands import Option
-import util.trackmania.trackmania_username.retrieving as ret
-import util.trackmania.trackmania_username.storing as stor
+import util.trackmania.trackmania_username.util.retrieving as ret
+import util.trackmania.trackmania_username.util.storing as stor
 import discord
 from discord.ext import commands
 
