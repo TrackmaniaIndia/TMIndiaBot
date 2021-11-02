@@ -36,11 +36,21 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
         guild_ids=guild_ids, name="source", description="Displays Github Source Code"
     )
     async def _source(self, ctx: commands.Context):
-        await ctx.respond('Here is the source code\nhttps://github.com/NottCurious/TMIndiaBot', ephemeral=True)
-        
-    @commands.slash_command(guild_ids=guild_ids, name='invite', description='Gives you an invite link for the server')
+        await ctx.respond(
+            "Here is the source code\nhttps://github.com/NottCurious/TMIndiaBot",
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        guild_ids=guild_ids,
+        name="invite",
+        description="Gives you an invite link for the server",
+    )
     async def _invite(self, ctx: commands.Context):
-        await ctx.respond('Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr', ephemeral=True)
+        await ctx.respond(
+            "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
+            ephemeral=True,
+        )
 
 
 def setup(client):
