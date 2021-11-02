@@ -32,6 +32,10 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
             str, 'Message you want to quote in format "Message - Author"', required=True
         ),
     ):
+        # This is just temporary because sub commands have not been implemented
+        # yet for slash commands in cogs
+        if ctx.author.name != "NottCurious":
+            return
         message, author = message.split(" - ")
 
         log.debug(f"Saving {message} by {author}")
