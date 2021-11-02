@@ -1,6 +1,6 @@
 from discord.commands.commands import Option
-import util.trackmania.trackmania_username.util.retrieving as ret
-import util.trackmania.trackmania_username.util.storing as stor
+import util.trackmania.trackmania_username.retrieving as ret
+import util.trackmania.trackmania_username.storing as stor
 import discord
 from discord.ext import commands
 
@@ -21,8 +21,6 @@ class UsernameSlash(commands.Cog):
         name="storeusername",
         description="Stores Username in JSON File for Future Use and Speed",
     )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
     async def _store_username(
         self,
         ctx: commands.Context,
@@ -56,8 +54,6 @@ class UsernameSlash(commands.Cog):
         name="checkusername",
         description="Checks if your username is in the file",
     )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
     async def _check_username(self, ctx: commands.Context):
         if ret.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"Username in json file")
@@ -79,8 +75,6 @@ class UsernameSlash(commands.Cog):
         name="removeusername",
         description="Removes your username from the file if present",
     )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
     async def _remove_username(self, ctx: commands.Context):
         if not ret.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"User does not exist in file")

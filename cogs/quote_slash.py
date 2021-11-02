@@ -21,8 +21,6 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
         description="Saves a Quote, Only Usable By MODS",
     )
     @commands.has_any_role("admin", "Bot Developer")
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
     @commands.cooldown(1, 5, commands.BucketType.default)
     async def _quote(
         self,
@@ -51,8 +49,8 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
     @commands.slash_command(
         guild_ids=guild_ids, name="randquote", description="Shows a random saved quote"
     )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
+    
+
     async def _rand_quote(self, ctx: commands.Context):
         log.debug(f"Getting Random Quote")
         rand_quote = quote_functions.get_random_quote_dict()
@@ -68,8 +66,8 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
         name="lastquote",
         description="Displays the last quote saved",
     )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
+    
+
     async def _last_quote(self, ctx: commands.Context):
         log.debug(f"Getting the Last Quote Saved")
         quote_embed = quote_functions.get_last_quote()

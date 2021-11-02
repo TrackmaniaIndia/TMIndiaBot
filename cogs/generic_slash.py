@@ -23,26 +23,18 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
         name="ping",
         description="Get ping of bot to discord api in milliseconds",
     )
-    @commands.before_invoke(
-        record_usage
-    )  # Doesn't Work With Slash Commands, Must Check or Change
-    @commands.after_invoke(finish_usage)
     async def _ping(self, ctx: commands.Context):
         await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
     @commands.slash_command(
         guild_ids=guild_ids, name="version", description="Displays bot version"
-    )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
+    )    
     async def _version(self, ctx: commands.Context):
         await ctx.respond(f"Bot Version is {self.version}")
 
     @commands.slash_command(
         guild_ids=guild_ids, name="source", description="Displays Github Source Code"
     )
-    @commands.before_invoke(record_usage)
-    @commands.after_invoke(finish_usage)
     async def _source(self, ctx: commands.Context):
         embed = ezembed.create_embed(
             title="Source Code",
