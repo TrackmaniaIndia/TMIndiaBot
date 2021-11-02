@@ -49,8 +49,6 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
     @commands.slash_command(
         guild_ids=guild_ids, name="randquote", description="Shows a random saved quote"
     )
-    
-
     async def _rand_quote(self, ctx: commands.Context):
         log.debug(f"Getting Random Quote")
         rand_quote = quote_functions.get_random_quote_dict()
@@ -66,8 +64,6 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
         name="lastquote",
         description="Displays the last quote saved",
     )
-    
-
     async def _last_quote(self, ctx: commands.Context):
         log.debug(f"Getting the Last Quote Saved")
         quote_embed = quote_functions.get_last_quote()

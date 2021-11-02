@@ -7,6 +7,7 @@ import os
 
 log = convert_logging.get_logging()
 
+
 def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
     if not tmx_id.isnumeric():
         log.error(f"TMX ID Given is Not Numeric")

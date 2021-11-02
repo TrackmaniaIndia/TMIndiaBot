@@ -28,7 +28,7 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=guild_ids, name="version", description="Displays bot version"
-    )    
+    )
     async def _version(self, ctx: commands.Context):
         await ctx.respond(f"Bot Version is {self.version}")
 

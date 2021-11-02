@@ -6,6 +6,7 @@ import os
 
 log = convert_logging.get_logging()
 
+
 def get_tmnf_map(tmx_id: str) -> discord.Embed:
     if not tmx_id.isnumeric():
         log.error(f"TMX ID is not Numeric")
