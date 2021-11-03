@@ -1,4 +1,5 @@
 import discord
+from discord.commands import permissions
 from discord.ext import commands
 from discord.commands.commands import Option
 
@@ -18,10 +19,10 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
     @commands.slash_command(
         guild_ids=guild_ids,
         name="quote",
-        description="Saves a Quote, Only Usable By MODS",
+        description="Saves a Quote, Only Usable by Mods",
+        default_permission=False,
     )
-    @commands.has_any_role("admin", "Bot Developer")
-    @commands.cooldown(1, 5, commands.BucketType.default)
+    @permissions.has_any_role("Moderator", "Bot Developer", "Admin", "admin")
     async def _quote(
         self,
         ctx: commands.Context,
