@@ -65,12 +65,18 @@ class ReactionRole(commands.Cog):
         """
 
         # we recreate the view as we did in the /post command
+        log.debug(f'Recreating View')
         view = discord.ui.View(timeout=None)
         # make sure to set the guild ID here to whatever server you want the buttons in
-        guild = self.client.get_guild(876042400005505066)
-        for role_id in role_ids:
-            role = guild.get_role(role_id)
-            view.add_item(RoleButton(role))
+        log.debug(f'Looping through Guild Ids')
+        for guild_id in role_ids:
+            log.debug(f'Doing {guild_id}')
+            guild = self.client.get_guild(int(guild_id))
+            log.debug(f'Guild Name: {guild.name}')
+            for role_id in role_ids[guild_id]:
+                role = guild.get_role(role_id)
+                log.debug(f'Adding {role.name} with {role_id}')
+                view.add_item(RoleButton(role))
 
         # add the view to the bot so it will watch for button interactions
         self.client.add_view(view)
