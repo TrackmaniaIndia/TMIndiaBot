@@ -4,7 +4,7 @@ from discord.ext import commands
 import util.logging.convert_logging as convert_logging
 from util.cog_helpers.generic_helper import get_version
 from util.logging.usage import record_usage, finish_usage
-from util.guild_ids import guild_ids
+from util.constants import guild_ids
 import util.discord.easy_embed as ezembed
 
 log = convert_logging.get_logging()

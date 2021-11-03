@@ -41,9 +41,7 @@ if __name__ == "__main__":
 
     log.info("Starting NPM Module thread")
     npm_module.start()
-    log.info("NPM Module Thread Started, Waiting 3s before we continue")
-    time.sleep(3)
-
+    log.info("NPM Module Thread Started")
     log.info("NPM Module Initialized, Resuming Bot INIT")
 
     # Loading Cogs

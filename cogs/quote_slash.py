@@ -7,7 +7,7 @@ import util.logging.convert_logging as convert_logging
 from util.logging.usage import record_usage, finish_usage
 import util.quoting.quote as quote_functions
 import util.discord.easy_embed as ezembed
-from util.guild_ids import guild_ids
+from util.constants import guild_ids
 
 log = convert_logging.get_logging()
 
