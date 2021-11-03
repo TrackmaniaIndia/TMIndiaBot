@@ -3,10 +3,8 @@ import util.trackmania.trackmania_username.retrieving as ret
 import util.trackmania.trackmania_username.storing as stor
 import discord
 from discord.ext import commands
-
 import util.logging.convert_logging as convert_logging
 from util.constants import guild_ids
-from util.logging.usage import record_usage, finish_usage
 import util.discord.easy_embed as ezembed
 
 log = convert_logging.get_logging()
