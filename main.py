@@ -56,5 +56,5 @@ if __name__ == "__main__":
             client.load_extension(f"cogs.{filename[:-3]}")
     log.info("Loaded Slash Cogs")
 
-    Running Client
+    # Running Client
     client.run(BOT_TOKEN)
