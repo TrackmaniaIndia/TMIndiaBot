@@ -8,6 +8,7 @@ import threading
 import time
 
 from datetime import datetime
+
 # import jishaku
 
 import util.logging.convert_logging as cl
@@ -21,32 +22,35 @@ log.info(f"Logging Setup for main.py")
 
 log.info(f"Reading Bot Token")
 load_dotenv()
-BOT_TOKEN = os.getenv('BOTTOKEN')
+BOT_TOKEN = os.getenv("BOTTOKEN")
 log.info(f"Got Bot Token")
 
-log.info(f'Creating Client')
-client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.default())
-log.info(f'Created Client')
+log.info(f"Creating Client")
+client = commands.Bot(intents=discord.Intents.default())
+log.info(f"Created Client")
 
-if __name__ == '__main__':
+log.info("Creating Thread for NPM Module")
+npm_module = threading.Thread(
+    target=subprocess.run, args=(["npm", "run", "start"],), kwargs={"shell": True}
+)
+log.info("Thread Created for NPM Module")
+
+log.info("Starting Bot Startup")
+if __name__ == "__main__":
     file_check()
-    
-    # log.info('Creating Thread for NPM Module')
-    # npm_module = threading.Thread(target=subprocess.run, args=(['npm', 'run', 'start'],), kwargs={'shell': True})
-    # log.info('Thread Created for NPM Module, Starting Process')
-    # npm_module.start()
-    # log.info('NPM Module Thread Started, Waiting 2s before we continue')
-    # time.sleep(2)
-    
-    # log.info('NPM Module Initialized, Resuming Bot INIT')
+
+    log.info("Starting NPM Module thread")
+    npm_module.start()
+    log.info("NPM Module Thread Started")
+    log.info("NPM Module Initialized, Resuming Bot INIT")
 
     # Loading Cogs
-    log.info('Loading Slash Cogs')
-    for filename in os.listdir('./cogs'):
-        if filename.endswith('.py'):
-            log.debug(f'Loading cogs.{filename[:-3]}')
-            client.load_extension(f'cogs.{filename[:-3]}')
+    log.info("Loading Slash Cogs")
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            log.debug(f"Loading cogs.{filename[:-3]}")
+            client.load_extension(f"cogs.{filename[:-3]}")
     log.info("Loaded Slash Cogs")
-    
+
     # Running Client
     client.run(BOT_TOKEN)

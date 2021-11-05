@@ -34,13 +34,15 @@ def ping_api():
 
     log.info(f"Requesting from API")
     try:
-        log.debug(f'Creating Thread for API Ping')
-        request_thread = threading.Thread(target=requests.get, args=(str(BASE_API_URL),))
-        log.info(f'Created Thread for Pinging API, Starting')
+        log.debug(f"Creating Thread for API Ping")
+        request_thread = threading.Thread(
+            target=requests.get, args=(str(BASE_API_URL),)
+        )
+        log.info(f"Created Thread for Pinging API, Starting")
         my_request = request_thread.start()
-        log.info(f'Request Successful, Joining Thread')
+        log.info(f"Request Successful, Joining Thread")
         request_thread.join()
-        log.debug(f'Thread Joined')
+        log.debug(f"Thread Joined")
     except:
         raise Exception("API is OFFLINE")
     log.info(f"Successfully Received Data from API")

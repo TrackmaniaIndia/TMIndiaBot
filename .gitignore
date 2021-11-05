@@ -145,8 +145,10 @@ format.bat
 /data/cotddata.png
 
 # Now we don't have to keep changing it
-/util/guild_ids.py
+/util/constants.py
 
 /node_modules
 
-/util/node
+/util/node/*
+
+/Routes

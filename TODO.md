@@ -3,6 +3,16 @@
 
 * Will Create CHANGELOG.md and Update this TODO soon
 
+### Create Players Class
+* Get Trackmania ID with Discord ID
+* Get Trackmania ID with Username
+* Store Usernames to File
+
+* Has Fields - DiscordID, Username, TrackmaniaID
+* __init__(self)
+* __init__(self, discordid, username, trackmaniaid)
+* __init__(self, username)
+
 ### Trophies Leaderboard
 
 Notes:

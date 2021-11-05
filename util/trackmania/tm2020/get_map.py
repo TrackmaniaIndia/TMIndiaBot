@@ -8,6 +8,7 @@ import re
 
 log = convert_logging.get_logging()
 
+
 def getTm2020Map(tmx_id: str) -> discord.Embed:
     BASE_API_URL = os.getenv("BASE_API_URL")
     LEADERBOARD_URL = f"{BASE_API_URL}/tm2020/trackinfo/{tmx_id}"
@@ -61,7 +62,7 @@ def getTm2020Map(tmx_id: str) -> discord.Embed:
     )
     embed.set_author(
         name=tag + author["name"],
-        url=f"https://trackmania.io/#/player/{author['id']}" + str(exchange["UserID"])
+        url=f"https://trackmania.io/#/player/{author['id']}" + str(exchange["UserID"]),
     )
     embed.add_field(name="Medals", value=medals, inline=False)
     embed.add_field(name="Mood", value=exchange["Mood"], inline=True)
@@ -82,6 +83,7 @@ def getTm2020Map(tmx_id: str) -> discord.Embed:
 
     log.debug(f"Embed Created, Returning")
     return embed
+
 
 def _get_map_medals(times: dict) -> str:
     return f"""
@@ -108,6 +110,3 @@ def _parse_tmio_time_string(string: str) -> str:
     minute = f"{minute}PM" if int(minute) > 12 else f"{minute}AM"
 
     return f"{month}/{day}/{year} {hour}:{minute}"
-
-
-
