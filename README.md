@@ -18,6 +18,18 @@ NottCurious
 * Discord: NottCurious#4351
 * Main Bot Dev
 
+Artifex
+
+* Github: <https://github.com/Artifexdevstuff>
+* Discord: Dmart bag#9718
+* Bot Dev
+
+Calcium the Penguin
+
+
+* Discord: Calcium The Bored Penguin#2006
+* Contributor
+
 ## Trackmania India Discord Server Invite Link
 
 Join Here!
