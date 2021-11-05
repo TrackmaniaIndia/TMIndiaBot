@@ -59,7 +59,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
 
         log.info(f"Starting Loop to Wait for a correct time")
         curr_time = str(datetime.now().strftime("%M"))
-        while curr_time != "36" and curr_time != "00":
+        while curr_time != "28" and curr_time != "58":
             time.sleep(0.5)
             curr_time = str(datetime.now().strftime("%M"))
         log.info(f"Current Time is {datetime.now()}, continuing bot init")
