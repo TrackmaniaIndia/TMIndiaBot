@@ -25,10 +25,10 @@ class Paginate(discord.ui.View):
         self.pages = pages
         self.current_page = 1
         self.page_count = len(self.pages)
-        self.gofirst = self.children[0]
-        self.prevbutton = self.children[1]
-        self.forbutton = self.children[2]
-        self.golast = self.children[3]        
+        self.go_first = self.children[0]
+        self.previous_button = self.children[1]
+        self.forward_button = self.children[2]
+        self.go_last = self.children[3]        
         self.usercheck = author_check
         self.user = None
 
@@ -47,7 +47,7 @@ class Paginate(discord.ui.View):
         self.current_page = 1
         
         log.debug(f'Disabling Previous Button')
-        self.prevbutton.disabled = True
+        self.previous_button.disabled = True
         log.debug(f'Disabling Go To Start Button')
         button.disabled = True
         
@@ -70,7 +70,7 @@ class Paginate(discord.ui.View):
 
         if self.current_page == 1:
             log.debug(f"Current Page is 1 disabling previous button and gofirst button")
-            self.gofirst.disabled = True
+            self.go_first.disabled = True
             button.disabled = True
 
         self.children[2].disabled = False
@@ -92,7 +92,7 @@ class Paginate(discord.ui.View):
 
         if self.current_page == self.page_count:
             log.debug(f'Current Page is Last Page, Disabling Button and GoLast Button')
-            self.golast.disabled = True
+            self.go_last.disabled = True
             button.disabled = True
         
         self.children[1].disabled = False
@@ -111,7 +111,7 @@ class Paginate(discord.ui.View):
         self.current_page = len(self.pages)
         
         log.debug(f'Disabling Forward Button')
-        self.forbutton.disabled = True
+        self.forward_button.disabled = True
         log.debug(f'Disabling Go Last Button')
         button.disabled = True
         
@@ -151,14 +151,24 @@ class Paginate(discord.ui.View):
             )
         return message
 
-    def forward_button(self, label: str, color: str = "green"):
+    def next_button(self, label: str, color: str = "green"):
         log.debug(f'Changing Forward Button Label to {label} and color to {color}')
-        self.forbutton.label = label
+        self.forward_button.label = label
         color = getattr(discord.ButtonStyle, color.lower())
-        self.forbutton.style = color
+        self.forward_button.style = color
 
     def back_button(self, label: str, color: str = "green"):
         log.debug(f'Changing Back Button Label to {label} and color to {color}')
-        self.prevbutton.label = label
+        self.previous_button.label = label
         color = getattr(discord.ButtonStyle, color.lower())
-        self.prevbutton.style = color
+        self.previous_button.style = color
+
+    def first_button(self, label: str, color: str = "green"):
+        log.debug(f'Changing First Button Label to {label} and color to {color}')
+        self.go_first.label = label
+        self.go_first.style = getattr(discord.ButtonStyle, color.lower())
+        
+    def last_button(self, label: str, color: str = "green"):
+        log.debug(f'Changing Last Button Label to {label} and color to {color}')
+        self.go_last.label = label
+        self.go_last.style = getattr(discord.ButtonStyle, color.lower())
