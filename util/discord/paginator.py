@@ -138,37 +138,39 @@ class Paginate(discord.ui.View):
             embed=page if isinstance(page, discord.Embed) else MISSING,
             view=self,
         )
-        
-    @discord.ui.button(label='⤫', style=discord.ButtonStyle.red)
-    async def kill_switch(self, button: discord.ui.Button, interaction: discord.Interaction):
+
+    @discord.ui.button(label="⤫", style=discord.ButtonStyle.red)
+    async def kill_switch(
+        self, button: discord.ui.Button, interaction: discord.Interaction
+    ):
         log.debug(
-            f'Kill Switch Received for {interaction} by {interaction.user.display_name} in channel {interaction.channel.name} in guild {interaction.guild.name}'
+            f"Kill Switch Received for {interaction} by {interaction.user.display_name} in channel {interaction.channel.name} in guild {interaction.guild.name}"
         )
-        
-        log.debug(f'Disabling all Buttons')
+
+        log.debug(f"Disabling all Buttons")
         self.go_first.disabled = True
         self.previous_button.disabled = True
         self.forward_button.disabled = True
         self.go_last.disabled = True
         self.end.disabled = True
-        log.debug(f'Disabled all Buttons, Removing')
-        
+        log.debug(f"Disabled all Buttons, Removing")
+
         self.remove_item(self.go_first)
         self.remove_item(self.previous_button)
         self.remove_item(self.forward_button)
         self.remove_item(self.go_last)
         self.remove_item(self.end)
-        log.debug(f'Removed all buttons')
-        
+        log.debug(f"Removed all buttons")
+
         # page = self.pages[self.current_page - 1]
-        page = ezembed.create_embed(title=f'**This Interaction has Ended**', color=discord.Colour.red())
+        page = ezembed.create_embed(
+            title=f"**This Interaction has Ended**", color=discord.Colour.red()
+        )
         await interaction.response.edit_message(
             content=page if isinstance(page, str) else None,
             embed=page if isinstance(page, discord.Embed) else MISSING,
             view=self,
         )
-                
-        
 
     async def run(self, messageable: abc.Messageable, ephemeral: bool = False):
         log.debug(f"Running Paginator")
