@@ -4,7 +4,6 @@ import util.logging.convert_logging as convert_logging
 from util.cog_helpers.generic_helper import get_version
 from util.constants import guild_ids
 import util.discord.easy_embed as ezembed
-from util.discord.paginator import Paginate
 
 log = convert_logging.get_logging()
 
@@ -50,16 +49,6 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
             "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
             ephemeral=True,
         )
-    
-    @commands.slash_command(guild_ids=guild_ids, name='testpagination')
-    async def _test_pagination(self, ctx: commands.Context):    
-        embed_list = [ezembed.create_embed(title='Hello 1'), ezembed.create_embed(title='Hello 2'), ezembed.create_embed(title='Hello 3')]
-        
-        # pages = Paginate(pages = ["Hey im page 1", "Page 2 here", "Third page reporting for duty"], show_disabled=False)
-        pages = Paginate(pages=embed_list, show_disabled=False)
-        # pages.forward_button(label = "Next", color = "red")
-        # pages.back_button(label = "Prev", color = "gray")
-        await pages.run(ctx, ephemeral = True)
         
 
 

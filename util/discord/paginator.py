@@ -106,7 +106,9 @@ class Paginate(discord.ui.View):
         )
 
     async def run(self, messageable: abc.Messageable, ephemeral: bool = False):
+        log.debug(f'Running Paginator')
         if not isinstance(messageable, abc.Messageable):
+            log.error(f'{messageable} is not abc.Messageable')
             raise TypeError("messageable should be a subclass of abc.Messageable")
 
         page = self.pages[0]
@@ -129,11 +131,13 @@ class Paginate(discord.ui.View):
         return message
 
     def forward_button(self, label: str, color: str = "green"):
+        log.debug(f'Changing Forward Button Label to {label} and color to {color}')
         self.forbutton.label = label
         color = getattr(discord.ButtonStyle, color.lower())
         self.forbutton.style = color
 
     def back_button(self, label: str, color: str = "green"):
+        log.debug(f'Changing Back Button Label to {label} and color to {color}')
         self.prevbutton.label = label
         color = getattr(discord.ButtonStyle, color.lower())
         self.prevbutton.style = color
