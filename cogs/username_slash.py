@@ -105,12 +105,16 @@ class UsernameSlash(commands.Cog):
         ctx: commands.Context,
         username: Option(str, "The Trackmania2020 Username", required=True),
     ):
-        log.info(f'Getting Data of {username}')
-        embed = ezembed.create_embed(title='ID', description=get_player_id(username), color=discord.Color.random())
-        log.debug(f'Got Data and Created Embed, Sending')
+        log.info(f"Getting Data of {username}")
+        embed = ezembed.create_embed(
+            title="ID",
+            description=get_player_id(username),
+            color=discord.Color.random(),
+        )
+        log.debug(f"Got Data and Created Embed, Sending")
         # await ctx.respond(get_player_id(username))
         await ctx.respond(embed=embed, ephemeral=True)
-        log.debug(f'Sent Embed')
+        log.debug(f"Sent Embed")
 
 
 def setup(client):
