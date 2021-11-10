@@ -50,18 +50,17 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
             "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
             ephemeral=True,
         )
-        
-    @commands.slash_command(guild_ids=guild_ids, name='testpagination')
+
+    @commands.slash_command(guild_ids=guild_ids, name="testpagination")
     async def _test(self, ctx: commands.Context):
-        embed1 = ezembed.create_embed(title='Testing 1')
-        embed2 = ezembed.create_embed(title='Testing 2')
-        embed3 = ezembed.create_embed(title='Testing 3')
-        embed4 = ezembed.create_embed(title='Testing 4')
+        embed1 = ezembed.create_embed(title="Testing 1")
+        embed2 = ezembed.create_embed(title="Testing 2")
+        embed3 = ezembed.create_embed(title="Testing 3")
+        embed4 = ezembed.create_embed(title="Testing 4")
         embed_list = [embed1, embed2, embed3, embed4]
-        
+
         my_pag = Paginate(pages=embed_list, show_disabled=True)
         await my_pag.run(ctx)
-        
 
 
 def setup(client):
