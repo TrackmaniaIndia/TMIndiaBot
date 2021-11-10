@@ -59,7 +59,7 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
         embed4 = ezembed.create_embed(title="Testing 4")
         embed_list = [embed1, embed2, embed3, embed4]
 
-        my_pag = Paginate(pages=embed_list, show_disabled=True)
+        my_pag = Paginate(pages=embed_list)
         await my_pag.run(ctx)
 
 

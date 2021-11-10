@@ -29,11 +29,12 @@ class Paginate(discord.ui.View):
         self.previous_button = self.children[1]
         self.forward_button = self.children[2]
         self.go_last = self.children[3]
+        self.end = self.children[4]
         self.usercheck = author_check
         self.user = None
 
         log.debug(
-            f"Created Paginator with {self.pages} pages, show_disabled={self.show_disabled} and author_check={self.usercheck}"
+            f"Created Paginator with {self.pages} pages and author_check={self.usercheck}"
         )
 
     async def interaction_check(self, interaction: Interaction) -> bool:
@@ -41,7 +42,7 @@ class Paginate(discord.ui.View):
             return self.user == interaction.user
         return True
 
-    @discord.ui.button(label="|<<", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="|<<", style=discord.ButtonStyle.green, disabled=True)
     async def go_to_start(
         self, button: discord.ui.Button, interaction: discord.Interaction, disabled=True
     ):
@@ -136,6 +137,36 @@ class Paginate(discord.ui.View):
             embed=page if isinstance(page, discord.Embed) else MISSING,
             view=self,
         )
+        
+    @discord.ui.button(label='X', style=discord.ButtonStyle.red)
+    async def kill_switch(self, button: discord.ui.Button, interaction: discord.Interaction):
+        log.debug(
+            f'Kill Switch Received for {interaction} by {interaction.user.display_name} in channel {interaction.channel.name} in guild {interaction.guild.name}'
+        )
+        
+        log.debug(f'Disabling all Buttons')
+        self.go_first.disabled = True
+        self.previous_button.disabled = True
+        self.forward_button.disabled = True
+        self.go_last.disabled = True
+        self.end.disabled = True
+        log.debug(f'Disabled all Buttons, Removing')
+        
+        self.remove_item(self.go_first)
+        self.remove_item(self.previous_button)
+        self.remove_item(self.forward_button)
+        self.remove_item(self.go_last)
+        self.remove_item(self.end)
+        log.debug(f'Removed all buttons')
+        
+        page = self.pages[self.current_page]
+        await interaction.response.edit_message(
+            content=page if isinstance(page, str) else None,
+            embed=page if isinstance(page, discord.Embed) else MISSING,
+            view=self,
+        )
+                
+        
 
     async def run(self, messageable: abc.Messageable, ephemeral: bool = False):
         log.debug(f"Running Paginator")
