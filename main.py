@@ -30,9 +30,13 @@ client = commands.Bot(intents=discord.Intents.default())
 log.info(f"Created Client")
 
 log.info("Creating Thread for NPM Module")
+# npm_module = threading.Thread(
+#     target=subprocess.run, args=(["npm", "run", "start"],), kwargs={"shell": True}
+# )
 npm_module = threading.Thread(
-    target=subprocess.run, args=(["npm", "run", "start"],), kwargs={"shell": True}
+    target=subprocess.run, args=("npm run start",), kwargs={"shell": True}
 )
+
 log.info("Thread Created for NPM Module")
 
 log.info("Starting Bot Startup")

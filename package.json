@@ -2,7 +2,7 @@
     "name": "TMIndiaBotApi",
     "version": "1.0.0",
     "description": "REST Api for Trackmania India Discord bot",
-    "main": "index.js",
+    "main": "util/node/TMIndiaBotApi/index.js",
     "scripts": {
       "start": "node util/node/TMIndiaBotApi/index.js",
       "dev": "nodemon util/node/TMIndiaBotApi/index.js"
