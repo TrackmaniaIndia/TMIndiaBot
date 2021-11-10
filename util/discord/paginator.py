@@ -59,6 +59,7 @@ class Paginate(discord.ui.View):
 
         if not self.show_disabled:
             if len(self.children) == 1:
+                log.debug(f'Adding Next button')
                 self.add_item(self.forbutton)
                 self.forbutton.disabled = False
             if button.disabled:
@@ -78,17 +79,21 @@ class Paginate(discord.ui.View):
     async def forward(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
+        log.debug(f'"Go Forward" button clicked')
         self.current_page += 1
 
         if self.current_page == self.page_count:
+            log.debug(f'Current Page is Last Page, Disabling Button')
             button.disabled = True
 
         if not self.show_disabled:
             if len(self.children) == 1:
+                log.debug(f'Adding Previous Button')
                 self.add_item(self.prevbutton)
                 self.prevbutton.disabled = False
                 self.children[0], self.children[1] = self.children[1], self.children[0]
             if button.disabled:
+                log.debug(f'Last Page, Removing Next Button')
                 self.remove_item(button)
         else:
             self.children[0].disabled = False
