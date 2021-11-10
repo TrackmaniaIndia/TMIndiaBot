@@ -1,4 +1,5 @@
 from discord.commands.commands import Option
+from discord.commands import permissions
 import util.trackmania.trackmania_username.retrieving as ret
 import util.trackmania.trackmania_username.storing as stor
 import discord
@@ -6,6 +7,7 @@ from discord.ext import commands
 import util.logging.convert_logging as convert_logging
 from util.constants import guild_ids
 import util.discord.easy_embed as ezembed
+from util.trackmania.tm2020.player import get_player_id
 
 log = convert_logging.get_logging()
 
@@ -80,7 +82,7 @@ class UsernameSlash(commands.Cog):
                 title=":negative_squared_cross_mark: User does not exist",
                 color=discord.Colour.red(),
             )
-            await ctx.respond(embed=embed)
+            await ctx.respond(embed=embed, ephemeral=True)
             return
 
         log.debug(f"Removing Trackmania Username")
@@ -91,6 +93,28 @@ class UsernameSlash(commands.Cog):
             color=discord.Colour.green(),
         )
         await ctx.respond(embed=embed)
+
+    @commands.slash_command(
+        guild_ids=guild_ids,
+        name="getid",
+        description="Gets the Trackmania ID of A Player",
+    )
+    @permissions.is_owner()
+    async def _get_id(
+        self,
+        ctx: commands.Context,
+        username: Option(str, "The Trackmania2020 Username", required=True),
+    ):
+        log.info(f"Getting Data of {username}")
+        embed = ezembed.create_embed(
+            title="ID",
+            description=get_player_id(username),
+            color=discord.Color.random(),
+        )
+        log.debug(f"Got Data and Created Embed, Sending")
+        # await ctx.respond(get_player_id(username))
+        await ctx.respond(embed=embed, ephemeral=True)
+        log.debug(f"Sent Embed")
 
 
 def setup(client):

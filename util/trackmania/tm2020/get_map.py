@@ -9,7 +9,7 @@ import re
 log = convert_logging.get_logging()
 
 
-def getTm2020Map(tmx_id: str) -> discord.Embed:
+def get_tm2020_map(tmx_id: str) -> discord.Embed:
     BASE_API_URL = os.getenv("BASE_API_URL")
     LEADERBOARD_URL = f"{BASE_API_URL}/tm2020/trackinfo/{tmx_id}"
 
@@ -36,10 +36,10 @@ def getTm2020Map(tmx_id: str) -> discord.Embed:
     author = api_data["authorplayer"]
 
     times = {
-        "author": formatTimeInt(api_data["authorScore"]),
-        "gold": formatTimeInt(api_data["goldScore"]),
-        "silver": formatTimeInt(api_data["silverScore"]),
-        "bronze": formatTimeInt(api_data["bronzeScore"]),
+        "author": _format_time_int(api_data["authorScore"]),
+        "gold": _format_time_int(api_data["goldScore"]),
+        "silver": _format_time_int(api_data["silverScore"]),
+        "bronze": _format_time_int(api_data["bronzeScore"]),
     }
 
     tag = ""
@@ -94,7 +94,7 @@ def _get_map_medals(times: dict) -> str:
     """
 
 
-def formatTimeInt(time: int) -> str:
+def _format_time_int(time: int) -> str:
     time = str(time)
 
     return f"0:{time[:2]}.{time[2:]}"
