@@ -19,16 +19,16 @@ class Paginate(discord.ui.View):
     def __init__(
         self,
         pages: Union[List[str], List[discord.Embed]],
-        show_disabled=True,
         author_check=True,
     ):
         super().__init__()
         self.pages = pages
         self.current_page = 1
         self.page_count = len(self.pages)
-        self.show_disabled = show_disabled
-        self.forbutton = self.children[1]
-        self.prevbutton = self.children[0]
+        self.gofirst = self.children[0]
+        self.prevbutton = self.children[1]
+        self.forbutton = self.children[2]
+        self.golast = self.children[3]        
         self.usercheck = author_check
         self.user = None
 
@@ -36,37 +36,45 @@ class Paginate(discord.ui.View):
             f"Created Paginator with {self.pages} pages, show_disabled={self.show_disabled} and author_check={self.usercheck}"
         )
 
-        if not self.show_disabled:
-            self.remove_item(self.children[0])
-            if self.page_count == 1:
-                self.remove_item(self.children[1])
-
     async def interaction_check(self, interaction: Interaction) -> bool:
         if self.usercheck:
             return self.user == interaction.user
         return True
 
-    @discord.ui.button(label="<", style=discord.ButtonStyle.green, disabled=True)
+    @discord.ui.button(label='|<<', style=discord.ButtonStyle.green)
+    async def go_to_start(self, button: discord.ui.Button, interaction: discord.Interaction, disabled=True):
+        log.debug(f'"Go First" button clicked for {interaction} by {interaction.user.display_name} in channel {interaction.channel.name} in guild {interaction.guild.name}')
+        self.current_page = 1
+        
+        log.debug(f'Disabling Previous Button')
+        self.prevbutton.disabled = True
+        log.debug(f'Disabling Go To Start Button')
+        button.disabled = True
+        
+        self.children[2].disabled = False
+        self.children[3].disabled = False  
+            
+        page = self.pages[self.current_page - 1]
+        await interaction.response.edit_message(
+            content=page if isinstance(page, str) else None,
+            embed=page if isinstance(page, discord.Embed) else MISSING,
+            view=self,
+        ) 
+
+    @discord.ui.button(label="⬅", style=discord.ButtonStyle.green, disabled=True)
     async def previous(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
-        log.debug(f'"Go Previous" button clicked')
+        log.debug(f'"Go Previous" button clicked for {interaction} by {interaction.user.display_name} in channel {interaction.channel.name} in guild {interaction.guild.name}')
         self.current_page -= 1
 
         if self.current_page == 1:
-            log.debug(f"Current Page is 1 disabling previous button")
+            log.debug(f"Current Page is 1 disabling previous button and gofirst button")
+            self.gofirst.disabled = True
             button.disabled = True
 
-        if not self.show_disabled:
-            if len(self.children) == 1:
-                log.debug(f'Adding Next button')
-                self.add_item(self.forbutton)
-                self.forbutton.disabled = False
-            if button.disabled:
-                log.debug(f"Button is disabled, removing the button")
-                self.remove_item(button)
-        else:
-            self.children[1].disabled = False
+        self.children[2].disabled = False
+        self.children[3].disabled = False
 
         page = self.pages[self.current_page - 1]
         await interaction.response.edit_message(
@@ -74,30 +82,43 @@ class Paginate(discord.ui.View):
             embed=page if isinstance(page, discord.Embed) else MISSING,
             view=self,
         )
-
-    @discord.ui.button(label=">", style=discord.ButtonStyle.green)
+        
+    @discord.ui.button(label="➞", style=discord.ButtonStyle.green)
     async def forward(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
-        log.debug(f'"Go Forward" button clicked')
+        log.debug(f'"Go Forward" button clicked for {interaction} by {interaction.user.display_name} in channel {interaction.channel.name} in guild {interaction.guild.name}')
         self.current_page += 1
 
         if self.current_page == self.page_count:
-            log.debug(f'Current Page is Last Page, Disabling Button')
+            log.debug(f'Current Page is Last Page, Disabling Button and GoLast Button')
+            self.golast.disabled = True
             button.disabled = True
+        
+        self.children[1].disabled = False
+        self.children[0].disabled = False
 
-        if not self.show_disabled:
-            if len(self.children) == 1:
-                log.debug(f'Adding Previous Button')
-                self.add_item(self.prevbutton)
-                self.prevbutton.disabled = False
-                self.children[0], self.children[1] = self.children[1], self.children[0]
-            if button.disabled:
-                log.debug(f'Last Page, Removing Next Button')
-                self.remove_item(button)
-        else:
-            self.children[0].disabled = False
-
+        page = self.pages[self.current_page - 1]
+        await interaction.response.edit_message(
+            content=page if isinstance(page, str) else None,
+            embed=page if isinstance(page, discord.Embed) else MISSING,
+            view=self,
+        )
+    
+    @discord.ui.button(label='>>|', style=discord.ButtonStyle.green)
+    async def go_to_end(self, button: discord.ui.Button, interaction: discord.Interaction):
+        log.debug(f'"Go Last" button clicked for {interaction} by {interaction.user.display_name} in channel {interaction.channel.name} in guild {interaction.guild.name}')
+        self.current_page = len(self.pages)
+        
+        log.debug(f'Disabling Forward Button')
+        self.forbutton.disabled = True
+        log.debug(f'Disabling Go Last Button')
+        button.disabled = True
+        
+        self.children[1].disabled = False
+        self.children[0].disabled = False
+            
+    
         page = self.pages[self.current_page - 1]
         await interaction.response.edit_message(
             content=page if isinstance(page, str) else None,
