@@ -4,6 +4,7 @@ from typing import Union, List
 
 from discord import message
 import util.logging.convert_logging as convert_logging
+import util.discord.easy_embed as ezembed
 
 from discord import abc
 from discord.interactions import Interaction
@@ -42,7 +43,7 @@ class Paginate(discord.ui.View):
             return self.user == interaction.user
         return True
 
-    @discord.ui.button(label="|<<", style=discord.ButtonStyle.green, disabled=True)
+    @discord.ui.button(label="⭅", style=discord.ButtonStyle.green, disabled=True)
     async def go_to_start(
         self, button: discord.ui.Button, interaction: discord.Interaction, disabled=True
     ):
@@ -66,7 +67,7 @@ class Paginate(discord.ui.View):
             view=self,
         )
 
-    @discord.ui.button(label="⬅", style=discord.ButtonStyle.green, disabled=True)
+    @discord.ui.button(label="⟸", style=discord.ButtonStyle.green, disabled=True)
     async def previous(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
@@ -90,7 +91,7 @@ class Paginate(discord.ui.View):
             view=self,
         )
 
-    @discord.ui.button(label="➞", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="⟹", style=discord.ButtonStyle.green)
     async def forward(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
@@ -114,7 +115,7 @@ class Paginate(discord.ui.View):
             view=self,
         )
 
-    @discord.ui.button(label=">>|", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="⭆", style=discord.ButtonStyle.green)
     async def go_to_end(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
@@ -138,7 +139,7 @@ class Paginate(discord.ui.View):
             view=self,
         )
         
-    @discord.ui.button(label='X', style=discord.ButtonStyle.red)
+    @discord.ui.button(label='⤫', style=discord.ButtonStyle.red)
     async def kill_switch(self, button: discord.ui.Button, interaction: discord.Interaction):
         log.debug(
             f'Kill Switch Received for {interaction} by {interaction.user.display_name} in channel {interaction.channel.name} in guild {interaction.guild.name}'
@@ -159,7 +160,8 @@ class Paginate(discord.ui.View):
         self.remove_item(self.end)
         log.debug(f'Removed all buttons')
         
-        page = self.pages[self.current_page]
+        # page = self.pages[self.current_page - 1]
+        page = ezembed.create_embed(title=f'**This Interaction has Ended**', color=discord.Colour.red())
         await interaction.response.edit_message(
             content=page if isinstance(page, str) else None,
             embed=page if isinstance(page, discord.Embed) else MISSING,

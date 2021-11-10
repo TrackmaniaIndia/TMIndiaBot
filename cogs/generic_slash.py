@@ -53,10 +53,10 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(guild_ids=guild_ids, name="testpagination")
     async def _test(self, ctx: commands.Context):
-        embed1 = ezembed.create_embed(title="Testing 1")
-        embed2 = ezembed.create_embed(title="Testing 2")
-        embed3 = ezembed.create_embed(title="Testing 3")
-        embed4 = ezembed.create_embed(title="Testing 4")
+        embed1 = ezembed.create_embed(title="Testing 1", description='Testing 1\'s Description')
+        embed2 = ezembed.create_embed(title="Testing 2", description='Testing 2\'s Description')
+        embed3 = ezembed.create_embed(title="Testing 3", description='adjskbabdjasdjlaskbdawkudbuiwabdiwbdkbsgfrduidgbufdjklasljkdwbaldlalkds')
+        embed4 = ezembed.create_embed(title="Testing 4", description='Testing 4\'s Description')
         embed_list = [embed1, embed2, embed3, embed4]
 
         my_pag = Paginate(pages=embed_list)
