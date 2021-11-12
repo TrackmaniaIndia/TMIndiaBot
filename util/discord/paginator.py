@@ -43,7 +43,7 @@ class Paginate(discord.ui.View):
             return self.user == interaction.user
         return True
 
-    @discord.ui.button(label="⭅", style=discord.ButtonStyle.green, disabled=True)
+    @discord.ui.button(label="⭅", style=discord.ButtonStyle.primary, disabled=True)
     async def go_to_start(
         self, button: discord.ui.Button, interaction: discord.Interaction, disabled=True
     ):
@@ -67,7 +67,7 @@ class Paginate(discord.ui.View):
             view=self,
         )
 
-    @discord.ui.button(label="⟸", style=discord.ButtonStyle.green, disabled=True)
+    @discord.ui.button(label="⟸", style=discord.ButtonStyle.primary, disabled=True)
     async def previous(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
@@ -91,7 +91,7 @@ class Paginate(discord.ui.View):
             view=self,
         )
 
-    @discord.ui.button(label="⟹", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="⟹", style=discord.ButtonStyle.primary)
     async def forward(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
@@ -115,7 +115,7 @@ class Paginate(discord.ui.View):
             view=self,
         )
 
-    @discord.ui.button(label="⭆", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="⭆", style=discord.ButtonStyle.primary)
     async def go_to_end(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
@@ -197,24 +197,26 @@ class Paginate(discord.ui.View):
             )
         return message
 
-    def next_button(self, label: str, color: str = "green"):
+    def next_button(self, label: str, color: str = "primary"):
         log.debug(f"Changing Forward Button Label to {label} and color to {color}")
         self.forward_button.label = label
         color = getattr(discord.ButtonStyle, color.lower())
         self.forward_button.style = color
 
-    def back_button(self, label: str, color: str = "green"):
+    def back_button(self, label: str, color: str = "primary"):
         log.debug(f"Changing Back Button Label to {label} and color to {color}")
         self.previous_button.label = label
         color = getattr(discord.ButtonStyle, color.lower())
         self.previous_button.style = color
 
-    def first_button(self, label: str, color: str = "green"):
+    def first_button(self, label: str, color: str = "primary"):
         log.debug(f"Changing First Button Label to {label} and color to {color}")
         self.go_first.label = label
         self.go_first.style = getattr(discord.ButtonStyle, color.lower())
 
-    def last_button(self, label: str, color: str = "green"):
+    def last_button(self, label: str, color: str = "primary"):
         log.debug(f"Changing Last Button Label to {label} and color to {color}")
         self.go_last.label = label
         self.go_last.style = getattr(discord.ButtonStyle, color.lower())
+
+    

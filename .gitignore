@@ -145,7 +145,7 @@ format.bat
 /data/cotddata.png
 
 # Now we don't have to keep changing it
-util/constants.py
+/util/constants.py
 
 /node_modules
 
