@@ -14,8 +14,6 @@ log = convert_logging.get_logging()
 version = get_version()
 
 DEFAULT_PREFIX = "--"
-role_ids = [905321194071416872, 905321269451427840, 905321297146441729]
-
 
 class Listeners(commands.Cog, description="Generic Functions"):
     first_time = True

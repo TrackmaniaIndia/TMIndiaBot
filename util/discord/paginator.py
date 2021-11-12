@@ -9,7 +9,6 @@ import util.discord.easy_embed as ezembed
 from discord import abc
 from discord.interactions import Interaction
 from discord.utils import MISSING
-from discord.ui.button import button
 from discord.commands import ApplicationContext
 from discord.ext.commands import Context
 

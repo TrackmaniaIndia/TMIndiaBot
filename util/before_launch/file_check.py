@@ -21,4 +21,3 @@ def file_check():
             print(0, file=file)
 
     return
-    log.info("All Files Exist")
