@@ -218,5 +218,3 @@ class Paginator(discord.ui.View):
         log.debug(f"Changing Last Button Label to {label} and color to {color}")
         self.go_last.label = label
         self.go_last.style = getattr(discord.ButtonStyle, color.lower())
-
-    

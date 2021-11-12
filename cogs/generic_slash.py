@@ -75,16 +75,16 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
 
         my_pag = Paginator(pages=embed_list)
         await my_pag.run(ctx)
-        
+
     @commands.slash_command(guild_ids=guild_ids, name="testconfirm")
     @permissions.is_owner()
     async def _test_confirm(self, ctx: commands.Context):
         my_confirmer = Confirmer()
-        my_confirmer.change_cancel_button('Cancel Me Senpai')
-        my_confirmer.change_confirm_button('Confirm Me pls')
-        await ctx.respond('Do You Want to Continue', view=my_confirmer)
+        my_confirmer.change_cancel_button("Cancel Me Senpai")
+        my_confirmer.change_confirm_button("Confirm Me pls")
+        await ctx.respond("Do You Want to Continue", view=my_confirmer)
         await my_confirmer.wait()
-        
+
         await ctx.send(my_confirmer.value)
 
 
