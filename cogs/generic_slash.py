@@ -1,12 +1,14 @@
 import discord
+import util.logging.convert_logging as convert_logging
+import util.discord.easy_embed as ezembed
+
 from discord.ext import commands
 from discord.commands import permissions
-import util.logging.convert_logging as convert_logging
-from util.cog_helpers.generic_helper import get_version
-from util.constants import guild_ids
-import util.discord.easy_embed as ezembed
 from util.discord.paginator import Paginator
 from util.discord.confirmation import Confirmer
+from util.cog_helpers.generic_helper import get_version
+from util.constants import guild_ids
+
 
 log = convert_logging.get_logging()
 

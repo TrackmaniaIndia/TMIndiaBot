@@ -1,11 +1,12 @@
 import discord
-from discord.commands import permissions
-from discord.ext import commands
-from discord.commands.commands import Option
 import util.logging.convert_logging as convert_logging
 import util.quoting.quote as quote_functions
 import util.discord.easy_embed as ezembed
+
 from util.constants import guild_ids
+from discord.commands import permissions
+from discord.ext import commands
+from discord.commands.commands import Option
 
 log = convert_logging.get_logging()
 

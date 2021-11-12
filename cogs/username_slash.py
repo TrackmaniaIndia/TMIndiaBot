@@ -1,12 +1,13 @@
-from discord.commands.commands import Option
-from discord.commands import permissions
 import util.trackmania.trackmania_username.retrieving as ret
 import util.trackmania.trackmania_username.storing as stor
 import discord
-from discord.ext import commands
 import util.logging.convert_logging as convert_logging
-from util.constants import guild_ids
 import util.discord.easy_embed as ezembed
+
+from discord.commands.commands import Option
+from discord.commands import permissions
+from discord.ext import commands
+from util.constants import guild_ids
 from util.trackmania.tm2020.player import get_player_id
 from util.discord.confirmation import Confirmer
 
