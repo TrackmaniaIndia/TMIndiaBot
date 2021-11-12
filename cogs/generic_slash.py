@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.commands import permissions
 import util.logging.convert_logging as convert_logging
 from util.cog_helpers.generic_helper import get_version
 from util.constants import guild_ids
@@ -52,6 +53,7 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
         )
 
     @commands.slash_command(guild_ids=guild_ids, name="testpagination")
+    @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
         embed1 = ezembed.create_embed(
             title="Testing 1", description="Testing 1's Description"
