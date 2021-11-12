@@ -6,6 +6,7 @@ from util.cog_helpers.generic_helper import get_version
 from util.constants import guild_ids
 import util.discord.easy_embed as ezembed
 from util.discord.paginator import Paginate
+from util.discord.confirmation import Confirm
 
 log = convert_logging.get_logging()
 
@@ -72,6 +73,17 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
 
         my_pag = Paginate(pages=embed_list)
         await my_pag.run(ctx)
+        
+    @commands.slash_command(guild_ids=guild_ids, name="testconfirm")
+    @permissions.is_owner()
+    async def _test_confirm(self, ctx: commands.Context):
+        my_confirmer = Confirm()
+        my_confirmer.change_cancel_button('Cancel Me Senpai')
+        my_confirmer.change_confirm_button('Confirm Me pls')
+        await ctx.respond('Do You Want to Continue', view=my_confirmer)
+        await my_confirmer.wait()
+        
+        await ctx.send(my_confirmer.value)
 
 
 def setup(client):
