@@ -31,15 +31,15 @@ class Paginator(discord.ui.View):
         self.forward_button = self.children[2]
         self.go_last = self.children[3]
         self.end = self.children[4]
-        self.usercheck = author_check
+        self.user_check = author_check
         self.user = None
 
         log.debug(
-            f"Created Paginator with {self.pages} pages and author_check={self.usercheck}"
+            f"Created Paginator with {self.pages} pages and author_check={self.user_check}"
         )
 
     async def interaction_check(self, interaction: Interaction) -> bool:
-        if self.usercheck:
+        if self.user_check:
             return self.user == interaction.user
         return True
 

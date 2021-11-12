@@ -13,9 +13,7 @@ from datetime import datetime
 
 import util.logging.convert_logging as cl
 import util.discord.easy_embed as ezembed
-from util.logging.usage import record_usage, finish_usage
 from util.before_launch.file_check import file_check
-from util.discord.get_prefix import get_prefix
 
 log = cl.get_logging()
 log.info(f"Logging Setup for main.py")
