@@ -16,7 +16,7 @@ from discord.ext.commands import Context
 log = convert_logging.get_logging()
 
 
-class Paginate(discord.ui.View):
+class Paginator(discord.ui.View):
     def __init__(
         self,
         pages: Union[List[str], List[discord.Embed]],

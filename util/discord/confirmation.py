@@ -3,7 +3,7 @@ import util.logging.convert_logging as convert_logging
 
 log = convert_logging.get_logging()
 
-class Confirm(discord.ui.View):
+class Confirmer(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.value = None
