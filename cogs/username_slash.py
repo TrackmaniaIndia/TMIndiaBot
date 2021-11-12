@@ -8,6 +8,7 @@ import util.logging.convert_logging as convert_logging
 from util.constants import guild_ids
 import util.discord.easy_embed as ezembed
 from util.trackmania.tm2020.player import get_player_id
+from util.discord.confirmation import Confirmer
 
 log = convert_logging.get_logging()
 
@@ -36,6 +37,31 @@ class UsernameSlash(commands.Cog):
             await ctx.respond(embed=embed)
             return None
         log.debug(f"User Exists, Continuing")
+        
+        log.debug(f'Creating a Confirmation Prompt')
+        confirm_add_username = Confirmer()
+        
+        log.debug(f'Changing Button Labels')
+        confirm_add_username.change_cancel_button(label='No, Do NOT Add This Username')
+        confirm_add_username.change_confirm_button(label='Yes, Add this Username')
+        log.debug(f'Changed the Button Labels')
+        
+        log.debug(f'Sending Confirmation Prompt')
+        message = await ctx.respond(embed=ezembed.create_embed(title='Is This Your Username?', description=f'Username: {username}', color=discord.Colour.red()), view=confirm_add_username)
+        log.debug(f'Sent Confirmation Prompt')
+        log.debug(f'Awaiting a Response from User')
+        await confirm_add_username.wait()
+        log.debug(f'Response Received')
+        
+        log.debug(f'Deleting Message')
+        await message.delete_original_message()
+        log.debug(f'Deleted Message')
+        
+        if confirm_add_username.value == False:
+            log.debug(f'User does not want his username added')
+            return
+        
+        log.debug(f'User wants his username added')
 
         log.debug(f"Storing {username} for {ctx.author.name}. ID: {ctx.author.id}")
         stor.store_trackmania_username(ctx.author.id, username)
@@ -44,6 +70,7 @@ class UsernameSlash(commands.Cog):
         log.debug(f"Sending Success Message")
         embed = ezembed.create_embed(
             title=":white_check_mark: Successfully Stored Username",
+            description=f'Requestor: {ctx.author.name}',
             color=discord.Color.green(),
         )
         await ctx.respond(embed=embed)
@@ -76,6 +103,32 @@ class UsernameSlash(commands.Cog):
         description="Removes your username from the file if present",
     )
     async def _remove_username(self, ctx: commands.Context):
+        # Add Double Check
+        log.debug(f'Creating a Confirmation Prompt')
+        confirm_remove_username = Confirmer()
+        
+        log.debug(f'Changing Button Labels')
+        confirm_remove_username.change_cancel_button(label='No, Do NOT remove my username')
+        confirm_remove_username.change_confirm_button(label='Yes, Remove my username')
+        log.debug(f'Changed the Button Labels')
+        
+        log.debug(f'Sending Confirmation Prompt')
+        message = await ctx.respond(embed=ezembed.create_embed(title='Are you sure you want to delete your username from the database?', color=discord.Colour.red()), view=confirm_remove_username)
+        log.debug(f'Sent Confirmation Prompt')
+        log.debug(f'Awaiting a Response from User')
+        await confirm_remove_username.wait()
+        log.debug(f'Response Received')
+        
+        log.debug(f'Deleting Message')
+        await message.delete_original_message()
+        log.debug(f'Deleted Message')
+        
+        if confirm_remove_username.value == False:
+            log.debug(f'User does not want his username removed')
+            return
+        
+        log.debug(f'User wants his username removed')
+        
         if not ret.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"User does not exist in file")
             embed = ezembed.create_embed(
@@ -90,6 +143,7 @@ class UsernameSlash(commands.Cog):
         log.debug(f"Removed Trackmania Username")
         embed = ezembed.create_embed(
             title=":white_check_mark: Successfully Removed Your Username from the File.",
+            description=f'Requester: {ctx.author.name}',
             color=discord.Colour.green(),
         )
         await ctx.respond(embed=embed)

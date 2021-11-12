@@ -4,16 +4,13 @@ import util.logging.convert_logging as convert_logging
 log = convert_logging.get_logging()
 
 class Confirmer(discord.ui.View):
-    def __init__(self, ctx: discord.ext.commands.Context):
+    def __init__(self):
         super().__init__()
         self.value = None
         self.confirm_button = self.children[0]
         self.cancel_button = self.children[1]
-        self.user = ctx.author
         log.debug(f'Created Confirmation Menu')
-        
-    async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        return self.user == interaction.user
+    
         
     @discord.ui.button(label='Confirm', style=discord.ButtonStyle.green)
     async def confirm(self, button: discord.ui.Button, interaction: discord.Interaction):
