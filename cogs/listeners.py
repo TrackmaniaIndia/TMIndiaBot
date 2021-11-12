@@ -15,6 +15,7 @@ version = get_version()
 
 DEFAULT_PREFIX = "--"
 
+
 class Listeners(commands.Cog, description="Generic Functions"):
     first_time = True
     statuses = []
