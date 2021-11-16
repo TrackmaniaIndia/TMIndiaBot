@@ -27,6 +27,7 @@ def get_player_id(username: str) -> str:
     log.debug(f"Player ID is {player_id}")
     return player_id
 
+
 def get_player_data(username: str) -> discord.Embed:
     """Get's the TM2020 Player Data for a given username
 
@@ -36,57 +37,74 @@ def get_player_data(username: str) -> discord.Embed:
     Returns:
         discord.Embed: Embed containing all the player information
     """
-    log.debug(f'Pinging API for Data of {username}')
-    data = requests.get(BASE_API_URL + f'/tm2020/player/{username}').json()[0]
-    
+    log.debug(f"Pinging API for Data of {username}")
+    data = requests.get(BASE_API_URL + f"/tm2020/player/{username}").json()[0]
+
     if data == []:
-        log.error('Username given is not valid')
+        log.error("Username given is not valid")
         return None
-    
-    log.debug(f'Parsing Data')
-    name = data['player']['name']
-    area = data['player']['zone']['name']
-    parent_area = data['player']['zone']['parent']['name']
-    
-    log.debug(f'Trying for Twitch Data')
+
+    log.debug(f"Parsing Data")
+    name = data["player"]["name"]
+    area = data["player"]["zone"]["name"]
+    parent_area = data["player"]["zone"]["parent"]["name"]
+
+    log.debug(f"Trying for Twitch Data")
     try:
-        twitch_username = data['player']['meta']['twitch']
-        log.debug(f'Twitch Data Exists -> {twitch_username}')
+        twitch_username = data["player"]["meta"]["twitch"]
+        log.debug(f"Twitch Data Exists -> {twitch_username}")
     except:
-        twitch_username = ''
-        log.debug(f'{username} does not have a twitch listed')
-        
-    log.debug(f'Checking if TMGL Player')
+        twitch_username = ""
+        log.debug(f"{username} does not have a twitch listed")
+
+    log.debug(f"Checking if TMGL Player")
     try:
-        tmgl_flag = data['player']['meta']['tmgl']
-        log.debug(f'TMGL Player')
+        tmgl_flag = data["player"]["meta"]["tmgl"]
+        log.debug(f"TMGL Player")
     except:
         tmgl_flag = False
-        log.debug(f'{username} is not a TMGL Player')
-        
-    log.debug(f'Checking for Youtube')
+        log.debug(f"{username} is not a TMGL Player")
+
+    log.debug(f"Checking for Youtube")
     try:
-        youtube_link = data['player']['meta']['youtube']
-        log.debug(f'Youtube Link Exists -> {youtube_link}')
+        youtube_link = data["player"]["meta"]["youtube"]
+        log.debug(f"Youtube Link Exists -> {youtube_link}")
     except:
-        youtube_link = ''
-        log.debug(f'{username} does not have a youtube listed')
-    
-    log.debug(f'Checking for Twitter')
+        youtube_link = ""
+        log.debug(f"{username} does not have a youtube listed")
+
+    log.debug(f"Checking for Twitter")
     try:
-        twitter_username = data['player']['meta']['twitter']
-        log.debug(f'Twitter Exists -> {twitter_username}')
+        twitter_username = data["player"]["meta"]["twitter"]
+        log.debug(f"Twitter Exists -> {twitter_username}")
     except:
-        twitter_username = ''
-        log.debug(f'{username} does not have a twitter listed')
-        
-    player_details = ezembed.create_embed(title=f'Player Details for {name}', color=discord.Colour.random())
-        
-    player_details = __format_meta_details(player_embed=player_details, username=name,twitch=twitch_username, youtube=youtube_link, twitter=twitter_username, tmgl=tmgl_flag)
+        twitter_username = ""
+        log.debug(f"{username} does not have a twitter listed")
+
+    player_details = ezembed.create_embed(
+        title=f"Player Details for {name}", color=discord.Colour.random()
+    )
+
+    player_details = __format_meta_details(
+        player_embed=player_details,
+        username=name,
+        twitch=twitch_username,
+        youtube=youtube_link,
+        twitter=twitter_username,
+        tmgl=tmgl_flag,
+    )
 
     return player_details
 
-def __format_meta_details(player_embed: discord.Embed, username: str, twitter: str = '', youtube: str = '', twitch: str = '', tmgl: bool = False) -> str:
+
+def __format_meta_details(
+    player_embed: discord.Embed,
+    username: str,
+    twitter: str = "",
+    youtube: str = "",
+    twitch: str = "",
+    tmgl: bool = False,
+) -> str:
     """Formats the Meta Details of a player
 
     Args:
@@ -100,19 +118,31 @@ def __format_meta_details(player_embed: discord.Embed, username: str, twitter: s
     Returns:
         str: [description]
     """
-    final_str = ''
-    if twitter != '':
-        log.debug(f'Twitter Exists, Adding Field')
-        player_embed.add_field(name='Twitter', value=f'[{twitter}](https://twitter.com/{twitter})', inline=True)
-    if youtube != '':
-        log.debug(f'YouTube Exists, Adding Field')
-        player_embed.add_field(name='YouTube', value=f'[Click Here](https://youtube.com/channel/{youtube})', inline=True)
-    if twitch != '':
-        log.debug(f'Twitch Exists, Adding')
-        player_embed.add_field(name='Twitch', value=f'[{twitch}](https://twitch.tv/{twitch})', inline=True)
+    final_str = ""
+    if twitter != "":
+        log.debug(f"Twitter Exists, Adding Field")
+        player_embed.add_field(
+            name="Twitter",
+            value=f"[{twitter}](https://twitter.com/{twitter})",
+            inline=True,
+        )
+    if youtube != "":
+        log.debug(f"YouTube Exists, Adding Field")
+        player_embed.add_field(
+            name="YouTube",
+            value=f"[Click Here](https://youtube.com/channel/{youtube})",
+            inline=True,
+        )
+    if twitch != "":
+        log.debug(f"Twitch Exists, Adding")
+        player_embed.add_field(
+            name="Twitch", value=f"[{twitch}](https://twitch.tv/{twitch})", inline=True
+        )
     if tmgl == True:
-        log.debug(f'This player participates in TMGL')
-        player_embed.add_field(name='TMGL', value='This player participates in TMGL', inline=True)
-    
-    log.debug(f'Created Embed, returning {player_embed}')
+        log.debug(f"This player participates in TMGL")
+        player_embed.add_field(
+            name="TMGL", value="This player participates in TMGL", inline=True
+        )
+
+    log.debug(f"Created Embed, returning {player_embed}")
     return player_embed
