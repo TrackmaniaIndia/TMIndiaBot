@@ -103,19 +103,16 @@ def __format_meta_details(player_embed: discord.Embed, username: str, twitter: s
     final_str = ''
     if twitter != '':
         log.debug(f'Twitter Exists, Adding Field')
-        player_embed.add_field(name='Twitter', value=f'[{twitter.capitalize()}](https://twitter.com/{twitter})', inline=True)
+        player_embed.add_field(name='Twitter', value=f'[{twitter}](https://twitter.com/{twitter})', inline=True)
     if youtube != '':
         log.debug(f'YouTube Exists, Adding Field')
         player_embed.add_field(name='YouTube', value=f'[Click Here](https://youtube.com/channel/{youtube})', inline=True)
     if twitch != '':
         log.debug(f'Twitch Exists, Adding')
-        player_embed.add_field(name='Twitch', value=f'[{twitch.capitalize()}](https://twitch.tv/{twitch})', inline=True)
+        player_embed.add_field(name='Twitch', value=f'[{twitch}](https://twitch.tv/{twitch})', inline=True)
     if tmgl == True:
-        log.debug(f'This is a TMGL Player')
-        player_embed.add_field(name='TMGL', value='Yes, This player participates in TMGL', inline=True)
-    else:
-        log.debug(f'This is not a TMGL Player')
-        player_embed.add_field(name='TMGL', value='No, This player does not participate in TMGL', inline=True)
+        log.debug(f'This player participates in TMGL')
+        player_embed.add_field(name='TMGL', value='This player participates in TMGL', inline=True)
     
     log.debug(f'Created Embed, returning {player_embed}')
     return player_embed
