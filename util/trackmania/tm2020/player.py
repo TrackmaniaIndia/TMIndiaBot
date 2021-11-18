@@ -88,40 +88,66 @@ def get_player_data(username: str) -> discord.Embed:
 
     log.debug(f"Adding Location for {username}")
     player_details.add_field(
-        name="Location", value=f"Area: {zone}, {parent_zone}", inline=False
+        name="Location", value=f"```Area: {zone}, {parent_zone}```", inline=False
     )
     log.debug(f"Added Zone: {zone} and Parent Zone: {parent_zone}")
 
     log.debug(f"Parsing Matchmaking Data for {username}")
-    rank = common_functions.add_commas(data["matchmaking"][0]["rank"])
-    score = data["matchmaking"][0]["score"]
-    current_div = data["matchmaking"][0]["division"]["position"] - 1
-    percentage_to_next_div = (
+    match_making_rank = common_functions.add_commas(data["matchmaking"][0]["rank"])
+    match_making_score = data["matchmaking"][0]["score"]
+    matchmaking_current_div = data["matchmaking"][0]["division"]["position"] - 1
+    matchmaking_percentage_to_next_div = (
         str(
             round(
-                ((score) / (data["matchmaking"][0]["division"]["maxpoints"] + 1)) * 100,
+                ((match_making_score) / (data["matchmaking"][0]["division"]["maxpoints"] + 1)) * 100,
                 2,
             )
         )
         + "%"
     )
     points_to_next = common_functions.add_commas(
-        data["matchmaking"][0]["division"]["maxpoints"] - score + 1
+        data["matchmaking"][0]["division"]["maxpoints"] - match_making_score + 1
     )
-    current_div_string = __div_str(current_div)
-    score = common_functions.add_commas(score)
+    matchmaking_current_div_string = __div_str(matchmaking_current_div)
+    match_making_score = common_functions.add_commas(match_making_score)
     log.debug(f"Parsed Matchmaking Data for {username}, creating string")
 
     matchmaking_data_str = ""
     matchmaking_data_str = (
         matchmaking_data_str
-        + f"**Rank:** {rank}\n**Score:** {score}\n**Current Div:** {current_div_string}\n**Percentage To Next Div:** {percentage_to_next_div}\n**Points Required Until Next Div:** {points_to_next}"
+        + f"```Rank: {match_making_rank}\nScore: {match_making_score}\nCurrent Div: {matchmaking_current_div_string}\nPercentage To Next Div: {matchmaking_percentage_to_next_div}\nPoints Required Until Next Div: {points_to_next}```"
     )
-    log.debug(f"Creating Matchmaking String, Adding to Embed")
+    log.debug(f"Created Matchmaking String, Adding to Embed")
     player_details.add_field(
         name="Matchmaking", value=matchmaking_data_str, inline=False
     )
     log.debug(f"Added Matchmaking Data to {player_details}")
+    
+    log.debug(f'Parsing Royal Data for {username}')
+    royal_rank = common_functions.add_commas(data['matchmaking'][1]['rank'])
+    royal_score = common_functions.add_commas(data['matchmaking'][1]['score'])
+    royal_progression = data['matchmaking'][1]['progression']
+    royal_current_div = data['matchmaking'][1]['division']['position']
+    try:
+        royal_percentage_to_next_div = str(round((royal_progression)/(data['matchmaking'][1]['division']['maxwins'] + 1))*100,2) + '%'
+    except:
+        log.error(f'{username} has never won a Royal match, defaulting percentage to 0')
+        royal_percentage_to_next_div = "0%"
+    royal_progression = common_functions.add_commas(data['matchmaking'][1]['progression'])
+    try:
+        royal_wins_required = common_functions.add_commas(data['matchmaking'][1]['division']['maxwins'] - royal_progression + 1)
+    except:
+        log.error(f'{username} has never won a Royal match, defaulting to 1')
+        royal_wins_required = 1
+    log.debug(f'Parsed Royal Data for {username}, creating string')
+
+    
+    royal_data_str = ''
+    royal_data_str = royal_data_str + f'```Rank: {royal_rank}\nScore: {royal_score}\nCurrent Div: {royal_current_div}\nPercentage to Next Div: {royal_percentage_to_next_div}\nWins required until next div: {royal_wins_required}```'
+
+    log.debug(f"Created Royal String, Adding to Embed")
+    player_details.add_field(name='Royal Data', value=royal_data_str, inline=False)
+    log.debug(f"Added Royal Data to {player_details}")
 
     player_details = __format_meta_details(
         player_embed=player_details,
