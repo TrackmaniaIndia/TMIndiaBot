@@ -99,7 +99,11 @@ def get_player_data(username: str) -> discord.Embed:
     matchmaking_percentage_to_next_div = (
         str(
             round(
-                ((match_making_score) / (data["matchmaking"][0]["division"]["maxpoints"] + 1)) * 100,
+                (
+                    (match_making_score)
+                    / (data["matchmaking"][0]["division"]["maxpoints"] + 1)
+                )
+                * 100,
                 2,
             )
         )
@@ -122,31 +126,47 @@ def get_player_data(username: str) -> discord.Embed:
         name="Matchmaking", value=matchmaking_data_str, inline=False
     )
     log.debug(f"Added Matchmaking Data to {player_details}")
-    
-    log.debug(f'Parsing Royal Data for {username}')
-    royal_rank = common_functions.add_commas(data['matchmaking'][1]['rank'])
-    royal_score = common_functions.add_commas(data['matchmaking'][1]['score'])
-    royal_progression = data['matchmaking'][1]['progression']
-    royal_current_div = data['matchmaking'][1]['division']['position']
-    try:
-        royal_percentage_to_next_div = str(round((royal_progression)/(data['matchmaking'][1]['division']['maxwins'] + 1))*100,2) + '%'
-    except:
-        log.error(f'{username} has never won a Royal match, defaulting percentage to 0')
-        royal_percentage_to_next_div = "0%"
-    royal_progression = common_functions.add_commas(data['matchmaking'][1]['progression'])
-    try:
-        royal_wins_required = common_functions.add_commas(data['matchmaking'][1]['division']['maxwins'] - royal_progression + 1)
-    except:
-        log.error(f'{username} has never won a Royal match, defaulting to 1')
-        royal_wins_required = 1
-    log.debug(f'Parsed Royal Data for {username}, creating string')
 
-    
-    royal_data_str = ''
-    royal_data_str = royal_data_str + f'```Rank: {royal_rank}\nScore: {royal_score}\nCurrent Div: {royal_current_div}\nPercentage to Next Div: {royal_percentage_to_next_div}\nWins required until next div: {royal_wins_required}```'
+    log.debug(f"Parsing Royal Data for {username}")
+    royal_rank = common_functions.add_commas(data["matchmaking"][1]["rank"])
+    royal_score = common_functions.add_commas(data["matchmaking"][1]["score"])
+    royal_progression = data["matchmaking"][1]["progression"]
+    royal_current_div = data["matchmaking"][1]["division"]["position"]
+    try:
+        royal_percentage_to_next_div = (
+            str(
+                round(
+                    (royal_progression)
+                    / (data["matchmaking"][1]["division"]["maxwins"] + 1)
+                )
+                * 100,
+                2,
+            )
+            + "%"
+        )
+    except:
+        log.error(f"{username} has never won a Royal match, defaulting percentage to 0")
+        royal_percentage_to_next_div = "0%"
+    royal_progression = common_functions.add_commas(
+        data["matchmaking"][1]["progression"]
+    )
+    try:
+        royal_wins_required = common_functions.add_commas(
+            data["matchmaking"][1]["division"]["maxwins"] - royal_progression + 1
+        )
+    except:
+        log.error(f"{username} has never won a Royal match, defaulting to 1")
+        royal_wins_required = 1
+    log.debug(f"Parsed Royal Data for {username}, creating string")
+
+    royal_data_str = ""
+    royal_data_str = (
+        royal_data_str
+        + f"```Rank: {royal_rank}\nScore: {royal_score}\nCurrent Div: {royal_current_div}\nPercentage to Next Div: {royal_percentage_to_next_div}\nWins required until next div: {royal_wins_required}```"
+    )
 
     log.debug(f"Created Royal String, Adding to Embed")
-    player_details.add_field(name='Royal Data', value=royal_data_str, inline=False)
+    player_details.add_field(name="Royal Data", value=royal_data_str, inline=False)
     log.debug(f"Added Royal Data to {player_details}")
 
     player_details = __format_meta_details(
