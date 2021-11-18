@@ -4,6 +4,7 @@ import requests
 import util.common_functions as common_functions
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
+from util.trackmania.tm2020.cotd import _get_avg_global_rank, _get_avg_div, _get_num_completed_cotds, _get_num_all_cotds
 import os
 import threading
 import json
@@ -168,6 +169,10 @@ def get_player_data(username: str) -> discord.Embed:
     log.debug(f"Created Royal String, Adding to Embed")
     player_details.add_field(name="Royal Data", value=royal_data_str, inline=False)
     log.debug(f"Added Royal Data to {player_details}")
+    
+    log.debug(f'Adding COTD Data to Embed')
+    player_details.add_field(name='COTD Data', value=__get_basic_cotd_data(username), inline=False)
+    log.debug(f'Added COTD Data to {player_details}')
 
     player_details = __format_meta_details(
         player_embed=player_details,
@@ -249,5 +254,19 @@ def __get_basic_cotd_data(username: str) -> str:
     log.debug(f"Got Player ID")
 
     log.debug(f"Getting COTD Data")
-    cotd_data = requests.get(BASE_API_URL + f"/tm2020/{player_id}/cotd").json()[0]
+    cotd_data = requests.get(BASE_API_URL + f"/tm2020/player/{player_id}/cotd").json()
     log.debug(f"Got COTD Data")
+
+    log.debug(f'Parsing all COTD Data')
+    avg_div = _get_avg_div(cotd_data)
+    avg_global_rank = _get_avg_global_rank(cotd_data)
+    num_completed = _get_num_completed_cotds(cotd_data)
+    num_cotds = _get_num_all_cotds(cotd_data)
+    log.debug(f'Parsed all COTD Data')
+    
+    log.debug(f'Making COTD String')
+    cotd_string = f'```Average Div: {avg_div}\nAverage Global Rank: {avg_global_rank}\nNumber of COTDs Completed: {num_completed}\nNumber of COTDs Played: {num_cotds}```'
+    log.debug(f'Created COTD String')
+    
+    log.debug('Returning COTD String')
+    return cotd_string
