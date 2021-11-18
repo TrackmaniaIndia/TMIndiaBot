@@ -240,3 +240,14 @@ def __div_str(current_div: int) -> str:
 
     log.debug(f"Rank is {rank_data[str(current_div)]}")
     return rank_data[str(current_div)]
+
+
+def __get_basic_cotd_data(username: str) -> str:
+    log.debug(f"Getting COTD Data for {username}")
+    log.debug(f"Getting Player ID")
+    player_id = get_player_id(username)
+    log.debug(f"Got Player ID")
+
+    log.debug(f"Getting COTD Data")
+    cotd_data = requests.get(BASE_API_URL + f"/tm2020/{player_id}/cotd").json()[0]
+    log.debug(f"Got COTD Data")
