@@ -86,25 +86,42 @@ def get_player_data(username: str) -> discord.Embed:
         title=f"Player Details for {name}", color=discord.Colour.random()
     )
 
-    log.debug(f'Adding Location for {username}')
-    player_details.add_field(name='Location', value=f'Area: {zone}, {parent_zone}', inline=False)
-    log.debug(f'Added Zone: {zone} and Parent Zone: {parent_zone}')
-    
-    log.debug(f'Parsing Matchmaking Data for {username}')
-    rank = common_functions.add_commas(data['matchmaking'][0]['rank'])
-    score = data['matchmaking'][0]['score']
-    current_div = data['matchmaking'][0]['division']['position'] - 1
-    percentage_to_next_div = str(round(((score)/(data['matchmaking'][0]['division']['maxpoints'] + 1))*100, 2)) + '%' 
-    points_to_next = common_functions.add_commas(data['matchmaking'][0]['division']['maxpoints'] - score + 1)
+    log.debug(f"Adding Location for {username}")
+    player_details.add_field(
+        name="Location", value=f"Area: {zone}, {parent_zone}", inline=False
+    )
+    log.debug(f"Added Zone: {zone} and Parent Zone: {parent_zone}")
+
+    log.debug(f"Parsing Matchmaking Data for {username}")
+    rank = common_functions.add_commas(data["matchmaking"][0]["rank"])
+    score = data["matchmaking"][0]["score"]
+    current_div = data["matchmaking"][0]["division"]["position"] - 1
+    percentage_to_next_div = (
+        str(
+            round(
+                ((score) / (data["matchmaking"][0]["division"]["maxpoints"] + 1)) * 100,
+                2,
+            )
+        )
+        + "%"
+    )
+    points_to_next = common_functions.add_commas(
+        data["matchmaking"][0]["division"]["maxpoints"] - score + 1
+    )
     current_div_string = __div_str(current_div)
     score = common_functions.add_commas(score)
-    log.debug(f'Parsed Matchmaking Data for {username}, creating string')
-    
-    matchmaking_data_str = ''
-    matchmaking_data_str = matchmaking_data_str + f'**Rank:** {rank}\n**Score:** {score}\n**Current Div:** {current_div_string}\n**Percentage To Next Div:** {percentage_to_next_div}\n**Points Required Until Next Div:** {points_to_next}'
-    log.debug(f'Creating Matchmaking String, Adding to Embed')
-    player_details.add_field(name='Matchmaking', value=matchmaking_data_str, inline=False)
-    log.debug(f'Added Matchmaking Data to {player_details}')
+    log.debug(f"Parsed Matchmaking Data for {username}, creating string")
+
+    matchmaking_data_str = ""
+    matchmaking_data_str = (
+        matchmaking_data_str
+        + f"**Rank:** {rank}\n**Score:** {score}\n**Current Div:** {current_div_string}\n**Percentage To Next Div:** {percentage_to_next_div}\n**Points Required Until Next Div:** {points_to_next}"
+    )
+    log.debug(f"Creating Matchmaking String, Adding to Embed")
+    player_details.add_field(
+        name="Matchmaking", value=matchmaking_data_str, inline=False
+    )
+    log.debug(f"Added Matchmaking Data to {player_details}")
 
     player_details = __format_meta_details(
         player_embed=player_details,
@@ -167,13 +184,13 @@ def __format_meta_details(
     log.debug(f"Created Embed, returning {player_embed}")
     return player_embed
 
+
 def __div_str(current_div: int) -> str:
-    log.debug(f'Converting {current_div} to string')
-    log.debug(f'Opening JSON file of ranks')
-    with open('./data/json/mm_ranks.json', 'r') as file:
-        log.debug(f'Opened file, parsing data')
-        rank_data = json.load(file)['rank_data']
-    
-    log.debug(f'Rank is {rank_data[str(current_div)]}')
+    log.debug(f"Converting {current_div} to string")
+    log.debug(f"Opening JSON file of ranks")
+    with open("./data/json/mm_ranks.json", "r") as file:
+        log.debug(f"Opened file, parsing data")
+        rank_data = json.load(file)["rank_data"]
+
+    log.debug(f"Rank is {rank_data[str(current_div)]}")
     return rank_data[str(current_div)]
-    

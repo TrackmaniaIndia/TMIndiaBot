@@ -54,6 +54,7 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
             "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
             ephemeral=True,
         )
+
     @commands.slash_command(guild_ids=guild_ids, name="testpagination")
     @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
