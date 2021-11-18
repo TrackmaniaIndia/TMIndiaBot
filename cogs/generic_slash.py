@@ -49,12 +49,11 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
         name="invite",
         description="Gives you an invite link for the server",
     )
-    async def _invite(self, ctx: commands.Context):
+    async def _server_invite(self, ctx: commands.Context):
         await ctx.respond(
             "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
             ephemeral=True,
         )
-
     @commands.slash_command(guild_ids=guild_ids, name="testpagination")
     @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
