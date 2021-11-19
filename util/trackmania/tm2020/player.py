@@ -45,11 +45,14 @@ def get_player_data(username: str) -> discord.Embed:
         discord.Embed: Embed containing all the player information
     """
     log.debug(f"Pinging API for Data of {username}")
-    data = requests.get(BASE_API_URL + f"/tm2020/player/{username}").json()[0]
+    data = requests.get(BASE_API_URL + f"/tm2020/player/{username}").json()
 
     if data == []:
-        log.error("Username given is not valid")
+        log.error(f"{username} is not valid")
         return None
+    
+    log.debug(f'{username} is valid')
+    data = data[0]
 
     log.debug(f"Parsing Data")
     name = data["player"]["name"]
@@ -181,6 +184,7 @@ def get_player_data(username: str) -> discord.Embed:
     )
     log.debug(f"Added COTD Data to {player_details}")
 
+    log.debug(f'Adding Social Media Handles to Embed')
     player_details = __format_meta_details(
         player_embed=player_details,
         username=name,
@@ -189,6 +193,7 @@ def get_player_data(username: str) -> discord.Embed:
         twitter=twitter_username,
         tmgl=tmgl_flag,
     )
+    log.debug(f'Social Media Handles Added for {username}, returning the embed: {player_details}')
 
     return player_details
 

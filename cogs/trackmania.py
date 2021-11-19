@@ -29,7 +29,7 @@ class Trackmania(commands.Cog):
         data = get_player_data(username)
 
         if data == None:
-            await ctx.respond("Nope")
+            await ctx.respond("This user does not exist")
         else:
             await ctx.respond(embed=data)
 
