@@ -29,9 +29,13 @@ class Trackmania(commands.Cog):
         data = get_player_data(username)
 
         if data == None:
-            error_embed = ezembed.create_embed(title='This user does not exist', description=f'Username given: {username}', color=discord.Colour.red())
+            error_embed = ezembed.create_embed(
+                title="This user does not exist",
+                description=f"Username given: {username}",
+                color=discord.Colour.red(),
+            )
             await ctx.respond(embed=error_embed)
-            log.error(f'{username} is not a valid username')
+            log.error(f"{username} is not a valid username")
         else:
             await ctx.respond(embed=data)
 

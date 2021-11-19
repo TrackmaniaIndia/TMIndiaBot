@@ -50,8 +50,8 @@ def get_player_data(username: str) -> discord.Embed:
     if data == []:
         log.error(f"{username} is not valid")
         return None
-    
-    log.debug(f'{username} is valid')
+
+    log.debug(f"{username} is valid")
     data = data[0]
 
     log.debug(f"Parsing Data")
@@ -184,7 +184,7 @@ def get_player_data(username: str) -> discord.Embed:
     )
     log.debug(f"Added COTD Data to {player_details}")
 
-    log.debug(f'Adding Social Media Handles to Embed')
+    log.debug(f"Adding Social Media Handles to Embed")
     player_details = __format_meta_details(
         player_embed=player_details,
         username=name,
@@ -193,7 +193,9 @@ def get_player_data(username: str) -> discord.Embed:
         twitter=twitter_username,
         tmgl=tmgl_flag,
     )
-    log.debug(f'Social Media Handles Added for {username}, returning the embed: {player_details}')
+    log.debug(
+        f"Social Media Handles Added for {username}, returning the embed: {player_details}"
+    )
 
     return player_details
 
