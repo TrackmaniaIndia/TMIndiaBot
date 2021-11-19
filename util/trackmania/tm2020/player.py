@@ -102,33 +102,40 @@ def get_player_data(username: str) -> discord.Embed:
     log.debug(f"Added Zone: {zone} and Parent Zone: {parent_zone}")
 
     log.debug(f"Parsing Matchmaking Data for {username}")
-    match_making_rank = common_functions.add_commas(data["matchmaking"][0]["rank"])
-    match_making_score = data["matchmaking"][0]["score"]
+    matchmaking_rank = common_functions.add_commas(data["matchmaking"][0]["rank"])
+    matchmaking_score = data["matchmaking"][0]["score"]
     matchmaking_current_div = data["matchmaking"][0]["division"]["position"] - 1
     matchmaking_percentage_to_next_div = (
         str(
             round(
                 (
-                    (match_making_score)
-                    / (data["matchmaking"][0]["division"]["maxpoints"] + 1)
-                )
-                * 100,
+                    (
+                        matchmaking_score
+                        - data["matchmaking"][0]["division"]["minpoints"]
+                    )
+                    / (
+                        data["matchmaking"][0]["division"]["maxpoints"]
+                        - data["matchmaking"][0]["division"]["minpoints"]
+                        + 1
+                    )
+                    * 100
+                ),
                 2,
             )
         )
-        + "%"
-    )
+    ) + "%"
+
     points_to_next = common_functions.add_commas(
-        data["matchmaking"][0]["division"]["maxpoints"] - match_making_score + 1
+        data["matchmaking"][0]["division"]["maxpoints"] - matchmaking_score + 1
     )
     matchmaking_current_div_string = __div_str(matchmaking_current_div)
-    match_making_score = common_functions.add_commas(match_making_score)
+    matchmaking_score = common_functions.add_commas(matchmaking_score)
     log.debug(f"Parsed Matchmaking Data for {username}, creating string")
 
     matchmaking_data_str = ""
     matchmaking_data_str = (
         matchmaking_data_str
-        + f"```Rank: {match_making_rank}\nScore: {match_making_score}\nCurrent Div: {matchmaking_current_div_string}\nPercentage To Next Div: {matchmaking_percentage_to_next_div}\nPoints Required Until Next Div: {points_to_next}```"
+        + f"```Rank: {matchmaking_rank}\nScore: {matchmaking_score}\nCurrent Div: {matchmaking_current_div_string}\nPercentage To Next Div: {matchmaking_percentage_to_next_div}\nPoints Required Until Next Div: {points_to_next}```"
     )
     log.debug(f"Created Matchmaking String, Adding to Embed")
     player_details.add_field(
@@ -142,16 +149,19 @@ def get_player_data(username: str) -> discord.Embed:
     royal_progression = data["matchmaking"][1]["progression"]
     royal_current_div = data["matchmaking"][1]["division"]["position"]
     try:
-        royal_percentage_to_next_div = (
-            str(
-                round(
-                    (royal_progression)
-                    / (data["matchmaking"][1]["division"]["maxwins"] + 1)
-                )
-                * 100,
+        royal_percentage_to_next_div = str(
+            round(
+                (
+                    (royal_progression - data["matchmaking"][1]["division"]["minwins"])
+                    / (
+                        data["matchmaking"][1]["division"]["maxwins"]
+                        - data["matchmaking"][1]["division"]["minwins"]
+                        + 1
+                    )
+                    * 100
+                ),
                 2,
             )
-            + "%"
         )
     except:
         log.error(f"{username} has never won a Royal match, defaulting percentage to 0")
