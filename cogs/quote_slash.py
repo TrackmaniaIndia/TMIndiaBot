@@ -2,6 +2,7 @@ import discord
 import util.logging.convert_logging as convert_logging
 import util.quoting.quote as quote_functions
 import util.discord.easy_embed as ezembed
+import os
 
 from util.constants import guild_ids
 from discord.commands import permissions
@@ -14,6 +15,8 @@ log = convert_logging.get_logging()
 class QuoteSlash(commands.Cog, description="Quoting Functions"):
     def __init__(self, client):
         self.client = client
+        log.info(f'cogs.quote has finished initializing')
+
 
     @commands.slash_command(
         guild_ids=guild_ids,

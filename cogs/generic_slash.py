@@ -1,6 +1,7 @@
 import discord
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
+import os
 
 from discord.ext import commands
 from discord.commands import permissions
@@ -20,6 +21,8 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
     def __init__(self, client):
         self.client = client
         self.version = get_version()
+        
+        log.info(f'cogs.generic has finished initializing')
 
     @commands.slash_command(
         guild_ids=guild_ids,

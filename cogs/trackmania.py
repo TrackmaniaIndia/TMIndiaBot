@@ -15,6 +15,8 @@ log = convert_logging.get_logging()
 class Trackmania(commands.Cog):
     def __init__(self, client):
         self.client = client
+        log.info(f'cogs.trackmania has finished initializing')
+
 
     @commands.slash_command(
         guild_ids=guild_ids,
