@@ -12,7 +12,7 @@ from discord.commands.commands import Option
 log = convert_logging.get_logging()
 
 
-class QuoteSlash(commands.Cog, description="Quoting Functions"):
+class Quote(commands.Cog, description="Quoting Functions"):
     def __init__(self, client):
         self.client = client
         log.info(f'cogs.quote has finished initializing')
@@ -75,4 +75,4 @@ class QuoteSlash(commands.Cog, description="Quoting Functions"):
 
 
 def setup(client):
-    client.add_cog(QuoteSlash(client))
+    client.add_cog(Quote(client))

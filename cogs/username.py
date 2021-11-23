@@ -15,7 +15,7 @@ from util.discord.confirmation import Confirmer
 log = convert_logging.get_logging()
 
 
-class UsernameSlash(commands.Cog):
+class Username(commands.Cog):
     def __init__(self, client):
         self.client = client
         log.info(f'cogs.username has finished initializing')
@@ -190,4 +190,4 @@ class UsernameSlash(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(UsernameSlash(client))
+    client.add_cog(Username(client))

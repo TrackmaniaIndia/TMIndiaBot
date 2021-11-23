@@ -14,7 +14,7 @@ from util.constants import guild_ids
 log = convert_logging.get_logging()
 
 
-class GenericSlash(commands.Cog, description="Generic Functions"):
+class Generic(commands.Cog, description="Generic Functions"):
     statuses = []
     version = ""
 
@@ -92,4 +92,4 @@ class GenericSlash(commands.Cog, description="Generic Functions"):
 
 
 def setup(client):
-    client.add_cog(GenericSlash(client))
+    client.add_cog(Generic(client))
