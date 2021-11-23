@@ -30,7 +30,7 @@
         "morgan": "^1.10.0",
         "node-fetch": "^2.6.1",
         "readdirp": "^3.6.0",
-        "trackmania.io": "^2.4.0"
+        "trackmania.io": "^3.0.1"
     },
     "devDependencies": {
         "nodemon": "^2.0.12"
