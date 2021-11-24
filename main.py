@@ -50,7 +50,7 @@ if __name__ == "__main__":
     log.info("Loading Slash Cogs")
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
-            log.debug(f"Loading cogs.{filename[:-3]}")
+            log.info(f"Loading cogs.{filename[:-3]}")
             client.load_extension(f"cogs.{filename[:-3]}")
     log.info("Loaded Slash Cogs")
 

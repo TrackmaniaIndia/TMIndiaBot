@@ -28,9 +28,9 @@ def get_player_id(username: str) -> str:
         str: the player id
     """
     log.debug(f"Getting Player ID for {username}")
-    player_data = requests.get(f"{BASE_API_URL}/tm2020/player/{username}").json()
+    player_data = requests.get(f"{BASE_API_URL}/tm2020/player/{username}/id").json()
     log.debug(f"Received Player Data, Parsing")
-    player_id = player_data[0]["player"]["id"]
+    player_id = player_data["id"]
     log.debug(f"Player ID is {player_id}")
     return player_id
 

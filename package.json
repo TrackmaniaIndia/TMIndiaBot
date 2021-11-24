@@ -4,36 +4,35 @@
     "description": "REST Api for Trackmania India Discord bot",
     "main": "util/node/TMIndiaBotApi/index.js",
     "scripts": {
-      "start": "node util/node/TMIndiaBotApi/index.js",
-      "dev": "nodemon util/node/TMIndiaBotApi/index.js"
+        "start": "node util/node/TMIndiaBotApi/index.js",
+        "dev": "nodemon util/node/TMIndiaBotApi/index.js"
     },
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/artifexdevstuff/TMIndiaBotApi.git"
+        "type": "git",
+        "url": "git+https://github.com/artifexdevstuff/TMIndiaBotApi.git"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "bugs": {
-      "url": "https://github.com/artifexdevstuff/TMIndiaBotApi/issues"
+        "url": "https://github.com/artifexdevstuff/TMIndiaBotApi/issues"
     },
     "homepage": "https://github.com/artifexdevstuff/TMIndiaBotApi#readme",
     "dependencies": {
-      "axios": "^0.21.1",
-      "chalk": "^4.1.2",
-      "cheerio": "^1.0.0-rc.10",
-      "cheerio-tableparser": "^1.0.1",
-      "countryinfo": "^1.0.5",
-      "dotenv": "^10.0.0",
-      "express": "^4.17.1",
-      "logging": "^3.3.0",
-      "morgan": "^1.10.0",
-      "node-fetch": "^2.6.1",
-      "readdirp": "^3.6.0",
-      "trackmania.io": "^2.4.0"
+        "axios": "^0.21.1",
+        "chalk": "^4.1.2",
+        "cheerio": "^1.0.0-rc.10",
+        "cheerio-tableparser": "^1.0.1",
+        "countryinfo": "^1.0.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "logging": "^3.3.0",
+        "morgan": "^1.10.0",
+        "node-fetch": "^2.6.1",
+        "readdirp": "^3.6.0",
+        "trackmania.io": "^3.0.1"
     },
     "devDependencies": {
-      "nodemon": "^2.0.12"
+        "nodemon": "^2.0.12"
     }
-  }
-  
+}

@@ -2,6 +2,7 @@ import discord
 import json
 import util.logging.convert_logging as convert_logging
 import time
+import os
 
 from discord.ext import commands
 from datetime import datetime
@@ -34,6 +35,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
             log.debug(f"Status File Loaded")
             file.close()
         log.debug(f"Received Statuses")
+        log.info(f"cogs.listeners has finished initializing")
 
     @commands.Cog.listener()
     async def on_ready(self):

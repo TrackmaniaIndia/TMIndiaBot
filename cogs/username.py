@@ -3,6 +3,7 @@ import util.trackmania.trackmania_username.storing as stor
 import discord
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
+import os
 
 from discord.commands.commands import Option
 from discord.commands import permissions
@@ -14,9 +15,10 @@ from util.discord.confirmation import Confirmer
 log = convert_logging.get_logging()
 
 
-class UsernameSlash(commands.Cog):
+class Username(commands.Cog):
     def __init__(self, client):
         self.client = client
+        log.info(f"cogs.username has finished initializing")
 
     @commands.slash_command(
         guild_ids=guild_ids,
@@ -188,4 +190,4 @@ class UsernameSlash(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(UsernameSlash(client))
+    client.add_cog(Username(client))
