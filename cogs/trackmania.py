@@ -13,7 +13,7 @@ from util.discord.confirmation import Confirmer
 from util.trackmania.tm2020.leaderboards.campaign import (
     _get_all_fall_campaign_ids,
     update_leaderboards_campaign,
-    get_player_good_maps
+    get_player_good_maps,
 )
 
 log = convert_logging.get_logging()
@@ -93,20 +93,28 @@ class Trackmania(commands.Cog):
         time.sleep(30)
 
         await ctx.respond("Done")
-        
-    @commands.slash_command(guild_ids=guild_ids, name='stalkplayerfortscc', description='Checks if the player is in top 500 for the tscc map pool')
-    @permissions.has_any_role('TSCC', 'Moderator', 'admin')
-    async def _check_player(self, ctx: commands.Context, username: Option(str, description='Username of the player', required=True)):
-        log.debug(f'Checking Player Username -> {username}')
+
+    @commands.slash_command(
+        guild_ids=guild_ids,
+        name="stalkplayerfortscc",
+        description="Checks if the player is in top 500 for the tscc map pool",
+    )
+    @permissions.has_any_role("TSCC", "Moderator", "admin")
+    async def _check_player(
+        self,
+        ctx: commands.Context,
+        username: Option(str, description="Username of the player", required=True),
+    ):
+        log.debug(f"Checking Player Username -> {username}")
         player_id = get_player_id(username)
-        log.debug(f'Got Player Id -> {player_id}')
-        
+        log.debug(f"Got Player Id -> {player_id}")
+
         if player_id == None:
-            log.error(f'Invalid Username Given, Username -> {username}')
-            await ctx.respond('Invalid Username')
+            log.error(f"Invalid Username Given, Username -> {username}")
+            await ctx.respond("Invalid Username")
         else:
-            log.debug(f'Valid Username, Username -> {username}')
-            log.debug(f'Executing Function, Pray')
+            log.debug(f"Valid Username, Username -> {username}")
+            log.debug(f"Executing Function, Pray")
             await ctx.respond(embed=get_player_good_maps(username))
 
 
