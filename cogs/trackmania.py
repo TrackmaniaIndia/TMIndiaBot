@@ -23,28 +23,28 @@ class Trackmania(commands.Cog):
         self.client = client
         log.info(f"cogs.trackmania has finished initializing")
 
-    @commands.slash_command(
-        guild_ids=guild_ids,
-        name="player_details",
-        description="player details for a specific player",
-    )
-    async def _player_details(
-        self,
-        ctx: commands.Context,
-        username: Option(str, "The Trackmania2020 Username", required=True),
-    ):
-        data = get_player_data(username)
+    # @commands.slash_command(
+    #     guild_ids=guild_ids,
+    #     name="player_details",
+    #     description="player details for a specific player",
+    # )
+    # async def _player_details(
+    #     self,
+    #     ctx: commands.Context,
+    #     username: Option(str, "The Trackmania2020 Username", required=True),
+    # ):
+    #     data = get_player_data(username)
 
-        if data == None:
-            error_embed = ezembed.create_embed(
-                title="This user does not exist",
-                description=f"Username given: {username}",
-                color=discord.Colour.red(),
-            )
-            await ctx.respond(embed=error_embed)
-            log.error(f"{username} is not a valid username")
-        else:
-            await ctx.respond(embed=data)
+    #     if data == None:
+    #         error_embed = ezembed.create_embed(
+    #             title="This user does not exist",
+    #             description=f"Username given: {username}",
+    #             color=discord.Colour.red(),
+    #         )
+    #         await ctx.respond(embed=error_embed)
+    #         log.error(f"{username} is not a valid username")
+    #     else:
+    #         await ctx.respond(embed=data)
 
     @commands.slash_command(guild_ids=guild_ids, name="update_campaign_leaderboards")
     @permissions.is_owner()
