@@ -18,7 +18,7 @@ log = convert_logging.get_logging()
 class Username(commands.Cog):
     def __init__(self, client):
         self.client = client
-        log.info(f'cogs.username has finished initializing')
+        log.info(f"cogs.username has finished initializing")
 
     @commands.slash_command(
         guild_ids=guild_ids,

@@ -21,8 +21,8 @@ class Generic(commands.Cog, description="Generic Functions"):
     def __init__(self, client):
         self.client = client
         self.version = get_version()
-        
-        log.info(f'cogs.generic has finished initializing')
+
+        log.info(f"cogs.generic has finished initializing")
 
     @commands.slash_command(
         guild_ids=guild_ids,

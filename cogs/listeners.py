@@ -35,8 +35,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
             log.debug(f"Status File Loaded")
             file.close()
         log.debug(f"Received Statuses")
-        log.info(f'cogs.listeners has finished initializing')
-
+        log.info(f"cogs.listeners has finished initializing")
 
     @commands.Cog.listener()
     async def on_ready(self):

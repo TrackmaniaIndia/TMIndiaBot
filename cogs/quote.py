@@ -15,8 +15,7 @@ log = convert_logging.get_logging()
 class Quote(commands.Cog, description="Quoting Functions"):
     def __init__(self, client):
         self.client = client
-        log.info(f'cogs.quote has finished initializing')
-
+        log.info(f"cogs.quote has finished initializing")
 
     @commands.slash_command(
         guild_ids=guild_ids,
