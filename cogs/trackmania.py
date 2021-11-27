@@ -11,7 +11,7 @@ from util.constants import guild_ids
 from util.trackmania.tm2020.player import *
 from util.discord.confirmation import Confirmer
 from util.trackmania.tm2020.leaderboards.campaign import (
-    _get_all_fall_campaign_ids,
+    _get_all_campaign_ids,
     update_leaderboards_campaign,
     get_player_good_maps,
 )
@@ -84,12 +84,12 @@ class Trackmania(commands.Cog):
         log.debug(f"{ctx.author.name} wants his username added")
 
         log.debug(f"Getting Fall Campaign IDs, (Excluding First Five)")
-        fall_ids = _get_all_fall_campaign_ids(ignore_first_five=False)
+        fall_ids = _get_all_campaign_ids(ignore_first_five=False, year=year, season=season)
         log.debug(f"Got the Fall IDs")
 
         log.debug(f"Updating Leaderboards")
         log.debug(f'Creating Thread to Update Leaderboards')
-        leaderboard_update = threading.Thread(target=update_leaderboards_campaign, args=(fall_ids,))
+        leaderboard_update = threading.Thread(target=update_leaderboards_campaign, args=(fall_ids, year, season))
         # update_leaderboards_campaign(fall_ids)
         log.debug(f'Thread Created to Update Leaderboards')
         log.debug(f'Starting Thread')
@@ -98,7 +98,7 @@ class Trackmania(commands.Cog):
         log.debug(f"Leaderboards Updated, Sleeping for 30s to save API")
         time.sleep(30)
 
-        await ctx.respond("Done")
+        await ctx.respond(embed=ezembed.create_embed(title=":green_check_mark: Success!", description=f'Leaderboard Updated for Year: {year} and Season: {season}', color=discord.Colour.green()))
 
     @commands.slash_command(
         guild_ids=guild_ids,

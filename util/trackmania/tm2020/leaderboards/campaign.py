@@ -10,7 +10,7 @@ log = convert_logging.get_logging()
 BASE_LEADERBOARD_URL = "http://localhost:3000/tm2020/leaderboard/"
 
 
-def _get_all_compaign_ids(ignore_first_five: bool = False, year: str = "2021", season: str = "Fall") -> list[str]:
+def _get_all_campaign_ids(ignore_first_five: bool = False, year: str = "2021", season: str = "Fall") -> list[str]:
     """Gets a list of all campaign ids for a given year and season
 
     Args:
