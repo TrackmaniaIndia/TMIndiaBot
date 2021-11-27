@@ -49,7 +49,14 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(guild_ids=guild_ids, name="update_campaign_leaderboards")
     @permissions.is_owner()
-    async def _update_campaign_leaderboards(self, ctx: commands.Context, year: Option(str, "Choose the year", choices=["2020","2021"]), season: Option(str, "Choose the season", choices=["Winter", "Spring", "Summer", "Fall"])):
+    async def _update_campaign_leaderboards(
+        self,
+        ctx: commands.Context,
+        year: Option(str, "Choose the year", choices=["2020", "2021"]),
+        season: Option(
+            str, "Choose the season", choices=["Winter", "Spring", "Summer", "Fall"]
+        ),
+    ):
         log.debug(f"Creating Confirmation Prompt")
         confirm_continue = Confirmer()
 
@@ -84,21 +91,31 @@ class Trackmania(commands.Cog):
         log.debug(f"{ctx.author.name} wants his username added")
 
         log.debug(f"Getting Fall Campaign IDs, (Excluding First Five)")
-        fall_ids = _get_all_campaign_ids(ignore_first_five=False, year=year, season=season)
+        fall_ids = _get_all_campaign_ids(
+            ignore_first_five=False, year=year, season=season
+        )
         log.debug(f"Got the Fall IDs")
 
         log.debug(f"Updating Leaderboards")
-        log.debug(f'Creating Thread to Update Leaderboards')
-        leaderboard_update = threading.Thread(target=update_leaderboards_campaign, args=(fall_ids, year, season))
+        log.debug(f"Creating Thread to Update Leaderboards")
+        leaderboard_update = threading.Thread(
+            target=update_leaderboards_campaign, args=(fall_ids, year, season)
+        )
         # update_leaderboards_campaign(fall_ids)
-        log.debug(f'Thread Created to Update Leaderboards')
-        log.debug(f'Starting Thread')
+        log.debug(f"Thread Created to Update Leaderboards")
+        log.debug(f"Starting Thread")
         leaderboard_update.run()
-        log.debug(f'Thread Finished')
+        log.debug(f"Thread Finished")
         log.debug(f"Leaderboards Updated, Sleeping for 30s to save API")
         time.sleep(30)
 
-        await ctx.respond(embed=ezembed.create_embed(title=":green_check_mark: Success!", description=f'Leaderboard Updated for Year: {year} and Season: {season}', color=discord.Colour.green()))
+        await ctx.respond(
+            embed=ezembed.create_embed(
+                title=":green_check_mark: Success!",
+                description=f"Leaderboard Updated for Year: {year} and Season: {season}",
+                color=discord.Colour.green(),
+            )
+        )
 
     @commands.slash_command(
         guild_ids=guild_ids,

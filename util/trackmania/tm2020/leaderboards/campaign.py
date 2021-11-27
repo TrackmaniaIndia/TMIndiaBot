@@ -10,7 +10,9 @@ log = convert_logging.get_logging()
 BASE_LEADERBOARD_URL = "http://localhost:3000/tm2020/leaderboard/"
 
 
-def _get_all_campaign_ids(ignore_first_five: bool = False, year: str = "2021", season: str = "Fall") -> list[str]:
+def _get_all_campaign_ids(
+    ignore_first_five: bool = False, year: str = "2021", season: str = "Fall"
+) -> list[str]:
     """Gets a list of all campaign ids for a given year and season
 
     Args:
@@ -35,7 +37,12 @@ def _get_all_campaign_ids(ignore_first_five: bool = False, year: str = "2021", s
         return id_list[5:]
 
 
-def update_leaderboards_campaign(id_list: list[str], year: str = "2021", season: str = "Fall", skip_first_five: bool = False):
+def update_leaderboards_campaign(
+    id_list: list[str],
+    year: str = "2021",
+    season: str = "Fall",
+    skip_first_five: bool = False,
+):
     """Updates the leaderboard files for the campaign
 
     Args:
@@ -43,7 +50,7 @@ def update_leaderboards_campaign(id_list: list[str], year: str = "2021", season:
         year (str, optional): The year of the season. Defaults to "2021"
         season (str, optional): The season itself. Defaults to "Fall".
     """
-    for i, id in enumerate(id_list, start = 5 if skip_first_five else 0):
+    for i, id in enumerate(id_list, start=5 if skip_first_five else 0):
         leaderboard_data = []
 
         while len(leaderboard_data) < 500:
@@ -55,7 +62,9 @@ def update_leaderboards_campaign(id_list: list[str], year: str = "2021", season:
             time.sleep(7)
 
         log.debug(f"Dumping Data to a File")
-        with open(f"./data/leaderboard/{year}/{season.lower()}/{i + 1}.json", "w") as file:
+        with open(
+            f"./data/leaderboard/{year}/{season.lower()}/{i + 1}.json", "w"
+        ) as file:
             json.dump(leaderboard_data, file, indent=4)
 
         log.debug(f"Sleeping for 15s")
@@ -77,7 +86,9 @@ def get_player_list(map_no: str, year: str = "2021", season: str = "Fall"):
     return player_list
 
 
-def get_player_good_maps(player_name: str, year: str = "2021", season: str = "Fall") -> discord.Embed:
+def get_player_good_maps(
+    player_name: str, year: str = "2021", season: str = "Fall"
+) -> discord.Embed:
     log.debug(f"Getting Player Details for Player Name -> {player_name}")
     player_embed = ezembed.create_embed(
         title=f"{player_name} is good at the following maps",
