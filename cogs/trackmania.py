@@ -49,7 +49,7 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(guild_ids=guild_ids, name="update_campaign_leaderboards")
     @permissions.is_owner()
-    async def _update_campaign_leaderboards(self, ctx: commands.Context):
+    async def _update_campaign_leaderboards(self, ctx: commands.Context, year: Option(str, "Choose the year", choices=["2020","2021"]), season: Option(str, "Choose the season", choices=["Winter", "Spring", "Summer", "Fall"])):
         log.debug(f"Creating Confirmation Prompt")
         confirm_continue = Confirmer()
 
@@ -62,7 +62,7 @@ class Trackmania(commands.Cog):
         message = await ctx.respond(
             embed=ezembed.create_embed(
                 title="Are you sure you want to continue?",
-                description="This can take over 10minutes, the bot will be unusable in this period",
+                description=f"This can take over 10minutes, the bot will be unusable in this period\nYear: {year}\nSeason: {season}",
                 color=discord.Colour.red(),
             ),
             view=confirm_continue,
@@ -88,7 +88,13 @@ class Trackmania(commands.Cog):
         log.debug(f"Got the Fall IDs")
 
         log.debug(f"Updating Leaderboards")
-        update_leaderboards_campaign(fall_ids)
+        log.debug(f'Creating Thread to Update Leaderboards')
+        leaderboard_update = threading.Thread(target=update_leaderboards_campaign, args=(fall_ids,))
+        # update_leaderboards_campaign(fall_ids)
+        log.debug(f'Thread Created to Update Leaderboards')
+        log.debug(f'Starting Thread')
+        leaderboard_update.run()
+        log.debug(f'Thread Finished')
         log.debug(f"Leaderboards Updated, Sleeping for 30s to save API")
         time.sleep(30)
 

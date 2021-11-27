@@ -10,18 +10,20 @@ log = convert_logging.get_logging()
 BASE_LEADERBOARD_URL = "http://localhost:3000/tm2020/leaderboard/"
 
 
-def _get_all_fall_campaign_ids(ignore_first_five: bool = False) -> list[str]:
-    """Get's a list of all fall campaign ids
+def _get_all_compaign_ids(ignore_first_five: bool = False, year: str = "2021", season: str = "Fall") -> list[str]:
+    """Gets a list of all campaign ids for a given year and season
 
     Args:
-        ignore_first_five (bool, optional): Whether or not to ignore the first five maps. Defaults to False.
+        ignore_first_five (bool, optional): Whether to ignore the first five maps. Defaults to False.
+        year (str, optional): The year of the season. Defaults to "2021".
+        season (str, optional): The season itself. Defaults to "Fall".
 
     Returns:
-        list[str]: The list of ids
+        list[str]: List of ids
     """
-    log.debug(f"Getting Fall IDs from File, Ignore -> {ignore_first_five}")
-    log.debug(f"Opening Fall Data File")
-    with open("./data/json/campaign/2021/fall.json", "r") as file:
+    log.debug(f"Getting IDs from File, Ignore -> {ignore_first_five}")
+    log.debug(f"Opening {year}/{season.lower()} Data File")
+    with open(f"./data/json/campaign/{year}/{season.lower()}.json", "r") as file:
         file_data = json.load(file)
         id_list = file_data["ids"]
 
@@ -33,13 +35,15 @@ def _get_all_fall_campaign_ids(ignore_first_five: bool = False) -> list[str]:
         return id_list[5:]
 
 
-def update_leaderboards_campaign(id_list: list[str]):
+def update_leaderboards_campaign(id_list: list[str], year: str = "2021", season: str = "Fall", skip_first_five: bool = False):
     """Updates the leaderboard files for the campaign
 
     Args:
         id_list (list[str]): Campaign map id list
+        year (str, optional): The year of the season. Defaults to "2021"
+        season (str, optional): The season itself. Defaults to "Fall".
     """
-    for i, id in enumerate(id_list):
+    for i, id in enumerate(id_list, start = 5 if skip_first_five else 0):
         leaderboard_data = []
 
         while len(leaderboard_data) < 500:
@@ -51,23 +55,17 @@ def update_leaderboards_campaign(id_list: list[str]):
             time.sleep(7)
 
         log.debug(f"Dumping Data to a File")
-        try:
-            with open(f"./data/leaderboard/2021/fall/{i + 1}.json", "w") as file:
-                json.dump(leaderboard_data, file, indent=4)
-        except:
-            with open(
-                "./data/leaderboard/2021/fall/0{}.json".format(str(i + 1)), "r"
-            ) as file:
-                json.dump(leaderboard_data, file, indent=4)
+        with open(f"./data/leaderboard/{year}/{season.lower()}/{i + 1}.json", "w") as file:
+            json.dump(leaderboard_data, file, indent=4)
 
         log.debug(f"Sleeping for 15s")
         time.sleep(15)
         log.info(f"Finished Map #{i + 1}")
 
 
-def get_player_list(map_no: str):
+def get_player_list(map_no: str, year: str = "2021", season: str = "Fall"):
     log.debug(f"Opening File, Map No -> {map_no}")
-    with open(f"./data/leaderboard/2021/fall/{map_no}.json", "r") as file:
+    with open(f"./data/leaderboard/{year}/{season.lower()}/{map_no}.json", "r") as file:
         data = json.load(file)
 
     player_list = []
@@ -79,7 +77,7 @@ def get_player_list(map_no: str):
     return player_list
 
 
-def get_player_good_maps(player_name: str) -> discord.Embed:
+def get_player_good_maps(player_name: str, year: str = "2021", season: str = "Fall") -> discord.Embed:
     log.debug(f"Getting Player Details for Player Name -> {player_name}")
     player_embed = ezembed.create_embed(
         title=f"{player_name} is good at the following maps",
@@ -92,7 +90,7 @@ def get_player_good_maps(player_name: str) -> discord.Embed:
     top_500_string = ""
 
     for i in range(6, 26, 1):
-        player_list = get_player_list(str(i))
+        player_list = get_player_list(str(i), year, season.lower())
 
         for player_tuple in player_list:
             if player_tuple[0].lower() == player_name.lower():
