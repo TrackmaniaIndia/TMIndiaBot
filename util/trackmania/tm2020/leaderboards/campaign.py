@@ -11,7 +11,7 @@ BASE_LEADERBOARD_URL = "http://localhost:3000/tm2020/leaderboard/"
 
 
 def _get_all_campaign_ids(
-    ignore_first_five: bool = False, year: str = "2021", season: str = "Fall"
+    year: str = "2021", season: str = "Fall"
 ) -> list[str]:
     """Gets a list of all campaign ids for a given year and season
 
@@ -29,12 +29,9 @@ def _get_all_campaign_ids(
         file_data = json.load(file)
         id_list = file_data["ids"]
 
-    if not ignore_first_five:
-        log.debug(f"Not Ignoring First Five Maps")
-        return id_list
-    else:
-        log.debug(f"Ignoring First Five Maps")
-        return id_list[5:]
+    log.debug(f"Not Ignoring First Five Maps")
+    return id_list
+
 
 
 def update_leaderboards_campaign(
@@ -50,13 +47,17 @@ def update_leaderboards_campaign(
         year (str, optional): The year of the season. Defaults to "2021"
         season (str, optional): The season itself. Defaults to "Fall".
     """
-    for i, id in enumerate(id_list, start=5 if skip_first_five else 0):
+    for i, id in enumerate(id_list):
+        if skip_first_five and i < 5:
+            log.debug(f'Skipping i={i}')
+            continue
         leaderboard_data = []
 
+        try_no = 0
         while len(leaderboard_data) < 500:
             log.debug(f"Requesting for Leaderboard Data of {id}")
             leaderboard_data = requests.get(BASE_LEADERBOARD_URL + str(id)).json()
-            log.debug(f"Got Leaderboard Data of {id}")
+            log.debug(f"Got Leaderboard Data of {id}, Map No: {i + 1}, Try Number: {try_no}")
 
             log.debug(f"Sleeping for 7s")
             time.sleep(7)

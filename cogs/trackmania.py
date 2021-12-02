@@ -92,7 +92,7 @@ class Trackmania(commands.Cog):
 
         log.debug(f"Getting Fall Campaign IDs, (Excluding First Five)")
         fall_ids = _get_all_campaign_ids(
-            ignore_first_five=False, year=year, season=season
+            year=year, season=season
         )
         log.debug(f"Got the Fall IDs")
 
