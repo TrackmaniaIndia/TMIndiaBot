@@ -132,7 +132,7 @@ class Trackmania(commands.Cog):
         ctx: commands.Context,
         username: Option(str, description="Username of the player", required=True),
     ):
-        immediate_response_message = await ctx.respond('Please wait a few seconds...')
+        immediate_response_message = await ctx.respond("Please wait a few seconds...")
         log.debug(f"Checking Player Username -> {username}")
         player_id = get_player_id(username)
         log.debug(f"Got Player Id -> {player_id}")
@@ -145,7 +145,9 @@ class Trackmania(commands.Cog):
             log.debug(f"Valid Username, Username -> {username}")
             log.debug(f"Executing Function, Pray")
             await immediate_response_message.delete_original_message()
-            await ctx.send(content=ctx.author.mention, embed=get_player_good_maps(username))
+            await ctx.send(
+                content=ctx.author.mention, embed=get_player_good_maps(username)
+            )
 
 
 def setup(client):
