@@ -10,9 +10,7 @@ log = convert_logging.get_logging()
 BASE_LEADERBOARD_URL = "http://localhost:3000/tm2020/leaderboard/"
 
 
-def _get_all_campaign_ids(
-    year: str = "2021", season: str = "Fall"
-) -> list[str]:
+def _get_all_campaign_ids(year: str = "2021", season: str = "Fall") -> list[str]:
     """Gets a list of all campaign ids for a given year and season
 
     Args:
@@ -32,7 +30,6 @@ def _get_all_campaign_ids(
     return id_list
 
 
-
 def update_leaderboards_campaign(
     id_list: list[str],
     year: str = "2021",
@@ -48,7 +45,7 @@ def update_leaderboards_campaign(
     """
     for i, id in enumerate(id_list):
         if skip_first_five and i < 5:
-            log.debug(f'Skipping i={i}')
+            log.debug(f"Skipping i={i}")
             continue
         leaderboard_data = []
 
@@ -56,7 +53,9 @@ def update_leaderboards_campaign(
         while len(leaderboard_data) < 500:
             log.debug(f"Requesting for Leaderboard Data of {id}")
             leaderboard_data = requests.get(BASE_LEADERBOARD_URL + str(id)).json()
-            log.debug(f"Got Leaderboard Data of {id}, Map No: {i + 1}, Try Number: {try_no}")
+            log.debug(
+                f"Got Leaderboard Data of {id}, Map No: {i + 1}, Try Number: {try_no}"
+            )
 
             log.debug(f"Sleeping for 7s")
             time.sleep(7)

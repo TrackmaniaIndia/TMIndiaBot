@@ -56,7 +56,9 @@ class Trackmania(commands.Cog):
         season: Option(
             str, "Choose the season", choices=["Winter", "Spring", "Summer", "Fall"]
         ),
-        firstfive: Option(str, "Want to Update the First Five as Well?", choices=["True", "False"])
+        firstfive: Option(
+            str, "Want to Update the First Five as Well?", choices=["True", "False"]
+        ),
     ):
         firstfive = True if firstfive == "False" else False
         print(firstfive)
@@ -94,15 +96,14 @@ class Trackmania(commands.Cog):
         log.debug(f"{ctx.author.name} wants his username added")
 
         log.debug(f"Getting Fall Campaign IDs")
-        fall_ids = _get_all_campaign_ids(
-            year=year, season=season
-        )
+        fall_ids = _get_all_campaign_ids(year=year, season=season)
         log.debug(f"Got the Fall IDs")
 
         log.debug(f"Updating Leaderboards")
         log.debug(f"Creating Thread to Update Leaderboards")
         leaderboard_update = threading.Thread(
-            target=update_leaderboards_campaign, args=(fall_ids, year, season, firstfive)
+            target=update_leaderboards_campaign,
+            args=(fall_ids, year, season, firstfive),
         )
         # update_leaderboards_campaign(fall_ids)
         log.debug(f"Thread Created to Update Leaderboards")
