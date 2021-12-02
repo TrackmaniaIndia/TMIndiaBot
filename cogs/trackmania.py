@@ -113,7 +113,7 @@ class Trackmania(commands.Cog):
         log.debug(f"Leaderboards Updated, Sleeping for 30s to save API")
         time.sleep(30)
 
-        await ctx.respond(
+        await ctx.send(
             embed=ezembed.create_embed(
                 title=":green_check_mark: Success!",
                 description=f"Leaderboard Updated for Year: {year} and Season: {season}",
@@ -132,17 +132,20 @@ class Trackmania(commands.Cog):
         ctx: commands.Context,
         username: Option(str, description="Username of the player", required=True),
     ):
+        immediate_response_message = await ctx.respond('Please wait a few seconds...')
         log.debug(f"Checking Player Username -> {username}")
         player_id = get_player_id(username)
         log.debug(f"Got Player Id -> {player_id}")
 
         if player_id == None:
             log.error(f"Invalid Username Given, Username -> {username}")
-            await ctx.respond("Invalid Username")
+            await immediate_response_message.delete_original_message()
+            await ctx.send("Invalid Username")
         else:
             log.debug(f"Valid Username, Username -> {username}")
             log.debug(f"Executing Function, Pray")
-            await ctx.respond(embed=get_player_good_maps(username))
+            await immediate_response_message.delete_original_message()
+            await ctx.send(content=ctx.author.mention, embed=get_player_good_maps(username))
 
 
 def setup(client):

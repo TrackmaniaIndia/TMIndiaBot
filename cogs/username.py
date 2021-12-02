@@ -30,6 +30,9 @@ class Username(commands.Cog):
         ctx: commands.Context,
         username: Option(str, "Your Trackmania2020 Username", required=True),
     ):
+        if username.lower() == 'kaizer_tm':
+            await ctx.respond(f'For some unknown reason, this username breaks the bot completely. So it cannot be saved')
+            return
         log.debug(f"Checking Username")
         if not stor.check_valid_trackmania_username(username):
             log.debug(f"Username not found")
