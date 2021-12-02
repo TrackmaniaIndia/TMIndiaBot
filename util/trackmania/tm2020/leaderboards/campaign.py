@@ -23,7 +23,6 @@ def _get_all_campaign_ids(
     Returns:
         list[str]: List of ids
     """
-    log.debug(f"Getting IDs from File, Ignore -> {ignore_first_five}")
     log.debug(f"Opening {year}/{season.lower()} Data File")
     with open(f"./data/json/campaign/{year}/{season.lower()}.json", "r") as file:
         file_data = json.load(file)
