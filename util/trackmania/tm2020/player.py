@@ -74,9 +74,12 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
     log.debug(f"Adding Trophy Count to Page Three")
     page_three.add_field(name="Trophy Count", value=trophy_count, inline=False)
 
-    log.debug(f"Adding Meta Data to Page One")
-    page_one = add_meta_details(page_one, raw_player_data)
-
+    try:
+        log.debug(f"Adding Meta Data to Page One")
+        page_one = add_meta_details(page_one, raw_player_data)
+        log.debug(f"Added Meta Data to Page One")
+    except:
+        log.debug(f"Player does not Have Meta Data")
     log.debug(f"Returning {page_one}, {page_two} and {page_three}")
     return [page_one, page_two, page_three]
 
