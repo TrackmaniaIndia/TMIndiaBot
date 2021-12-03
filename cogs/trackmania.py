@@ -15,6 +15,7 @@ from util.trackmania.tm2020.leaderboards.campaign import (
     update_leaderboards_campaign,
     get_player_good_maps,
 )
+from util.discord.paginator import Paginator
 
 log = convert_logging.get_logging()
 
@@ -24,28 +25,41 @@ class Trackmania(commands.Cog):
         self.client = client
         log.info(f"cogs.trackmania has finished initializing")
 
-    # @commands.slash_command(
-    #     guild_ids=guild_ids,
-    #     name="player_details",
-    #     description="player details for a specific player",
-    # )
-    # async def _player_details(
-    #     self,
-    #     ctx: commands.Context,
-    #     username: Option(str, "The Trackmania2020 Username", required=True),
-    # ):
-    #     data = get_player_data(username)
+    @commands.slash_command(
+        guild_ids=guild_ids,
+        name="player_details",
+        description="player details for a specific player",
+    )
+    async def _player_details(
+        self,
+        ctx: commands.Context,
+        username: Option(str, "The Trackmania2020 Username", required=True),
+    ):
+        player_id = get_player_id(username)
 
-    #     if data == None:
-    #         error_embed = ezembed.create_embed(
-    #             title="This user does not exist",
-    #             description=f"Username given: {username}",
-    #             color=discord.Colour.red(),
-    #         )
-    #         await ctx.respond(embed=error_embed)
-    #         log.error(f"{username} is not a valid username")
-    #     else:
-    #         await ctx.respond(embed=data)
+        # await ctx.respond("Please Wait While I Work...", delete_after=5)
+
+        if player_id == None:
+            log.critical("Invalid Player Username Received, Sending Error Message")
+            await ctx.respond(
+                embed=ezembed.create_embed(
+                    title="Invalid Username Given",
+                    description=f"Username Given: {username}",
+                    color=discord.Colour.random(),
+                ),
+                delete_after=5,
+                ephemeral=False,
+            )
+            return
+        else:
+            log.debug(f"Valid Username Given")
+            log.debug(f"Getting Player Data")
+            data_pages = get_player_data(player_id)
+
+            log.debug(f"Received Data Pages")
+            log.debug(f"Creating Paginator")
+            player_detail_paginator = Paginator(pages=data_pages)
+            await player_detail_paginator.run(ctx)
 
     @commands.slash_command(guild_ids=guild_ids, name="update_campaign_leaderboards")
     @permissions.is_owner()
