@@ -13,6 +13,8 @@ from util.trackmania.tm2020.cotd import (
 import os
 import threading
 import json
+import country_converter as coco
+import flag
 
 log = convert_logging.get_logging()
 BASE_API_URL = "http://localhost:3000"
@@ -45,17 +47,24 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
         f"http://localhost:3000/tm2020/player/{player_id}/"
     ).json()
 
+    log.debug(f"Getting Player Flag Unicode")
+    player_flag_unicode = get_player_country_flag(raw_player_data)
+    log.debug(f"Got Player Unicode Flag -> {player_flag_unicode}")
+
     display_name = raw_player_data["displayname"]
 
     log.debug(f"Creating Two Embeds")
     page_one = ezembed.create_embed(
-        title=f"Player Data for {display_name} - Page 1", color=discord.Colour.random()
+        title=f"Player Data for {player_flag_unicode} {display_name} - Page 1",
+        color=discord.Colour.random(),
     )
     page_two = ezembed.create_embed(
-        title=f"Player Data for {display_name} - Page 2", color=discord.Colour.random()
+        title=f"Player Data for {player_flag_unicode} {display_name} - Page 2",
+        color=discord.Colour.random(),
     )
     page_three = ezembed.create_embed(
-        title=f"Player Data for {display_name} - Page 3", color=discord.Colour.random()
+        title=f"Player Data for {player_flag_unicode} {display_name} - Page 3",
+        color=discord.Colour.random(),
     )
 
     zones, zone_ranks = get_zones_and_positions(raw_player_data)
@@ -82,6 +91,34 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
         log.debug(f"Player does not Have Meta Data")
     log.debug(f"Returning {page_one}, {page_two} and {page_three}")
     return [page_one, page_two, page_three]
+
+
+def get_player_country_flag(raw_data):
+    log.debug(f"Getting Zones")
+    zone_one = raw_data["trophies"]["zone"]["name"]
+    zone_two = raw_data["trophies"]["zone"]["parent"]["name"]
+
+    log.debug(f"Zones are -> {zone_one} and {zone_two}")
+    continents = (
+        "Asia",
+        "Middle East",
+        "Europe",
+        "North America",
+        "South America",
+        "Africa",
+    )
+
+    if zone_two in continents:
+        log.debug(f"Only First Zone is Required")
+        iso_letters = coco.convert(names=[zone_one], to="ISO2")
+        unicode_letters = flag.flag(iso_letters)
+    else:
+        log.debug(f"Need to Use Zone Two")
+        iso_letters = coco.convert(names=[zone_two], to="ISO2")
+        unicode_letters = flag.flag(iso_letters)
+
+    log.debug(f"Unicode Letters are {unicode_letters}")
+    return unicode_letters
 
 
 def get_royal_data(raw_data) -> str:
