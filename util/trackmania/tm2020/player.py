@@ -126,30 +126,29 @@ def get_royal_data(raw_data) -> str:
     royal_data = raw_data["matchmaking"][1]
 
     rank = royal_data["info"]["rank"]
-    score = royal_data["info"]["score"]
+    wins = royal_data["info"]["progression"]
     current_division = royal_data["info"]["division"]["position"]
 
-    try:
+    if wins != 0:
         progression_to_next_div = (
             round(
-                (score - royal_data["info"]["division"]["minpoints"])
+                (wins - royal_data["info"]["division"]["minwins"])
                 / (
-                    royal_data["info"]["division"]["maxpoints"]
-                    - royal_data["info"]["division"]["minpoints"]
+                    royal_data["info"]["division"]["maxwins"]
+                    - royal_data["info"]["division"]["minwins"]
                     + 1
                 ),
                 4,
             )
             * 100
         )
-    except:
-        log.debug(f"Player has not won a single royal match")
+    else:
+        log.debug(f"Player Has Not Won a Single Match")
         progression_to_next_div = "0"
-
     log.debug(
-        f"Creating Royal Data String With {rank}, {score}, {current_division}, {progression_to_next_div}"
+        f"Creating Royal Data String With {rank}, {wins}, {current_division}, {progression_to_next_div}"
     )
-    royal_data_string = f"```Rank: {rank}\nScore: {score}\nCurrent Division: {current_division}\nProgression to Next Division: {progression_to_next_div}%```"
+    royal_data_string = f"```Rank: {rank}\nWins: {wins}\nCurrent Division: {current_division}\nProgression to Next Division: {progression_to_next_div}%```"
 
     log.debug(f"Created Royal Data String -> {royal_data_string}")
     return royal_data_string
