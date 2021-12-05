@@ -8,7 +8,7 @@ from discord.commands import permissions
 from util.discord.paginator import Paginator
 from util.discord.confirmation import Confirmer
 from util.cog_helpers.generic_helper import get_version
-from util.constants import guild_ids
+from util.constants import GUILD_IDS
 
 
 log = convert_logging.get_logging()
@@ -25,7 +25,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.info(f"cogs.generic has finished initializing")
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="ping",
         description="Get ping of bot to discord api in milliseconds",
     )
@@ -33,13 +33,13 @@ class Generic(commands.Cog, description="Generic Functions"):
         await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
     @commands.slash_command(
-        guild_ids=guild_ids, name="version", description="Displays bot version"
+        guild_ids=GUILD_IDS, name="version", description="Displays bot version"
     )
     async def _version(self, ctx: commands.Context):
         await ctx.respond(f"Bot Version is {self.version}", ephemeral=True)
 
     @commands.slash_command(
-        guild_ids=guild_ids, name="source", description="Displays Github Source Code"
+        guild_ids=GUILD_IDS, name="source", description="Displays Github Source Code"
     )
     async def _source(self, ctx: commands.Context):
         await ctx.respond(
@@ -48,7 +48,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="invite",
         description="Gives you an invite link for the server",
     )
@@ -58,7 +58,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             ephemeral=True,
         )
 
-    @commands.slash_command(guild_ids=guild_ids, name="testpagination")
+    @commands.slash_command(guild_ids=GUILD_IDS, name="testpagination")
     @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
         embed1 = ezembed.create_embed(
@@ -79,7 +79,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         my_pag = Paginator(pages=embed_list)
         await my_pag.run(ctx)
 
-    @commands.slash_command(guild_ids=guild_ids, name="testconfirm")
+    @commands.slash_command(guild_ids=GUILD_IDS, name="testconfirm")
     @permissions.is_owner()
     async def _test_confirm(self, ctx: commands.Context):
         my_confirmer = Confirmer()

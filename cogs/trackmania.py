@@ -7,7 +7,7 @@ import time
 from discord.commands.commands import Option
 from discord.commands import permissions
 from discord.ext import commands
-from util.constants import guild_ids
+from util.constants import GUILD_IDS
 from util.trackmania.tm2020.player import *
 from util.discord.confirmation import Confirmer
 from util.trackmania.tm2020.leaderboards.campaign import (
@@ -26,7 +26,7 @@ class Trackmania(commands.Cog):
         log.info(f"cogs.trackmania has finished initializing")
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="player_details",
         description="player details for a specific player",
     )
@@ -61,7 +61,7 @@ class Trackmania(commands.Cog):
             player_detail_paginator = Paginator(pages=data_pages)
             await player_detail_paginator.run(ctx)
 
-    @commands.slash_command(guild_ids=guild_ids, name="update_campaign_leaderboards")
+    @commands.slash_command(guild_ids=GUILD_IDS, name="update_campaign_leaderboards")
     @permissions.is_owner()
     async def _update_campaign_leaderboards(
         self,
@@ -136,7 +136,7 @@ class Trackmania(commands.Cog):
         )
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="stalkplayerfortscc",
         description="Checks if the player is in top 500 for the tscc map pool",
     )

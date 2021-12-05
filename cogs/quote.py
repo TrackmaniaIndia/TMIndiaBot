@@ -4,7 +4,7 @@ import util.quoting.quote as quote_functions
 import util.discord.easy_embed as ezembed
 import os
 
-from util.constants import guild_ids
+from util.constants import GUILD_IDS, MAIN_SERVER_ID, TESTING_SERVER_ID
 from discord.commands import permissions
 from discord.ext import commands
 from discord.commands.commands import Option
@@ -18,24 +18,31 @@ class Quote(commands.Cog, description="Quoting Functions"):
         log.info(f"cogs.quote has finished initializing")
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="quote",
         description="Saves a Quote, Only Usable by Mods",
         default_permission=False,
     )
-    @permissions.has_any_role("Moderator", "Bot Developer", "Admin", "admin")
+    @permissions.has_any_role(
+        "Moderator",
+        "Admin",
+        "Bot Developer",
+        "admin",
+    )
     async def _quote(
         self,
         ctx: commands.Context,
         *,
         message: Option(
-            str, 'Message you want to quote in format "Message - Author"', required=True
+            str,
+            'Message you want to quote in format "Message - Author"',
+            required=True,
         ),
     ):
         # This is just temporary because sub commands have not been implemented
         # yet for slash commands in cogs
-        if ctx.author.name != "NottCurious":
-            return
+        # if ctx.author.name != "NottCurious":
+        #     return
         message, author = message.split(" - ")
 
         log.debug(f"Saving {message} by {author}")
@@ -49,7 +56,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         await ctx.respond(embed=embed)
 
     @commands.slash_command(
-        guild_ids=guild_ids, name="randquote", description="Shows a random saved quote"
+        guild_ids=GUILD_IDS, name="randquote", description="Shows a random saved quote"
     )
     async def _rand_quote(self, ctx: commands.Context):
         log.debug(f"Getting Random Quote")
@@ -62,7 +69,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         await ctx.respond(embed=embed)
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="lastquote",
         description="Displays the last quote saved",
     )

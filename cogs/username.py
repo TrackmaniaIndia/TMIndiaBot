@@ -8,7 +8,7 @@ import os
 from discord.commands.commands import Option
 from discord.commands import permissions
 from discord.ext import commands
-from util.constants import guild_ids
+from util.constants import GUILD_IDS
 from util.trackmania.tm2020.player import get_player_id
 from util.discord.confirmation import Confirmer
 
@@ -21,7 +21,7 @@ class Username(commands.Cog):
         log.info(f"cogs.username has finished initializing")
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="storeusername",
         description="Stores Username in JSON File for Future Use and Speed",
     )
@@ -92,7 +92,7 @@ class Username(commands.Cog):
         log.debug(f"Sent Success Message")
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="checkusername",
         description="Checks if your username is in the file",
     )
@@ -113,7 +113,7 @@ class Username(commands.Cog):
             await ctx.respond(embed=embed)
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="removeusername",
         description="Removes your username from the file if present",
     )
@@ -172,7 +172,7 @@ class Username(commands.Cog):
         await ctx.respond(embed=embed)
 
     @commands.slash_command(
-        guild_ids=guild_ids,
+        guild_ids=GUILD_IDS,
         name="getid",
         description="Gets the Trackmania ID of A Player",
     )
