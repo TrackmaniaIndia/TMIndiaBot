@@ -24,7 +24,7 @@ BOT_TOKEN = os.getenv("BOTTOKEN")
 log.info(f"Got Bot Token")
 
 log.info(f"Creating Client")
-client = commands.Bot(intents=discord.Intents.default())
+client = discord.Bot(intents=discord.Intents.default())
 log.info(f"Created Client")
 
 log.info("Creating Thread for NPM Module")
