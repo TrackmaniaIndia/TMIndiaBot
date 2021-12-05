@@ -39,10 +39,6 @@ class Quote(commands.Cog, description="Quoting Functions"):
             required=True,
         ),
     ):
-        # This is just temporary because sub commands have not been implemented
-        # yet for slash commands in cogs
-        # if ctx.author.name != "NottCurious":
-        #     return
         message, author = message.split(" - ")
 
         log.debug(f"Saving {message} by {author}")
