@@ -194,5 +194,5 @@ class Username(commands.Cog):
         log.debug(f"Sent Embed")
 
 
-def setup(client):
+def setup(client: discord.Bot):
     client.add_cog(Username(client))

@@ -76,5 +76,5 @@ class Quote(commands.Cog, description="Quoting Functions"):
         await ctx.respond(embed=quote_embed)
 
 
-def setup(client):
+def setup(client: discord.Bot):
     client.add_cog(Quote(client))

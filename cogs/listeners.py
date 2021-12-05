@@ -106,5 +106,5 @@ class Listeners(commands.Cog, description="Generic Functions"):
         )
 
 
-def setup(client):
+def setup(client: discord.Bot):
     client.add_cog(Listeners(client))

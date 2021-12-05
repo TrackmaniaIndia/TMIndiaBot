@@ -94,5 +94,5 @@ class Generic(commands.Cog, description="Generic Functions"):
         await ctx.send(my_confirmer.value)
 
 
-def setup(client):
+def setup(client: discord.Bot):
     client.add_cog(Generic(client))

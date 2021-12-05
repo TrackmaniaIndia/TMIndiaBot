@@ -14,6 +14,7 @@ from datetime import datetime
 import util.logging.convert_logging as cl
 import util.discord.easy_embed as ezembed
 from util.before_launch.file_check import file_check
+from util.constants import GUILD_IDS
 
 log = cl.get_logging()
 log.info(f"Logging Setup for main.py")
