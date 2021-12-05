@@ -52,13 +52,20 @@ class Trackmania(commands.Cog):
             )
             return
         else:
+            immediate_response_message = await ctx.respond(
+                "Please wait, the bot is thinking..."
+            )
             log.debug(f"Valid Username Given")
             log.debug(f"Getting Player Data")
             data_pages = get_player_data(player_id)
 
             log.debug(f"Received Data Pages")
             log.debug(f"Creating Paginator")
-            player_detail_paginator = Paginator(pages=data_pages)
+            player_detail_paginator = Paginator(pages=data_pages, sending=True)
+
+            log.debug(f"Deleting Immediate Response Message")
+            await immediate_response_message.delete_original_message()
+
             await player_detail_paginator.run(ctx)
 
     @commands.slash_command(guild_ids=GUILD_IDS, name="update_campaign_leaderboards")
