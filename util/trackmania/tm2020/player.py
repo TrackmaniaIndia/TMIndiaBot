@@ -190,7 +190,13 @@ def get_matchmaking_data(raw_data) -> str:
 
 def get_trophy_count(raw_data) -> str:
     log.debug(f"Getting Trophy Counts")
-    trophy_count_string = "```"
+    trophy_count_string = "```\n"
+
+    log.debug(f"Adding Total Points")
+    total_points = common_functions.add_commas(raw_data["trophies"]["points"])
+    trophy_count_string += f"Total Points: {total_points}\n\n"
+    log.debug(f"Added Total Points -> {total_points}")
+
     for i, trophy_count in enumerate(raw_data["trophies"]["counts"]):
         trophy_count_string = trophy_count_string + f"Trophy {i + 1}: {trophy_count}\n"
     trophy_count_string += "```"
