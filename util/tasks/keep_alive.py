@@ -1,5 +1,6 @@
-from requests.api import request
+import discord
 import util.logging.convert_logging as cl
+import discord
 from discord.ext import tasks, commands
 from datetime import datetime
 from dotenv import load_dotenv
@@ -11,7 +12,7 @@ log = cl.get_logging()
 
 
 @tasks.loop(minutes=30)
-async def keep_alive(client: commands.Bot):
+async def keep_alive(client: discord.Bot):
     log.debug(f"30 Minutes have passed, Task activated - at {datetime.utcnow()}")
     log.debug(f"Pinging API")
     try:
