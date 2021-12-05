@@ -20,6 +20,7 @@ class Paginator(discord.ui.View):
         self,
         pages: Union[List[str], List[discord.Embed]],
         author_check=True,
+        sending=False,
     ):
         super().__init__()
         self.pages = pages
@@ -32,6 +33,7 @@ class Paginator(discord.ui.View):
         self.end = self.children[4]
         self.user_check = author_check
         self.user = None
+        self.send = sending
 
         log.debug(
             f"Created Paginator with {self.pages} pages and author_check={self.user_check}"
@@ -183,11 +185,20 @@ class Paginator(discord.ui.View):
             self.user = messageable.author
 
         if isinstance(messageable, ApplicationContext):
-            message = await messageable.respond(
-                content=page if isinstance(page, str) else None,
-                embed=page if isinstance(page, discord.Embed) else MISSING,
-                view=self,
-            )
+            if not self.send:
+                message = await messageable.respond(
+                    content=page if isinstance(page, str) else None,
+                    embed=page if isinstance(page, discord.Embed) else MISSING,
+                    view=self,
+                )
+            else:
+                message = await messageable.send(
+                    content=page
+                    if isinstance(page, str)
+                    else messageable.author.mention,
+                    embed=page if isinstance(page, discord.Embed) else MISSING,
+                    view=self,
+                )
         else:
             message = await messageable.send(
                 content=page if isinstance(page, str) else None,

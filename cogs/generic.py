@@ -76,7 +76,10 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
         embed_list = [embed1, embed2, embed3, embed4]
 
-        my_pag = Paginator(pages=embed_list)
+        immediate_message = await ctx.respond("Please Wait, I am working...")
+
+        my_pag = Paginator(pages=embed_list, sending=True)
+        await immediate_message.delete_original_message()
         await my_pag.run(ctx)
 
     @commands.slash_command(guild_ids=GUILD_IDS, name="testconfirm")
