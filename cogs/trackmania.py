@@ -149,6 +149,7 @@ class Trackmania(commands.Cog):
         guild_ids=GUILD_IDS,
         name="stalkplayerfortscc",
         description="Checks if the player is in top 500 for the tscc map pool",
+        default_permission=False,
     )
     @permissions.has_any_role("TSCC", "Moderator", "admin")
     async def _check_player(
