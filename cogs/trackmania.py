@@ -27,7 +27,7 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="player_details",
+        name="playerdetails",
         description="player details for a specific player",
     )
     async def _player_details(
@@ -170,9 +170,7 @@ class Trackmania(commands.Cog):
         else:
             log.debug(f"Valid Username, Username -> {username}")
             log.debug(f"Executing Function, Pray")
-            await ctx.respond(
-                content=ctx.author.mention, embed=get_player_good_maps(username)
-            )
+            await ctx.respond(embed=get_player_good_maps(username))
             log.info(f"Player stalking was a success")
 
 
