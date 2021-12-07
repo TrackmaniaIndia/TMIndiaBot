@@ -46,7 +46,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         quote_functions.save(message, author)
         embed = ezembed.create_embed(
             title=":white_check_mark: Saved",
-            description=f"Saved {message} by {author}",
+            description=f'Saved "{message}" by {author}',
             color=discord.Colour.green(),
         )
         await ctx.respond(embed=embed)
