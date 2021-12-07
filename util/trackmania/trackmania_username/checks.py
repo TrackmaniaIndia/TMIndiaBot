@@ -1,5 +1,5 @@
 import requests
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 from dotenv import load_dotenv
 import os
 from util.trackmania.trackmania_username.get_stored import get_stored_usernames
@@ -7,7 +7,7 @@ from util.trackmania.trackmania_username.get_stored import get_stored_usernames
 load_dotenv()
 BASE_URL = os.getenv("BASE_API_URL")
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 
 def check_valid_trackmania_username(username: str) -> bool:

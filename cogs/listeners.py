@@ -1,8 +1,7 @@
 import discord
 import json
+
 import util.logging.convert_logging as convert_logging
-import time
-import os
 
 from discord.ext import commands
 from datetime import datetime

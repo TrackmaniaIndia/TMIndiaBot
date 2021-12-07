@@ -1,9 +1,9 @@
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 import psutil
 import platform
 import json
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 DEFAULT_PREFIX = "--"
 
 

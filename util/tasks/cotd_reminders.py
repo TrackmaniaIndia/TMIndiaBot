@@ -1,9 +1,9 @@
 import discord
 from discord.ext import tasks, commands
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 import datetime
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 
 @tasks.loop(time=datetime.time(hour=16, minute=45, seconds=0))

@@ -1,12 +1,12 @@
 import json
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 BASE_URL = os.getenv("BASE_API_URL")
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 
 def get_stored_usernames() -> list[str]:

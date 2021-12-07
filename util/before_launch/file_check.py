@@ -1,9 +1,9 @@
 import os
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 
 DEFAULT_PREFIX = "--"
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 
 def file_check():

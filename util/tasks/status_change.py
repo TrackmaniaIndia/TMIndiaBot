@@ -1,11 +1,11 @@
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 import discord
 from discord.ext import tasks
 from datetime import datetime
 from dotenv import load_dotenv
 import json
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 
 @tasks.loop(minutes=10)

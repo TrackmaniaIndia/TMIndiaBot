@@ -2,7 +2,7 @@ import discord
 from datetime import datetime, timezone, timedelta
 from util.logging import convert_logging as cl
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 
 def create_embed(title: str, description: str = "", color: str = None) -> discord.Embed:

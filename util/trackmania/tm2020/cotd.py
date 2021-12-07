@@ -3,13 +3,13 @@ from discord import player
 from discord.ext.commands import core
 import requests
 import util.common_functions as common_functions
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
 import os
 import threading
 import json
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 
 def _remove_incomplete_cotds(cotd_data: dict) -> dict:

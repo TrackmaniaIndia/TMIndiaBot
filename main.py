@@ -3,14 +3,14 @@ import os
 import subprocess
 import threading
 
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 
 from dotenv import load_dotenv
 
 from util.before_launch.file_check import file_check
 
 # Setting up logging
-log = cl.get_logging()
+log = convert_logging.get_logging()
 log.info(f"Logging Setup for main.py")
 
 # Getting Bot Token

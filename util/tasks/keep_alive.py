@@ -1,5 +1,5 @@
 import discord
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 import discord
 from discord.ext import tasks, commands
 from datetime import datetime
@@ -8,7 +8,7 @@ import os
 import requests
 import threading
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 
 @tasks.loop(minutes=30)

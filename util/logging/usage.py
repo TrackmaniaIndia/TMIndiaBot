@@ -5,7 +5,7 @@ import json
 from dotenv import load_dotenv
 from datetime import datetime
 
-import util.logging.convert_logging as cl
+import util.logging.convert_logging as convert_logging
 
 load_dotenv()
 # log_level = os.getenv("LOG_LEVEL")
@@ -13,7 +13,7 @@ load_dotenv()
 # discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
 
 
-log = cl.get_logging()
+log = convert_logging.get_logging()
 
 DEFAULT_PREFIX = "*"
 
