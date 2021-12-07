@@ -9,6 +9,7 @@ def get_logging() -> logging.Logger:
     Returns:
         logging.Logger: The Logger
     """
+    # Getting the verbose level for the loggers
     with open("./data/config.json") as file:
         config = json.load(file)
 
