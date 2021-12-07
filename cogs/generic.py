@@ -1,7 +1,7 @@
 import discord
+
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
-import os
 
 from discord.ext import commands
 from discord.commands import permissions
@@ -10,14 +10,16 @@ from util.discord.confirmation import Confirmer
 from util.cog_helpers.generic_helper import get_version
 from util.constants import GUILD_IDS
 
-
+# Creating Logger
 log = convert_logging.get_logging()
 
 
 class Generic(commands.Cog, description="Generic Functions"):
+    # Statuses for the bot, will be gotten by a function.
     statuses = []
     version = ""
 
+    # Init Generic Cog
     def __init__(self, client):
         self.client = client
         self.version = get_version()
@@ -61,6 +63,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.slash_command(guild_ids=GUILD_IDS, name="testpagination")
     @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
+        # Creating 4 Embeds for Paginator
         embed1 = ezembed.create_embed(
             title="Testing 1", description="Testing 1's Description"
         )
@@ -76,19 +79,25 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
         embed_list = [embed1, embed2, embed3, embed4]
 
-        immediate_message = await ctx.respond("Please Wait, I am working...")
+        # Deferring the Bot, Allows a lot more time for the bot to do its stuff
+        log.debug(f"Deferring the Bot Response")
+        await ctx.defer()
+        log.debug(f"Deferred the Bot Response")
 
+        # Creating and running the Paginator
         my_pag = Paginator(pages=embed_list, sending=True)
-        await immediate_message.delete_original_message()
         await my_pag.run(ctx)
 
     @commands.slash_command(guild_ids=GUILD_IDS, name="testconfirm")
     @permissions.is_owner()
     async def _test_confirm(self, ctx: commands.Context):
+        # Creating the Confirmer
         my_confirmer = Confirmer()
         my_confirmer.change_cancel_button("Cancel Me Senpai")
         my_confirmer.change_confirm_button("Confirm Me pls")
         await ctx.respond("Do You Want to Continue", view=my_confirmer)
+
+        # Awaiting a response
         await my_confirmer.wait()
 
         await ctx.send(my_confirmer.value)
