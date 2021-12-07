@@ -1,6 +1,8 @@
-import util.logging.convert_logging as convert_logging
-from util.cog_helpers.generic_helper import get_version
 import json
+
+import util.logging.convert_logging as convert_logging
+
+from util.cog_helpers.generic_helper import get_version
 
 # Creating a logger
 log = convert_logging.get_logging()
