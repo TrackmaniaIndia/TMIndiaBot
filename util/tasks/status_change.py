@@ -9,23 +9,15 @@ log = cl.get_logging()
 
 
 @tasks.loop(minutes=10)
-async def change_status(client, statuses, first_time):
-    """Changes Status Every 10 Minutes
+async def change_status(client: discord.Bot, statuses: dict):
+    """Changes Bot Status Every 10 minutes
 
     Args:
-        client ([type]): [description]
-        statuses ([type]): [description]
-        first_time ([type]): [description]
-
-    Returns:
-        [type]: [description]
+        client (discord.Bot): The bot client
+        statuses (dict): The statuses to parse
     """
     log.debug(f"10 Minutes have Passed, Changing Status at - {datetime.utcnow()}")
     log.debug(f"Checking for First Time")
-    if first_time:
-        log.debug(f"First Time is True, returning")
-        first_time = False
-        return None
 
     log.debug(f"Changing Status")
 
