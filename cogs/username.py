@@ -1,9 +1,9 @@
+import discord
+
 import util.trackmania.trackmania_username.retrieving as ret
 import util.trackmania.trackmania_username.storing as stor
-import discord
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
-import os
 
 from discord.commands.commands import Option
 from discord.commands import permissions
@@ -12,6 +12,7 @@ from util.constants import GUILD_IDS
 from util.trackmania.tm2020.player import get_player_id
 from util.discord.confirmation import Confirmer
 
+# Creating Logger
 log = convert_logging.get_logging()
 
 
@@ -30,11 +31,16 @@ class Username(commands.Cog):
         ctx: commands.Context,
         username: Option(str, "Your Trackmania2020 Username", required=True),
     ):
+        # Storing Username
         if username.lower() == "kaizer_tm":
+            # For some reason, kaizer's username totally breaks the bot and causes it to exit. This is just a temporary
+            # if statement to prevent that from happening. It might be something wrong with the API.
             await ctx.respond(
                 f"For some unknown reason, this username breaks the bot completely. So it cannot be saved"
             )
             return
+
+        # Checking if the Username is Valid
         log.debug(f"Checking Username")
         if not stor.check_valid_trackmania_username(username):
             log.debug(f"Username not found")
@@ -46,9 +52,11 @@ class Username(commands.Cog):
             return None
         log.debug(f"User Exists, Continuing")
 
+        # Creating a Confirmation Prompt
         log.debug(f"Creating a Confirmation Prompt")
         confirm_add_username = Confirmer()
 
+        # Changing Button Labels
         log.debug(f"Changing Button Labels")
         confirm_add_username.change_cancel_button(label="No, Do NOT Add This Username")
         confirm_add_username.change_confirm_button(label="Yes, Add this Username")
@@ -63,21 +71,26 @@ class Username(commands.Cog):
             ),
             view=confirm_add_username,
         )
+
+        # Waiting for confirmation response
         log.debug(f"Sent Confirmation Prompt")
         log.debug(f"Awaiting a Response from User")
         await confirm_add_username.wait()
         log.debug(f"Response Received")
 
+        # Deleting the confirmation message
         log.debug(f"Deleting Message")
         await message.delete_original_message()
         log.debug(f"Deleted Message")
 
+        # Checking if the user responded negatively to the confirmation prompt
         if confirm_add_username.value == False:
             log.debug(f"User does not want his username added")
             return
 
         log.debug(f"User wants his username added")
 
+        # Storing the username
         log.debug(f"Storing {username} for {ctx.author.name}. ID: {ctx.author.id}")
         stor.store_trackmania_username(ctx.author.id, username)
         log.debug(f"Stored Username for {ctx.author.name}")
@@ -97,6 +110,7 @@ class Username(commands.Cog):
         description="Checks if your username is in the file",
     )
     async def _check_username(self, ctx: commands.Context):
+        # Checking if the given username is stored in the JSON file
         if ret.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"Username in json file")
             embed = ezembed.create_embed(
@@ -118,10 +132,14 @@ class Username(commands.Cog):
         description="Removes your username from the file if present",
     )
     async def _remove_username(self, ctx: commands.Context):
-        # Add Double Check
+        # Removes a username from the JSON file
+        # Confirmation prompt to check if the user really wants to remove their username
+
+        # Creating the Confirmation Prompt
         log.debug(f"Creating a Confirmation Prompt")
         confirm_remove_username = Confirmer()
 
+        # Changing the Button Labels
         log.debug(f"Changing Button Labels")
         confirm_remove_username.change_cancel_button(
             label="No, Do NOT remove my username"
@@ -129,6 +147,7 @@ class Username(commands.Cog):
         confirm_remove_username.change_confirm_button(label="Yes, Remove my username")
         log.debug(f"Changed the Button Labels")
 
+        # Sending the Confirmation Prompt
         log.debug(f"Sending Confirmation Prompt")
         message = await ctx.respond(
             embed=ezembed.create_embed(
@@ -138,20 +157,25 @@ class Username(commands.Cog):
             view=confirm_remove_username,
         )
         log.debug(f"Sent Confirmation Prompt")
+
+        # Awaiting a response to the confirmation prompt from the user
         log.debug(f"Awaiting a Response from User")
         await confirm_remove_username.wait()
         log.debug(f"Response Received")
 
+        # Deleting the confirmation message
         log.debug(f"Deleting Message")
         await message.delete_original_message()
         log.debug(f"Deleted Message")
 
+        # Checking if the user really wanted his username removed
         if confirm_remove_username.value == False:
             log.debug(f"User does not want his username removed")
             return
 
         log.debug(f"User wants his username removed")
 
+        # Checking if the username is already stored in the file
         if not ret.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"User does not exist in file")
             embed = ezembed.create_embed(
@@ -161,6 +185,7 @@ class Username(commands.Cog):
             await ctx.respond(embed=embed, ephemeral=True)
             return
 
+        # Removing the Trackmania Username from the JSON File
         log.debug(f"Removing Trackmania Username")
         stor.remove_trackmania_username(ctx.author.id)
         log.debug(f"Removed Trackmania Username")

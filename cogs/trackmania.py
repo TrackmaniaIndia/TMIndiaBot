@@ -1,8 +1,8 @@
 import discord
-from discord.ui import view
+import time
+
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
-import time
 
 from discord.commands.commands import Option
 from discord.commands import permissions
@@ -35,11 +35,11 @@ class Trackmania(commands.Cog):
         ctx: commands.Context,
         username: Option(str, "The Trackmania2020 Username", required=True),
     ):
+        # Gets the Player Details of a given username
         player_id = get_player_id(username)
 
-        # await ctx.respond("Please Wait While I Work...", delete_after=5)
-
         if player_id == None:
+            # An Invalid Username was given, sending a message to the user
             log.critical("Invalid Player Username Received, Sending Error Message")
             await ctx.respond(
                 embed=ezembed.create_embed(
@@ -52,23 +52,22 @@ class Trackmania(commands.Cog):
             )
             return
         else:
-            # immediate_response_message = await ctx.respond(
-            #     "Please wait, the bot is thinking..."
-            # )
+            # Deferring the Response to Allow the Bot some time to do its stuff
             log.debug(f"Deferring Command")
             await ctx.defer()
             log.debug(f"Command Deferred, Thinking")
             log.debug(f"Valid Username Given")
+
+            # A Valid Username was given, so were getting the Player Details
             log.debug(f"Getting Player Data")
             data_pages = get_player_data(player_id)
 
+            # Creating a Paginator with Player Data
             log.debug(f"Received Data Pages")
             log.debug(f"Creating Paginator")
             player_detail_paginator = Paginator(pages=data_pages, sending=False)
 
-            log.debug(f"Deleting Immediate Response Message")
-            # await immediate_response_message.delete_original_message()
-
+            # Running the Paginator
             await player_detail_paginator.run(ctx)
 
     @commands.slash_command(guild_ids=GUILD_IDS, name="update_campaign_leaderboards")
@@ -84,16 +83,21 @@ class Trackmania(commands.Cog):
             str, "Want to Update the First Five as Well?", choices=["True", "False"]
         ),
     ):
+        # Updates the Campaign Leaderboards by sending pings to the API and saving the Top 500 players, this takes quite a while to finish
+        # Try to only update the leaderboards using your testing bot so the main bot does not get slowed down by the constant
+        # saving to files.
         firstfive = True if firstfive == "False" else False
         print(firstfive)
         log.debug(f"Creating Confirmation Prompt")
         confirm_continue = Confirmer()
 
-        log.debug(f"Chaning Button Labels")
-        confirm_continue.change_cancel_button(label="No, Stop")
+        # Changing the button labels
+        log.debug(f"Changing Button Labels")
         confirm_continue.change_confirm_button(label="Yes, Continue")
+        confirm_continue.change_cancel_button(label="No, Stop")
         log.debug(f"Changed Button Labels")
 
+        # Sending the Confirmation Prompt
         log.debug(f"Sending Prompt")
         message = await ctx.respond(
             embed=ezembed.create_embed(
@@ -105,24 +109,29 @@ class Trackmania(commands.Cog):
         )
         log.debug(f"Sent Confirmation Prompt")
 
+        # Awaiting for the Response to the Confirmation Prompt
         log.debug(f"Awaiting a response")
         await confirm_continue.wait()
         log.debug(f"Response Received")
 
+        # Deleting the Confirmation Prompt
         log.debug(f"Deleting Original Message")
         await message.delete_original_message()
         log.debug(f"Deleted Message")
 
+        # Checking if the Confirmation Prompt was Cancelled
         if confirm_continue.value == False:
             log.debug(f"{ctx.author.name} does not want to continue")
             return
 
         log.debug(f"{ctx.author.name} wants his username added")
 
+        # Getting the Fall Campaign IDs
         log.debug(f"Getting Fall Campaign IDs")
         fall_ids = _get_all_campaign_ids(year=year, season=season)
         log.debug(f"Got the Fall IDs")
 
+        # Starting Long Update Process using a seperate Thread to allow bot to complete other processes
         log.debug(f"Updating Leaderboards")
         log.debug(f"Creating Thread to Update Leaderboards")
         leaderboard_update = threading.Thread(
@@ -135,11 +144,14 @@ class Trackmania(commands.Cog):
         leaderboard_update.run()
         log.debug(f"Thread Finished")
         log.debug(f"Leaderboards Updated, Sleeping for 30s to save API")
+
+        # Sleeping 30s to allow our API requests to restore
         time.sleep(30)
 
+        # Sending a "Finished" Message
         await ctx.send(
             embed=ezembed.create_embed(
-                title=":green_check_mark: Success!",
+                title=":white_check_mark: Success!",
                 description=f"Leaderboard Updated for Year: {year} and Season: {season}",
                 color=discord.Colour.green(),
             )
@@ -157,7 +169,7 @@ class Trackmania(commands.Cog):
         ctx: commands.Context,
         username: Option(str, description="Username of the player", required=True),
     ):
-        # immediate_response_message = await ctx.respond("Please wait a few seconds...")
+        # Check if Username is in the Top 500 for any maps in the TSCC Map Pool
         log.debug(f"Deferring Response")
         await ctx.defer()
         log.debug(f"Deferred Response")

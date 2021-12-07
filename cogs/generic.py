@@ -16,7 +16,6 @@ log = convert_logging.get_logging()
 
 class Generic(commands.Cog, description="Generic Functions"):
     # Statuses for the bot, will be gotten by a function.
-    statuses = []
     version = ""
 
     # Init Generic Cog
