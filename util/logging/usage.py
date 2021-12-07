@@ -1,17 +1,9 @@
-import discord
-from discord.ext import commands
-
-import json
-from dotenv import load_dotenv
-from datetime import datetime
-
 import util.logging.convert_logging as convert_logging
 
-load_dotenv()
-# log_level = os.getenv("LOG_LEVEL")
-# version = os.getenv("VERSION")
-# discord_log_level = os.getenv("DISCORD_LOG_LEVEL")
+from discord.ext import commands
+from dotenv import load_dotenv
 
+load_dotenv()
 
 log = convert_logging.get_logging()
 

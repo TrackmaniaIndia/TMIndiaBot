@@ -1,13 +1,14 @@
-import util.logging.convert_logging as convert_logging
 import psutil
 import platform
 import json
 
+import util.logging.convert_logging as convert_logging
+
 log = convert_logging.get_logging()
-DEFAULT_PREFIX = "--"
 
 
 def print_system_info():
+    """Print's System Information to the console"""
     architecture = platform.machine()
     hostname = "tmindiabot@" + platform.node()
     platform_details = platform.platform()

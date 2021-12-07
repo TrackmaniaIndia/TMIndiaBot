@@ -1,6 +1,8 @@
 import discord
+
+import util.logging.convert_logging as convert_logging
+
 from datetime import datetime, timezone, timedelta
-from util.logging import convert_logging as cl
 
 log = convert_logging.get_logging()
 
@@ -21,10 +23,13 @@ def create_embed(title: str, description: str = "", color: str = None) -> discor
         log.debug("Colour is None, Assigning Random Colour")
         color = discord.Colour.random()
 
+    # Creates an Embed with the Given Title, Description and Color
     log.debug(
         f"Creating Embed with Title - {title}, description - {description} and colour - {color}"
     )
     embed = discord.Embed(title=title, description=description, color=color)
+
+    # Adds the timestamp the embed was created on
     embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
 
     log.debug(f"Returning {embed}")

@@ -1,12 +1,18 @@
 import os
+
 import util.logging.convert_logging as convert_logging
 
-DEFAULT_PREFIX = "--"
-
+# Create Logger
 log = convert_logging.get_logging()
 
 
 def file_check():
+    """Checks for Important Files
+    Important Files:
+        config.json (file)
+        /data (directory)
+        times_run.txt (file)
+    """
     log.info(f"Starting File Check")
     if not os.path.exists("./data/config.json"):
         log.critical(f"Config File Does Not Exist, Please Create it and Run Again")
