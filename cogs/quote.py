@@ -1,3 +1,4 @@
+from typing_extensions import Required
 import discord
 
 import util.logging.convert_logging as convert_logging
@@ -44,15 +45,24 @@ class Quote(commands.Cog, description="Quoting Functions"):
             "Author who wrote the above message",
             required=True,
         ),
+        message_link: Option(
+            str,
+            "The link to the message",
+            required=True,
+        ),
     ):
         # Saves a quote given in the parameters
         log.debug(f"Saving {message} by {author}")
 
+        log.debug(f"Deferring Response")
+        await ctx.defer()
+        log.debug(f"Deferred Response")
+
         # Saving the Quote
-        quote_functions.save(message, author)
+        quote_functions.save(message, author, message_link)
         embed = ezembed.create_embed(
             title=":white_check_mark: Saved",
-            description=f'Saved "{message}" by {author}',
+            description=f'Saved "{message}" by {author} with message link {message_link}',
             color=discord.Colour.green(),
         )
         await ctx.respond(embed=embed)

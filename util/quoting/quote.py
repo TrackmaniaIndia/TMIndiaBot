@@ -11,7 +11,7 @@ from datetime import datetime
 log = convert_logging.get_logging()
 
 
-def save(message: str, author: str) -> None:
+def save(message: str, author: str, message_link: str) -> None:
     """Save a Quote to the JSON File
 
     Args:
@@ -33,6 +33,7 @@ def save(message: str, author: str) -> None:
     new_quote_dict = {
         "Message": message,
         "Author": author,
+        "Message Link": message_link,
         "Date Created": date_created,
         "Number": int(get_number_of_quotes() + 1),
     }
@@ -48,11 +49,15 @@ def save(message: str, author: str) -> None:
 
 
 def quote_dict_to_embed(quote: dict) -> discord.Embed:
+    message_link = quote["Message Link"]
     embed = ezembed.create_embed(
         title="***Quote #{}***".format(quote["Number"]), color=discord.Colour.random()
     )
     embed.add_field(name=f"***Message***", value=quote["Message"], inline=False)
     embed.add_field(name=f"***Author***", value=quote["Author"], inline=True)
+    embed.add_field(
+        name=f"***Message***", value=f"[Jump!]({message_link})", inline=True
+    )
     embed.add_field(
         name=f"***Date Created***", value=quote["Date Created"], inline=True
     )
