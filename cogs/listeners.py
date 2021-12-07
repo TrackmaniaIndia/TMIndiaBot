@@ -7,7 +7,7 @@ from discord.ext import commands
 from datetime import datetime
 from itertools import cycle
 from util.cog_helpers.generic_helper import *
-from util.cog_helpers.listener_helper import *
+from util.cog_helpers.listener_helper import _get_statuses
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
 

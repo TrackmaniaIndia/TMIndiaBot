@@ -1,4 +1,3 @@
-from typing_extensions import Required
 import discord
 
 import util.logging.convert_logging as convert_logging

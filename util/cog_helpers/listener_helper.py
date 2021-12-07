@@ -21,7 +21,7 @@ def _get_statuses():
     # Adding the Basic Version Status
     log.debug(f"Appending Statuses")
     statuses.append(f"Version: {VERSION}! Online and Ready")
-    with open("util/cog_helpers/statuses.json") as file:
+    with open("data/json/statuses.json") as file:
         statuses = json.load(file)["statuses"]
 
     log.debug(f"Returning Statuses -> {statuses}")
