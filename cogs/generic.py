@@ -1,4 +1,5 @@
 import discord
+from discord import guild
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
@@ -67,6 +68,17 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def _link_to_hall_of_fame(self, ctx: commands.Context):
         await ctx.respond(
             f"Here is the link to the TMI Hall of Fame\n<https://tinyurl.com/TMIndiaLB>",
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="nextproject",
+        description="A Github link to the next project, has planned, in progress and finished features.",
+    )
+    async def _next_project(self, ctx: commands.Context):
+        await ctx.respond(
+            f"Here is the link to the next project\n<https://github.com/NottCurious/TMIndiaBot/projects/3>",
             ephemeral=True,
         )
 
