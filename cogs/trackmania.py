@@ -62,6 +62,11 @@ class Trackmania(commands.Cog):
             log.debug(f"Getting Player Data")
             data_pages = get_player_data(player_id)
 
+            if len(data_pages) == 1:
+                log.debug(f"Only 1 Page was Returned")
+                await ctx.respond(embed=data_pages[0])
+                return
+
             # Creating a Paginator with Player Data
             log.debug(f"Received Data Pages")
             log.debug(f"Creating Paginator")

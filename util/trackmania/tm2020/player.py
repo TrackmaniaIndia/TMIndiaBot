@@ -52,6 +52,16 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
     log.debug(f"Got Player Unicode Flag -> {player_flag_unicode}")
 
     display_name = raw_player_data["displayname"]
+    log.debug(f"Display Name is {display_name}")
+
+    log.debug(f"Checking if Player has Played the Game")
+    if raw_player_data["trophies"]["points"] == 0:
+        return [
+            ezembed.create_embed(
+                title=f"{player_flag_unicode} {display_name} has never played Trackmania2020",
+                color=discord.Colour.red(),
+            )
+        ]
 
     log.debug(f"Creating Two Embeds")
     page_one = ezembed.create_embed(
@@ -95,97 +105,109 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
 
 def get_player_country_flag(raw_data):
     log.debug(f"Getting Zones")
-    zone_one = raw_data["trophies"]["zone"]["name"]
-    zone_two = raw_data["trophies"]["zone"]["parent"]["name"]
+    try:
+        zone_one = raw_data["trophies"]["zone"]["name"]
+        zone_two = raw_data["trophies"]["zone"]["parent"]["name"]
 
-    log.debug(f"Zones are -> {zone_one} and {zone_two}")
-    continents = (
-        "Asia",
-        "Middle East",
-        "Europe",
-        "North America",
-        "South America",
-        "Africa",
-    )
+        log.debug(f"Zones are -> {zone_one} and {zone_two}")
+        continents = (
+            "Asia",
+            "Middle East",
+            "Europe",
+            "North America",
+            "South America",
+            "Africa",
+        )
 
-    if zone_two in continents:
-        log.debug(f"Only First Zone is Required")
-        iso_letters = coco.convert(names=[zone_one], to="ISO2")
-        unicode_letters = flag.flag(iso_letters)
-    else:
-        log.debug(f"Need to Use Zone Two")
-        iso_letters = coco.convert(names=[zone_two], to="ISO2")
-        unicode_letters = flag.flag(iso_letters)
+        if zone_two in continents:
+            log.debug(f"Only First Zone is Required")
+            iso_letters = coco.convert(names=[zone_one], to="ISO2")
+            unicode_letters = flag.flag(iso_letters)
+        else:
+            log.debug(f"Need to Use Zone Two")
+            iso_letters = coco.convert(names=[zone_two], to="ISO2")
+            unicode_letters = flag.flag(iso_letters)
 
-    log.debug(f"Unicode Letters are {unicode_letters}")
-    return unicode_letters
+        log.debug(f"Unicode Letters are {unicode_letters}")
+        return unicode_letters
+    except:
+        log.error(f"Player has never played Trackmania 2020")
+        return ":flag_white:"
 
 
 def get_royal_data(raw_data) -> str:
     log.debug(f"Getting Royal Data")
-    royal_data = raw_data["matchmaking"][1]
+    try:
+        royal_data = raw_data["matchmaking"][1]
 
-    rank = royal_data["info"]["rank"]
-    wins = royal_data["info"]["progression"]
-    current_division = royal_data["info"]["division"]["position"]
+        rank = royal_data["info"]["rank"]
+        wins = royal_data["info"]["progression"]
+        current_division = royal_data["info"]["division"]["position"]
 
-    if wins != 0:
+        if wins != 0:
+            progression_to_next_div = (
+                round(
+                    (wins - royal_data["info"]["division"]["minwins"])
+                    / (
+                        royal_data["info"]["division"]["maxwins"]
+                        - royal_data["info"]["division"]["minwins"]
+                        + 1
+                    ),
+                    4,
+                )
+                * 100
+            )
+        else:
+            log.debug(f"Player Has Not Won a Single Match")
+            progression_to_next_div = "0"
+        log.debug(
+            f"Creating Royal Data String With {rank}, {wins}, {current_division}, {progression_to_next_div}"
+        )
+        royal_data_string = f"```Rank: {rank}\nWins: {wins}\nCurrent Division: {current_division}\nProgression to Next Division: {progression_to_next_div}%```"
+
+        log.debug(f"Created Royal Data String -> {royal_data_string}")
+        return royal_data_string
+    except:
+        return "An Error Occured While Getting Royal Data, Player has not played Royal"
+
+
+def get_matchmaking_data(raw_data) -> str:
+    log.debug(f"Getting Matchmaking Data")
+
+    try:
+        matchmaking_data = raw_data["matchmaking"][0]
+
+        rank = matchmaking_data["info"]["rank"]
+        score = matchmaking_data["info"]["score"]
+        current_division_int = matchmaking_data["info"]["division"]["position"]
+
+        with open("./data/json/mm_ranks.json", "r") as file:
+            mm_ranks = json.load(file)
+            current_division = mm_ranks["rank_data"][str(current_division_int)]
+
         progression_to_next_div = (
             round(
-                (wins - royal_data["info"]["division"]["minwins"])
+                (score - matchmaking_data["info"]["division"]["minpoints"])
                 / (
-                    royal_data["info"]["division"]["maxwins"]
-                    - royal_data["info"]["division"]["minwins"]
+                    matchmaking_data["info"]["division"]["maxpoints"]
+                    - matchmaking_data["info"]["division"]["minpoints"]
                     + 1
                 ),
                 4,
             )
             * 100
         )
-    else:
-        log.debug(f"Player Has Not Won a Single Match")
-        progression_to_next_div = "0"
-    log.debug(
-        f"Creating Royal Data String With {rank}, {wins}, {current_division}, {progression_to_next_div}"
-    )
-    royal_data_string = f"```Rank: {rank}\nWins: {wins}\nCurrent Division: {current_division}\nProgression to Next Division: {progression_to_next_div}%```"
 
-    log.debug(f"Created Royal Data String -> {royal_data_string}")
-    return royal_data_string
-
-
-def get_matchmaking_data(raw_data) -> str:
-    log.debug(f"Getting Matchmaking Data")
-    matchmaking_data = raw_data["matchmaking"][0]
-
-    rank = matchmaking_data["info"]["rank"]
-    score = matchmaking_data["info"]["score"]
-    current_division_int = matchmaking_data["info"]["division"]["position"]
-
-    with open("./data/json/mm_ranks.json", "r") as file:
-        mm_ranks = json.load(file)
-        current_division = mm_ranks["rank_data"][str(current_division_int)]
-
-    progression_to_next_div = (
-        round(
-            (score - matchmaking_data["info"]["division"]["minpoints"])
-            / (
-                matchmaking_data["info"]["division"]["maxpoints"]
-                - matchmaking_data["info"]["division"]["minpoints"]
-                + 1
-            ),
-            4,
+        log.debug(
+            f"Creating Matchmaking Data String With {rank}, {score}, {current_division}, {progression_to_next_div}"
         )
-        * 100
-    )
+        matchmaking_data_string = f"```Rank: {rank}\nScore: {score}\nCurrent Division: {current_division}\nProgression to Next Division: {progression_to_next_div}%```"
 
-    log.debug(
-        f"Creating Matchmaking Data String With {rank}, {score}, {current_division}, {progression_to_next_div}"
-    )
-    matchmaking_data_string = f"```Rank: {rank}\nScore: {score}\nCurrent Division: {current_division}\nProgression to Next Division: {progression_to_next_div}%```"
-
-    log.debug(f"Created Matchmaking Data String -> {matchmaking_data_string}")
-    return matchmaking_data_string
+        log.debug(f"Created Matchmaking Data String -> {matchmaking_data_string}")
+        return matchmaking_data_string
+    except:
+        log.error("Player has never played Matchmaking")
+        return "An Error Occured While Getting Matchmaking Data, Player has not played Matchmaking"
 
 
 def get_trophy_count(raw_data) -> str:
