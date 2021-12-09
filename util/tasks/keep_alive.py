@@ -11,9 +11,9 @@ import threading
 log = convert_logging.get_logging()
 
 
-@tasks.loop(minutes=30)
+@tasks.loop(minutes=10)
 async def keep_alive(client: discord.Bot):
-    log.debug(f"30 Minutes have passed, Task activated - at {datetime.utcnow()}")
+    log.debug(f"10 Minutes have passed, Task activated - at {datetime.utcnow()}")
     log.debug(f"Pinging API")
     try:
         ping_api()
