@@ -44,7 +44,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     async def _source(self, ctx: commands.Context):
         await ctx.respond(
-            "Here is the source code\nhttps://github.com/NottCurious/TMIndiaBot",
+            "Here is the source code\n<https://github.com/NottCurious/TMIndiaBot>",
             ephemeral=True,
         )
 
@@ -56,6 +56,17 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def _server_invite(self, ctx: commands.Context):
         await ctx.respond(
             "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="halloffame",
+        description="Gives you the link for the TMI Hall of Fame",
+    )
+    async def _link_to_hall_of_fame(self, ctx: commands.Context):
+        await ctx.respond(
+            f"Here is the link to the TMI Hall of Fame\n<https://tinyurl.com/TMIndiaLB>",
             ephemeral=True,
         )
 
