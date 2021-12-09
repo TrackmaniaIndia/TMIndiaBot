@@ -138,6 +138,10 @@ class Listeners(commands.Cog, description="Generic Functions"):
         embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
         # embed.add_field(name="Message Content", value=ctx.message.content, inline=False)
 
+        # Print the Traceback to the Screen
+        log.error(error.with_traceback(error.__traceback__))
+        # log.error(error)
+
         await channel.send(embed=embed)
 
 
