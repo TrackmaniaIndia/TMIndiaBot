@@ -51,12 +51,23 @@ def save(message: str, author: str, message_link: str) -> None:
 def quote_dict_to_embed(quote: dict) -> discord.Embed:
     message_link = quote["Message Link"]
     embed = ezembed.create_embed(
-        title="***Quote #{}***".format(quote["Number"]), color=discord.Colour.random()
+        title="***Quote #{}***".format(quote["Number"]),
+        description='```"{}" - {}```'.format(quote["Message"], quote["Author"]),
+        color=discord.Colour.random(),
     )
-    embed.add_field(name=f"***Message***", value=quote["Message"], inline=False)
-    embed.add_field(name=f"***Author***", value=quote["Author"], inline=True)
+
+    # Message and Author in seperately added as fields
+    # embed.add_field(name=f"***Message***", value=quote["Message"], inline=True)
+    # embed.add_field(name=f"***Author***", value=quote["Author"], inline=True)
+
+    # Message and Author in a single code box added as a field
+    # embed.add_field(
+    #     name=f"***Message and Author***",
+    #     value='```"{}" - {}```'.format(quote["Message"], quote["Author"]),
+    #     inline=False,
+    # )
     embed.add_field(
-        name=f"***Message***", value=f"[Jump!]({message_link})", inline=True
+        name=f"***Message***", value=f"[Jump!]({message_link})", inline=False
     )
     embed.add_field(
         name=f"***Date Created***", value=quote["Date Created"], inline=True
