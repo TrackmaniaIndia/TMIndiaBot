@@ -124,6 +124,12 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         await ctx.send(my_confirmer.value)
 
+    @commands.slash_command(guild_ids=GUILD_IDS, name="causeerror")
+    @permissions.is_owner()
+    async def _cause_error(self, ctx: commands.Context):
+        # await ctx.send("This is a test error")
+        raise discord.ApplicationCommandError("This is a test error")
+
 
 def setup(client: discord.Bot):
     client.add_cog(Generic(client))

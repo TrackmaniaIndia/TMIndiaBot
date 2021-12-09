@@ -2,6 +2,7 @@ import discord
 import json
 
 import util.logging.convert_logging as convert_logging
+import util.discord.easy_embed as ezembed
 
 from discord.ext import commands
 from datetime import datetime
@@ -106,6 +107,38 @@ class Listeners(commands.Cog, description="Generic Functions"):
         log.critical(
             f"The bot has left/been kicked/been banned from {guild.name} with id {guild.id}"
         )
+
+    @commands.Cog.listener()
+    async def on_application_command_error(
+        self, ctx, error: discord.ApplicationCommandError
+    ):
+        # Checking if Error Message Should Be Printed Out
+        with open("./data/config.json", "r") as file:
+            config = json.load(file)
+
+            if config["print_errors"] == False:
+                log.error(f"Error Message isn't going to be printed in discord server")
+                log.error(error)
+                return
+
+            log.debug(f"Error will be printed to discord server")
+
+        # Getting the Error Channel
+        channel = self.client.get_channel(int(config["errorChannel"]))
+
+        embed = ezembed.create_embed(
+            title="An Error Has Occured",
+            description=error,
+            color=discord.Colour.red(),
+        )
+
+        embed.add_field(name="Author Username", value=ctx.author.name, inline=False)
+        embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
+        embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
+        embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
+        # embed.add_field(name="Message Content", value=ctx.message.content, inline=False)
+
+        await channel.send(embed=embed)
 
 
 def setup(client: discord.Bot):
