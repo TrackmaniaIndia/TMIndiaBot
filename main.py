@@ -6,8 +6,8 @@ import threading
 import util.logging.convert_logging as convert_logging
 
 from dotenv import load_dotenv
-
 from util.before_launch.file_check import file_check
+from discord.ext import commands
 
 # Setting up logging
 log = convert_logging.get_logging()
@@ -39,7 +39,7 @@ log.info(f"Got Bot Token")
 #   voice_states
 #   webhooks
 log.info(f"Creating Client")
-client = discord.Bot(intents=discord.Intents.default())
+client = commands.Bot(prefix="!!", intents=discord.Intents.default())
 log.info(f"Created Client")
 
 # This Thread runs the TMIndiaBotApi, clone from https://github.com/artifexdevstuff/TMIndiaBotApi

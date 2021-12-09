@@ -1,5 +1,5 @@
 import discord
-from discord import guild
+import os
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
@@ -81,6 +81,21 @@ class Generic(commands.Cog, description="Generic Functions"):
             f"Here is the link to the next project\n<https://github.com/NottCurious/TMIndiaBot/projects/3>",
             ephemeral=True,
         )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="reloadall",
+        description="Reloads all cogs",
+        hidden=True,
+    )
+    @permissions.is_owner()
+    async def _reload_all(self, ctx):
+        for filename in os.listdir("./cogs"):
+            if filename.endswith(".py"):
+                log.info(f"Reloading cogs.{filename[:-3]}")
+                self.client.unload_extension(f"cogs.{filename[:-3]}")
+                self.client.load_extension(f"cogs.{filename[:-3]}")
+        await ctx.respond("Reloaded all cogs")
 
     @commands.slash_command(guild_ids=GUILD_IDS, name="testpagination")
     @permissions.is_owner()
