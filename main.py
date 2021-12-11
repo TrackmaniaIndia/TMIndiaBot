@@ -56,11 +56,17 @@ if __name__ == "__main__":
     # Checking for Important Files
     file_check()
 
-    # Starting NPM Module
-    log.info("Starting NPM Module thread")
-    npm_module.start()
-    log.info("NPM Module Thread Started")
-    log.info("NPM Module Initialized, Resuming Bot INIT")
+    # Asking if Dev Wants to Start API
+    api_flag = input("Do you want to start the API? (y/n) ")
+
+    if api_flag.lower() == "y" or api_flag.lower() == "yes":
+        # Starting NPM Module
+        log.info("Starting NPM Module thread")
+        npm_module.start()
+        log.info("NPM Module Thread Started")
+        log.info("NPM Module Initialized, Resuming Bot INIT")
+    else:
+        log.critical("API will not be started, Resuming Bot INIT")
 
     # Loading Cogs
     log.info("Loading Slash Cogs")
