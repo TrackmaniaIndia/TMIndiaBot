@@ -154,3 +154,5 @@ format.bat
 /Routes/
 
 Makefile
+
+logs/
