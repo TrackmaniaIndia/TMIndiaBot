@@ -1,0 +1,18 @@
+{
+    "quotes": [
+        {
+            "Message": "test",
+            "Author": "test",
+            "Message Link": "https://discord.com/channels/876042400005505066/876042400731123724/919468487137718272",
+            "Date Created": "Sun Dec 12 11:42:15 2021",
+            "Number": 1
+        },
+        {
+            "Message": "testing",
+            "Author": "testing",
+            "Message Link": "https://discord.com/channels/876042400005505066/876042400731123724/919468487137718272",
+            "Date Created": "Sun Dec 12 11:42:36 2021",
+            "Number": 2
+        }
+    ]
+}

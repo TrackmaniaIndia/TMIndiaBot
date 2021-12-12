@@ -1,5 +1,6 @@
 import discord
 import json
+import os
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
@@ -100,6 +101,19 @@ class Listeners(commands.Cog, description="Generic Functions"):
     async def on_guild_join(self, guild):
         # Bot prints a message when it joins a Guild
         log.critical(f"The Bot has Joined {guild.name} with id {guild.id}")
+
+        log.info(f"Creating Guild Data directory for {guild.name}")
+        if not os.path.exists(f"./data/guild_data/{guild.id}/"):
+            log.debug(f"Creating Guild Directory for {guild.name}")
+            os.mkdir(f"./data/guild_data/{guild.id}/")
+            log.debug(f"Created Guild Directory for {guild.name}")
+
+        log.debug(f"Creating quotes.json for {guild.name}")
+        with open(f"./data/guild_data/{guild.id}/quotes.json", "w") as file:
+            log.debug(
+                f"Dumping an Empty quotes array into quotes.json for {guild.name}"
+            )
+            json.dump({"quotes": []}, file, indent=4)
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):

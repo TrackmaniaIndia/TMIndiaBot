@@ -1,5 +1,6 @@
 import json
 import discord
+from discord import guild
 
 import util.discord.easy_embed as ezembed
 import numpy as np
@@ -11,21 +12,21 @@ from datetime import datetime
 log = convert_logging.get_logging()
 
 
-def save(message: str, author: str, message_link: str) -> None:
+def save(message: str, author: str, message_link: str, guild_id: str) -> None:
     """Save a Quote to the JSON File
 
     Args:
         message (str): The Message
         author (str): The Author
     """
-    log.debug(f"Saving {message} by {author} at {datetime.now()}")
+    log.debug(f"Saving {message} by {author} at {datetime.now()} from guild {guild_id}")
     log.debug(f"Opening JSON File")
 
     quotes = []
     date_created_unformatted = datetime.now()
     date_created = date_created_unformatted.strftime("%c")
 
-    with open("./data/json/quotes.json", "r") as file:
+    with open(f"./data/guild_data/{str(guild_id)}/quotes.json", "r") as file:
         log.debug(f"Loading JSON file")
         quotes = json.load(file)
         log.debug(f"Opened JSON File")
@@ -35,13 +36,13 @@ def save(message: str, author: str, message_link: str) -> None:
         "Author": author,
         "Message Link": message_link,
         "Date Created": date_created,
-        "Number": int(get_number_of_quotes() + 1),
+        "Number": int(get_number_of_quotes(guild_id) + 1),
     }
 
     quotes["quotes"].append(new_quote_dict)
 
     log.debug(f"Dumping to File")
-    with open("./data/json/quotes.json", "w") as file:
+    with open(f"./data/guild_data/{str(guild_id)}/quotes.json", "w") as file:
         json.dump(quotes, file, indent=4)
     log.debug(f"Dumped to File")
     log.debug(f"Returning")
@@ -56,16 +57,6 @@ def quote_dict_to_embed(quote: dict) -> discord.Embed:
         color=discord.Colour.random(),
     )
 
-    # Message and Author in seperately added as fields
-    # embed.add_field(name=f"***Message***", value=quote["Message"], inline=True)
-    # embed.add_field(name=f"***Author***", value=quote["Author"], inline=True)
-
-    # Message and Author in a single code box added as a field
-    # embed.add_field(
-    #     name=f"***Message and Author***",
-    #     value='```"{}" - {}```'.format(quote["Message"], quote["Author"]),
-    #     inline=False,
-    # )
     embed.add_field(
         name=f"***Message***", value=f"[Jump!]({message_link})", inline=False
     )
@@ -77,20 +68,22 @@ def quote_dict_to_embed(quote: dict) -> discord.Embed:
     return embed
 
 
-def get_random_quote_dict() -> dict:
-    log.debug(f"Generating Random Number Between 0 and {get_number_of_quotes()}")
-    number = np.random.randint(low=0, high=get_number_of_quotes() - 1)
+def get_random_quote_dict(guild_id: str) -> dict:
+    log.debug(
+        f"Generating Random Number Between 0 and {get_number_of_quotes(guild_id)}"
+    )
+    number = np.random.randint(low=0, high=get_number_of_quotes(guild_id) - 1)
 
     log.debug(f"Opening Files")
-    with open("./data/json/quotes.json", "r") as file:
+    with open(f"./data/guild_data/{str(guild_id)}/quotes.json", "r") as file:
         quotes = json.load(file)["quotes"]
         log.debug(f"Returning quote #{number}")
         return quotes[number]
 
 
-def get_last_quote() -> discord.Embed:
+def get_last_quote(guild_id: str) -> discord.Embed:
     log.debug(f"Opening JSON File")
-    with open("./data/json/quotes.json", "r") as file:
+    with open(f"./data/guild_data/{str(guild_id)}/quotes.json", "r") as file:
         log.debug(f"Loading JSON file")
         quotes = json.load(file)
         log.debug(f"Read JSON file, returning last quote")
@@ -98,9 +91,9 @@ def get_last_quote() -> discord.Embed:
         return quote_dict_to_embed(quotes["quotes"][-1])
 
 
-def get_number_of_quotes():
+def get_number_of_quotes(guild_id: str):
     log.debug(f"Opening JSON File")
-    with open("./data/json/quotes.json", "r") as file:
+    with open(f"./data/guild_data/{str(guild_id)}/quotes.json", "r") as file:
         log.debug(f"Loading JSON file")
         quotes = json.load(file)
         log.debug(f"Read JSON file, returning length of quotes array")

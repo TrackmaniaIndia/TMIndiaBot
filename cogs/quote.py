@@ -53,14 +53,14 @@ class Quote(commands.Cog, description="Quoting Functions"):
     ):
         log_command(ctx, ctx.command.name)
         # Saves a quote given in the parameters
-        log.debug(f"Saving {message} by {author}")
+        log.debug(f"Saving {message} by {author} from guild {ctx.guild.id}")
 
         log.debug(f"Deferring Response")
         await ctx.defer()
         log.debug(f"Deferred Response")
 
         # Saving the Quote
-        quote_functions.save(message, author, message_link)
+        quote_functions.save(message, author, message_link, ctx.guild.id)
         embed = ezembed.create_embed(
             title=":white_check_mark: Saved",
             description=f'Saved "{message}" by {author} with [Jump!]({message_link})',
@@ -78,7 +78,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
 
         # Getting the random quote in a dictionary
         log.debug(f"Getting Random Quote")
-        rand_quote = quote_functions.get_random_quote_dict()
+        rand_quote = quote_functions.get_random_quote_dict(ctx.guild.id)
 
         # Converting the Quote Dictionary into a discord.Embed
         log.debug(f"Getting Quote Embed")
@@ -97,7 +97,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         log_command(ctx, ctx.command.name)
         # This command sends the last quote that was saved
         log.debug(f"Getting the Last Quote Saved")
-        quote_embed = quote_functions.get_last_quote()
+        quote_embed = quote_functions.get_last_quote(ctx.guild.id)
 
         await ctx.respond(embed=quote_embed)
 
