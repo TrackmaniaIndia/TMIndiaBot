@@ -16,6 +16,7 @@ from util.trackmania.tm2020.leaderboards.campaign import (
     get_player_good_maps,
 )
 from util.discord.paginator import Paginator
+from util.logging.command_log import log_command
 
 log = convert_logging.get_logging()
 
@@ -35,6 +36,7 @@ class Trackmania(commands.Cog):
         ctx: commands.Context,
         username: Option(str, "The Trackmania2020 Username", required=True),
     ):
+        log_command(ctx, ctx.command.name)
         # Gets the Player Details of a given username
         player_id = get_player_id(username)
 
@@ -88,6 +90,7 @@ class Trackmania(commands.Cog):
             str, "Want to Update the First Five as Well?", choices=["True", "False"]
         ),
     ):
+        log_command(ctx, ctx.command.name)
         # Updates the Campaign Leaderboards by sending pings to the API and saving the Top 500 players, this takes quite a while to finish
         # Try to only update the leaderboards using your testing bot so the main bot does not get slowed down by the constant
         # saving to files.
@@ -174,6 +177,7 @@ class Trackmania(commands.Cog):
         ctx: commands.Context,
         username: Option(str, description="Username of the player", required=True),
     ):
+        log_command(ctx, ctx.command.name)
         # Check if Username is in the Top 500 for any maps in the TSCC Map Pool
         log.debug(f"Deferring Response")
         await ctx.defer()

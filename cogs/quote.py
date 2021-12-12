@@ -8,6 +8,7 @@ from util.constants import GUILD_IDS
 from discord.commands import permissions
 from discord.ext import commands
 from discord.commands.commands import Option
+from util.logging.command_log import log_command
 
 # Creating a logger
 log = convert_logging.get_logging()
@@ -50,6 +51,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
             required=True,
         ),
     ):
+        log_command(ctx, ctx.command.name)
         # Saves a quote given in the parameters
         log.debug(f"Saving {message} by {author}")
 
@@ -70,6 +72,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         guild_ids=GUILD_IDS, name="randquote", description="Shows a random saved quote"
     )
     async def _rand_quote(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         # Gets a random quote from the file
         # Random Number Generator is not very consistent, need to work on an alternative
 
@@ -91,6 +94,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         description="Displays the last quote saved",
     )
     async def _last_quote(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         # This command sends the last quote that was saved
         log.debug(f"Getting the Last Quote Saved")
         quote_embed = quote_functions.get_last_quote()

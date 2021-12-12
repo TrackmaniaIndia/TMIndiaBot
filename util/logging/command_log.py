@@ -24,10 +24,10 @@ def log_command(ctx: commands.Context, command: str):
         log.info(f"{ctx.author} used {command} in {ctx.guild.name}")
     elif debug_or_info == "debug":
         log.debug(
-            f"{ctx.author.id}|{ctx.author.name}|{ctx.author.discriminator}|{ctx.author.avatar_url}|{ctx.guild.id}|{ctx.guild.name}|{ctx.channel.id}|{ctx.channel.name}|{command}\n"
+            f"{ctx.author.id}|{ctx.author.name}|{ctx.author.discriminator}|{ctx.guild.id}|{ctx.guild.name}|{ctx.channel.id}|{ctx.channel.name}|{command}\n"
         )
 
     with open("logs/commands.log", "a") as f:
         f.write(
-            f"{datetime.datetime.now()}|{ctx.author.id}|{ctx.author.name}|{ctx.author.discriminator}|{ctx.author.avatar_url}|{ctx.guild.id}|{ctx.guild.name}|{ctx.channel.id}|{ctx.channel.name}|{command}\n"
+            f"{datetime.datetime.now()}|{ctx.author.id}|{ctx.author.name}|{ctx.author.discriminator}|{ctx.guild.id}|{ctx.guild.name}|{ctx.channel.id}|{ctx.channel.name}|{command}\n"
         )

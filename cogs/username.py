@@ -11,6 +11,7 @@ from discord.ext import commands
 from util.constants import GUILD_IDS
 from util.trackmania.tm2020.player import get_player_id
 from util.discord.confirmation import Confirmer
+from util.logging.command_log import log_command
 
 # Creating Logger
 log = convert_logging.get_logging()
@@ -31,6 +32,7 @@ class Username(commands.Cog):
         ctx: commands.Context,
         username: Option(str, "Your Trackmania2020 Username", required=True),
     ):
+        log_command(ctx, ctx.command.name)
         # Storing Username
         if username.lower() == "kaizer_tm":
             # For some reason, kaizer's username totally breaks the bot and causes it to exit. This is just a temporary
@@ -110,6 +112,7 @@ class Username(commands.Cog):
         description="Checks if your username is in the file",
     )
     async def _check_username(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         # Checking if the given username is stored in the JSON file
         if ret.check_discord_id_in_file(str(ctx.author.id)):
             log.debug(f"Username in json file")
@@ -132,6 +135,7 @@ class Username(commands.Cog):
         description="Removes your username from the file if present",
     )
     async def _remove_username(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         # Removes a username from the JSON file
         # Confirmation prompt to check if the user really wants to remove their username
 
@@ -207,6 +211,7 @@ class Username(commands.Cog):
         ctx: commands.Context,
         username: Option(str, "The Trackmania2020 Username", required=True),
     ):
+        log_command(ctx, ctx.command.name)
         log.info(f"Getting Data of {username}")
         embed = ezembed.create_embed(
             title="ID",

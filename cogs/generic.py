@@ -8,6 +8,7 @@ from discord.ext import commands
 from discord.commands import permissions
 from util.discord.paginator import Paginator
 from util.discord.confirmation import Confirmer
+from util.logging.command_log import log_command
 from util.cog_helpers.generic_helper import get_version
 from util.constants import GUILD_IDS
 
@@ -32,18 +33,21 @@ class Generic(commands.Cog, description="Generic Functions"):
         description="Get ping of bot to discord api in milliseconds",
     )
     async def _ping(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
     @commands.slash_command(
         guild_ids=GUILD_IDS, name="version", description="Displays bot version"
     )
     async def _version(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         await ctx.respond(f"Bot Version is {self.version}", ephemeral=True)
 
     @commands.slash_command(
         guild_ids=GUILD_IDS, name="source", description="Displays Github Source Code"
     )
     async def _source(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         await ctx.respond(
             "Here is the source code\n<https://github.com/NottCurious/TMIndiaBot>",
             ephemeral=True,
@@ -55,6 +59,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         description="Gives you an invite link for the server",
     )
     async def _server_invite(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         await ctx.respond(
             "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
             ephemeral=True,
@@ -66,6 +71,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         description="Gives you the link for the TMI Hall of Fame",
     )
     async def _link_to_hall_of_fame(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         await ctx.respond(
             f"Here is the link to the TMI Hall of Fame\n<https://tinyurl.com/TMIndiaLB>",
             ephemeral=True,
@@ -77,6 +83,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         description="A Github link to the next project, has planned, in progress and finished features.",
     )
     async def _next_project(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         await ctx.respond(
             f"Here is the link to the next project\n<https://github.com/NottCurious/TMIndiaBot/projects/3>",
             ephemeral=True,
@@ -90,6 +97,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     @permissions.is_owner()
     async def _reload_all(self, ctx):
+        log_command(ctx, ctx.command.name)
         for filename in os.listdir("./cogs"):
             if filename.endswith(".py"):
                 log.info(f"Reloading cogs.{filename[:-3]}")
@@ -100,6 +108,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.slash_command(guild_ids=GUILD_IDS, name="testpagination")
     @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         # Creating 4 Embeds for Paginator
         embed1 = ezembed.create_embed(
             title="Testing 1", description="Testing 1's Description"
@@ -128,6 +137,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.slash_command(guild_ids=GUILD_IDS, name="testconfirm")
     @permissions.is_owner()
     async def _test_confirm(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         # Creating the Confirmer
         my_confirmer = Confirmer()
         my_confirmer.change_cancel_button("Cancel Me Senpai")
@@ -142,6 +152,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.slash_command(guild_ids=GUILD_IDS, name="causeerror")
     @permissions.is_owner()
     async def _cause_error(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
         # await ctx.send("This is a test error")
         raise discord.ApplicationCommandError("This is a test error")
 
