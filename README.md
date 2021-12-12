@@ -38,4 +38,4 @@ Join Here!
 ### Update (12th December, 2021)
 * The API is now Open Source, you can find it [here](https://github.com/artifexdevstuff/TMIndiaBotApi "TMIndiaBotApi Github Link")
 * API bugs out when a new COTD is released (roughly 11:30pm IST), a fix is being worked on by tmio devs
-* You can also opt to clone the API seperately and run it from their, the bot has a confirmation prompt for running the api
+* You can also opt to clone the API seperately and run it from there, the bot has a confirmation prompt for running the api
