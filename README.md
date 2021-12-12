@@ -21,7 +21,6 @@ Artifex
 
 Calcium the Penguin
 
-
 * Discord: Calcium The Bored Penguin#2006
 * Contributor
 
@@ -29,9 +28,7 @@ Calcium the Penguin
 
 Join Here!
 
-TM India Server
-
-https://discord.gg/aztYuhWxgU
+[TM India Server](https://discord.gg/aztYuhWxgU)
 
 ### Update (26th October, 2021)
 * We now do not need to run a seperate command terminal just for the api.
@@ -39,6 +36,6 @@ https://discord.gg/aztYuhWxgU
 * If you have access, please clone the repo into util/node/
 
 ### Update (12th December, 2021)
-* The API is now Open Source, you can find it [here](https://github.com/artifexdevstuff/TMIndiaBotApi)
+* The API is now Open Source, you can find it [here](https://github.com/artifexdevstuff/TMIndiaBotApi "TMIndiaBotApi Github Link")
 * API bugs out when a new COTD is released (roughly 11:30pm IST), a fix is being worked on by tmio devs
 * You can also opt to clone the API seperately and run it from their, the bot has a confirmation prompt for running the api
