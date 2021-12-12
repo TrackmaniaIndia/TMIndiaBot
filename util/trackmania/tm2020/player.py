@@ -279,7 +279,10 @@ def get_zones_and_positions(raw_data) -> str:
     return zones_string, ranks_string
 
 
-def add_meta_details(player_page: discord.Embed, raw_data) -> discord.Embed:
+def add_meta_details(
+    player_page: discord.Embed,
+    raw_data,
+) -> discord.Embed:
     log.debug(f"Adding Meta Details for Player")
 
     meta_data = raw_data["meta"]
@@ -288,7 +291,7 @@ def add_meta_details(player_page: discord.Embed, raw_data) -> discord.Embed:
         log.debug(f"Checking if Player has Twitch")
         twitch_name = meta_data["twitch"]
         player_page.add_field(
-            name="Twitch",
+            name="[<:twitch:895250576751853598>] Twitch",
             value=f"[{twitch_name}](https://twitch.tv/{twitch_name})",
             inline=True,
         )
@@ -300,8 +303,8 @@ def add_meta_details(player_page: discord.Embed, raw_data) -> discord.Embed:
         log.debug(f"Checking if Player has Twitter")
         twitter_name = meta_data["twitter"]
         player_page.add_field(
-            name="Twitter",
-            value=f"[{twitter_name}](https://twitter.com/{twitter_name})",
+            name="[<:twitter:895250587157946388>] Twitter",
+            value=f"    [{twitter_name}](https://twitter.com/{twitter_name})",
             inline=True,
         )
         log.debug(f"Twitter Added for Player")
@@ -312,8 +315,8 @@ def add_meta_details(player_page: discord.Embed, raw_data) -> discord.Embed:
         log.debug(f"Checking if Player has YouTube")
         youtube_link = meta_data["youtube"]
         player_page.add_field(
-            name="YouTube",
-            value=f"[YouTube](https://youtube.com/c/{youtube_link})",
+            name="[<:youtube:895250572599513138>] YouTube",
+            value=f"[YouTube](https://youtube.com/channel/{youtube_link})",
             inline=True,
         )
         log.debug(f"YouTube Added for Player")
