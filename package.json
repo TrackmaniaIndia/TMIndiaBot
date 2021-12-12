@@ -31,7 +31,7 @@
         "node-fetch": "^3.1.0",
         "npm-check": "^4.1.4",
         "readdirp": "^3.6.0",
-        "trackmania.io": "^3.0.1"
+        "trackmania.io": "^3.0.3"
     },
     "devDependencies": {
         "nodemon": "^2.0.12"
