@@ -30,7 +30,9 @@ def get_logging() -> logging.Logger:
 
     discord_logger = logging.getLogger("discord")
     discord_logger.setLevel(discord_log_level)
-    handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
+    handler = logging.FileHandler(
+        filename="./logs/discord.log", encoding="utf-8", mode="w"
+    )
     handler.setFormatter(
         logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
     )
