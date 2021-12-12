@@ -70,10 +70,16 @@ if __name__ == "__main__":
 
     # Loading Cogs
     log.info("Loading Slash Cogs")
-    for filename in os.listdir("./cogs"):
-        if filename.endswith(".py"):
-            log.info(f"Loading cogs.{filename[:-3]}")
-            client.load_extension(f"cogs.{filename[:-3]}")
+    log.debug(f"Loading listeners.py")
+    client.load_extension("cogs.listeners")
+    log.debug(f"Loading generic.py")
+    client.load_extension(f"cogs.generic")
+    log.debug(f"Loading quote.py")
+    client.load_extension(f"cogs.quote")
+    log.debug(f"Loading trackmania.py")
+    client.load_extension(f"cogs.trackmania")
+    log.debug(f"Loading username.py")
+    client.load_extension(f"cogs.username")
     log.info("Loaded Slash Cogs")
 
     # Running Bot Client
