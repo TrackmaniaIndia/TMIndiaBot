@@ -18,9 +18,6 @@ def log_command(ctx: commands.Context, command: str):
 
     with open("./data/config.json", "r") as f:
         config = json.load(f)
-        if config["log_commands"]:
-            file_flag = True
-
         debug_or_info = config["log_level"]
 
     if debug_or_info == "info":

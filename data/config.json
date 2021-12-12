@@ -12,6 +12,5 @@
     "discord_log_level": "critical",
     "showStackTrace": true,
     "print_errors": true,
-    "errorChannel": 876069587140087828,
-    "log_commands": true
+    "errorChannel": 876069587140087828
 }
