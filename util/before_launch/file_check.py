@@ -25,5 +25,11 @@ def file_check():
         log.critical("Times Run File doesn't Exist, Creating")
         with open("./data/times_run.txt", "w") as file:
             print(0, file=file)
-
+    if not os.path.exists("./logs"):
+        log.critical("Logs Folder does not exist, Creating")
+        os.mkdir("./logs")
+    if not os.path.exists("./logs/commands.log"):
+        log.critical("Command Logs File does not exist, Creating")
+        with open("./logs/commands.log", "w") as file:
+            print("", file=file)
     return
