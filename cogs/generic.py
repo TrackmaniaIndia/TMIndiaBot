@@ -91,12 +91,40 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
+        name="invitebot",
+        description="Give an invite link for the bot",
+    )
+    async def _invite_bot(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
+
+        await ctx.respond(
+            embed=ezembed.create_embed(
+                title="Bot Invite",
+                description=r"[Click Here to Invite the Bot!](https://discord.com/api/oauth2/authorize?client_id=901407301175484447&permissions=534925274176&scope=bot%20applications.commands)",
+            )
+        )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="testingserver",
+        description="Get an invite to the testing server",
+    )
+    async def _testing_server_invite(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
+
+        await ctx.respond(
+            f"Here is an invite to the testing server\nhttps://discord.gg/REEUs3CPND",
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
         name="reloadall",
         description="Reloads all cogs",
         hidden=True,
     )
     @permissions.is_owner()
-    async def _reload_all(self, ctx):
+    async def _reload_all(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         for filename in os.listdir("./cogs"):
             if filename.endswith(".py"):
