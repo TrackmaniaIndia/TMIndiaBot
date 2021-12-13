@@ -38,17 +38,17 @@ def get_player_id(username: str) -> str:
         log.debug(f"Username is stored in the file")
         id_list = _get_username_id_list()
 
-        log.debug(f"{username}'s ID is {id_list[username_list.index(username)]}")
-        return id_list[username_list.index(username)]
+        log.debug(
+            f"{username}'s ID is {id_list[username_list.index(username.lower())]}"
+        )
+        return id_list[username_list.index(username.lower())]
 
     log.debug(f"Getting Player ID for {username}")
-    player_data = requests.get(f"{BASE_API_URL}/tm2020/player/{username}/").json()
+    player_data = requests.get(f"{BASE_API_URL}/tm2020/player/{username}/id").json()
     log.debug(f"Received Player Data, Parsing")
     try:
-        player_id = player_data["accountid"]
-    except:
         player_id = player_data["id"]
-    finally:
+    except:
         player_id = None
     log.debug(f"Player ID is {player_id}")
     return player_id
