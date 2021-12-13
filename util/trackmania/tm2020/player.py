@@ -30,6 +30,17 @@ def get_player_id(username: str) -> str:
     Returns:
         str: the player id
     """
+    # Checking the File
+    log.debug(f"Checking if Player ID is already stored in the file")
+    username_list = _get_username_list()
+
+    if username in username_list:
+        log.debug(f"Username is stored in the file")
+        id_list = _get_username_id_list()
+
+        log.debug(f"{username}'s ID is {id_list[username_list.index(username)]}")
+        return id_list[username_list.index(username)]
+
     log.debug(f"Getting Player ID for {username}")
     player_data = requests.get(f"{BASE_API_URL}/tm2020/player/{username}/id").json()
     log.debug(f"Received Player Data, Parsing")
@@ -344,3 +355,35 @@ def add_meta_details(
     log.debug(f"Added TMIO Link")
     log.debug(f"Returning {player_page}")
     return player_page
+
+
+def _get_username_list() -> list[str]:
+    log.debug(f"Getting Username List")
+    username_list = []
+
+    log.debug(f"Opening Usernames File")
+    with open("./data/json/tm2020_usernames.json", "r") as file:
+        username_data = json.load(file)
+        for user in username_data["Usernames"]:
+            username_list.append(
+                str(username_data["Usernames"][user]["TM2020 Username"]).lower()
+            )
+
+    log.debug(f"Got Username List -> {username_list}")
+    return username_list
+
+
+def _get_username_id_list() -> list[str]:
+    log.debug(f"Getting Username List")
+    username_ids = []
+
+    log.debug(f"Opening Usernames File")
+    with open("./data/json/tm2020_usernames.json", "r") as file:
+        username_data = json.load(file)
+        for user in username_data["Usernames"]:
+            username_ids.append(
+                str(username_data["Usernames"][user]["TM2020 ID"]).lower()
+            )
+
+    log.debug(f"Got Username List -> {username_ids}")
+    return username_ids
