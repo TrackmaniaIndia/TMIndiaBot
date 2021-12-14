@@ -33,7 +33,7 @@ def add_commas(num: int) -> str:
     return "{:,}".format(num)
 
 
-def format_seconds(seconds_num: int) -> str:
-    min, sec = divmod(seconds_num, 60)
-    hour, min = divmod(min, 60)
-    return "%d:%02d:%02d" % (hour, min, sec)
+def format_seconds(ms: int) -> str:
+    sec, ms = divmod(ms, 1000)
+    min, sec = divmod(sec, 60)
+    return "%01d:%02d.%03d" % (min, sec, ms)
