@@ -7,7 +7,9 @@ from datetime import datetime, timezone, timedelta
 log = convert_logging.get_logging()
 
 
-def create_embed(title: str, description: str = "", color: str = None) -> discord.Embed:
+def create_embed(
+    title: str, description: str = "", color: str = None, url: str = None
+) -> discord.Embed:
     """Creates an Embed with Basic Data Fields Filled Out
 
     Args:
@@ -27,7 +29,12 @@ def create_embed(title: str, description: str = "", color: str = None) -> discor
     log.debug(
         f"Creating Embed with Title - {title}, description - {description} and colour - {color}"
     )
-    embed = discord.Embed(title=title, description=description, color=color)
+    embed = discord.Embed(
+        title=title,
+        description=description,
+        color=color,
+        url=discord.Embed.Empty if url == None else url,
+    )
 
     # Adds the timestamp the embed was created on
     embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))

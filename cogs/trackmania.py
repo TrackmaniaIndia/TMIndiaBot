@@ -17,6 +17,7 @@ from util.trackmania.tm2020.leaderboards.campaign import (
 )
 from util.discord.paginator import Paginator
 from util.logging.command_log import log_command
+from util.trackmania.tm2020.totd import _get_current_totd
 
 log = convert_logging.get_logging()
 
@@ -194,6 +195,25 @@ class Trackmania(commands.Cog):
             log.debug(f"Executing Function, Pray")
             await ctx.respond(embed=get_player_good_maps(username))
             log.info(f"Player stalking was a success")
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="totd",
+        description="Latest TOTD",
+    )
+    async def _check_player(
+        self,
+        ctx: commands.Context,
+    ):
+        log.debug(f"Deferring Response")
+        await ctx.defer()
+        log.debug(f"Deferred Response, Awaiting Information")
+
+        log.debug(f"Getting Information")
+        totd_embed = _get_current_totd()
+        log.debug(f"Got Information, Sending Response")
+
+        await ctx.respond(embed=totd_embed)
 
 
 def setup(client: discord.Bot):
