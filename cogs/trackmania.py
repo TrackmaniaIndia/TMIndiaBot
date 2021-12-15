@@ -79,7 +79,9 @@ class Trackmania(commands.Cog):
             # Running the Paginator
             await player_detail_paginator.run(ctx)
 
-    @commands.slash_command(guild_ids=GUILD_IDS, name="update_campaign_leaderboards")
+    @commands.slash_command(
+        guild_ids=[876042400005505066], name="update_campaign_leaderboards"
+    )
     @permissions.is_owner()
     async def _update_campaign_leaderboards(
         self,
