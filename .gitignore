@@ -156,3 +156,5 @@ format.bat
 Makefile
 
 logs/
+
+data/totd.png
