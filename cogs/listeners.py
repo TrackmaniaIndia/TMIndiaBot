@@ -61,6 +61,11 @@ class Listeners(commands.Cog, description="Generic Functions"):
         change_status.start(self.client, self.statuses)
         log.debug(f"Started Change Status Loop")
 
+        # Deleting the TOTD Image if it exists
+        if os.path.exists("./data/totd.png"):
+            log.critical("TOTD Image Exists, Deleting")
+            os.remove("./data/totd.png")
+
         # Starting the TOTD Image Deleter Loop
         log.debug(f"Starting TOTD Image Loop")
         totd_deleter.start(self.client)
