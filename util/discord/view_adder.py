@@ -2,7 +2,7 @@ import discord
 
 
 class ViewAdder(discord.ui.View):
-    def __init__(self, buttons: list[discord.Button]):
+    def __init__(self, buttons: list[discord.ui.Button]):
         super().__init__()
 
         for button in buttons:
