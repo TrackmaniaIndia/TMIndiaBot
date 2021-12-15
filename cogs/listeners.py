@@ -12,6 +12,7 @@ from util.cog_helpers.generic_helper import *
 from util.cog_helpers.listener_helper import _get_statuses
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
+from util.tasks.totd_image_delete import totd_deleter
 
 # Creating logger
 log = convert_logging.get_logging()
@@ -59,6 +60,11 @@ class Listeners(commands.Cog, description="Generic Functions"):
         log.debug(f"Start Change Status Loop")
         change_status.start(self.client, self.statuses)
         log.debug(f"Started Change Status Loop")
+
+        # Starting the TOTD Image Deleter Loop
+        log.debug(f"Starting TOTD Image Loop")
+        totd_deleter.start(self.client)
+        log.debug(f"Started TOTD Image")
 
         # Getting the Announcement Channels for where the bot should send that it is ready
         # Channels taken from ./data/json/announcement_channels.json

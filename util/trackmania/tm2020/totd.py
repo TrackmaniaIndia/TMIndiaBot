@@ -5,6 +5,8 @@ import threading
 import json
 import country_converter as coco
 import flag
+import re
+import shutil
 
 import util.common_functions as common_functions
 import util.logging.convert_logging as convert_logging
@@ -49,8 +51,10 @@ def _get_current_totd() -> discord.Embed:
 
     log.debug(f"Parsing Time Uploaded to Timestamps")
     nadeo_dt = datetime.strptime(nadeo_uploaded[:-6], "%Y-%m-%dT%H:%M:%S")
-    mx_dt = datetime.strptime(mx_uploaded[:-3], "%Y-%m-%dT%H:%M:%S")
-
+    try:
+        mx_dt = datetime.strptime(mx_uploaded[:-3], "%Y-%m-%dT%H:%M:%S")
+    except ValueError:
+        mx_dt = datetime.strptime(mx_uploaded[:-4], "%Y-%m-%dT%H:%M:%S")
     nadeo_dt_utc = nadeo_dt.replace(tzinfo=timezone.utc)
     mx_dt_utc = mx_dt.replace(tzinfo=timezone.utc)
 
@@ -67,16 +71,32 @@ def _get_current_totd() -> discord.Embed:
 
     log.debug(f"Created Strings from Parsed Data")
 
+    log.debug(f"Getting Map Thumbnail")
+    log.debug(f"Checking if Map Thumbnail has Already been Downloaded")
+    if not os.path.exists(f"./data/totd.jpg"):
+        log.critical(f"Map Thumbnail has not been Downloaded")
+        _download_thumbnail(thumbnail_url)
+
     log.debug(f"Creating Embed")
     current_day = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime("%d")
     current_month = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime(
-        "%m"
+        "%M"
     )
+
+    if current_day % 10 == 1:
+        day_suffix = "st"
+    elif current_day % 10 == 2:
+        day_suffix = "nd"
+    elif current_day % 10 == 3:
+        day_suffix = "rd"
+    else:
+        day_suffix = "th"
+
     embed = ezembed.create_embed(
-        title="Here is the {} {} TOTD".format(current_day, current_month),
+        title="Here is the {}{} {} TOTD".format(current_day, day_suffix, current_month),
         color=discord.Colour.nitro_pink(),
     )
-    embed.set_thumbnail(url=thumbnail_url)
+    embed.set_image(url=f"attachment://totd.jpg")
     embed.add_field(name="Map Name", value=map_name, inline=True)
     embed.add_field(name="Author", value=author_name, inline=True)
     embed.add_field(
@@ -96,3 +116,18 @@ def _get_current_totd() -> discord.Embed:
 
     log.debug(f"Created Embed")
     return embed
+
+
+def _download_thumbnail(url: str) -> None:
+    req = requests.get(url, stream=True)
+
+    # Checks if the Image was Retrieved Successfully
+    if req.status_code == 200:
+        log.debug(f"Image was retrieved succesfully")
+        req.raw.decode_content = True
+
+        log.debug(f"Saving Image to File")
+        with open("./data/totd.jpg", "wb") as file:
+            shutil.copyfileobj(req.raw, file)
+    else:
+        log.critical(f"Image could not be retrieved")
