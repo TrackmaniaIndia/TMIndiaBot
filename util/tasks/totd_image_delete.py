@@ -8,9 +8,9 @@ log = convert_logging.get_logging()
 
 
 @tasks.loop(time=datetime.time(hour=16, minute=58, second=50))
-async def totd_delete(client: discord.Bot):
-    if os.path.exists("./data/totd.jpg"):
-        os.remove("./data/totd.jpg")
+async def totd_deleter(client: discord.Bot):
+    if os.path.exists("./data/totd.png"):
+        os.remove("./data/totd.png")
         log.debug(f"Removed Totd Image")
     else:
         log.debug(f"Totd Image Does Not Exist")

@@ -18,7 +18,7 @@ from datetime import datetime, timezone, timedelta
 log = convert_logging.get_logging()
 
 
-def _get_current_totd() -> discord.Embed:
+def _get_current_totd():
     log.debug(f"Getting TOTD Data from API")
     totd_data = requests.get("http://localhost:3000/tm2020/totd/latest").json()
 
@@ -73,21 +73,21 @@ def _get_current_totd() -> discord.Embed:
 
     log.debug(f"Getting Map Thumbnail")
     log.debug(f"Checking if Map Thumbnail has Already been Downloaded")
-    if not os.path.exists(f"./data/totd.jpg"):
+    if not os.path.exists(f"./data/totd.png"):
         log.critical(f"Map Thumbnail has not been Downloaded")
         _download_thumbnail(thumbnail_url)
 
     log.debug(f"Creating Embed")
     current_day = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime("%d")
     current_month = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime(
-        "%M"
+        "%B"
     )
 
-    if current_day % 10 == 1:
+    if int(current_day) % 10 == 1:
         day_suffix = "st"
-    elif current_day % 10 == 2:
+    elif int(current_day) % 10 == 2:
         day_suffix = "nd"
-    elif current_day % 10 == 3:
+    elif int(current_day) % 10 == 3:
         day_suffix = "rd"
     else:
         day_suffix = "th"
@@ -96,7 +96,9 @@ def _get_current_totd() -> discord.Embed:
         title="Here is the {}{} {} TOTD".format(current_day, day_suffix, current_month),
         color=discord.Colour.nitro_pink(),
     )
-    embed.set_image(url=f"attachment://totd.jpg")
+    log.debug(f"Creating Image File")
+    image = discord.File("data/totd.png", filename="totd.png")
+    embed.set_image(url="attachment://totd.png")
     embed.add_field(name="Map Name", value=map_name, inline=True)
     embed.add_field(name="Author", value=author_name, inline=True)
     embed.add_field(
@@ -115,11 +117,15 @@ def _get_current_totd() -> discord.Embed:
     )
 
     log.debug(f"Created Embed")
-    return embed
+    return embed, image
 
 
 def _download_thumbnail(url: str) -> None:
     req = requests.get(url, stream=True)
+
+    if os.path.exists(f"./data/totd.png"):
+        log.debug(f"Thumbnail already downloaded")
+        return
 
     # Checks if the Image was Retrieved Successfully
     if req.status_code == 200:
@@ -127,7 +133,7 @@ def _download_thumbnail(url: str) -> None:
         req.raw.decode_content = True
 
         log.debug(f"Saving Image to File")
-        with open("./data/totd.jpg", "wb") as file:
+        with open("./data/totd.png", "wb") as file:
             shutil.copyfileobj(req.raw, file)
     else:
         log.critical(f"Image could not be retrieved")

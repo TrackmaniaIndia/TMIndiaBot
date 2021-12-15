@@ -210,10 +210,10 @@ class Trackmania(commands.Cog):
         log.debug(f"Deferred Response, Awaiting Information")
 
         log.debug(f"Getting Information")
-        totd_embed = _get_current_totd()
+        totd_embed, image = _get_current_totd()
         log.debug(f"Got Information, Sending Response")
 
-        await ctx.respond(embed=totd_embed)
+        await ctx.respond(file=image, embed=totd_embed)
 
 
 def setup(client: discord.Bot):
