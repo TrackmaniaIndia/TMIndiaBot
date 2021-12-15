@@ -83,6 +83,7 @@ def _get_current_totd():
         "%B"
     )
 
+    # Add Day Suffix
     if int(current_day) % 10 == 1:
         day_suffix = "st"
     elif int(current_day) % 10 == 2:
