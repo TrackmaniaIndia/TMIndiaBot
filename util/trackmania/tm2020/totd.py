@@ -101,6 +101,7 @@ def _get_current_totd():
     embed.set_image(url="attachment://totd.png")
     embed.add_field(name="Map Name", value=map_name, inline=True)
     embed.add_field(name="Author", value=author_name, inline=True)
+    embed.add_field(name="Tags", value=_parse_mx_tags(mania_tags), inline=True)
     embed.add_field(
         name="Time Uploaded to Nadeo Server", value=nadeo_uploaded, inline=False
     )
@@ -137,3 +138,27 @@ def _download_thumbnail(url: str) -> None:
             shutil.copyfileobj(req.raw, file)
     else:
         log.critical(f"Image could not be retrieved")
+
+
+def _parse_mx_tags(tags: str) -> str:
+    log.debug(f"Tags -> {tags}")
+    log.debug(f"Removing Spaces")
+    tags.replace(" ", "")
+    log.debug(f"Without Spaces -> {tags}")
+
+    tags = tags.split(",")
+
+    tag_string = ""
+
+    with open("./data/json/mxtags.json", "r") as file:
+        mxtags = json.load(file)["mx"]
+
+        for i, tag in enumerate(tags):
+            log.debug(f"Converting {tag}")
+
+            for j in range(len(mxtags)):
+                if int(tag) == int(mxtags[j]["ID"]):
+                    tag_string = tag_string + mxtags[j]["Name"] + ", "
+
+    log.debug(f"Tag String -> {tag_string}")
+    return tag_string[:-2]
