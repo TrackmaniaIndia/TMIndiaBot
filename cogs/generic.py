@@ -8,6 +8,7 @@ from discord.ext import commands
 from discord.commands import permissions
 from util.discord.paginator import Paginator
 from util.discord.confirmation import Confirmer
+from util.discord.view_adder import ViewAdder
 from util.logging.command_log import log_command
 from util.cog_helpers.generic_helper import get_version
 from util.constants import GUILD_IDS
@@ -48,9 +49,16 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     async def _source(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
+        log.debug(f"Creating Button for Source Code")
+        source_code_button = discord.ui.Button(
+            label="Source Code (Github)",
+            style=discord.ButtonStyle.url,
+            url="https://github.com/NottCurious/TMIndiaBot",
+        )
+        log.debug(f"Created Button for Source Code, Sending a message")
         await ctx.respond(
-            "Here is the source code\n<https://github.com/NottCurious/TMIndiaBot>",
-            ephemeral=True,
+            content="Hey!\nHere is the source code. The bot is open source and licensed under the MIT License. It is currently developed and maintained by NottCurious and Artifex.\nAll Issues/Feature Requests/Bug Reports and Pull Requests are welcome and appreciated!",
+            view=ViewAdder([source_code_button]),
         )
 
     @commands.slash_command(
@@ -72,8 +80,16 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     async def _link_to_hall_of_fame(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
+        log.debug(f"Creating Button for Hall of Fame")
+        hall_of_fame_button = discord.ui.Button(
+            label="TMI Hall of Fame (Google Sheets)",
+            style=discord.ButtonStyle.url,
+            url="https://tinyurl.com/TMIndiaLB",
+        )
+        log.debug(f"Created Button for Hall of Fame, Sending a message")
         await ctx.respond(
-            f"Here is the link to the TMI Hall of Fame\n<https://tinyurl.com/TMIndiaLB>",
+            f"Please click the button to be redirected to the hall of fame",
+            view=ViewAdder([hall_of_fame_button]),
             ephemeral=True,
         )
 
@@ -84,8 +100,15 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     async def _next_project(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
+        log.debug(f"Creating Button for Next Project")
+        next_project_button = discord.ui.Button(
+            label="Next Project - v1.6.1 (Github)",
+            style=discord.ButtonStyle.url,
+            url="https://github.com/NottCurious/TMIndiaBot/projects/6",
+        )
         await ctx.respond(
-            f"Here is the link to the next project\n<https://github.com/NottCurious/TMIndiaBot/projects/3>",
+            f"Here is the link to the next project",
+            view=ViewAdder([next_project_button]),
             ephemeral=True,
         )
 
@@ -100,8 +123,9 @@ class Generic(commands.Cog, description="Generic Functions"):
         await ctx.respond(
             embed=ezembed.create_embed(
                 title="Bot Invite",
-                description=r"[Click Here to Invite the Bot!](https://discord.com/api/oauth2/authorize?client_id=901407301175484447&permissions=534925274176&scope=bot%20applications.commands)",
-            )
+                description="Hey! Thanks for your interest in TMI Bot. This bot may have lots of bugs and issues to be ironed out. If the bot suddenly stops working please contact NottCurious#4351 immediately.\n\n[Click Here to Invite the Bot!](https://discord.com/api/oauth2/authorize?client_id=901407301175484447&permissions=534925274176&scope=bot%20applications.commands)",
+            ),
+            ephemeral=True,
         )
 
     @commands.slash_command(
@@ -133,7 +157,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 self.client.load_extension(f"cogs.{filename[:-3]}")
         await ctx.respond("Reloaded all cogs")
 
-    @commands.slash_command(guild_ids=GUILD_IDS, name="testpagination")
+    @commands.slash_command(guild_ids=[876042400005505066], name="testpagination")
     @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -162,7 +186,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         my_pag = Paginator(pages=embed_list, sending=True)
         await my_pag.run(ctx)
 
-    @commands.slash_command(guild_ids=GUILD_IDS, name="testconfirm")
+    @commands.slash_command(guild_ids=[876042400005505066], name="testconfirm")
     @permissions.is_owner()
     async def _test_confirm(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -177,7 +201,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         await ctx.send(my_confirmer.value)
 
-    @commands.slash_command(guild_ids=GUILD_IDS, name="causeerror")
+    @commands.slash_command(guild_ids=[876042400005505066], name="causeerror")
     @permissions.is_owner()
     async def _cause_error(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
