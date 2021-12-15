@@ -46,8 +46,9 @@ def _get_current_totd():
 
     log.debug(f"Parsed TOTD Data")
 
-    log.debug(f"Parsing Mania Tags to Strings")
-    log.debug(f"Parsed Mania Tags to Strings")
+    log.debug(f"Parsing Download Link")
+    download_link = totd_data["fileUrl"]
+    log.debug(f"Parsed Download Link")
 
     log.debug(f"Parsing Time Uploaded to Timestamps")
     nadeo_dt = datetime.strptime(nadeo_uploaded[:-6], "%Y-%m-%dT%H:%M:%S")
@@ -100,26 +101,21 @@ def _get_current_totd():
     log.debug(f"Creating Image File")
     image = discord.File("data/totd.png", filename="totd.png")
     embed.set_image(url="attachment://totd.png")
-    embed.add_field(name="Map Name", value=map_name, inline=True)
+    embed.add_field(name="Map Name", value=map_name, inline=False)
     embed.add_field(name="Author", value=author_name, inline=True)
-    embed.add_field(name="Tags", value=_parse_mx_tags(mania_tags), inline=True)
+    embed.add_field(name="Tags", value=_parse_mx_tags(mania_tags), inline=False)
     embed.add_field(
         name="Time Uploaded to Nadeo Server", value=nadeo_uploaded, inline=False
     )
     embed.add_field(name="Time Uploaded to TMX", value=mx_uploaded, inline=True)
     embed.add_field(name="Medal Times", value=medal_times, inline=False)
     embed.add_field(name="World Record", value=world_record, inline=False)
-    embed.add_field(
-        name="Links",
-        value="[TMIO]({}) | [TMX]({})".format(
-            "https://trackmania.io/#/leaderboard/{}".format(tmio_id),
-            "https://trackmania.exchange/maps/{}/".format(tmx_code),
-        ),
-        inline=False,
-    )
+
+    tmio_link = "https://trackmania.io/#/leaderboard/{}".format(tmio_id)
+    tmx_link = "https://trackmania.exchange/maps/{}/".format(tmx_code)
 
     log.debug(f"Created Embed")
-    return embed, image
+    return embed, image, download_link, tmio_link, tmx_link
 
 
 def _download_thumbnail(url: str) -> None:

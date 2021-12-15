@@ -18,6 +18,7 @@ from util.trackmania.tm2020.leaderboards.campaign import (
 from util.discord.paginator import Paginator
 from util.logging.command_log import log_command
 from util.trackmania.tm2020.totd import _get_current_totd
+from util.discord.view_adder import ViewAdder
 
 log = convert_logging.get_logging()
 
@@ -210,10 +211,25 @@ class Trackmania(commands.Cog):
         log.debug(f"Deferred Response, Awaiting Information")
 
         log.debug(f"Getting Information")
-        totd_embed, image = _get_current_totd()
+        totd_embed, image, download_link, tmio_link, tmx_link = _get_current_totd()
         log.debug(f"Got Information, Sending Response")
 
-        await ctx.respond(file=image, embed=totd_embed)
+        log.debug(f"Creating Buttons to Add")
+        download_map = discord.ui.Button(
+            label="Download Map!", style=discord.ButtonStyle.primary, url=download_link
+        )
+        tmio_button = discord.ui.Button(
+            label="TMIO", style=discord.ButtonStyle.url, url=tmio_link
+        )
+        tmx_button = discord.ui.Button(
+            label="TMX", style=discord.ButtonStyle.url, url=tmx_link
+        )
+
+        await ctx.respond(
+            file=image,
+            embed=totd_embed,
+            view=ViewAdder([download_map, tmio_button, tmx_button]),
+        )
 
 
 def setup(client: discord.Bot):
