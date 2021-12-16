@@ -169,7 +169,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=[GUILD_IDS[0]],
-        name="ReloadAll",
+        name="reloadall",
         description="Reloads all cogs",
         hidden=True,
     )
@@ -183,7 +183,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 self.client.load_extension(f"cogs.{filename[:-3]}")
         await ctx.respond("Reloaded all cogs")
 
-    @commands.slash_command(guild_ids=[876042400005505066], name="PaginatorTest")
+    @commands.slash_command(guild_ids=[876042400005505066], name="paginatortest")
     @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -212,7 +212,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         my_pag = Paginator(pages=embed_list, sending=True)
         await my_pag.run(ctx)
 
-    @commands.slash_command(guild_ids=[876042400005505066], name="ConfirmerTest")
+    @commands.slash_command(guild_ids=[876042400005505066], name="confirmertest")
     @permissions.is_owner()
     async def _test_confirm(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -227,7 +227,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         await ctx.send(my_confirmer.value)
 
-    @commands.slash_command(guild_ids=[876042400005505066], name="CauseError")
+    @commands.slash_command(guild_ids=[876042400005505066], name="causeerror")
     @permissions.is_owner()
     async def _cause_error(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
