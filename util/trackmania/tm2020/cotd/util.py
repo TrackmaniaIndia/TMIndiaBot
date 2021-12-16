@@ -211,3 +211,34 @@ def _get_average_div_rank_primary(cotd_data):
 
     log.debug(f"Primary Rank Overall -> {round(div_rank_total / cotds_played, 2)}")
     return round(div_rank_total / cotds_played, 2)
+
+
+def _get_list_of_ranks_overall(cotd_data):
+    cotds = _return_cotds(cotd_data)
+    cotds = _remove_unfinished_cotds(cotds)
+
+    ranks = []
+
+    for cotd in cotds:
+        ranks.append(cotd["rank"])
+
+    log.debug(f"Ranks are {ranks}")
+    return ranks
+
+
+def _get_list_of_ranks_primary(cotd_data):
+    cotds = _return_cotds_without_reruns(cotd_data)
+    cotds = _remove_unfinished_cotds(cotds)
+
+    ranks = []
+
+    for cotd in cotds:
+        ranks.append(cotd["rank"])
+
+    log.debug(f"Ranks are {ranks}")
+    return ranks
+
+
+def _get_num_wins(cotd_data):
+    log.debug("Getting number of wins -> {}".format(cotd_data["stats"]["totalwins"]))
+    return cotd_data["stats"]["totalwins"]
