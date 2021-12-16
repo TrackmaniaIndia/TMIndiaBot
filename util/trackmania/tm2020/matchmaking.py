@@ -49,6 +49,7 @@ def _get_progression_to_next_rank(matchmaking_data) -> float:
 
     return round(numerator / denomenator, 2)
 
+
 def _get_rank(matchmaking_data) -> str:
     log.debug(f"Getting Rank")
     rank = matchmaking_data["info"]["rank"]

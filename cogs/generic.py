@@ -1,6 +1,8 @@
 import discord
 import os
 
+from discord.ui import view
+
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
 
@@ -138,6 +140,28 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         await ctx.respond(
             f"Here is an invite to the testing server\nhttps://discord.gg/REEUs3CPND",
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="suggestions",
+        description="Got a Suggestion? Send it here!",
+    )
+    async def _suggest(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
+
+        log.debug(f"Creating button for new github issue")
+        suggestion_button = discord.ui.Button(
+            label="Suggest Here! (Github)",
+            style=discord.ButtonStyle.url,
+            url="https://github.com/NottCurious/TMIndiaBot/issues/new",
+        )
+        log.debug(f"Created Button")
+
+        await ctx.respond(
+            content='Hey!\nPlease click the link below to open an "issue" where you can send your suggestion. Please put a short title and expand in the description and NottCurious will get back to you shortly',
+            view=ViewAdder([suggestion_button]),
             ephemeral=True,
         )
 
