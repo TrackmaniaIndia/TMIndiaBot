@@ -158,3 +158,5 @@ Makefile
 logs/
 
 data/totd.png
+
+data/leaderboard
