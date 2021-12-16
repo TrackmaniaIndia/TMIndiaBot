@@ -1,5 +1,6 @@
-import util.logging.convert_logging as convert_logging
 import re
+
+import util.logging.convert_logging as convert_logging
 
 log = convert_logging.get_logging()
 

@@ -1,8 +1,10 @@
 import discord
 import requests
+import os
+
 import util.common_functions as common_functions
 import util.logging.convert_logging as convert_logging
-import os
+
 
 log = convert_logging.get_logging()
 

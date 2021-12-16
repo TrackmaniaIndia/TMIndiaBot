@@ -1,22 +1,9 @@
-from country_converter.country_converter import convert, match
-import discord
-from discord import player
 import requests
-import util.common_functions as common_functions
-import util.logging.convert_logging as convert_logging
-import util.discord.easy_embed as ezembed
-from util.trackmania.tm2020.cotd import (
-    _get_avg_global_rank,
-    _get_avg_div,
-    _get_num_completed_cotds,
-    _get_num_all_cotds,
-)
-import os
-import threading
-import json
-import country_converter as coco
-import flag
 
+import util.logging.convert_logging as convert_logging
+
+from util.trackmania.tm2020.cotd import *
+from country_converter.country_converter import convert, match
 
 # Setting up Logging
 log = convert_logging.get_logging()

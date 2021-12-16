@@ -1,8 +1,11 @@
 import discord
-from discord.ext import tasks, commands
-import util.logging.convert_logging as convert_logging
 import datetime
 import os
+
+import util.logging.convert_logging as convert_logging
+
+from discord.ext import tasks, commands
+
 
 log = convert_logging.get_logging()
 

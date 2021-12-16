@@ -1,6 +1,5 @@
 import json
 import discord
-from discord import guild
 
 import util.discord.easy_embed as ezembed
 import numpy as np

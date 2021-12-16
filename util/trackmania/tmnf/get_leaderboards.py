@@ -1,9 +1,9 @@
 import discord
 import requests
-import util.common_functions as common_functions
+import os
+
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
-import os
 
 log = convert_logging.get_logging()
 

@@ -1,10 +1,10 @@
-from discord import player
 import requests
 import time
 import json
+import discord
+
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
-import discord
 
 log = convert_logging.get_logging()
 BASE_LEADERBOARD_URL = "http://localhost:3000/tm2020/leaderboard/"

@@ -1,7 +1,6 @@
 import discord
 import time
-
-from discord.guild import Guild
+import threading
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed

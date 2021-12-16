@@ -1,11 +1,7 @@
 import discord
 import requests
 import os
-import threading
 import json
-import country_converter as coco
-import flag
-import re
 import shutil
 
 import util.common_functions as common_functions

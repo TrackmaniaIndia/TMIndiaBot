@@ -1,5 +1,4 @@
 import util.logging.convert_logging as convert_logging
-import discord
 
 log = convert_logging.get_logging()
 
