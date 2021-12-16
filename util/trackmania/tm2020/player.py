@@ -189,7 +189,7 @@ def get_matchmaking_data(raw_data) -> str:
 
         with open("./data/json/mm_ranks.json", "r") as file:
             mm_ranks = json.load(file)
-            current_division = mm_ranks["rank_data"][str(current_division_int)]
+            current_division = mm_ranks["rank_data"][str(current_division_int - 1)]
 
         progression_to_next_div = (
             round(
