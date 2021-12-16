@@ -6,7 +6,7 @@
             "error_ping": false
         }
     ],
-    "bot_version": "v1.5.7",
+    "bot_version": "v1.6.0-alpha",
     "testing_server_id": "876042400005505066",
     "log_level": "debug",
     "discord_log_level": "info",
