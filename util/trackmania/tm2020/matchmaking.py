@@ -2,9 +2,6 @@ import requests
 
 import util.logging.convert_logging as convert_logging
 
-from util.trackmania.tm2020.cotd import *
-from country_converter.country_converter import convert, match
-
 # Setting up Logging
 log = convert_logging.get_logging()
 
