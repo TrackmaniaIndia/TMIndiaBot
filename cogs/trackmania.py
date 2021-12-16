@@ -28,7 +28,7 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="PlayerDetails",
+        name="playerdetails",
         description="player details for a specific player",
     )
     async def _player_details(
@@ -78,7 +78,7 @@ class Trackmania(commands.Cog):
             await player_detail_paginator.run(ctx)
 
     @commands.slash_command(
-        guild_ids=[876042400005505066], name="UpdateCampaignLeaderboards"
+        guild_ids=[876042400005505066], name="updatecampaignleaderboards"
     )
     @permissions.is_owner()
     async def _update_campaign_leaderboards(
@@ -169,7 +169,7 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="StalkPlayerForTSCC",
+        name="stalkplayerfortscc",
         description="Checks if the player is in top 500 for the tscc map pool",
         default_permission=False,
     )
@@ -199,7 +199,7 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="TOTD",
+        name="totd",
         description="Latest TOTD",
     )
     async def _check_player(

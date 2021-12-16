@@ -32,7 +32,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="Ping",
+        name="ping",
         description="Get ping of bot to discord api in milliseconds",
     )
     async def _ping(self, ctx: commands.Context):
@@ -40,7 +40,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS, name="Version", description="Displays bot version"
+        guild_ids=GUILD_IDS, name="version", description="Displays bot version"
     )
     async def _version(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -48,8 +48,8 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="SourceCode",
-        description="Displays Github Source Code",
+        name="sourcecode",
+        description="Sends you a link to the github source code",
     )
     async def _source(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -67,8 +67,8 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="InviteLink",
-        description="Gives you an invite link for the server",
+        name="invitelink",
+        description="Gives you an invite link for the trackmania india server",
     )
     async def _server_invite(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -79,7 +79,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="HallOfFame",
+        name="halloffame",
         description="Gives you the link for the TMI Hall of Fame",
     )
     async def _link_to_hall_of_fame(self, ctx: commands.Context):
@@ -99,7 +99,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="NextProject",
+        name="nextproject",
         description="A Github link to the next project, has planned, in progress and finished features.",
     )
     async def _next_project(self, ctx: commands.Context):
@@ -118,7 +118,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="InviteBot",
+        name="invitebot",
         description="Give an invite link for the bot",
     )
     async def _invite_bot(self, ctx: commands.Context):
@@ -134,8 +134,8 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="TestingServer",
-        description="Get an invite to the testing server",
+        name="testingserver",
+        description="Get an invite to the TMI Bot Testing Server",
     )
     async def _testing_server_invite(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -147,7 +147,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="Suggestions",
+        name="suggest",
         description="Got a Suggestion? Send it here!",
     )
     async def _suggest(self, ctx: commands.Context):

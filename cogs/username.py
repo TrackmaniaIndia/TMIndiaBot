@@ -24,7 +24,7 @@ class Username(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="StoreUsername",
+        name="storeusername",
         description="Stores Username in JSON File for Future Use and Speed",
     )
     async def _store_username(
@@ -108,8 +108,8 @@ class Username(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="CheckUsername",
-        description="Checks if your username is in the file",
+        name="checkusername",
+        description="Checks if your username is stored in the file",
     )
     async def _check_username(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -131,7 +131,7 @@ class Username(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="RemoveUsername",
+        name="removeusername",
         description="Removes your username from the file if present",
     )
     async def _remove_username(self, ctx: commands.Context):
