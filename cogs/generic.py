@@ -32,7 +32,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="ping",
+        name="Ping",
         description="Get ping of bot to discord api in milliseconds",
     )
     async def _ping(self, ctx: commands.Context):
@@ -40,14 +40,16 @@ class Generic(commands.Cog, description="Generic Functions"):
         await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS, name="version", description="Displays bot version"
+        guild_ids=GUILD_IDS, name="Version", description="Displays bot version"
     )
     async def _version(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         await ctx.respond(f"Bot Version is {self.version}", ephemeral=True)
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS, name="source", description="Displays Github Source Code"
+        guild_ids=GUILD_IDS,
+        name="SourceCode",
+        description="Displays Github Source Code",
     )
     async def _source(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -65,7 +67,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="invite",
+        name="InviteLink",
         description="Gives you an invite link for the server",
     )
     async def _server_invite(self, ctx: commands.Context):
@@ -77,7 +79,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="halloffame",
+        name="HallOfFame",
         description="Gives you the link for the TMI Hall of Fame",
     )
     async def _link_to_hall_of_fame(self, ctx: commands.Context):
@@ -97,7 +99,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="nextproject",
+        name="NextProject",
         description="A Github link to the next project, has planned, in progress and finished features.",
     )
     async def _next_project(self, ctx: commands.Context):
@@ -116,7 +118,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="invitebot",
+        name="InviteBot",
         description="Give an invite link for the bot",
     )
     async def _invite_bot(self, ctx: commands.Context):
@@ -132,7 +134,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="testingserver",
+        name="TestingServer",
         description="Get an invite to the testing server",
     )
     async def _testing_server_invite(self, ctx: commands.Context):
@@ -145,7 +147,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="suggestions",
+        name="Suggestions",
         description="Got a Suggestion? Send it here!",
     )
     async def _suggest(self, ctx: commands.Context):
@@ -166,8 +168,8 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
-        name="reloadall",
+        guild_ids=[GUILD_IDS[0]],
+        name="ReloadAll",
         description="Reloads all cogs",
         hidden=True,
     )
@@ -181,7 +183,7 @@ class Generic(commands.Cog, description="Generic Functions"):
                 self.client.load_extension(f"cogs.{filename[:-3]}")
         await ctx.respond("Reloaded all cogs")
 
-    @commands.slash_command(guild_ids=[876042400005505066], name="testpagination")
+    @commands.slash_command(guild_ids=[876042400005505066], name="PaginatorTest")
     @permissions.is_owner()
     async def _test(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -210,7 +212,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         my_pag = Paginator(pages=embed_list, sending=True)
         await my_pag.run(ctx)
 
-    @commands.slash_command(guild_ids=[876042400005505066], name="testconfirm")
+    @commands.slash_command(guild_ids=[876042400005505066], name="ConfirmerTest")
     @permissions.is_owner()
     async def _test_confirm(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -225,7 +227,7 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         await ctx.send(my_confirmer.value)
 
-    @commands.slash_command(guild_ids=[876042400005505066], name="causeerror")
+    @commands.slash_command(guild_ids=[876042400005505066], name="CauseError")
     @permissions.is_owner()
     async def _cause_error(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)

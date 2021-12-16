@@ -1,6 +1,8 @@
 import discord
 import time
 
+from discord.guild import Guild
+
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
 
@@ -10,11 +12,7 @@ from discord.ext import commands
 from util.constants import GUILD_IDS
 from util.trackmania.tm2020.player import *
 from util.discord.confirmation import Confirmer
-from util.trackmania.tm2020.leaderboards.campaign import (
-    _get_all_campaign_ids,
-    update_leaderboards_campaign,
-    get_player_good_maps,
-)
+from util.trackmania.tm2020.leaderboards.campaign import *
 from util.discord.paginator import Paginator
 from util.logging.command_log import log_command
 from util.trackmania.tm2020.totd import _get_current_totd
@@ -30,7 +28,7 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="playerdetails",
+        name="PlayerDetails",
         description="player details for a specific player",
     )
     async def _player_details(
@@ -80,7 +78,7 @@ class Trackmania(commands.Cog):
             await player_detail_paginator.run(ctx)
 
     @commands.slash_command(
-        guild_ids=[876042400005505066], name="update_campaign_leaderboards"
+        guild_ids=[876042400005505066], name="UpdateCampaignLeaderboards"
     )
     @permissions.is_owner()
     async def _update_campaign_leaderboards(
@@ -171,7 +169,7 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="stalkplayerfortscc",
+        name="StalkPlayerForTSCC",
         description="Checks if the player is in top 500 for the tscc map pool",
         default_permission=False,
     )
@@ -201,7 +199,7 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="totd",
+        name="TOTD",
         description="Latest TOTD",
     )
     async def _check_player(
