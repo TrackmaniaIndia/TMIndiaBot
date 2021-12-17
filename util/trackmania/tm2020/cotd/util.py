@@ -39,7 +39,7 @@ def _get_best_div_primary_time(cotd_data) -> int:
     return cotd_data["stats"]["bestprimary"]["bestdivtime"]
 
 
-def _get_best_rank_in_div_primary(cotd_data) -> int:
+def _get_best_div_rank_primary(cotd_data) -> int:
     log.debug(
         "Getting the Best Rank in Div -> {}".format(
             cotd_data["stats"]["bestprimary"]["bestrankindiv"]
@@ -82,12 +82,13 @@ def _get_best_div_overall_time(cotd_data) -> int:
     return cotd_data["stats"]["bestoverall"]["bestdivtime"]
 
 
-def _get_best_rank_in_div_overall(cotd_data) -> int:
+def _get_best_div_rank_overall(cotd_data) -> int:
     log.debug(
         "Getting the Best Rank in Div Overall -> {}".format(
             cotd_data["stats"]["bestoverall"]["bestrankindiv"]
         )
     )
+    return cotd_data["stats"]["bestoverall"]["bestrankindiv"]
 
 
 def _return_cotds(cotd_data):
@@ -140,7 +141,7 @@ def _get_average_rank_overall(cotd_data):
     return round(rank_total / cotds_played, 2)
 
 
-def _get_average_rank_overall(cotd_data):
+def _get_average_rank_primary(cotd_data):
     cotds = _return_cotds_without_reruns(cotd_data)
 
     cotds_played = _get_num_cotds_played(cotds)
@@ -188,15 +189,13 @@ def _get_average_div_rank_overall(cotd_data):
 
     cotds_played = _get_num_cotds_played(cotds)
 
-    div_total = 0
-    rank_total = 0
+    div_rank_total = 0
 
     for cotd in cotds:
-        div_total += int(cotd["div"])
-        rank_total += int(cotd["rank"])
+        div_rank_total += int(cotd["div"])
 
-    log.debug(f"Average Div Rank Overall -> {round(div_total / rank_total, 2)}")
-    return round(div_total / rank_total, 2)
+    log.debug(f"Average Div Rank Overall -> {round(div_rank_total / cotds_played, 2)}")
+    return round(div_rank_total / cotds_played, 2)
 
 
 def _get_average_div_rank_primary(cotd_data):

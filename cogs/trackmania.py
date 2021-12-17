@@ -16,6 +16,7 @@ from util.discord.paginator import Paginator
 from util.logging.command_log import log_command
 from util.trackmania.tm2020.totd import _get_current_totd
 from util.discord.view_adder import ViewAdder
+from util.trackmania.tm2020.cotd.cotd import get_cotd_data
 
 log = convert_logging.get_logging()
 
@@ -201,7 +202,7 @@ class Trackmania(commands.Cog):
         name="totd",
         description="Latest TOTD",
     )
-    async def _check_player(
+    async def _totd(
         self,
         ctx: commands.Context,
     ):
@@ -229,6 +230,39 @@ class Trackmania(commands.Cog):
             embed=totd_embed,
             view=ViewAdder([download_map, tmio_button, tmx_button]),
         )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="cotddata",
+        description="COTD Data of a Given Username",
+    )
+    async def _totd(
+        self,
+        ctx: commands.Context,
+        username: Option(str, "The TM2020 Username of the Player", required=True),
+    ):
+        log.debug(f"Deferring Response")
+        await ctx.defer()
+        log.debug(f"Deferred Response")
+
+        log.debug(f"Checking Player")
+        player_id = get_player_id(username)
+
+        if player_id == None:
+            log.critical(f"Username given is invalid")
+            await ctx.respond(
+                embed=ezembed.create_embed(
+                    title="Invalid Username",
+                    description=f"Username: {username}",
+                    color=discord.Colour.red(),
+                )
+            )
+            return
+
+        # Temp Code Starts
+        cotd_data = get_cotd_data(player_id, username)
+
+        await ctx.respond(embed=cotd_data)
 
 
 def setup(client: discord.Bot):
