@@ -16,7 +16,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
         return discord.Embed(
             title=":warning: TMX ID must be a number",
             description="Example: 2233",
-            color=discord.Colour.red(),
+            color=0xFF0000,
         )
 
     BASE_API_URL = os.getenv("BASE_API_URL")
@@ -33,7 +33,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
             return discord.Embed(
                 title=":warning: Invalid TMX Id",
                 description="The TMX ID provided is invalid",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
     log.debug(f"API Response Checked")
 

@@ -113,7 +113,7 @@ class Trackmania(commands.Cog):
             embed=ezembed.create_embed(
                 title="Are you sure you want to continue?",
                 description=f"This can take over 10minutes, the bot will be unusable in this period\nYear: {year}\nSeason: {season}",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             ),
             view=confirm_continue,
         )
@@ -254,7 +254,7 @@ class Trackmania(commands.Cog):
                 embed=ezembed.create_embed(
                     title="Invalid Username",
                     description=f"Username: {username}",
-                    color=discord.Colour.red(),
+                    color=0xFF0000,
                 )
             )
             return

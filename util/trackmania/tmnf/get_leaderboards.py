@@ -15,7 +15,7 @@ def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
         return ezembed.create_embed(
             title=":warning: TMX ID Must be a number",
             description="Example: 8496396",
-            color=discord.Colour.red(),
+            color=0xFF0000,
         )
 
     BASE_API_URL = os.getenv("BASE_API_URL")
@@ -29,7 +29,7 @@ def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
             return ezembed.create_embed(
                 title=":warning: Invalid TMX ID",
                 description="The TMX ID provided is invalid",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
 
     log.debug(f"Requesting Map Name")

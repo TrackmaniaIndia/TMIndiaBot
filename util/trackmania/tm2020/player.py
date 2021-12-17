@@ -65,7 +65,7 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
         return [
             ezembed.create_embed(
                 title=f"{player_flag_unicode} {display_name} has never played Trackmania2020",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
         ]
 

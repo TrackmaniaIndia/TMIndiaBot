@@ -48,7 +48,7 @@ class Username(commands.Cog):
             log.debug(f"Username not found")
             embed = ezembed.create_embed(
                 title=":negative_squared_cross_mark: Username not Found or does not exist.",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
             await ctx.respond(embed=embed)
             return None
@@ -69,7 +69,7 @@ class Username(commands.Cog):
             embed=ezembed.create_embed(
                 title="Is This Your Username?",
                 description=f"Username: {username}",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             ),
             view=confirm_add_username,
         )
@@ -125,7 +125,7 @@ class Username(commands.Cog):
             log.debug(f"Username not in json file")
             embed = ezembed.create_embed(
                 title=":negative_squared_cross_mark: Your Username does not Exist",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
             await ctx.respond(embed=embed)
 
@@ -156,7 +156,7 @@ class Username(commands.Cog):
         message = await ctx.respond(
             embed=ezembed.create_embed(
                 title="Are you sure you want to delete your username from the database?",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             ),
             view=confirm_remove_username,
         )
@@ -184,7 +184,7 @@ class Username(commands.Cog):
             log.debug(f"User does not exist in file")
             embed = ezembed.create_embed(
                 title=":negative_squared_cross_mark: User does not exist",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
             await ctx.respond(embed=embed, ephemeral=True)
             return

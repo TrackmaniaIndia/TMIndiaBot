@@ -23,7 +23,7 @@ def get_tm2020_map(tmx_id: str) -> discord.Embed:
             return discord.Embed(
                 title=":warning: Invalid TMIO UId",
                 description="The TMIO UID provided is invalid",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
     log.debug(f"API Response Checked")
 

@@ -154,7 +154,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
         embed = ezembed.create_embed(
             title="An Error Has Occured",
             description=error,
-            color=discord.Colour.red(),
+            color=0xFF0000,
         )
 
         embed.add_field(name="Author Username", value=ctx.author.name, inline=False)
