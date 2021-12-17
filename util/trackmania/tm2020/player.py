@@ -72,15 +72,15 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
     log.debug(f"Creating Two Embeds")
     page_one = ezembed.create_embed(
         title=f"Player Data for {player_flag_unicode} {display_name} - Page 1",
-        color=discord.Colour.random(),
+        color=common_functions.get_random_color(),
     )
     page_two = ezembed.create_embed(
         title=f"Player Data for {player_flag_unicode} {display_name} - Page 2",
-        color=discord.Colour.random(),
+        color=common_functions.get_random_color(),
     )
     page_three = ezembed.create_embed(
         title=f"Player Data for {player_flag_unicode} {display_name} - Page 3",
-        color=discord.Colour.random(),
+        color=common_functions.get_random_color(),
     )
 
     zones, zone_ranks = get_zones_and_positions(raw_player_data)

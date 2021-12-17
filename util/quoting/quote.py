@@ -4,6 +4,7 @@ import discord
 import util.discord.easy_embed as ezembed
 import numpy as np
 import util.logging.convert_logging as convert_logging
+import util.common_functions as common_functions
 
 from datetime import datetime
 
@@ -53,7 +54,7 @@ def quote_dict_to_embed(quote: dict) -> discord.Embed:
     embed = ezembed.create_embed(
         title="***Quote #{}***".format(quote["Number"]),
         description='```"{}" - {}```'.format(quote["Message"], quote["Author"]),
-        color=discord.Colour.random(),
+        color=common_functions.get_random_color(),
     )
 
     embed.add_field(

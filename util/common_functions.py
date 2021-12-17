@@ -1,3 +1,5 @@
+import random
+
 import util.logging.convert_logging as convert_logging
 
 log = convert_logging.get_logging()
@@ -36,3 +38,7 @@ def format_seconds(ms: int) -> str:
     sec, ms = divmod(ms, 1000)
     min, sec = divmod(sec, 60)
     return "%01d:%02d.%03d" % (min, sec, ms)
+
+
+def get_random_color():
+    return random.randint(0, 0xFFFFFF)

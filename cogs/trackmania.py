@@ -47,7 +47,7 @@ class Trackmania(commands.Cog):
                 embed=ezembed.create_embed(
                     title="Invalid Username Given",
                     description=f"Username Given: {username}",
-                    color=discord.Colour.random(),
+                    color=common_functions.get_random_color(),
                 ),
                 delete_after=5,
                 ephemeral=False,

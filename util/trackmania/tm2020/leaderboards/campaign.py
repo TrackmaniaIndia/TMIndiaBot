@@ -5,6 +5,7 @@ import discord
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
+import util.common_functions as common_functions
 
 log = convert_logging.get_logging()
 BASE_LEADERBOARD_URL = "http://localhost:3000/tm2020/leaderboard/"
@@ -91,7 +92,7 @@ def get_player_good_maps(
     log.debug(f"Getting Player Details for Player Name -> {player_name}")
     player_embed = ezembed.create_embed(
         title=f"{player_name} is good at the following maps",
-        color=discord.Colour.random(),
+        color=common_functions.get_random_color(),
     )
     top_100_string = ""
     top_200_string = ""

@@ -23,7 +23,7 @@ def create_embed(
     """
     if color is None:
         log.debug("Colour is None, Assigning Random Colour")
-        color = discord.Colour.random()
+        color = common_functions.get_random_color()
 
     # Creates an Embed with the Given Title, Description and Color
     log.debug(

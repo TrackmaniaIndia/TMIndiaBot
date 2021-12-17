@@ -3,6 +3,7 @@ import requests
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
+import util.common_functions as common_functions
 
 import util.trackmania.tm2020.cotd.util as cotd_util
 
@@ -66,7 +67,7 @@ def get_cotd_data(user_id: str, username: str) -> discord.Embed:
     log.debug(f"Creating Embed Page 1")
     cotd_data_page_one = ezembed.create_embed(
         title="COTD Data for {} - Page 1".format(username),
-        color=discord.Colour.random(),
+        color=common_functions.get_random_color(),
     )
     log.debug(f"Created Embed Page 1")
     log.debug(f"Adding Fields")

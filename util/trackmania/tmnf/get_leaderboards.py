@@ -4,6 +4,7 @@ import os
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
+import util.common_functions as common_functions
 
 log = convert_logging.get_logging()
 
@@ -63,7 +64,7 @@ def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
             ezembed.create_embed(
                 title="Map: {} - Page {}".format(map_name, i + 1),
                 description=times[i],
-                color=discord.Colour.random(),
+                color=common_functions.get_random_color(),
             )
         )
 
