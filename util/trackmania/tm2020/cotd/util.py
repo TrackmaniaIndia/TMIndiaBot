@@ -221,8 +221,8 @@ def _get_list_of_ranks_overall(cotd_data):
     for cotd in cotds:
         ranks.append(cotd["rank"])
 
-    log.debug(f"Ranks are {ranks}")
-    return ranks
+    log.debug(f"Ranks are {ranks[::-1]}")
+    return ranks[::-1]
 
 
 def _get_list_of_ranks_primary(cotd_data):
@@ -234,8 +234,60 @@ def _get_list_of_ranks_primary(cotd_data):
     for cotd in cotds:
         ranks.append(cotd["rank"])
 
-    log.debug(f"Ranks are {ranks}")
-    return ranks
+    log.debug(f"Ranks are {ranks[::-1]}")
+    return ranks[::-1]
+
+
+def _get_list_of_dates_overall(cotd_data):
+    cotds = _return_cotds(cotd_data)
+    cotds = _remove_unfinished_cotds(cotds)
+
+    timestamps = []
+
+    for cotd in cotds:
+        timestamps.append(cotd["name"][15:])
+
+    log.debug(f"Timestamps are {timestamps[::-1]}")
+    return timestamps[::-1]
+
+
+def _get_list_of_dates_primary(cotd_data):
+    cotds = _return_cotds_without_reruns(cotd_data)
+    cotds = _remove_unfinished_cotds(cotds)
+
+    timestamps = []
+
+    for cotd in cotds:
+        timestamps.append(cotd["name"][15:])
+
+    log.debug(f"Timestamps are {timestamps[::-1]}")
+    return timestamps[::-1]
+
+
+def _get_list_of_ids_overall(cotd_data):
+    cotds = _return_cotds(cotd_data)
+    cotds = _remove_unfinished_cotds(cotds)
+
+    ids = []
+
+    for cotd in cotds:
+        ids.append(cotd["id"])
+
+    log.debug(f"IDs are {ids[::-1]}")
+    return ids[::-1]
+
+
+def _get_list_of_ids_primary(cotd_data):
+    cotds = _return_cotds_without_reruns(cotd_data)
+    cotds = _remove_unfinished_cotds(cotds)
+
+    ids = []
+
+    for cotd in cotds:
+        ids.append(cotd["id"])
+
+    log.debug(f"IDs are {ids[::-1]}")
+    return ids[::-1]
 
 
 def _get_num_wins(cotd_data):

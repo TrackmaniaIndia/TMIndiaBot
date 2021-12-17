@@ -1,6 +1,7 @@
 import discord
 import requests
 
+import matplotlib.pyplot as plt
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
 import util.common_functions as common_functions
@@ -92,4 +93,70 @@ def get_cotd_data(user_id: str, username: str) -> discord.Embed:
         text="This function does not include COTDs where the player has left after the 15mins qualifying"
     )
 
+    log.debug(f"Getting Rank Data for Plots")
+    ranks_overall = cotd_util._get_list_of_ranks_overall(cotd_data)
+    ranks_primary = cotd_util._get_list_of_ranks_primary(cotd_data)
+
+    log.debug(f"Getting IDs of Ranks for Plots")
+    dates_overall = cotd_util._get_list_of_dates_overall(cotd_data)
+    dates_primary = cotd_util._get_list_of_dates_primary(cotd_data)
+
+    log.debug(f"Getting IDs for Plot")
+    ids_overall = cotd_util._get_list_of_ids_overall(cotd_data)
+    ids_primary = cotd_util._get_list_of_ids_primary(cotd_data)
+
+    log.debug(f"Creating Plots for Ranks Overall and Ranks Primary")
+
+    # Use Threading Here
+    log.debug(f"Creating Plot for Overall")
+    __create_rank_plot(
+        ranks=ranks_overall,
+        dates=dates_overall,
+        ids=ids_overall,
+        plot_name="Overall Ranks (With Reruns)",
+        image_name="overallranks",
+    )
+
+    log.debug(f"Creating Plot for Primary")
+    __create_rank_plot(
+        ranks=ranks_primary,
+        dates=dates_primary,
+        ids=ids_primary,
+        plot_name="Primary Rank Graph (No Reruns)",
+        image_name="primaryranks",
+    )
+
     return cotd_data_page_one
+
+
+def __create_rank_plot(
+    ranks: list, dates: list, ids: list, plot_name: str, image_name: str
+):
+    log.debug(f"Clearing Plot")
+    plt.clf()
+
+    if len(dates) >= 40:
+        log.debug(
+            f"{plot_name} -> Player has played more than 40 COTDs, using ids instead of dates"
+        )
+        plt.plot(ids, ranks, label=plot_name)
+        plt.xlabel("COTD IDs")
+    else:
+        log.debug(f"{plot_name} -> Player has less than 40 COTDs, using dates instead of ids")
+        plt.plot(dates, ranks, label=plot_name)
+        plt.xlabel("COTD Dates")
+
+    log.debug(f"{plot_name} -> Setting Plot Rotation to 90Deg")
+    plt.xticks(rotation=90)
+
+    log.debug(f"{plot_name} -> Setting YLabel to Ranks")
+    plt.ylabel("Ranks")
+
+    log.debug(f"{plot_name} -> Setting title to {plot_name}")
+    plt.title("Rank Graph for {}".format(plot_name))
+
+    log.debug(f"{plot_name} -> Setting Tight Layout")
+    plt.tight_layout()
+
+    log.debug(f"{plot_name} -> Saving the Plot to Computer")
+    plt.savefig(image_name)
