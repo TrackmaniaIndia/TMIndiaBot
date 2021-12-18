@@ -19,6 +19,17 @@ def get_cotd_data(user_id: str, username: str) -> discord.Embed:
         "http://localhost:3000/tm2020/player/{}/cotd".format(user_id)
     ).json()
 
+    try:
+        if cotd_data["error"]:
+            log.critical("{} has never played a cotd".format(username))
+            return (
+                ezembed.create_embed(
+                    title="This Player has never played a COTD", color=0xFF0000
+                ),
+                None,
+            )
+    except:
+        pass
     log.debug(f"Parsing Best Rank Overall Data")
     best_rank_overall = cotd_util._get_best_rank_overall(cotd_data)
     best_div_overall = cotd_util._get_best_div_overall(cotd_data)

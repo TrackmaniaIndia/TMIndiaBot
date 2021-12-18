@@ -262,7 +262,10 @@ class Trackmania(commands.Cog):
         # Temp Code Starts
         cotd_data, image = get_cotd_data(player_id, username)
 
-        await ctx.respond(file=image, embed=cotd_data)
+        if image != None:
+            await ctx.respond(file=image, embed=cotd_data)
+        else:
+            await ctx.respond(embed=cotd_data)
 
 
 def setup(client: discord.Bot):

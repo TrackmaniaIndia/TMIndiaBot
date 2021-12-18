@@ -151,8 +151,12 @@ def _get_average_rank_primary(cotd_data):
     for cotd in cotds:
         rank_total += int(cotd["rank"])
 
-    log.debug(f"Primary Rank Overall -> {round(rank_total / cotds_played, 2)}")
-    return round(rank_total / cotds_played, 2)
+    try:
+        log.debug(f"Average Rank Primary -> {round(rank_total / cotds_played, 2)}")
+        return round(rank_total / cotds_played, 2)
+    except:
+        log.debug(f"Average Rank Primary -> 0")
+        return 0
 
 
 def _get_average_div_overall(cotd_data):
@@ -180,8 +184,12 @@ def _get_average_div_primary(cotd_data):
     for cotd in cotds:
         div_total += int(cotd["div"])
 
-    log.debug(f"Primary Rank Overall -> {round(div_total / cotds_played, 2)}")
-    return round(div_total / cotds_played, 2)
+    try:
+        log.debug(f"Average Div Primary -> {round(div_total / cotds_played, 2)}")
+        return round(div_total / cotds_played, 2)
+    except:
+        log.debug(f"Average Div Primary -> 0")
+        return 0
 
 
 def _get_average_div_rank_overall(cotd_data):
@@ -208,8 +216,12 @@ def _get_average_div_rank_primary(cotd_data):
     for cotd in cotds:
         div_rank_total += int(cotd["divrank"])
 
-    log.debug(f"Primary Rank Overall -> {round(div_rank_total / cotds_played, 2)}")
-    return round(div_rank_total / cotds_played, 2)
+    try:
+        log.debug(f"Average Div Rank Primary -> {round(div_rank_total / cotds_played, 2)}")
+        return round(div_rank_total / cotds_played, 2)
+    except:
+        log.debug(f"Average Div Rank Primary -> 0")
+        return 0
 
 
 def _get_list_of_ranks_overall(cotd_data):
