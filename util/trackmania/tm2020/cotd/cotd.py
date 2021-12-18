@@ -67,30 +67,30 @@ def get_cotd_data(user_id: str, username: str) -> discord.Embed:
     log.debug(f"Created Strings for Embed")
 
     log.debug(f"Creating Embed Page 1")
-    cotd_data_page_one = ezembed.create_embed(
+    cotd_data_embed = ezembed.create_embed(
         title="COTD Data for {} - Page 1".format(username),
         color=common_functions.get_random_color(),
     )
     log.debug(f"Created Embed Page 1")
     log.debug(f"Adding Fields")
 
-    cotd_data_page_one.add_field(
+    cotd_data_embed.add_field(
         name="Best Data Overall", value=best_data_overall, inline=False
     )
-    cotd_data_page_one.add_field(
+    cotd_data_embed.add_field(
         name="Best Data Primary (No Reruns)", value=best_data_primary, inline=False
     )
-    cotd_data_page_one.add_field(
+    cotd_data_embed.add_field(
         name="Average Data Overall", value=average_data_overall, inline=False
     )
-    cotd_data_page_one.add_field(
+    cotd_data_embed.add_field(
         name="Average Data Primary (No Reruns)",
         value=average_data_primary,
         inline=False,
     )
     log.debug(f"Added Fields")
 
-    cotd_data_page_one.set_footer(
+    cotd_data_embed.set_footer(
         text="This function does not include COTDs where the player has left after the 15mins qualifying"
     )
 
@@ -127,7 +127,19 @@ def get_cotd_data(user_id: str, username: str) -> discord.Embed:
         image_name="primaryranks",
     )
 
-    return cotd_data_page_one
+    log.debug(f"Concatenating Both Graphs into One")
+    __concat_graphs()
+
+    log.debug(f"Opening Concatenated Graphs")
+    image = discord.File(
+        "data/temp/concatenated_graphs.png", filename="concatenated_graphs.png"
+    )
+    log.debug(f"Opened Concatenated Graphs")
+
+    log.debug(f"Adding the image to the Embed")
+    cotd_data_embed.set_image(url="attachment://concatenated_graphs.png")
+
+    return cotd_data_embed, image
 
 
 def __create_rank_plot(
@@ -163,3 +175,20 @@ def __create_rank_plot(
 
     log.debug(f"{plot_name} -> Saving the Plot to Computer")
     plt.savefig("./data/temp/" + image_name)
+
+
+def __concat_graphs():
+    log.info("Concatenating Graphs")
+    log.debug(f"Opening First Graph")
+    first_graph = cv2.imread("./data/temp/overallranks.png")
+    log.debug(f"First Graph Opened")
+    log.debug(f"Opening Second Graph")
+    second_graph = cv2.imread("./data/temp/primaryranks.png")
+    log.debug(f"Second Graph Opened")
+
+    log.debug(f"Concatenating Graphs")
+    concatenated_graphs = cv2.hconcat([first_graph, second_graph])
+    log.debug(f"Concatenated Graphs")
+
+    log.info("Saving Graphs")
+    cv2.imwrite("./data/temp/concatenated_graphs.png", concatenated_graphs)
