@@ -233,10 +233,10 @@ class Trackmania(commands.Cog):
 
     @commands.slash_command(
         guild_ids=GUILD_IDS,
-        name="cotddata",
+        name="cotddetails",
         description="COTD Data of a Given Username",
     )
-    async def _totd(
+    async def _cotd(
         self,
         ctx: commands.Context,
         username: Option(str, "The TM2020 Username of the Player", required=True),
