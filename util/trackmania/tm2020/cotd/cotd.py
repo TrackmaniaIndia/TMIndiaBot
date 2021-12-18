@@ -142,7 +142,9 @@ def __create_rank_plot(
         plt.plot(ids, ranks, label=plot_name)
         plt.xlabel("COTD IDs")
     else:
-        log.debug(f"{plot_name} -> Player has less than 40 COTDs, using dates instead of ids")
+        log.debug(
+            f"{plot_name} -> Player has less than 40 COTDs, using dates instead of ids"
+        )
         plt.plot(dates, ranks, label=plot_name)
         plt.xlabel("COTD Dates")
 
@@ -159,4 +161,4 @@ def __create_rank_plot(
     plt.tight_layout()
 
     log.debug(f"{plot_name} -> Saving the Plot to Computer")
-    plt.savefig(image_name)
+    plt.savefig("./data/temp/" + image_name)

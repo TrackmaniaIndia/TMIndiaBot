@@ -62,9 +62,9 @@ class Listeners(commands.Cog, description="Generic Functions"):
         log.debug(f"Started Change Status Loop")
 
         # Deleting the TOTD Image if it exists
-        if os.path.exists("./data/totd.png"):
+        if os.path.exists("./data/temp/totd.png"):
             log.critical("TOTD Image Exists, Deleting")
-            os.remove("./data/totd.png")
+            os.remove("./data/temp/totd.png")
 
         # Starting the TOTD Image Deleter Loop
         log.debug(f"Starting TOTD Image Loop")
@@ -133,41 +133,41 @@ class Listeners(commands.Cog, description="Generic Functions"):
             f"The bot has left/been kicked/been banned from {guild.name} with id {guild.id}"
         )
 
-    @commands.Cog.listener()
-    async def on_application_command_error(
-        self, ctx, error: discord.ApplicationCommandError
-    ):
-        # Checking if Error Message Should Be Printed Out
-        with open("./data/config.json", "r") as file:
-            config = json.load(file)
+    # @commands.Cog.listener()
+    # async def on_application_command_error(
+    #     self, ctx, error: discord.ApplicationCommandError
+    # ):
+    #     # Checking if Error Message Should Be Printed Out
+    #     with open("./data/config.json", "r") as file:
+    #         config = json.load(file)
 
-            if config["print_errors"] == False:
-                log.error(f"Error Message isn't going to be printed in discord server")
-                log.error(error)
-                return
+    #         if config["print_errors"] == False:
+    #             log.error(f"Error Message isn't going to be printed in discord server")
+    #             log.error(error)
+    #             return
 
-            log.debug(f"Error will be printed to discord server")
+    #         log.debug(f"Error will be printed to discord server")
 
-        # Getting the Error Channel
-        channel = self.client.get_channel(int(config["errorChannel"]))
+    #     # Getting the Error Channel
+    #     channel = self.client.get_channel(int(config["errorChannel"]))
 
-        embed = ezembed.create_embed(
-            title="An Error Has Occured",
-            description=error,
-            color=0xFF0000,
-        )
+    #     embed = ezembed.create_embed(
+    #         title="An Error Has Occured",
+    #         description=error,
+    #         color=0xFF0000,
+    #     )
 
-        embed.add_field(name="Author Username", value=ctx.author.name, inline=False)
-        embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
-        embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
-        embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
-        # embed.add_field(name="Message Content", value=ctx.message.content, inline=False)
+    #     embed.add_field(name="Author Username", value=ctx.author.name, inline=False)
+    #     embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
+    #     embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
+    #     embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
+    #     # embed.add_field(name="Message Content", value=ctx.message.content, inline=False)
 
-        # Print the Traceback to the Screen
-        log.error(error.with_traceback(error.__traceback__))
-        # log.error(error)
+    #     # Print the Traceback to the Screen
+    #     log.error(error.with_traceback(error.__traceback__))
+    #     # log.error(error)
 
-        await channel.send(embed=embed)
+    #     await channel.send(embed=embed)
 
 
 def setup(client: discord.Bot):

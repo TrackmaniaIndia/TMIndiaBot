@@ -157,7 +157,7 @@ Makefile
 
 logs/
 
-data/totd.png
+totd.png
 
 data/leaderboard
 

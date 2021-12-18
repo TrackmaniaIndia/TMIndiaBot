@@ -70,7 +70,7 @@ def _get_current_totd():
 
     log.debug(f"Getting Map Thumbnail")
     log.debug(f"Checking if Map Thumbnail has Already been Downloaded")
-    if not os.path.exists(f"./data/totd.png"):
+    if not os.path.exists(f"./data/temp/totd.png"):
         log.critical(f"Map Thumbnail has not been Downloaded")
         _download_thumbnail(thumbnail_url)
 
@@ -95,7 +95,7 @@ def _get_current_totd():
         color=discord.Colour.nitro_pink(),
     )
     log.debug(f"Creating Image File")
-    image = discord.File("data/totd.png", filename="totd.png")
+    image = discord.File("data/temp/totd.png", filename="totd.png")
     embed.set_image(url="attachment://totd.png")
     embed.add_field(name="Map Name", value=map_name, inline=False)
     embed.add_field(name="Author", value=author_name, inline=True)
@@ -117,7 +117,7 @@ def _get_current_totd():
 def _download_thumbnail(url: str) -> None:
     req = requests.get(url, stream=True)
 
-    if os.path.exists(f"./data/totd.png"):
+    if os.path.exists(f"./data/temp/totd.png"):
         log.debug(f"Thumbnail already downloaded")
         return
 
@@ -127,7 +127,7 @@ def _download_thumbnail(url: str) -> None:
         req.raw.decode_content = True
 
         log.debug(f"Saving Image to File")
-        with open("./data/totd.png", "wb") as file:
+        with open("./data/temp/totd.png", "wb") as file:
             shutil.copyfileobj(req.raw, file)
     else:
         log.critical(f"Image could not be retrieved")
