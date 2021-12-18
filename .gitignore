@@ -147,20 +147,25 @@ format.bat
 # Now we don't have to keep changing it
 /util/constants.py
 
+# Obviously don't want a 1gb file in my repo
 /node_modules
 
+# The API
 /util/node/
 
-/Routes/
-
+# The Makefile
 Makefile
 
+# Discord and Command Logs
 logs/
 
+# TOTD Image
 totd.png
 
+# Repository
 data/leaderboard
 
+# Graph Images
 overallranks.png
-
 primaryranks.png
+concatenated_graphs.png
