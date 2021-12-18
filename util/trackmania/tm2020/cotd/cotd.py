@@ -1,5 +1,6 @@
 import discord
 import requests
+import cv2
 
 import matplotlib.pyplot as plt
 import util.logging.convert_logging as convert_logging
