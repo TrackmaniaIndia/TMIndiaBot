@@ -33,7 +33,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.slash_command(
         guild_ids=GUILD_IDS,
         name="ping",
-        description="Get ping of bot to discord api in milliseconds",
+        description="Get ping of bot in ms",
     )
     async def _ping(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -165,6 +165,25 @@ class Generic(commands.Cog, description="Generic Functions"):
             content='Hey!\nPlease click the link below to open an "issue" where you can send your suggestion. Please put a short title and expand in the description and NottCurious will get back to you shortly',
             view=ViewAdder([suggestion_button]),
             ephemeral=True,
+        )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="commandlist",
+        description="Gives you a link to the command list",
+    )
+    async def _command_list(self, ctx: commands.Context):
+        log_command(ctx, ctx.command.name)
+        log.debug(f"Creating Button for Command List")
+        command_list_button = discord.ui.Button(
+            label="Command List (Github)",
+            style=discord.ButtonStyle.url,
+            url="https://gist.github.com/NottCurious/f9b618bbfd8aa133d0de2655b94bfca6",
+        )
+
+        await ctx.respond(
+            content="Here is the command list for this bot!",
+            view=ViewAdder([command_list_button]),
         )
 
     @commands.slash_command(
