@@ -40,7 +40,7 @@ class Generic(commands.Cog, description="Generic Functions"):
         await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS, name="version", description="Displays bot version"
+        guild_ids=GUILD_IDS, name="version", description="Gives the current bot version"
     )
     async def _version(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -49,7 +49,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.slash_command(
         guild_ids=GUILD_IDS,
         name="sourcecode",
-        description="Sends you a link to the github source code",
+        description="Sends you a link to the bot source code on github",
     )
     async def _source(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
@@ -68,7 +68,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     @commands.slash_command(
         guild_ids=GUILD_IDS,
         name="invitelink",
-        description="Gives you an invite link for the trackmania india server",
+        description="Gives you an invite link for the Trackmania India discord server",
     )
     async def _server_invite(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
