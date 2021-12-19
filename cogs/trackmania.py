@@ -4,6 +4,7 @@ import threading
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
+import util.trackmania.tm2020.leaderboards.campaign as tm2020_campaign
 
 from discord.commands.commands import Option
 from discord.commands import permissions
@@ -11,7 +12,6 @@ from discord.ext import commands
 from util.constants import GUILD_IDS
 from util.trackmania.tm2020.player import *
 from util.discord.confirmation import Confirmer
-from util.trackmania.tm2020.leaderboards.campaign import *
 from util.discord.paginator import Paginator
 from util.logging.command_log import log_command
 from util.trackmania.tm2020.totd import _get_current_totd
@@ -138,14 +138,14 @@ class Trackmania(commands.Cog):
 
         # Getting the Fall Campaign IDs
         log.debug(f"Getting Fall Campaign IDs")
-        fall_ids = _get_all_campaign_ids(year=year, season=season)
+        fall_ids = tm2020_campaign._get_all_campaign_ids(year=year, season=season)
         log.debug(f"Got the Fall IDs")
 
         # Starting Long Update Process using a seperate Thread to allow bot to complete other processes
         log.debug(f"Updating Leaderboards")
         log.debug(f"Creating Thread to Update Leaderboards")
         leaderboard_update = threading.Thread(
-            target=update_leaderboards_campaign,
+            target=tm2020_campaign.update_leaderboards_campaign,
             args=(fall_ids, year, season, firstfive),
         )
         # update_leaderboards_campaign(fall_ids)
@@ -194,7 +194,7 @@ class Trackmania(commands.Cog):
         else:
             log.debug(f"Valid Username, Username -> {username}")
             log.debug(f"Executing Function, Pray")
-            await ctx.respond(embed=get_player_good_maps(username))
+            await ctx.respond(embed=tm2020_campaign.get_player_good_maps(username))
             log.info(f"Player stalking was a success")
 
     @commands.slash_command(
