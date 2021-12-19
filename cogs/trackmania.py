@@ -1,8 +1,10 @@
 import discord
 import time
+import threading
 
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
+import util.trackmania.tm2020.leaderboards.campaign as tm2020_campaign
 
 from discord.commands.commands import Option
 from discord.commands import permissions
@@ -10,13 +12,11 @@ from discord.ext import commands
 from util.constants import GUILD_IDS
 from util.trackmania.tm2020.player import *
 from util.discord.confirmation import Confirmer
-from util.trackmania.tm2020.leaderboards.campaign import (
-    _get_all_campaign_ids,
-    update_leaderboards_campaign,
-    get_player_good_maps,
-)
 from util.discord.paginator import Paginator
 from util.logging.command_log import log_command
+from util.trackmania.tm2020.totd import _get_current_totd
+from util.discord.view_adder import ViewAdder
+from util.trackmania.tm2020.cotd.cotd import get_cotd_data
 
 log = convert_logging.get_logging()
 
@@ -47,7 +47,7 @@ class Trackmania(commands.Cog):
                 embed=ezembed.create_embed(
                     title="Invalid Username Given",
                     description=f"Username Given: {username}",
-                    color=discord.Colour.random(),
+                    color=common_functions.get_random_color(),
                 ),
                 delete_after=5,
                 ephemeral=False,
@@ -77,7 +77,9 @@ class Trackmania(commands.Cog):
             # Running the Paginator
             await player_detail_paginator.run(ctx)
 
-    @commands.slash_command(guild_ids=GUILD_IDS, name="update_campaign_leaderboards")
+    @commands.slash_command(
+        guild_ids=[876042400005505066], name="updatecampaignleaderboards"
+    )
     @permissions.is_owner()
     async def _update_campaign_leaderboards(
         self,
@@ -111,7 +113,7 @@ class Trackmania(commands.Cog):
             embed=ezembed.create_embed(
                 title="Are you sure you want to continue?",
                 description=f"This can take over 10minutes, the bot will be unusable in this period\nYear: {year}\nSeason: {season}",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             ),
             view=confirm_continue,
         )
@@ -136,14 +138,14 @@ class Trackmania(commands.Cog):
 
         # Getting the Fall Campaign IDs
         log.debug(f"Getting Fall Campaign IDs")
-        fall_ids = _get_all_campaign_ids(year=year, season=season)
+        fall_ids = tm2020_campaign._get_all_campaign_ids(year=year, season=season)
         log.debug(f"Got the Fall IDs")
 
         # Starting Long Update Process using a seperate Thread to allow bot to complete other processes
         log.debug(f"Updating Leaderboards")
         log.debug(f"Creating Thread to Update Leaderboards")
         leaderboard_update = threading.Thread(
-            target=update_leaderboards_campaign,
+            target=tm2020_campaign.update_leaderboards_campaign,
             args=(fall_ids, year, season, firstfive),
         )
         # update_leaderboards_campaign(fall_ids)
@@ -192,8 +194,78 @@ class Trackmania(commands.Cog):
         else:
             log.debug(f"Valid Username, Username -> {username}")
             log.debug(f"Executing Function, Pray")
-            await ctx.respond(embed=get_player_good_maps(username))
+            await ctx.respond(embed=tm2020_campaign.get_player_good_maps(username))
             log.info(f"Player stalking was a success")
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="totd",
+        description="Latest TOTD",
+    )
+    async def _totd(
+        self,
+        ctx: commands.Context,
+    ):
+        log.debug(f"Deferring Response")
+        await ctx.defer()
+        log.debug(f"Deferred Response, Awaiting Information")
+
+        log.debug(f"Getting Information")
+        totd_embed, image, download_link, tmio_link, tmx_link = _get_current_totd()
+        log.debug(f"Got Information, Sending Response")
+
+        log.debug(f"Creating Buttons to Add")
+        download_map = discord.ui.Button(
+            label="Download Map!", style=discord.ButtonStyle.primary, url=download_link
+        )
+        tmio_button = discord.ui.Button(
+            label="TMIO", style=discord.ButtonStyle.url, url=tmio_link
+        )
+        tmx_button = discord.ui.Button(
+            label="TMX", style=discord.ButtonStyle.url, url=tmx_link
+        )
+
+        await ctx.respond(
+            file=image,
+            embed=totd_embed,
+            view=ViewAdder([download_map, tmio_button, tmx_button]),
+        )
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="cotddetails",
+        description="COTD Data of a Given Username",
+    )
+    async def _cotd(
+        self,
+        ctx: commands.Context,
+        username: Option(str, "The TM2020 Username of the Player", required=True),
+    ):
+        log.debug(f"Deferring Response")
+        await ctx.defer()
+        log.debug(f"Deferred Response")
+
+        log.debug(f"Checking Player")
+        player_id = get_player_id(username)
+
+        if player_id == None:
+            log.critical(f"Username given is invalid")
+            await ctx.respond(
+                embed=ezembed.create_embed(
+                    title="Invalid Username",
+                    description=f"Username: {username}",
+                    color=0xFF0000,
+                )
+            )
+            return
+
+        # Temp Code Starts
+        cotd_data, image = get_cotd_data(player_id, username)
+
+        if image != None:
+            await ctx.respond(file=image, embed=cotd_data)
+        else:
+            await ctx.respond(embed=cotd_data)
 
 
 def setup(client: discord.Bot):

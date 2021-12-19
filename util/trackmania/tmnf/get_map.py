@@ -1,8 +1,10 @@
 import discord
 import requests
+import os
+
 import util.common_functions as common_functions
 import util.logging.convert_logging as convert_logging
-import os
+
 
 log = convert_logging.get_logging()
 
@@ -14,7 +16,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
         return discord.Embed(
             title=":warning: TMX ID must be a number",
             description="Example: 2233",
-            color=discord.Colour.red(),
+            color=0xFF0000,
         )
 
     BASE_API_URL = os.getenv("BASE_API_URL")
@@ -31,7 +33,7 @@ def get_tmnf_map(tmx_id: str) -> discord.Embed:
             return discord.Embed(
                 title=":warning: Invalid TMX Id",
                 description="The TMX ID provided is invalid",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
     log.debug(f"API Response Checked")
 

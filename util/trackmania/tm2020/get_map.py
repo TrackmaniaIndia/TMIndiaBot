@@ -1,10 +1,9 @@
 import discord
 import requests
-import util.common_functions as common_functions
-import util.logging.convert_logging as convert_logging
-import util.discord.easy_embed as ezembed
 import os
-import re
+
+import util.logging.convert_logging as convert_logging
+
 
 log = convert_logging.get_logging()
 
@@ -24,7 +23,7 @@ def get_tm2020_map(tmx_id: str) -> discord.Embed:
             return discord.Embed(
                 title=":warning: Invalid TMIO UId",
                 description="The TMIO UID provided is invalid",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
     log.debug(f"API Response Checked")
 

@@ -220,7 +220,7 @@ class Paginator(discord.ui.View):
         log.debug(f"Removed all buttons")
 
         page = ezembed.create_embed(
-            title=f"**This Interaction has Ended**", color=discord.Colour.red()
+            title=f"**This Interaction has Ended**", color=0xFF0000
         )
         await interaction.response.edit_message(
             embed=page,

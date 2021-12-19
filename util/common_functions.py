@@ -1,5 +1,6 @@
+import random
+
 import util.logging.convert_logging as convert_logging
-import discord
 
 log = convert_logging.get_logging()
 
@@ -31,3 +32,13 @@ def get_ordinal_number(num: int) -> str:
 
 def add_commas(num: int) -> str:
     return "{:,}".format(num)
+
+
+def format_seconds(ms: int) -> str:
+    sec, ms = divmod(ms, 1000)
+    min, sec = divmod(sec, 60)
+    return "%01d:%02d.%03d" % (min, sec, ms)
+
+
+def get_random_color():
+    return random.randint(0, 0xFFFFFF)

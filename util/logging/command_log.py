@@ -1,6 +1,6 @@
-import discord
 import json
 import datetime
+import discord
 
 import util.logging.convert_logging as convert_logging
 
@@ -31,3 +31,15 @@ def log_command(ctx: commands.Context, command: str):
         f.write(
             f"{datetime.datetime.now()}|{ctx.author.id}|{ctx.author.name}|{ctx.author.discriminator}|{ctx.guild.id}|{ctx.guild.name}|{ctx.channel.id}|{ctx.channel.name}|{command}\n"
         )
+
+
+def log_join_guild(guild: discord.Guild):
+    log.info(f"{datetime.datetime.now()}|Joined {guild.name}|ID: {guild.id}")
+    with open("logs/commands.log", "a") as f:
+        f.write(f"{datetime.datetime.now()}|Joined {guild.name}|ID: {guild.id}")
+
+
+def log_leave_guild(guild: discord.Guild):
+    log.info(f"{datetime.datetime.now()}|Left {guild.name}|ID: {guild.id}")
+    with open("logs/commands.log", "a") as f:
+        f.write(f"{datetime.datetime.now()}|Left {guild.name}|ID: {guild.id}")

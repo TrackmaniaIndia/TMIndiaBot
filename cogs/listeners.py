@@ -12,6 +12,8 @@ from util.cog_helpers.generic_helper import *
 from util.cog_helpers.listener_helper import _get_statuses
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
+from util.tasks.totd_image_delete import totd_deleter
+from util.logging.command_log import log_join_guild, log_leave_guild
 
 # Creating logger
 log = convert_logging.get_logging()
@@ -60,6 +62,16 @@ class Listeners(commands.Cog, description="Generic Functions"):
         change_status.start(self.client, self.statuses)
         log.debug(f"Started Change Status Loop")
 
+        # Deleting the TOTD Image if it exists
+        if os.path.exists("./data/temp/totd.png"):
+            log.critical("TOTD Image Exists, Deleting")
+            os.remove("./data/temp/totd.png")
+
+        # Starting the TOTD Image Deleter Loop
+        log.debug(f"Starting TOTD Image Loop")
+        totd_deleter.start(self.client)
+        log.debug(f"Started TOTD Image")
+
         # Getting the Announcement Channels for where the bot should send that it is ready
         # Channels taken from ./data/json/announcement_channels.json
         log.debug(f"Getting Announcement Channels")
@@ -98,7 +110,8 @@ class Listeners(commands.Cog, description="Generic Functions"):
         log.info(f"Bot now Usable")
 
     @commands.Cog.listener()
-    async def on_guild_join(self, guild):
+    async def on_guild_join(self, guild: discord.Guild):
+        log_join_guild(guild)
         # Bot prints a message when it joins a Guild
         log.critical(f"The Bot has Joined {guild.name} with id {guild.id}")
 
@@ -116,47 +129,47 @@ class Listeners(commands.Cog, description="Generic Functions"):
             json.dump({"quotes": []}, file, indent=4)
 
     @commands.Cog.listener()
-    async def on_guild_remove(self, guild):
+    async def on_guild_remove(self, guild: discord.Guild):
         # Bot prints a message when it leaves or is removed from a Guild
         log.critical(
             f"The bot has left/been kicked/been banned from {guild.name} with id {guild.id}"
         )
 
-    @commands.Cog.listener()
-    async def on_application_command_error(
-        self, ctx, error: discord.ApplicationCommandError
-    ):
-        # Checking if Error Message Should Be Printed Out
-        with open("./data/config.json", "r") as file:
-            config = json.load(file)
+    # @commands.Cog.listener()
+    # async def on_application_command_error(
+    #     self, ctx, error: discord.ApplicationCommandError
+    # ):
+    #     # Checking if Error Message Should Be Printed Out
+    #     with open("./data/config.json", "r") as file:
+    #         config = json.load(file)
 
-            if config["print_errors"] == False:
-                log.error(f"Error Message isn't going to be printed in discord server")
-                log.error(error)
-                return
+    #         if config["print_errors"] == False:
+    #             log.error(f"Error Message isn't going to be printed in discord server")
+    #             log.error(error)
+    #             return
 
-            log.debug(f"Error will be printed to discord server")
+    #         log.debug(f"Error will be printed to discord server")
 
-        # Getting the Error Channel
-        channel = self.client.get_channel(int(config["errorChannel"]))
+    #     # Getting the Error Channel
+    #     channel = self.client.get_channel(int(config["errorChannel"]))
 
-        embed = ezembed.create_embed(
-            title="An Error Has Occured",
-            description=error,
-            color=discord.Colour.red(),
-        )
+    #     embed = ezembed.create_embed(
+    #         title="An Error Has Occured",
+    #         description=error,
+    #         color=0xFF0000,
+    #     )
 
-        embed.add_field(name="Author Username", value=ctx.author.name, inline=False)
-        embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
-        embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
-        embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
-        # embed.add_field(name="Message Content", value=ctx.message.content, inline=False)
+    #     embed.add_field(name="Author Username", value=ctx.author.name, inline=False)
+    #     embed.add_field(name="Author ID", value=ctx.author.id, inline=False)
+    #     embed.add_field(name="Guild Name", value=ctx.guild.name, inline=False)
+    #     embed.add_field(name="Guild ID", value=ctx.guild.id, inline=False)
+    #     # embed.add_field(name="Message Content", value=ctx.message.content, inline=False)
 
-        # Print the Traceback to the Screen
-        log.error(error.with_traceback(error.__traceback__))
-        # log.error(error)
+    #     # Print the Traceback to the Screen
+    #     log.error(error.with_traceback(error.__traceback__))
+    #     # log.error(error)
 
-        await channel.send(embed=embed)
+    #     await channel.send(embed=embed)
 
 
 def setup(client: discord.Bot):

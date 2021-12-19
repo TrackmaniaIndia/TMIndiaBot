@@ -1,9 +1,10 @@
 import discord
 import requests
-import util.common_functions as common_functions
+import os
+
 import util.logging.convert_logging as convert_logging
 import util.discord.easy_embed as ezembed
-import os
+import util.common_functions as common_functions
 
 log = convert_logging.get_logging()
 
@@ -14,7 +15,7 @@ def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
         return ezembed.create_embed(
             title=":warning: TMX ID Must be a number",
             description="Example: 8496396",
-            color=discord.Colour.red(),
+            color=0xFF0000,
         )
 
     BASE_API_URL = os.getenv("BASE_API_URL")
@@ -28,7 +29,7 @@ def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
             return ezembed.create_embed(
                 title=":warning: Invalid TMX ID",
                 description="The TMX ID provided is invalid",
-                color=discord.Colour.red(),
+                color=0xFF0000,
             )
 
     log.debug(f"Requesting Map Name")
@@ -63,7 +64,7 @@ def get_leaderboards(tmx_id: str, authUrl) -> list[discord.Embed]:
             ezembed.create_embed(
                 title="Map: {} - Page {}".format(map_name, i + 1),
                 description=times[i],
-                color=discord.Colour.random(),
+                color=common_functions.get_random_color(),
             )
         )
 
