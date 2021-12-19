@@ -40,7 +40,7 @@ log.info(f"Got Bot Token")
 #   webhooks
 log.info(f"Creating Client")
 client = commands.Bot(
-    prefix="!!", intents=discord.Intents.default(), debug_guild="876042400005505066"
+    prefix="!!", intents=discord.Intents.default(), debug_guild=876042400005505066
 )
 log.info(f"Created Client")
 
