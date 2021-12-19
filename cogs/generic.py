@@ -31,7 +31,6 @@ class Generic(commands.Cog, description="Generic Functions"):
         log.info(f"cogs.generic has finished initializing")
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="ping",
         description="Get ping of bot in ms",
     )
@@ -39,15 +38,12 @@ class Generic(commands.Cog, description="Generic Functions"):
         log_command(ctx, ctx.command.name)
         await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
 
-    @commands.slash_command(
-        guild_ids=GUILD_IDS, name="version", description="Gives the current bot version"
-    )
+    @commands.slash_command(name="version", description="Gives the current bot version")
     async def _version(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         await ctx.respond(f"Bot Version is {self.version}", ephemeral=True)
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="sourcecode",
         description="Sends you a link to the bot source code on github",
     )
@@ -98,7 +94,6 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="nextproject",
         description="A Github link to the next project, has planned, in progress and finished features.",
     )
@@ -117,7 +112,6 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="invitebot",
         description="Give an invite link for the bot",
     )
@@ -133,7 +127,6 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="testingserver",
         description="Get an invite to the TMI Bot Testing Server",
     )
@@ -146,7 +139,6 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="suggest",
         description="Got a Suggestion? Send it here!",
     )
@@ -168,7 +160,6 @@ class Generic(commands.Cog, description="Generic Functions"):
         )
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="commandlist",
         description="Gives you a link to the command list",
     )
@@ -201,57 +192,6 @@ class Generic(commands.Cog, description="Generic Functions"):
                 self.client.unload_extension(f"cogs.{filename[:-3]}")
                 self.client.load_extension(f"cogs.{filename[:-3]}")
         await ctx.respond("Reloaded all cogs")
-
-    @commands.slash_command(guild_ids=[876042400005505066], name="paginatortest")
-    @permissions.is_owner()
-    async def _test(self, ctx: commands.Context):
-        log_command(ctx, ctx.command.name)
-        # Creating 4 Embeds for Paginator
-        embed1 = ezembed.create_embed(
-            title="Testing 1", description="Testing 1's Description"
-        )
-        embed2 = ezembed.create_embed(
-            title="Testing 2", description="Testing 2's Description"
-        )
-        embed3 = ezembed.create_embed(
-            title="Testing 3",
-            description="adjskbabdjasdjlaskbdawkudbuiwabdiwbdkbsgfrduidgbufdjklasljkdwbaldlalkds",
-        )
-        embed4 = ezembed.create_embed(
-            title="Testing 4", description="Testing 4's Description"
-        )
-        embed_list = [embed1, embed2, embed3, embed4]
-
-        # Deferring the Bot, Allows a lot more time for the bot to do its stuff
-        log.debug(f"Deferring the Bot Response")
-        await ctx.defer()
-        log.debug(f"Deferred the Bot Response")
-
-        # Creating and running the Paginator
-        my_pag = Paginator(pages=embed_list, sending=True)
-        await my_pag.run(ctx)
-
-    @commands.slash_command(guild_ids=[876042400005505066], name="confirmertest")
-    @permissions.is_owner()
-    async def _test_confirm(self, ctx: commands.Context):
-        log_command(ctx, ctx.command.name)
-        # Creating the Confirmer
-        my_confirmer = Confirmer()
-        my_confirmer.change_cancel_button("Cancel Me Senpai")
-        my_confirmer.change_confirm_button("Confirm Me pls")
-        await ctx.respond("Do You Want to Continue", view=my_confirmer)
-
-        # Awaiting a response
-        await my_confirmer.wait()
-
-        await ctx.send(my_confirmer.value)
-
-    @commands.slash_command(guild_ids=[876042400005505066], name="causeerror")
-    @permissions.is_owner()
-    async def _cause_error(self, ctx: commands.Context):
-        log_command(ctx, ctx.command.name)
-        # await ctx.send("This is a test error")
-        raise discord.ApplicationCommandError("This is a test error")
 
 
 def setup(client: discord.Bot):

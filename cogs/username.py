@@ -23,7 +23,6 @@ class Username(commands.Cog):
         log.info(f"cogs.username has finished initializing")
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="storeusername",
         description="Stores Username in JSON File for Future Use and Speed",
     )
@@ -107,7 +106,6 @@ class Username(commands.Cog):
         log.debug(f"Sent Success Message")
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="checkusername",
         description="Checks if your username is stored in the file",
     )
@@ -130,7 +128,6 @@ class Username(commands.Cog):
             await ctx.respond(embed=embed)
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="removeusername",
         description="Removes your username from the file if present",
     )
@@ -201,7 +198,6 @@ class Username(commands.Cog):
         await ctx.respond(embed=embed)
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="getid",
         description="Gets the Trackmania ID of A Player",
     )

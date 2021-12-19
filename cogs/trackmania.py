@@ -27,7 +27,6 @@ class Trackmania(commands.Cog):
         log.info(f"cogs.trackmania has finished initializing")
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="playerdetails",
         description="player details for a specific player",
     )
@@ -198,7 +197,6 @@ class Trackmania(commands.Cog):
             log.info(f"Player stalking was a success")
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="totd",
         description="Latest TOTD",
     )
@@ -232,7 +230,6 @@ class Trackmania(commands.Cog):
         )
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="cotddetails",
         description="COTD Data of a Given Username",
     )

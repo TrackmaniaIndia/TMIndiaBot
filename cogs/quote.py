@@ -20,7 +20,6 @@ class Quote(commands.Cog, description="Quoting Functions"):
         log.info(f"cogs.quote has finished initializing")
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="quote",
         description="Saves a Quote, Only Usable by Mods",
         default_permission=False,
@@ -68,9 +67,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         )
         await ctx.respond(embed=embed)
 
-    @commands.slash_command(
-        guild_ids=GUILD_IDS, name="randquote", description="Shows a random saved quote"
-    )
+    @commands.slash_command(name="randquote", description="Shows a random saved quote")
     async def _rand_quote(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         # Gets a random quote from the file
@@ -89,7 +86,6 @@ class Quote(commands.Cog, description="Quoting Functions"):
         await ctx.respond(embed=embed)
 
     @commands.slash_command(
-        guild_ids=GUILD_IDS,
         name="lastquote",
         description="Displays the last quote saved",
     )
