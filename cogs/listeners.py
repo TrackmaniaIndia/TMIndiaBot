@@ -13,6 +13,7 @@ from util.cog_helpers.listener_helper import _get_statuses
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
 from util.tasks.totd_image_delete import totd_deleter
+from util.logging.command_log import log_join_guild, log_leave_guild
 
 # Creating logger
 log = convert_logging.get_logging()
@@ -109,7 +110,8 @@ class Listeners(commands.Cog, description="Generic Functions"):
         log.info(f"Bot now Usable")
 
     @commands.Cog.listener()
-    async def on_guild_join(self, guild):
+    async def on_guild_join(self, guild: discord.Guild):
+        log_join_guild(guild)
         # Bot prints a message when it joins a Guild
         log.critical(f"The Bot has Joined {guild.name} with id {guild.id}")
 
@@ -127,7 +129,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
             json.dump({"quotes": []}, file, indent=4)
 
     @commands.Cog.listener()
-    async def on_guild_remove(self, guild):
+    async def on_guild_remove(self, guild: discord.Guild):
         # Bot prints a message when it leaves or is removed from a Guild
         log.critical(
             f"The bot has left/been kicked/been banned from {guild.name} with id {guild.id}"
