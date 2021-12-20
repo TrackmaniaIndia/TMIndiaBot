@@ -219,15 +219,23 @@ class Trackmania(commands.Cog):
         tmio_button = discord.ui.Button(
             label="TMIO", style=discord.ButtonStyle.url, url=tmio_link
         )
-        tmx_button = discord.ui.Button(
-            label="TMX", style=discord.ButtonStyle.url, url=tmx_link
-        )
 
-        await ctx.respond(
-            file=image,
-            embed=totd_embed,
-            view=ViewAdder([download_map, tmio_button, tmx_button]),
-        )
+        if tmx_link != None:
+            tmx_button = discord.ui.Button(
+                label="TMX", style=discord.ButtonStyle.url, url=tmx_link
+            )
+
+            await ctx.respond(
+                file=image,
+                embed=totd_embed,
+                view=ViewAdder([download_map, tmio_button, tmx_button]),
+            )
+        else:
+            await ctx.respond(
+                file=image,
+                embed=totd_embed,
+                view=ViewAdder([download_map, tmio_button]),
+            )
 
     @commands.slash_command(
         name="cotddetails",

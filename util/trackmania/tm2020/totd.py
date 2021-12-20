@@ -27,10 +27,7 @@ def _get_current_totd():
     silver_time = common_functions.format_seconds(int(totd_data["silverScore"]))
     bronze_time = common_functions.format_seconds(int(totd_data["bronzeScore"]))
 
-    mania_tags = totd_data["exchange"]["Tags"]
-
     nadeo_uploaded = totd_data["timestamp"]
-    mx_uploaded = totd_data["exchange"]["UploadedAt"]
 
     wr_holder = totd_data["leaderboard"]["tops"][0]["player"]["name"]
     wr_time = common_functions.format_seconds(
@@ -38,7 +35,6 @@ def _get_current_totd():
     )
 
     tmio_id = totd_data["mapUid"]
-    tmx_code = totd_data["exchange"]["TrackID"]
 
     log.debug(f"Parsed TOTD Data")
 
@@ -48,15 +44,9 @@ def _get_current_totd():
 
     log.debug(f"Parsing Time Uploaded to Timestamps")
     nadeo_dt = datetime.strptime(nadeo_uploaded[:-6], "%Y-%m-%dT%H:%M:%S")
-    try:
-        mx_dt = datetime.strptime(mx_uploaded[:-3], "%Y-%m-%dT%H:%M:%S")
-    except ValueError:
-        mx_dt = datetime.strptime(mx_uploaded[:-4], "%Y-%m-%dT%H:%M:%S")
     nadeo_dt_utc = nadeo_dt.replace(tzinfo=timezone.utc)
-    mx_dt_utc = mx_dt.replace(tzinfo=timezone.utc)
 
     nadeo_timestamp = int(nadeo_dt_utc.timestamp())
-    mx_timestamp = int(mx_dt_utc.timestamp())
     log.debug(f"Parsed Time Uploaded to Timestamps")
 
     log.debug(f"Creating Strings from Parsed Data")
@@ -64,7 +54,6 @@ def _get_current_totd():
     world_record = f"Holder: {wr_holder}\nTime: {wr_time}"
 
     nadeo_uploaded = "<t:{}:R>".format(nadeo_timestamp)
-    mx_uploaded = "<t:{}:R>".format(mx_timestamp)
 
     log.debug(f"Created Strings from Parsed Data")
 
@@ -73,6 +62,23 @@ def _get_current_totd():
     if not os.path.exists(f"./data/temp/totd.png"):
         log.critical(f"Map Thumbnail has not been Downloaded")
         _download_thumbnail(thumbnail_url)
+
+    log.debug(f"Parsing TM Exchange Data")
+    try:
+        mania_tags = totd_data["exchange"]["Tags"]
+        mx_uploaded = totd_data["exchange"]["UploadedAt"]
+        tmx_code = totd_data["exchange"]["TrackID"]
+
+        try:
+            mx_dt = datetime.strptime(mx_uploaded[:-3], "%Y-%m-%dT%H:%M:%S")
+        except ValueError:
+            mx_dt = datetime.strptime(mx_uploaded[:-4], "%Y-%m-%dT%H:%M:%S")
+
+        mx_dt_utc = mx_dt.replace(tzinfo=timezone.utc)
+        mx_timestamp = int(mx_dt_utc.timestamp())
+        mx_uploaded = "<t:{}:R>".format(mx_timestamp)
+    except:
+        log.critical("Map has never been uploaded to trackmania.exchange")
 
     log.debug(f"Creating Embed")
     current_day = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime("%d")
@@ -99,17 +105,26 @@ def _get_current_totd():
     embed.set_image(url="attachment://totd.png")
     embed.add_field(name="Map Name", value=map_name, inline=False)
     embed.add_field(name="Author", value=author_name, inline=True)
-    embed.add_field(name="Tags", value=_parse_mx_tags(mania_tags), inline=False)
+
+    try:
+        embed.add_field(name="Tags", value=_parse_mx_tags(mania_tags), inline=False)
+    except:
+        pass
     embed.add_field(
         name="Time Uploaded to Nadeo Server", value=nadeo_uploaded, inline=False
     )
-    embed.add_field(name="Time Uploaded to TMX", value=mx_uploaded, inline=True)
+    try:
+        embed.add_field(name="Time Uploaded to TMX", value=mx_uploaded, inline=True)
+    except:
+        pass
     embed.add_field(name="Medal Times", value=medal_times, inline=False)
     embed.add_field(name="World Record", value=world_record, inline=False)
 
     tmio_link = "https://trackmania.io/#/leaderboard/{}".format(tmio_id)
-    tmx_link = "https://trackmania.exchange/maps/{}/".format(tmx_code)
-
+    try:
+        tmx_link = "https://trackmania.exchange/maps/{}/".format(tmx_code)
+    except:
+        tmx_link = None
     log.debug(f"Created Embed")
     return embed, image, download_link, tmio_link, tmx_link
 
