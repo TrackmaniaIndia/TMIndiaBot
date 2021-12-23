@@ -169,3 +169,6 @@ data/leaderboard
 overallranks.png
 primaryranks.png
 concatenated_graphs.png
+
+# Pylint Script for CopyPaste
+pylint.txt
