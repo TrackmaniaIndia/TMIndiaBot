@@ -1,16 +1,13 @@
-import discord
+"""Generic Functions of the Bot"""
+
 import os
-
-from discord.ui import view
-
-import util.common_functions as common_functions
-import util.logging.convert_logging as convert_logging
-import util.discord.easy_embed as ezembed
-
+import discord
 from discord.ext import commands
 from discord.commands import permissions
-from util.discord.paginator import Paginator
-from util.discord.confirmation import Confirmer
+
+from util.logging import convert_logging
+import util.discord.easy_embed as ezembed
+
 from util.discord.view_adder import ViewAdder
 from util.logging.command_log import log_command
 from util.cog_helpers.generic_helper import get_version
@@ -25,98 +22,105 @@ class Generic(commands.Cog, description="Generic Functions"):
     version = ""
 
     # Init Generic Cog
-    def __init__(self, client):
+    def __init__(self, client: commands.Bot):
         self.client = client
         self.version = get_version()
 
-        log.info(f"cogs.generic has finished initializing")
+        log.info("cogs.generic has finished initializing")
 
+    @classmethod
     @commands.slash_command(
         name="ping",
         description="Get ping of bot in ms",
     )
-    async def _ping(self, ctx: commands.Context):
+    async def _ping(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        await ctx.respond("Pong! {}ms".format(round(self.client.latency * 1000, 2)))
+        await ctx.respond(f"Pong! {round(cls.client.latency * 1000, 2)}ms")
 
+    @classmethod
     @commands.slash_command(name="version", description="Gives the current bot version")
-    async def _version(self, ctx: commands.Context):
+    async def _version(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        await ctx.respond(f"Bot Version is {self.version}", ephemeral=True)
+        await ctx.respond(f"Bot Version is {cls.version}", ephemeral=True)
 
+    @classmethod
     @commands.slash_command(
         name="sourcecode",
         description="Sends you a link to the bot source code on github",
     )
-    async def _source(self, ctx: commands.Context):
+    async def _source(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        log.debug(f"Creating Button for Source Code")
+        log.debug("Creating Button for Source Code")
         source_code_button = discord.ui.Button(
             label="Source Code (Github)",
             style=discord.ButtonStyle.url,
             url="https://github.com/NottCurious/TMIndiaBot",
         )
-        log.debug(f"Created Button for Source Code, Sending a message")
+        log.debug("Created Button for Source Code, Sending a message")
         await ctx.respond(
             content="Hey!\nHere is the source code. The bot is open source and licensed under the MIT License. It is currently developed and maintained by NottCurious and Artifex.\nAll Issues/Feature Requests/Bug Reports and Pull Requests are welcome and appreciated!",
             view=ViewAdder([source_code_button]),
         )
 
+    @classmethod
     @commands.slash_command(
         guild_ids=GUILD_IDS,
         name="invitelink",
         description="Gives you an invite link for the Trackmania India discord server",
     )
-    async def _server_invite(self, ctx: commands.Context):
+    async def _server_invite(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         await ctx.respond(
             "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
             ephemeral=True,
         )
 
+    @classmethod
     @commands.slash_command(
         guild_ids=GUILD_IDS,
         name="halloffame",
         description="Gives you the link for the TMI Hall of Fame",
     )
-    async def _link_to_hall_of_fame(self, ctx: commands.Context):
+    async def _link_to_hall_of_fame(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        log.debug(f"Creating Button for Hall of Fame")
+        log.debug("Creating Button for Hall of Fame")
         hall_of_fame_button = discord.ui.Button(
             label="TMI Hall of Fame (Google Sheets)",
             style=discord.ButtonStyle.url,
             url="https://tinyurl.com/TMIndiaLB",
         )
-        log.debug(f"Created Button for Hall of Fame, Sending a message")
+        log.debug("Created Button for Hall of Fame, Sending a message")
         await ctx.respond(
-            f"Please click the button to be redirected to the hall of fame",
+            "Please click the button to be redirected to the hall of fame",
             view=ViewAdder([hall_of_fame_button]),
             ephemeral=True,
         )
 
+    @classmethod
     @commands.slash_command(
         name="nextproject",
         description="A Github link to the next project, has planned, in progress and finished features.",
     )
-    async def _next_project(self, ctx: commands.Context):
+    async def _next_project(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        log.debug(f"Creating Button for Next Project")
+        log.debug("Creating Button for Next Project")
         next_project_button = discord.ui.Button(
             label="Next Project - v1.6.1 (Github)",
             style=discord.ButtonStyle.url,
             url="https://github.com/NottCurious/TMIndiaBot/projects/6",
         )
         await ctx.respond(
-            f"Here is the link to the next project",
+            "Here is the link to the next project",
             view=ViewAdder([next_project_button]),
             ephemeral=True,
         )
 
+    @classmethod
     @commands.slash_command(
         name="invitebot",
         description="Give an invite link for the bot",
     )
-    async def _invite_bot(self, ctx: commands.Context):
+    async def _invite_bot(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
 
         await ctx.respond(
@@ -127,32 +131,34 @@ class Generic(commands.Cog, description="Generic Functions"):
             ephemeral=True,
         )
 
+    @classmethod
     @commands.slash_command(
         name="testingserver",
         description="Get an invite to the TMI Bot Testing Server",
     )
-    async def _testing_server_invite(self, ctx: commands.Context):
+    async def _testing_server_invite(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
 
         await ctx.respond(
-            f"Here is an invite to the testing server\nhttps://discord.gg/REEUs3CPND",
+            "Here is an invite to the testing server\nhttps://discord.gg/REEUs3CPND",
             ephemeral=True,
         )
 
+    @classmethod
     @commands.slash_command(
         name="suggest",
         description="Got a Suggestion? Send it here!",
     )
-    async def _suggest(self, ctx: commands.Context):
+    async def _suggest(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
 
-        log.debug(f"Creating button for new github issue")
+        log.debug("Creating button for new github issue")
         suggestion_button = discord.ui.Button(
             label="Suggest Here! (Github)",
             style=discord.ButtonStyle.url,
             url="https://github.com/NottCurious/TMIndiaBot/issues/new",
         )
-        log.debug(f"Created Button")
+        log.debug("Created Button")
 
         await ctx.respond(
             content='Hey!\nPlease click the link below to open an "issue" where you can send your suggestion. Please put a short title and expand in the description and NottCurious will get back to you shortly',
@@ -160,13 +166,14 @@ class Generic(commands.Cog, description="Generic Functions"):
             ephemeral=True,
         )
 
+    @classmethod
     @commands.slash_command(
         name="commandlist",
         description="Gives you a link to the command list",
     )
-    async def _command_list(self, ctx: commands.Context):
+    async def _command_list(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        log.debug(f"Creating Button for Command List")
+        log.debug("Creating Button for Command List")
         command_list_button = discord.ui.Button(
             label="Command List (Github)",
             style=discord.ButtonStyle.url,
@@ -178,6 +185,7 @@ class Generic(commands.Cog, description="Generic Functions"):
             view=ViewAdder([command_list_button]),
         )
 
+    @classmethod
     @commands.slash_command(
         guild_ids=[GUILD_IDS[0]],
         name="reloadall",
@@ -185,13 +193,13 @@ class Generic(commands.Cog, description="Generic Functions"):
         hidden=True,
     )
     @permissions.is_owner()
-    async def _reload_all(self, ctx: commands.Context):
+    async def _reload_all(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         for filename in os.listdir("./cogs"):
             if filename.endswith(".py"):
                 log.info(f"Reloading cogs.{filename[:-3]}")
-                self.client.unload_extension(f"cogs.{filename[:-3]}")
-                self.client.load_extension(f"cogs.{filename[:-3]}")
+                cls.client.unload_extension(f"cogs.{filename[:-3]}")
+                cls.client.load_extension(f"cogs.{filename[:-3]}")
         await ctx.respond("Reloaded all cogs")
 
 
