@@ -1,8 +1,8 @@
 import json
 
-import util.logging.convert_logging as convert_logging
+from util.logging import convert_logging
 
-from util.cog_helpers.generic_helper import get_version
+from util.cog_helpers import generic_helper
 
 # Creating a logger
 log = convert_logging.get_logging()
@@ -15,13 +15,13 @@ def _get_statuses():
     statuses = []
 
     # Getting Bot Version
-    log.debug(f"Getting Bot Version")
-    VERSION = get_version()
+    log.debug("Getting Bot Version")
+    version = generic_helper.get_version()
 
     # Adding the Basic Version Status
-    log.debug(f"Appending Statuses")
-    statuses.append(f"Version: {VERSION}! Online and Ready")
-    with open("data/json/statuses.json") as file:
+    log.debug("Appending Statuses")
+    statuses.append(f"Version: {version}! Online and Ready")
+    with open("data/json/statuses.json", encoding="UTF-8") as file:
         statuses = json.load(file)["statuses"]
 
     log.debug(f"Returning Statuses -> {statuses}")
