@@ -1,11 +1,8 @@
-import discord
+import datetime
 import json
-
-import util.logging.convert_logging as convert_logging
-
+import discord
 from discord.ext import tasks
-from datetime import datetime
-from dotenv import load_dotenv
+from util.logging import convert_logging
 
 
 log = convert_logging.get_logging()
@@ -19,16 +16,18 @@ async def change_status(client: discord.Bot, statuses: dict):
         client (discord.Bot): The bot client
         statuses (dict): The statuses to parse
     """
-    log.debug(f"10 Minutes have Passed, Changing Status at - {datetime.utcnow()}")
-    log.debug(f"Checking for First Time")
+    log.debug(
+        f"10 Minutes have Passed, Changing Status at - {datetime.datetime.utcnow()}"
+    )
+    log.debug("Checking for First Time")
 
-    log.debug(f"Changing Status")
+    log.debug("Changing Status")
 
     await client.change_presence(activity=discord.Game(next(statuses)))
 
-    log.debug(f"Changed Status")
+    log.debug("Changed Status")
 
 
 def get_statuses():
-    with open("./data/json/statuses.json", "r") as file:
+    with open("./data/json/statuses.json", "r", encoding="UTF-8") as file:
         return json.load(file)

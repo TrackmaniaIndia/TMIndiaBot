@@ -1,6 +1,5 @@
 import random
-
-import util.logging.convert_logging as convert_logging
+from util.logging import convert_logging
 
 log = convert_logging.get_logging()
 

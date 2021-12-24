@@ -1,13 +1,10 @@
 import discord
-
-import util.logging.convert_logging as convert_logging
-import util.quoting.quote as quote_functions
-import util.discord.easy_embed as ezembed
-
-from util.constants import GUILD_IDS
 from discord.commands import permissions
 from discord.ext import commands
 from discord.commands.commands import Option
+from util.logging import convert_logging
+import util.quoting.quote as quote_functions
+import util.discord.easy_embed as ezembed
 from util.logging.command_log import log_command
 
 # Creating a logger
@@ -17,7 +14,7 @@ log = convert_logging.get_logging()
 class Quote(commands.Cog, description="Quoting Functions"):
     def __init__(self, client):
         self.client = client
-        log.info(f"cogs.quote has finished initializing")
+        log.info("cogs.quote has finished initializing")
 
     @commands.slash_command(
         name="quote",
@@ -54,9 +51,9 @@ class Quote(commands.Cog, description="Quoting Functions"):
         # Saves a quote given in the parameters
         log.debug(f"Saving {message} by {author} from guild {ctx.guild.id}")
 
-        log.debug(f"Deferring Response")
+        log.debug("Deferring Response")
         await ctx.defer()
-        log.debug(f"Deferred Response")
+        log.debug("Deferred Response")
 
         # Saving the Quote
         quote_functions.save(message, author, message_link, ctx.guild.id)
@@ -74,15 +71,15 @@ class Quote(commands.Cog, description="Quoting Functions"):
         # Random Number Generator is not very consistent, need to work on an alternative
 
         # Getting the random quote in a dictionary
-        log.debug(f"Getting Random Quote")
+        log.debug("Getting Random Quote")
         rand_quote = quote_functions.get_random_quote_dict(ctx.guild.id)
 
         # Converting the Quote Dictionary into a discord.Embed
-        log.debug(f"Getting Quote Embed")
+        log.debug("Getting Quote Embed")
         embed = quote_functions.quote_dict_to_embed(rand_quote)
 
         # Sending the Quote
-        log.debug(f"Sending Random Quote")
+        log.debug("Sending Random Quote")
         await ctx.respond(embed=embed)
 
     @commands.slash_command(
@@ -92,7 +89,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
     async def _last_quote(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         # This command sends the last quote that was saved
-        log.debug(f"Getting the Last Quote Saved")
+        log.debug("Getting the Last Quote Saved")
         quote_embed = quote_functions.get_last_quote(ctx.guild.id)
 
         await ctx.respond(embed=quote_embed)

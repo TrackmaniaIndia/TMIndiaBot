@@ -1,16 +1,15 @@
-import discord
-import time
 import threading
-
-import util.logging.convert_logging as convert_logging
-import util.discord.easy_embed as ezembed
-import util.trackmania.tm2020.leaderboards.campaign as tm2020_campaign
-
+import time
+import discord
 from discord.commands.commands import Option
 from discord.commands import permissions
 from discord.ext import commands
+from util.logging import convert_logging
+import util.discord.easy_embed as ezembed
+import util.trackmania.tm2020.leaderboards.campaign as tm2020_campaign
 from util.constants import GUILD_IDS
-from util.trackmania.tm2020.player import *
+from util import common_functions
+import util.trackmania.tm2020.player as tm2020_player
 from util.discord.confirmation import Confirmer
 from util.discord.paginator import Paginator
 from util.logging.command_log import log_command
@@ -24,7 +23,7 @@ log = convert_logging.get_logging()
 class Trackmania(commands.Cog):
     def __init__(self, client):
         self.client = client
-        log.info(f"cogs.trackmania has finished initializing")
+        log.info("cogs.trackmania has finished initializing")
 
     @commands.slash_command(
         name="playerdetails",
@@ -37,9 +36,9 @@ class Trackmania(commands.Cog):
     ):
         log_command(ctx, ctx.command.name)
         # Gets the Player Details of a given username
-        player_id = get_player_id(username)
+        player_id = tm2020_player.get_player_id(username)
 
-        if player_id == None:
+        if player_id is None:
             # An Invalid Username was given, sending a message to the user
             log.critical("Invalid Player Username Received, Sending Error Message")
             await ctx.respond(
@@ -52,29 +51,29 @@ class Trackmania(commands.Cog):
                 ephemeral=False,
             )
             return
-        else:
+
             # Deferring the Response to Allow the Bot some time to do its stuff
-            log.debug(f"Deferring Command")
-            await ctx.defer()
-            log.debug(f"Command Deferred, Thinking")
-            log.debug(f"Valid Username Given")
+        log.debug("Deferring Command")
+        await ctx.defer()
+        log.debug("Command Deferred, Thinking")
+        log.debug("Valid Username Given")
 
-            # A Valid Username was given, so were getting the Player Details
-            log.debug(f"Getting Player Data")
-            data_pages = get_player_data(player_id)
+        # A Valid Username was given, so were getting the Player Details
+        log.debug("Getting Player Data")
+        data_pages = tm2020_player.get_player_data(player_id)
 
-            if len(data_pages) == 1:
-                log.debug(f"Only 1 Page was Returned")
-                await ctx.respond(embed=data_pages[0])
-                return
+        if len(data_pages) == 1:
+            log.debug("Only 1 Page was Returned")
+            await ctx.respond(embed=data_pages[0])
+            return
 
-            # Creating a Paginator with Player Data
-            log.debug(f"Received Data Pages")
-            log.debug(f"Creating Paginator")
-            player_detail_paginator = Paginator(pages=data_pages, sending=False)
+        # Creating a Paginator with Player Data
+        log.debug("Received Data Pages")
+        log.debug("Creating Paginator")
+        player_detail_paginator = Paginator(pages=data_pages, sending=False)
 
-            # Running the Paginator
-            await player_detail_paginator.run(ctx)
+        # Running the Paginator
+        await player_detail_paginator.run(ctx)
 
     @commands.slash_command(
         guild_ids=[876042400005505066], name="updatecampaignleaderboards"
@@ -95,19 +94,19 @@ class Trackmania(commands.Cog):
         # Updates the Campaign Leaderboards by sending pings to the API and saving the Top 500 players, this takes quite a while to finish
         # Try to only update the leaderboards using your testing bot so the main bot does not get slowed down by the constant
         # saving to files.
-        firstfive = True if firstfive == "False" else False
+        firstfive = bool(firstfive)
         print(firstfive)
-        log.debug(f"Creating Confirmation Prompt")
+        log.debug("Creating Confirmation Prompt")
         confirm_continue = Confirmer()
 
         # Changing the button labels
-        log.debug(f"Changing Button Labels")
+        log.debug("Changing Button Labels")
         confirm_continue.change_confirm_button(label="Yes, Continue")
         confirm_continue.change_cancel_button(label="No, Stop")
-        log.debug(f"Changed Button Labels")
+        log.debug("Changed Button Labels")
 
         # Sending the Confirmation Prompt
-        log.debug(f"Sending Prompt")
+        log.debug("Sending Prompt")
         message = await ctx.respond(
             embed=ezembed.create_embed(
                 title="Are you sure you want to continue?",
@@ -116,43 +115,43 @@ class Trackmania(commands.Cog):
             ),
             view=confirm_continue,
         )
-        log.debug(f"Sent Confirmation Prompt")
+        log.debug("Sent Confirmation Prompt")
 
         # Awaiting for the Response to the Confirmation Prompt
-        log.debug(f"Awaiting a response")
+        log.debug("Awaiting a response")
         await confirm_continue.wait()
-        log.debug(f"Response Received")
+        log.debug("Response Received")
 
         # Deleting the Confirmation Prompt
-        log.debug(f"Deleting Original Message")
+        log.debug("Deleting Original Message")
         await message.delete_original_message()
-        log.debug(f"Deleted Message")
+        log.debug("Deleted Message")
 
         # Checking if the Confirmation Prompt was Cancelled
-        if confirm_continue.value == False:
+        if confirm_continue.value is False:
             log.debug(f"{ctx.author.name} does not want to continue")
             return
 
         log.debug(f"{ctx.author.name} wants his username added")
 
         # Getting the Fall Campaign IDs
-        log.debug(f"Getting Fall Campaign IDs")
-        fall_ids = tm2020_campaign._get_all_campaign_ids(year=year, season=season)
-        log.debug(f"Got the Fall IDs")
+        log.debug("Getting Fall Campaign IDs")
+        fall_ids = tm2020_campaign.get_all_campaign_ids(year=year, season=season)
+        log.debug("Got the Fall IDs")
 
         # Starting Long Update Process using a seperate Thread to allow bot to complete other processes
-        log.debug(f"Updating Leaderboards")
-        log.debug(f"Creating Thread to Update Leaderboards")
+        log.debug("Updating Leaderboards")
+        log.debug("Creating Thread to Update Leaderboards")
         leaderboard_update = threading.Thread(
             target=tm2020_campaign.update_leaderboards_campaign,
             args=(fall_ids, year, season, firstfive),
         )
         # update_leaderboards_campaign(fall_ids)
-        log.debug(f"Thread Created to Update Leaderboards")
-        log.debug(f"Starting Thread")
+        log.debug("Thread Created to Update Leaderboards")
+        log.debug("Starting Thread")
         leaderboard_update.run()
-        log.debug(f"Thread Finished")
-        log.debug(f"Leaderboards Updated, Sleeping for 30s to save API")
+        log.debug("Thread Finished")
+        log.debug("Leaderboards Updated, Sleeping for 30s to save API")
 
         # Sleeping 30s to allow our API requests to restore
         time.sleep(30)
@@ -180,21 +179,21 @@ class Trackmania(commands.Cog):
     ):
         log_command(ctx, ctx.command.name)
         # Check if Username is in the Top 500 for any maps in the TSCC Map Pool
-        log.debug(f"Deferring Response")
+        log.debug("Deferring Response")
         await ctx.defer()
-        log.debug(f"Deferred Response")
+        log.debug("Deferred Response")
         log.debug(f"Checking Player Username -> {username}")
-        player_id = get_player_id(username)
+        player_id = tm2020_player.get_player_id(username)
         log.debug(f"Got Player Id -> {player_id}")
 
-        if player_id == None:
+        if player_id is None:
             log.error(f"Invalid Username Given, Username -> {username}")
             await ctx.respond("Invalid Username")
         else:
             log.debug(f"Valid Username, Username -> {username}")
-            log.debug(f"Executing Function, Pray")
+            log.debug("Executing Function, Pray")
             await ctx.respond(embed=tm2020_campaign.get_player_good_maps(username))
-            log.info(f"Player stalking was a success")
+            log.info("Player stalking was a success")
 
     @commands.slash_command(
         name="totd",
@@ -204,15 +203,15 @@ class Trackmania(commands.Cog):
         self,
         ctx: commands.Context,
     ):
-        log.debug(f"Deferring Response")
+        log.debug("Deferring Response")
         await ctx.defer()
-        log.debug(f"Deferred Response, Awaiting Information")
+        log.debug("Deferred Response, Awaiting Information")
 
-        log.debug(f"Getting Information")
+        log.debug("Getting Information")
         totd_embed, image, download_link, tmio_link, tmx_link = _get_current_totd()
-        log.debug(f"Got Information, Sending Response")
+        log.debug("Got Information, Sending Response")
 
-        log.debug(f"Creating Buttons to Add")
+        log.debug("Creating Buttons to Add")
         download_map = discord.ui.Button(
             label="Download Map!", style=discord.ButtonStyle.primary, url=download_link
         )
@@ -220,7 +219,7 @@ class Trackmania(commands.Cog):
             label="TMIO", style=discord.ButtonStyle.url, url=tmio_link
         )
 
-        if tmx_link != None:
+        if tmx_link is not None:
             tmx_button = discord.ui.Button(
                 label="TMX", style=discord.ButtonStyle.url, url=tmx_link
             )
@@ -246,15 +245,15 @@ class Trackmania(commands.Cog):
         ctx: commands.Context,
         username: Option(str, "The TM2020 Username of the Player", required=True),
     ):
-        log.debug(f"Deferring Response")
+        log.debug("Deferring Response")
         await ctx.defer()
-        log.debug(f"Deferred Response")
+        log.debug("Deferred Response")
 
-        log.debug(f"Checking Player")
-        player_id = get_player_id(username)
+        log.debug("Checking Player")
+        player_id = tm2020_player.get_player_id(username)
 
-        if player_id == None:
-            log.critical(f"Username given is invalid")
+        if player_id is None:
+            log.critical("Username given is invalid")
             await ctx.respond(
                 embed=ezembed.create_embed(
                     title="Invalid Username",
@@ -267,7 +266,7 @@ class Trackmania(commands.Cog):
         # Temp Code Starts
         cotd_data, image = get_cotd_data(player_id, username)
 
-        if image != None:
+        if image is not None:
             await ctx.respond(file=image, embed=cotd_data)
         else:
             await ctx.respond(embed=cotd_data)

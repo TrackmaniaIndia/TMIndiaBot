@@ -1,5 +1,5 @@
+from util.logging import convert_logging
 import discord
-import util.logging.convert_logging as convert_logging
 
 log = convert_logging.get_logging()
 
@@ -12,7 +12,7 @@ class Confirmer(discord.ui.View):
         self.value = None
         self.confirm_button = self.children[0]
         self.cancel_button = self.children[1]
-        log.debug(f"Created Confirmation Menu")
+        log.debug("Created Confirmation Menu")
 
     @discord.ui.button(label="Confirm", style=discord.ButtonStyle.green)
     async def confirm(

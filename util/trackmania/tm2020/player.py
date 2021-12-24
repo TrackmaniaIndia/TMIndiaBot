@@ -1,16 +1,15 @@
+import json
 import discord
 import requests
-import json
 import flag
-
-import util.common_functions as common_functions
-import util.logging.convert_logging as convert_logging
+from util import common_functions
+from util.logging import convert_logging
 import util.discord.easy_embed as ezembed
 import country_converter as coco
 
 
 log = convert_logging.get_logging()
-BASE_API_URL = "http://localhost:3000"
+base_api_url = "http://localhost:3000"
 
 
 def get_player_id(username: str) -> str:
@@ -24,11 +23,11 @@ def get_player_id(username: str) -> str:
         str: the player id
     """
     # Checking the File
-    log.debug(f"Checking if Player ID is already stored in the file")
+    log.debug("Checking if Player ID is already stored in the file")
     username_list = _get_username_list()
 
     if username.lower() in username_list:
-        log.debug(f"Username is stored in the file")
+        log.debug("Username is stored in the file")
         id_list = _get_username_id_list()
 
         log.debug(
@@ -37,8 +36,8 @@ def get_player_id(username: str) -> str:
         return id_list[username_list.index(username.lower())]
 
     log.debug(f"Getting Player ID for {username}")
-    player_data = requests.get(f"{BASE_API_URL}/tm2020/player/{username}/id").json()
-    log.debug(f"Received Player Data, Parsing")
+    player_data = requests.get(f"{base_api_url}/tm2020/player/{username}/id").json()
+    log.debug("Received Player Data, Parsing")
     try:
         player_id = player_data["id"]
     except:
@@ -53,14 +52,14 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
         f"http://localhost:3000/tm2020/player/{player_id}/"
     ).json()
 
-    log.debug(f"Getting Player Flag Unicode")
+    log.debug("Getting Player Flag Unicode")
     player_flag_unicode = get_player_country_flag(raw_player_data)
     log.debug(f"Got Player Unicode Flag -> {player_flag_unicode}")
 
     display_name = raw_player_data["displayname"]
     log.debug(f"Display Name is {display_name}")
 
-    log.debug(f"Checking if Player has Played the Game")
+    log.debug("Checking if Player has Played the Game")
     if raw_player_data["trophies"]["points"] == 0:
         return [
             ezembed.create_embed(
@@ -69,7 +68,7 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
             )
         ]
 
-    log.debug(f"Creating Two Embeds")
+    log.debug("Creating Two Embeds")
     page_one = ezembed.create_embed(
         title=f"Player Data for {player_flag_unicode} {display_name} - Page 1",
         color=common_functions.get_random_color(),
@@ -88,29 +87,29 @@ def get_player_data(player_id: str) -> list[discord.Embed]:
     matchmaking_data = get_matchmaking_data(raw_player_data)
     trophy_count = get_trophy_count(raw_player_data)
 
-    log.debug(f"Adding Zones and Zone Ranks to Page One")
+    log.debug("Adding Zones and Zone Ranks to Page One")
     page_one.add_field(name="Zones", value=zones, inline=False)
     page_one.add_field(name="Zone Ranks", value=zone_ranks, inline=False)
 
-    log.debug(f"Adding Matchmaking and Royal Data to Page Two")
+    log.debug("Adding Matchmaking and Royal Data to Page Two")
     page_two.add_field(name="Matchmaking", value=matchmaking_data, inline=False)
     page_two.add_field(name="Royal", value=royal_data, inline=False)
 
-    log.debug(f"Adding Trophy Count to Page Three")
+    log.debug("Adding Trophy Count to Page Three")
     page_three.add_field(name="Trophy Count", value=trophy_count, inline=False)
 
     try:
-        log.debug(f"Adding Meta Data to Page One")
+        log.debug("Adding Meta Data to Page One")
         page_one = add_meta_details(page_one, raw_player_data)
-        log.debug(f"Added Meta Data to Page One")
+        log.debug("Added Meta Data to Page One")
     except:
-        log.debug(f"Player does not Have Meta Data")
+        log.debug("Player does not Have Meta Data")
     log.debug(f"Returning {page_one}, {page_two} and {page_three}")
     return [page_one, page_two, page_three]
 
 
 def get_player_country_flag(raw_data):
-    log.debug(f"Getting Zones")
+    log.debug("Getting Zones")
     try:
         zone_one = raw_data["trophies"]["zone"]["name"]
         zone_two = raw_data["trophies"]["zone"]["parent"]["name"]
@@ -126,23 +125,23 @@ def get_player_country_flag(raw_data):
         )
 
         if zone_two in continents:
-            log.debug(f"Only First Zone is Required")
+            log.debug("Only First Zone is Required")
             iso_letters = coco.convert(names=[zone_one], to="ISO2")
             unicode_letters = flag.flag(iso_letters)
         else:
-            log.debug(f"Need to Use Zone Two")
+            log.debug("Need to Use Zone Two")
             iso_letters = coco.convert(names=[zone_two], to="ISO2")
             unicode_letters = flag.flag(iso_letters)
 
         log.debug(f"Unicode Letters are {unicode_letters}")
         return unicode_letters
     except:
-        log.error(f"Player has never played Trackmania 2020")
+        log.error("Player has never played Trackmania 2020")
         return ":flag_white:"
 
 
 def get_royal_data(raw_data) -> str:
-    log.debug(f"Getting Royal Data")
+    log.debug("Getting Royal Data")
     try:
         royal_data = raw_data["matchmaking"][1]
 
@@ -164,7 +163,7 @@ def get_royal_data(raw_data) -> str:
                 * 100
             )
         else:
-            log.debug(f"Player Has Not Won a Single Match")
+            log.debug("Player Has Not Won a Single Match")
             progression_to_next_div = "0"
         log.debug(
             f"Creating Royal Data String With {rank}, {wins}, {current_division}, {progression_to_next_div}"
@@ -178,7 +177,7 @@ def get_royal_data(raw_data) -> str:
 
 
 def get_matchmaking_data(raw_data) -> str:
-    log.debug(f"Getting Matchmaking Data")
+    log.debug("Getting Matchmaking Data")
 
     try:
         matchmaking_data = raw_data["matchmaking"][0]
@@ -187,7 +186,7 @@ def get_matchmaking_data(raw_data) -> str:
         score = matchmaking_data["info"]["score"]
         current_division_int = matchmaking_data["info"]["division"]["position"]
 
-        with open("./data/json/mm_ranks.json", "r") as file:
+        with open("./data/json/mm_ranks.json", "r", encoding="UTF-8") as file:
             mm_ranks = json.load(file)
             current_division = mm_ranks["rank_data"][str(current_division_int - 1)]
 
@@ -217,10 +216,10 @@ def get_matchmaking_data(raw_data) -> str:
 
 
 def get_trophy_count(raw_data) -> str:
-    log.debug(f"Getting Trophy Counts")
+    log.debug("Getting Trophy Counts")
     trophy_count_string = "```\n"
 
-    log.debug(f"Adding Total Points")
+    log.debug("Adding Total Points")
     total_points = common_functions.add_commas(raw_data["trophies"]["points"])
     trophy_count_string += f"Total Points: {total_points}\n\n"
     log.debug(f"Added Total Points -> {total_points}")
@@ -238,7 +237,7 @@ def get_zones_and_positions(raw_data) -> str:
     """
     ranks_string = ""
 
-    log.debug(f"Getting Zones")
+    log.debug("Getting Zones")
     zone_one = raw_data["trophies"]["zone"]["name"]
     zone_two = raw_data["trophies"]["zone"]["parent"]["name"]
     zone_three = raw_data["trophies"]["zone"]["parent"]["parent"]["name"]
@@ -249,7 +248,7 @@ def get_zones_and_positions(raw_data) -> str:
         zone_four = ""
 
     log.debug(f"Got Zones -> {zone_one}, {zone_two}, {zone_three}, {zone_four}")
-    log.debug(f"Getting Position Data")
+    log.debug("Getting Position Data")
     raw_zone_positions = raw_data["trophies"]["zonepositions"]
     zone_one_position = raw_zone_positions[0]
     zone_two_position = raw_zone_positions[1]
@@ -260,8 +259,8 @@ def get_zones_and_positions(raw_data) -> str:
     else:
         zone_four_position = -1
 
-    log.debug(f"Got Position Data")
-    log.debug(f"Making string for position data")
+    log.debug("Got Position Data")
+    log.debug("Making string for position data")
     ranks_string = "```\n"
     ranks_string += f"{zone_one} - {zone_one_position}\n"
     ranks_string += f"{zone_two} - {zone_two_position}\n"
@@ -274,7 +273,7 @@ def get_zones_and_positions(raw_data) -> str:
 
     log.debug(f"Final Ranks String is {ranks_string}")
 
-    log.debug(f"Creating Zones String")
+    log.debug("Creating Zones String")
     zones_string = f"```\n{zone_one}, {zone_two}, {zone_three}"
 
     if zone_four != "":
@@ -289,47 +288,47 @@ def add_meta_details(
     player_page: discord.Embed,
     raw_data,
 ) -> discord.Embed:
-    log.debug(f"Adding Meta Details for Player")
+    log.debug("Adding Meta Details for Player")
 
     meta_data = raw_data["meta"]
 
     try:
-        log.debug(f"Checking if Player has Twitch")
+        log.debug("Checking if Player has Twitch")
         twitch_name = meta_data["twitch"]
         player_page.add_field(
             name="[<:twitch:895250576751853598>] Twitch",
             value=f"[{twitch_name}](https://twitch.tv/{twitch_name})",
             inline=True,
         )
-        log.debug(f"Twitch Added for Player")
+        log.debug("Twitch Added for Player")
     except:
-        log.debug(f"Player does not have a Twitch Account Linked to TMIO")
+        log.debug("Player does not have a Twitch Account Linked to TMIO")
 
     try:
-        log.debug(f"Checking if Player has Twitter")
+        log.debug("Checking if Player has Twitter")
         twitter_name = meta_data["twitter"]
         player_page.add_field(
             name="[<:twitter:895250587157946388>] Twitter",
             value=f"    [{twitter_name}](https://twitter.com/{twitter_name})",
             inline=True,
         )
-        log.debug(f"Twitter Added for Player")
+        log.debug("Twitter Added for Player")
     except:
-        log.debug(f"Player does not have a Twitter Account Linked to TMIO")
+        log.debug("Player does not have a Twitter Account Linked to TMIO")
 
     try:
-        log.debug(f"Checking if Player has YouTube")
+        log.debug("Checking if Player has YouTube")
         youtube_link = meta_data["youtube"]
         player_page.add_field(
             name="[<:youtube:895250572599513138>] YouTube",
             value=f"[YouTube](https://youtube.com/channel/{youtube_link})",
             inline=True,
         )
-        log.debug(f"YouTube Added for Player")
+        log.debug("YouTube Added for Player")
     except:
-        log.debug(f"Player does not have a YouTube Account Linked to TMIO")
+        log.debug("Player does not have a YouTube Account Linked to TMIO")
 
-    log.debug(f"Adding TMIO")
+    log.debug("Adding TMIO")
     display_name = raw_data["displayname"]
     player_id = raw_data["accountid"]
     player_page.add_field(
@@ -338,26 +337,26 @@ def add_meta_details(
     )
 
     try:
-        log.debug(f"Checking if TMGL Player")
-        if meta_data["tmgl"] == True:
+        log.debug("Checking if TMGL Player")
+        if meta_data["tmgl"] is True:
             player_page.add_field(
                 name="TMGL", value="This Player Participates in TMGL", inline=True
             )
-            log.debug(f"Added TMGL Field")
+            log.debug("Added TMGL Field")
     except:
-        log.debug(f"Player does not participate in TMGL")
+        log.debug("Player does not participate in TMGL")
 
-    log.debug(f"Added TMIO Link")
+    log.debug("Added TMIO Link")
     log.debug(f"Returning {player_page}")
     return player_page
 
 
 def _get_username_list() -> list[str]:
-    log.debug(f"Getting Username List")
+    log.debug("Getting Username List")
     username_list = []
 
-    log.debug(f"Opening Usernames File")
-    with open("./data/json/tm2020_usernames.json", "r") as file:
+    log.debug("Opening Usernames File")
+    with open("./data/json/tm2020_usernames.json", "r", encoding="UTF-8") as file:
         username_data = json.load(file)
         for user in username_data["Usernames"]:
             username_list.append(
@@ -369,11 +368,11 @@ def _get_username_list() -> list[str]:
 
 
 def _get_username_id_list() -> list[str]:
-    log.debug(f"Getting Username List")
+    log.debug("Getting Username List")
     username_ids = []
 
-    log.debug(f"Opening Usernames File")
-    with open("./data/json/tm2020_usernames.json", "r") as file:
+    log.debug("Opening Usernames File")
+    with open("./data/json/tm2020_usernames.json", "r", encoding="UTF-8") as file:
         username_data = json.load(file)
         for user in username_data["Usernames"]:
             username_ids.append(

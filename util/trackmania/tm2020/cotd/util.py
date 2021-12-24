@@ -1,9 +1,9 @@
-import util.logging.convert_logging as convert_logging
+from util.logging import convert_logging
 
 log = convert_logging.get_logging()
 
 
-def _get_best_rank_primary(cotd_data) -> int:
+def get_best_rank_primary(cotd_data) -> int:
     log.debug(
         "Getting Best Primary Best Rank -> {}".format(
             cotd_data["stats"]["bestprimary"]["bestrank"]
@@ -12,7 +12,7 @@ def _get_best_rank_primary(cotd_data) -> int:
     return cotd_data["stats"]["bestprimary"]["bestrank"]
 
 
-def _get_best_div_primary(cotd_data) -> int:
+def get_best_div_primary(cotd_data) -> int:
     log.debug(
         "Getting Primary Best Div -> {}".format(
             cotd_data["stats"]["bestprimary"]["bestdiv"]
@@ -21,7 +21,7 @@ def _get_best_div_primary(cotd_data) -> int:
     return cotd_data["stats"]["bestprimary"]["bestdiv"]
 
 
-def _get_best_rank_primary_time(cotd_data) -> int:
+def get_best_rank_primary_time(cotd_data) -> int:
     log.debug(
         "Getting the time of Primary Best -> {}".format(
             cotd_data["stats"]["bestprimary"]["bestranktime"]
@@ -30,7 +30,7 @@ def _get_best_rank_primary_time(cotd_data) -> int:
     return cotd_data["stats"]["bestprimary"]["bestranktime"]
 
 
-def _get_best_div_primary_time(cotd_data) -> int:
+def get_best_div_primary_time(cotd_data) -> int:
     log.debug(
         "Getting the time of Primary Best Div -> {}".format(
             cotd_data["stats"]["bestprimary"]["bestdivtime"]
@@ -39,7 +39,7 @@ def _get_best_div_primary_time(cotd_data) -> int:
     return cotd_data["stats"]["bestprimary"]["bestdivtime"]
 
 
-def _get_best_div_rank_primary(cotd_data) -> int:
+def get_best_div_rank_primary(cotd_data) -> int:
     log.debug(
         "Getting the Best Rank in Div -> {}".format(
             cotd_data["stats"]["bestprimary"]["bestrankindiv"]
@@ -48,7 +48,7 @@ def _get_best_div_rank_primary(cotd_data) -> int:
     return cotd_data["stats"]["bestprimary"]["bestrankindiv"]
 
 
-def _get_best_rank_overall(cotd_data) -> int:
+def get_best_rank_overall(cotd_data) -> int:
     log.debug(
         "Getting the Overall Best Rank -> {}".format(
             cotd_data["stats"]["bestoverall"]["bestrank"]
@@ -57,7 +57,7 @@ def _get_best_rank_overall(cotd_data) -> int:
     return cotd_data["stats"]["bestoverall"]["bestrank"]
 
 
-def _get_best_div_overall(cotd_data) -> int:
+def get_best_div_overall(cotd_data) -> int:
     log.debug(
         "Getting the Overall Best Div -> {}".format(
             cotd_data["stats"]["bestoverall"]["bestdiv"]
@@ -66,14 +66,14 @@ def _get_best_div_overall(cotd_data) -> int:
     return cotd_data["stats"]["bestoverall"]["bestdiv"]
 
 
-def _get_best_rank_overall_time(cotd_data) -> int:
+def get_best_rank_overall_time(cotd_data) -> int:
     log.debug(
         f'Getting the time of Overall Best Rank -> {cotd_data["stats"]["bestoverall"]["bestranktime"]}'
     )
     return cotd_data["stats"]["bestoverall"]["bestranktime"]
 
 
-def _get_best_div_overall_time(cotd_data) -> int:
+def get_best_div_overall_time(cotd_data) -> int:
     log.debug(
         "Getting the time of Overall Best Div -> {}".format(
             cotd_data["stats"]["bestoverall"]["bestdivtime"]
@@ -82,7 +82,7 @@ def _get_best_div_overall_time(cotd_data) -> int:
     return cotd_data["stats"]["bestoverall"]["bestdivtime"]
 
 
-def _get_best_div_rank_overall(cotd_data) -> int:
+def get_best_div_rank_overall(cotd_data) -> int:
     log.debug(
         "Getting the Best Rank in Div Overall -> {}".format(
             cotd_data["stats"]["bestoverall"]["bestrankindiv"]
@@ -91,31 +91,30 @@ def _get_best_div_rank_overall(cotd_data) -> int:
     return cotd_data["stats"]["bestoverall"]["bestrankindiv"]
 
 
-def _return_cotds(cotd_data):
-    log.debug(f"Returning all COTDs")
+def return_cotds(cotd_data):
+    log.debug("Returning all COTDs")
     return cotd_data["cotds"]
 
 
-def _return_cotds_without_reruns(cotd_data):
-    log.debug(f"Returning COTDs without reruns")
+def return_cotds_without_reruns(cotd_data):
+    log.debug("Returning COTDs without reruns")
     cotds_safe = []
 
     for cotd in cotd_data["cotds"]:
         if "#2" in cotd["name"] or "#3" in cotd["name"]:
             continue
-        else:
-            cotds_safe.append(cotd)
+        cotds_safe.append(cotd)
 
     return cotds_safe
 
 
-def _get_num_cotds_played(cotds):
+def get_num_cotds_played(cotds):
     log.debug(f"Number of COTDs Played -> {len(cotds)}")
     return len(cotds)
 
 
-def _remove_unfinished_cotds(cotds):
-    log.debug(f"Looping around COTDs")
+def remove_unfinished_cotds(cotds):
+    log.debug("Looping around COTDs")
     cotds_safe = []
 
     for cotd in cotds:
@@ -126,10 +125,10 @@ def _remove_unfinished_cotds(cotds):
     return cotds_safe
 
 
-def _get_average_rank_overall(cotd_data):
-    cotds = _return_cotds(cotd_data)
+def get_average_rank_overall(cotd_data):
+    cotds = return_cotds(cotd_data)
 
-    cotds_played = _get_num_cotds_played(cotds)
+    cotds_played = get_num_cotds_played(cotds)
 
     rank_total = 0
 
@@ -141,10 +140,10 @@ def _get_average_rank_overall(cotd_data):
     return round(rank_total / cotds_played, 2)
 
 
-def _get_average_rank_primary(cotd_data):
-    cotds = _return_cotds_without_reruns(cotd_data)
+def get_average_rank_primary(cotd_data):
+    cotds = return_cotds_without_reruns(cotd_data)
 
-    cotds_played = _get_num_cotds_played(cotds)
+    cotds_played = get_num_cotds_played(cotds)
 
     rank_total = 0
 
@@ -155,14 +154,14 @@ def _get_average_rank_primary(cotd_data):
         log.debug(f"Average Rank Primary -> {round(rank_total / cotds_played, 2)}")
         return round(rank_total / cotds_played, 2)
     except:
-        log.debug(f"Average Rank Primary -> 0")
+        log.debug("Average Rank Primary -> 0")
         return 0
 
 
-def _get_average_div_overall(cotd_data):
-    cotds = _return_cotds(cotd_data)
+def get_average_div_overall(cotd_data):
+    cotds = return_cotds(cotd_data)
 
-    cotds_played = _get_num_cotds_played(cotds)
+    cotds_played = get_num_cotds_played(cotds)
 
     div_total = 0
 
@@ -174,10 +173,10 @@ def _get_average_div_overall(cotd_data):
     return round(div_total / cotds_played, 2)
 
 
-def _get_average_div_primary(cotd_data):
-    cotds = _return_cotds_without_reruns(cotd_data)
+def get_average_div_primary(cotd_data):
+    cotds = return_cotds_without_reruns(cotd_data)
 
-    cotds_played = _get_num_cotds_played(cotds)
+    cotds_played = get_num_cotds_played(cotds)
 
     div_total = 0
 
@@ -188,14 +187,14 @@ def _get_average_div_primary(cotd_data):
         log.debug(f"Average Div Primary -> {round(div_total / cotds_played, 2)}")
         return round(div_total / cotds_played, 2)
     except:
-        log.debug(f"Average Div Primary -> 0")
+        log.debug("Average Div Primary -> 0")
         return 0
 
 
-def _get_average_div_rank_overall(cotd_data):
-    cotds = _return_cotds(cotd_data)
+def get_average_div_rank_overall(cotd_data):
+    cotds = return_cotds(cotd_data)
 
-    cotds_played = _get_num_cotds_played(cotds)
+    cotds_played = get_num_cotds_played(cotds)
 
     div_rank_total = 0
 
@@ -206,10 +205,10 @@ def _get_average_div_rank_overall(cotd_data):
     return round(div_rank_total / cotds_played, 2)
 
 
-def _get_average_div_rank_primary(cotd_data):
-    cotds = _return_cotds_without_reruns(cotd_data)
+def get_average_div_rank_primary(cotd_data):
+    cotds = return_cotds_without_reruns(cotd_data)
 
-    cotds_played = _get_num_cotds_played(cotds)
+    cotds_played = get_num_cotds_played(cotds)
 
     div_rank_total = 0
 
@@ -217,16 +216,18 @@ def _get_average_div_rank_primary(cotd_data):
         div_rank_total += int(cotd["divrank"])
 
     try:
-        log.debug(f"Average Div Rank Primary -> {round(div_rank_total / cotds_played, 2)}")
+        log.debug(
+            f"Average Div Rank Primary -> {round(div_rank_total / cotds_played, 2)}"
+        )
         return round(div_rank_total / cotds_played, 2)
     except:
-        log.debug(f"Average Div Rank Primary -> 0")
+        log.debug("Average Div Rank Primary -> 0")
         return 0
 
 
-def _get_list_of_ranks_overall(cotd_data):
-    cotds = _return_cotds(cotd_data)
-    cotds = _remove_unfinished_cotds(cotds)
+def get_list_of_ranks_overall(cotd_data):
+    cotds = return_cotds(cotd_data)
+    cotds = remove_unfinished_cotds(cotds)
 
     ranks = []
 
@@ -237,9 +238,9 @@ def _get_list_of_ranks_overall(cotd_data):
     return ranks[::-1]
 
 
-def _get_list_of_ranks_primary(cotd_data):
-    cotds = _return_cotds_without_reruns(cotd_data)
-    cotds = _remove_unfinished_cotds(cotds)
+def get_list_of_ranks_primary(cotd_data):
+    cotds = return_cotds_without_reruns(cotd_data)
+    cotds = remove_unfinished_cotds(cotds)
 
     ranks = []
 
@@ -250,9 +251,9 @@ def _get_list_of_ranks_primary(cotd_data):
     return ranks[::-1]
 
 
-def _get_list_of_dates_overall(cotd_data):
-    cotds = _return_cotds(cotd_data)
-    cotds = _remove_unfinished_cotds(cotds)
+def get_list_of_dates_overall(cotd_data):
+    cotds = return_cotds(cotd_data)
+    cotds = remove_unfinished_cotds(cotds)
 
     timestamps = []
 
@@ -263,9 +264,9 @@ def _get_list_of_dates_overall(cotd_data):
     return timestamps[::-1]
 
 
-def _get_list_of_dates_primary(cotd_data):
-    cotds = _return_cotds_without_reruns(cotd_data)
-    cotds = _remove_unfinished_cotds(cotds)
+def get_list_of_dates_primary(cotd_data):
+    cotds = return_cotds_without_reruns(cotd_data)
+    cotds = remove_unfinished_cotds(cotds)
 
     timestamps = []
 
@@ -276,9 +277,9 @@ def _get_list_of_dates_primary(cotd_data):
     return timestamps[::-1]
 
 
-def _get_list_of_ids_overall(cotd_data):
-    cotds = _return_cotds(cotd_data)
-    cotds = _remove_unfinished_cotds(cotds)
+def get_list_of_ids_overall(cotd_data):
+    cotds = return_cotds(cotd_data)
+    cotds = remove_unfinished_cotds(cotds)
 
     ids = []
 
@@ -289,9 +290,9 @@ def _get_list_of_ids_overall(cotd_data):
     return ids[::-1]
 
 
-def _get_list_of_ids_primary(cotd_data):
-    cotds = _return_cotds_without_reruns(cotd_data)
-    cotds = _remove_unfinished_cotds(cotds)
+def get_list_of_ids_primary(cotd_data):
+    cotds = return_cotds_without_reruns(cotd_data)
+    cotds = remove_unfinished_cotds(cotds)
 
     ids = []
 
@@ -302,6 +303,6 @@ def _get_list_of_ids_primary(cotd_data):
     return ids[::-1]
 
 
-def _get_num_wins(cotd_data):
+def get_num_wins(cotd_data):
     log.debug("Getting number of wins -> {}".format(cotd_data["stats"]["totalwins"]))
     return cotd_data["stats"]["totalwins"]
