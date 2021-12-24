@@ -2,8 +2,9 @@
 
 Discord bot for the [TM India Discord Server](https://discord.gg/aztYuhWxgU "TM India Discord invite")
 
-## Special Thanks
-Thank you to Trackmania.io developers for their NPM Package!
+#### Command List
+Command List can be found [here](https://gist.github.com/NottCurious/f9b618bbfd8aa133d0de2655b94bfca6)
+
 
 ## Developers
 
@@ -24,11 +25,8 @@ Calcium the Penguin
 * Discord: Calcium The Bored Penguin#2006
 * Contributor
 
-## Trackmania India Discord Server Invite Link
-
-Join Here!
-
-[TM India Server](https://discord.gg/aztYuhWxgU)
+### Special Thanks
+Thank you to Trackmania.io Developer Miss and node-Trackmania.io Developer Greep for their NPM Package!
 
 ### Update (26th October, 2021)
 * We now do not need to run a seperate command terminal just for the api.
@@ -42,5 +40,5 @@ Join Here!
 
 ### Update (16th December, 2021)
 * Above bug has been fixed
-* Leaderboards will be moved into their own private repository
+* Leaderboards will be moved into their own public repository found [here](https://github.com/NottCurious/TrackmaniaLeaderboards)
     * If you have access, clone into `./data` and rename the folder to `leaderboard`
