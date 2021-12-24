@@ -1,14 +1,12 @@
 import discord
-
-import util.trackmania.trackmania_username.retrieving as ret
-import util.trackmania.trackmania_username.storing as stor
-import util.logging.convert_logging as convert_logging
-import util.discord.easy_embed as ezembed
-
 from discord.commands.commands import Option
 from discord.commands import permissions
 from discord.ext import commands
-from util.constants import GUILD_IDS
+
+import util.trackmania.trackmania_username.retrieving as ret
+import util.trackmania.trackmania_username.storing as stor
+from util.logging import convert_logging
+import util.discord.easy_embed as ezembed
 from util.trackmania.tm2020.player import get_player_id
 from util.discord.confirmation import Confirmer
 from util.logging.command_log import log_command
@@ -20,14 +18,15 @@ log = convert_logging.get_logging()
 class Username(commands.Cog):
     def __init__(self, client):
         self.client = client
-        log.info(f"cogs.username has finished initializing")
+        log.info("cogs.username has finished initializing")
 
+    @classmethod
     @commands.slash_command(
         name="storeusername",
         description="Stores Username in JSON File for Future Use and Speed",
     )
     async def _store_username(
-        self,
+        cls,
         ctx: commands.Context,
         username: Option(str, "Your Trackmania2020 Username", required=True),
     ):
@@ -37,33 +36,33 @@ class Username(commands.Cog):
             # For some reason, kaizer's username totally breaks the bot and causes it to exit. This is just a temporary
             # if statement to prevent that from happening. It might be something wrong with the API.
             await ctx.respond(
-                f"For some unknown reason, this username breaks the bot completely. So it cannot be saved"
+                "For some unknown reason, this username breaks the bot completely. So it cannot be saved"
             )
             return
 
         # Checking if the Username is Valid
-        log.debug(f"Checking Username")
+        log.debug("Checking Username")
         if not stor.check_valid_trackmania_username(username):
-            log.debug(f"Username not found")
+            log.debug("Username not found")
             embed = ezembed.create_embed(
                 title=":negative_squared_cross_mark: Username not Found or does not exist.",
                 color=0xFF0000,
             )
             await ctx.respond(embed=embed)
             return None
-        log.debug(f"User Exists, Continuing")
+        log.debug("User Exists, Continuing")
 
         # Creating a Confirmation Prompt
-        log.debug(f"Creating a Confirmation Prompt")
+        log.debug("Creating a Confirmation Prompt")
         confirm_add_username = Confirmer()
 
         # Changing Button Labels
-        log.debug(f"Changing Button Labels")
+        log.debug("Changing Button Labels")
         confirm_add_username.change_cancel_button(label="No, Do NOT Add This Username")
         confirm_add_username.change_confirm_button(label="Yes, Add this Username")
-        log.debug(f"Changed the Button Labels")
+        log.debug("Changed the Button Labels")
 
-        log.debug(f"Sending Confirmation Prompt")
+        log.debug("Sending Confirmation Prompt")
         message = await ctx.respond(
             embed=ezembed.create_embed(
                 title="Is This Your Username?",
@@ -74,82 +73,84 @@ class Username(commands.Cog):
         )
 
         # Waiting for confirmation response
-        log.debug(f"Sent Confirmation Prompt")
-        log.debug(f"Awaiting a Response from User")
+        log.debug("Sent Confirmation Prompt")
+        log.debug("Awaiting a Response from User")
         await confirm_add_username.wait()
-        log.debug(f"Response Received")
+        log.debug("Response Received")
 
         # Deleting the confirmation message
-        log.debug(f"Deleting Message")
+        log.debug("Deleting Message")
         await message.delete_original_message()
-        log.debug(f"Deleted Message")
+        log.debug("Deleted Message")
 
         # Checking if the user responded negatively to the confirmation prompt
-        if confirm_add_username.value == False:
-            log.debug(f"User does not want his username added")
+        if confirm_add_username.value is False:
+            log.debug("User does not want his username added")
             return
 
-        log.debug(f"User wants his username added")
+        log.debug("User wants his username added")
 
         # Storing the username
         log.debug(f"Storing {username} for {ctx.author.name}. ID: {ctx.author.id}")
         stor.store_trackmania_username(ctx.author.id, username)
         log.debug(f"Stored Username for {ctx.author.name}")
 
-        log.debug(f"Sending Success Message")
+        log.debug("Sending Success Message")
         embed = ezembed.create_embed(
             title=":white_check_mark: Successfully Stored Username",
             description=f"Requestor: {ctx.author.name}",
             color=discord.Color.green(),
         )
         await ctx.respond(embed=embed)
-        log.debug(f"Sent Success Message")
+        log.debug("Sent Success Message")
 
+    @classmethod
     @commands.slash_command(
         name="checkusername",
         description="Checks if your username is stored in the file",
     )
-    async def _check_username(self, ctx: commands.Context):
+    async def _check_username(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         # Checking if the given username is stored in the JSON file
         if ret.check_discord_id_in_file(str(ctx.author.id)):
-            log.debug(f"Username in json file")
+            log.debug("Username in json file")
             embed = ezembed.create_embed(
                 title=":white_check_mark: Your Username Exists",
                 color=discord.Colour.green(),
             )
             await ctx.respond(embed=embed)
         else:
-            log.debug(f"Username not in json file")
+            log.debug("Username not in json file")
             embed = ezembed.create_embed(
                 title=":negative_squared_cross_mark: Your Username does not Exist",
                 color=0xFF0000,
             )
             await ctx.respond(embed=embed)
 
+    @classmethod
     @commands.slash_command(
         name="removeusername",
         description="Removes your username from the file if present",
     )
-    async def _remove_username(self, ctx: commands.Context):
+    async def _remove_username(cls, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         # Removes a username from the JSON file
         # Confirmation prompt to check if the user really wants to remove their username
 
         # Creating the Confirmation Prompt
-        log.debug(f"Creating a Confirmation Prompt")
+        log.debug("Creating a Confirmation Prompt")
         confirm_remove_username = Confirmer()
 
         # Changing the Button Labels
-        log.debug(f"Changing Button Labels")
+        log.debug("Changing Button Labels")
         confirm_remove_username.change_cancel_button(
             label="No, Do NOT remove my username"
         )
         confirm_remove_username.change_confirm_button(label="Yes, Remove my username")
-        log.debug(f"Changed the Button Labels")
+        log.debug("Changed the Button Labels")
 
         # Sending the Confirmation Prompt
-        log.debug(f"Sending Confirmation Prompt")
+        log.debug("Sending Confirmation Prompt")
         message = await ctx.respond(
             embed=ezembed.create_embed(
                 title="Are you sure you want to delete your username from the database?",
@@ -157,28 +158,28 @@ class Username(commands.Cog):
             ),
             view=confirm_remove_username,
         )
-        log.debug(f"Sent Confirmation Prompt")
+        log.debug("Sent Confirmation Prompt")
 
         # Awaiting a response to the confirmation prompt from the user
-        log.debug(f"Awaiting a Response from User")
+        log.debug("Awaiting a Response from User")
         await confirm_remove_username.wait()
-        log.debug(f"Response Received")
+        log.debug("Response Received")
 
         # Deleting the confirmation message
-        log.debug(f"Deleting Message")
+        log.debug("Deleting Message")
         await message.delete_original_message()
-        log.debug(f"Deleted Message")
+        log.debug("Deleted Message")
 
         # Checking if the user really wanted his username removed
-        if confirm_remove_username.value == False:
-            log.debug(f"User does not want his username removed")
+        if confirm_remove_username.value is False:
+            log.debug("User does not want his username removed")
             return
 
-        log.debug(f"User wants his username removed")
+        log.debug("User wants his username removed")
 
         # Checking if the username is already stored in the file
         if not ret.check_discord_id_in_file(str(ctx.author.id)):
-            log.debug(f"User does not exist in file")
+            log.debug("User does not exist in file")
             embed = ezembed.create_embed(
                 title=":negative_squared_cross_mark: User does not exist",
                 color=0xFF0000,
@@ -187,9 +188,9 @@ class Username(commands.Cog):
             return
 
         # Removing the Trackmania Username from the JSON File
-        log.debug(f"Removing Trackmania Username")
+        log.debug("Removing Trackmania Username")
         stor.remove_trackmania_username(ctx.author.id)
-        log.debug(f"Removed Trackmania Username")
+        log.debug("Removed Trackmania Username")
         embed = ezembed.create_embed(
             title=":white_check_mark: Successfully Removed Your Username from the File.",
             description=f"Requester: {ctx.author.name}",
@@ -197,13 +198,14 @@ class Username(commands.Cog):
         )
         await ctx.respond(embed=embed)
 
+    @classmethod
     @commands.slash_command(
         name="getid",
         description="Gets the Trackmania ID of A Player",
     )
     @permissions.is_owner()
     async def _get_id(
-        self,
+        cls,
         ctx: commands.Context,
         username: Option(str, "The Trackmania2020 Username", required=True),
     ):
@@ -214,10 +216,10 @@ class Username(commands.Cog):
             description=get_player_id(username),
             color=discord.Color.random(),
         )
-        log.debug(f"Got Data and Created Embed, Sending")
+        log.debug("Got Data and Created Embed, Sending")
         # await ctx.respond(get_player_id(username))
         await ctx.respond(embed=embed, ephemeral=True)
-        log.debug(f"Sent Embed")
+        log.debug("Sent Embed")
 
 
 def setup(client: discord.Bot):
