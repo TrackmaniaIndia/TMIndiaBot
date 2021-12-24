@@ -1,10 +1,11 @@
 import discord
 from discord.commands import permissions
-from discord.ext import commands
 from discord.commands.commands import Option
-from util.logging import convert_logging
-import util.quoting.quote as quote_functions
+from discord.ext import commands
+
 import util.discord.easy_embed as ezembed
+import util.quoting.quote as quote_functions
+from util.logging import convert_logging
 from util.logging.command_log import log_command
 
 # Creating a logger

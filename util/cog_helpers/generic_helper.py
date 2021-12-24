@@ -1,6 +1,8 @@
-import platform
 import json
+import platform
+
 import psutil
+
 from util.logging import convert_logging
 
 log = convert_logging.get_logging()

@@ -1,16 +1,16 @@
 """Main file for the project. Launches Bot and API
 """
 
-import threading
-import subprocess
 import os
+import subprocess
+import threading
+
 import discord
-
-from dotenv import load_dotenv
 from discord.ext import commands
+from dotenv import load_dotenv
 
-from util.logging import convert_logging
 from util.before_launch.file_check import file_check
+from util.logging import convert_logging
 
 # Setting up logging
 log = convert_logging.get_logging()

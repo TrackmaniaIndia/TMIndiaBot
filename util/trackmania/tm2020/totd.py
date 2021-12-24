@@ -1,13 +1,14 @@
+import json
+import os
+import shutil
+from datetime import datetime, timedelta, timezone
+
 import discord
 import requests
-import os
-import json
-import shutil
+
+import util.discord.easy_embed as ezembed
 from util import common_functions
 from util.logging import convert_logging
-import util.discord.easy_embed as ezembed
-
-from datetime import datetime, timezone, timedelta
 
 # Setting up logging
 log = convert_logging.get_logging()

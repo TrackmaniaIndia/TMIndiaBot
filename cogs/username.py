@@ -1,14 +1,15 @@
 import discord
-from discord.commands.commands import Option
 from discord.commands import permissions
+from discord.commands.commands import Option
 from discord.ext import commands
+
+import util.discord.easy_embed as ezembed
 import util.trackmania.trackmania_username.retrieving as ret
 import util.trackmania.trackmania_username.storing as stor
-from util.logging import convert_logging
-import util.discord.easy_embed as ezembed
-from util.trackmania.tm2020.player import get_player_id
 from util.discord.confirmation import Confirmer
+from util.logging import convert_logging
 from util.logging.command_log import log_command
+from util.trackmania.tm2020.player import get_player_id
 
 # Creating Logger
 log = convert_logging.get_logging()

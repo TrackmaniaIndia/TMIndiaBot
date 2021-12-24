@@ -1,17 +1,19 @@
-from datetime import datetime
-import os
 import json
+import os
+from datetime import datetime
 from itertools import cycle
+
 import discord
 from discord.ext import commands
-from util.logging import convert_logging
+
 import util.discord.easy_embed as ezembed
 from util.cog_helpers import generic_helper
 from util.cog_helpers.listener_helper import _get_statuses
+from util.logging import convert_logging
+from util.logging.command_log import log_join_guild, log_leave_guild
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
 from util.tasks.totd_image_delete import totd_deleter
-from util.logging.command_log import log_join_guild, log_leave_guild
 
 # Creating logger
 log = convert_logging.get_logging()

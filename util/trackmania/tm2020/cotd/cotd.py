@@ -1,12 +1,12 @@
-import discord
-import requests
 import cv2
+import discord
 import matplotlib.pyplot as plt
-from util.logging import convert_logging
-import util.discord.easy_embed as ezembed
-from util import common_functions
+import requests
 
+import util.discord.easy_embed as ezembed
 import util.trackmania.tm2020.cotd.util as cotd_util
+from util import common_functions
+from util.logging import convert_logging
 
 # Setting up Logging
 log = convert_logging.get_logging()

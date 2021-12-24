@@ -1,11 +1,12 @@
 import json
 from datetime import datetime
-import discord
-import util.discord.easy_embed as ezembed
-import numpy as np
-from util.logging import convert_logging
-from util import common_functions
 
+import discord
+import numpy as np
+
+import util.discord.easy_embed as ezembed
+from util import common_functions
+from util.logging import convert_logging
 
 # Creating a logger
 log = convert_logging.get_logging()

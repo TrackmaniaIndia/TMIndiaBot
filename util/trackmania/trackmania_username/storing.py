@@ -1,10 +1,12 @@
 import json
 import os
 import sys
+
 import requests
-from util.logging import convert_logging
 from dotenv import load_dotenv
+
 import util.trackmania.trackmania_username.get_stored as tm_get_stored
+from util.logging import convert_logging
 
 load_dotenv()
 base_url = os.getenv("base_api_url")

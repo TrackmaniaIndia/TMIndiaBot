@@ -1,12 +1,13 @@
 import json
+
+import country_converter as coco
 import discord
-import requests
 import flag
+import requests
+
+import util.discord.easy_embed as ezembed
 from util import common_functions
 from util.logging import convert_logging
-import util.discord.easy_embed as ezembed
-import country_converter as coco
-
 
 log = convert_logging.get_logging()
 base_api_url = "http://localhost:3000"

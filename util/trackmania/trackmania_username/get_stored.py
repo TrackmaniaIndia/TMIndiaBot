@@ -1,7 +1,9 @@
 import json
 import os
-from util.logging import convert_logging
+
 from dotenv import load_dotenv
+
+from util.logging import convert_logging
 
 load_dotenv()
 BASE_URL = os.getenv("base_api_url")

@@ -1,21 +1,23 @@
 import threading
 import time
+
 import discord
-from discord.commands.commands import Option
 from discord.commands import permissions
+from discord.commands.commands import Option
 from discord.ext import commands
-from util.logging import convert_logging
+
 import util.discord.easy_embed as ezembed
 import util.trackmania.tm2020.leaderboards.campaign as tm2020_campaign
-from util.constants import GUILD_IDS
-from util import common_functions
 import util.trackmania.tm2020.player as tm2020_player
+from util import common_functions
+from util.constants import GUILD_IDS
 from util.discord.confirmation import Confirmer
 from util.discord.paginator import Paginator
-from util.logging.command_log import log_command
-from util.trackmania.tm2020.totd import _get_current_totd
 from util.discord.view_adder import ViewAdder
+from util.logging import convert_logging
+from util.logging.command_log import log_command
 from util.trackmania.tm2020.cotd.cotd import get_cotd_data
+from util.trackmania.tm2020.totd import _get_current_totd
 
 log = convert_logging.get_logging()
 

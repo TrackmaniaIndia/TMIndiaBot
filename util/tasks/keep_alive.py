@@ -1,13 +1,14 @@
-from logging import raiseExceptions
 import os
 import threading
 from datetime import datetime
-import requests
-from dotenv import load_dotenv
-import discord
-from util.logging import convert_logging
-from discord.ext import tasks
+from logging import raiseExceptions
 
+import discord
+import requests
+from discord.ext import tasks
+from dotenv import load_dotenv
+
+from util.logging import convert_logging
 
 log = convert_logging.get_logging()
 
