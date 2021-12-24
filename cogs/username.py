@@ -34,10 +34,10 @@ class Username(commands.Cog):
             description=get_player_id(username),
             color=discord.Color.random(),
         )
-        log.debug("Got Data and Created Embed, Sending")
+        log.info("Got Data and Created Embed, Sending")
         # await ctx.respond(get_player_id(username))
         await ctx.respond(embed=embed, ephemeral=True)
-        log.debug("Sent Embed")
+        log.info("Sent Embed")
 
 
 def setup(client: discord.Bot):

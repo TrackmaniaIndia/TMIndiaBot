@@ -27,9 +27,9 @@ class Listeners(commands.Cog, description="Generic Functions"):
         self.client = client
 
         # Adding Statuses to the List
-        log.debug("Adding Statuses")
+        log.info("Adding Statuses")
         self.statuses = cycle(_get_statuses())
-        log.debug("Received Statuses")
+        log.info("Received Statuses")
         log.info("cogs.listeners has finished initializing")
 
     @commands.Cog.listener()
@@ -45,7 +45,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
 
         # Getting number of times bot was run on this computer
         times_run = 0
-        log.debug("Reading Value from Times Run File")
+        log.info("Reading Value from Times Run File")
         with open("./data/times_run.txt", "r", encoding="UTF-8") as file:
             times_run = int(file.readline())
 
@@ -53,14 +53,14 @@ class Listeners(commands.Cog, description="Generic Functions"):
         times_run += 1
 
         # Starting the Keep Alive loop that periodically sends a message to a designated channel and pings the API every 30 minutes
-        log.debug("Starting Keep Alive Loop")
+        log.info("Starting Keep Alive Loop")
         keep_alive.start(self.client)
-        log.debug("Started Keep Alive Loop")
+        log.info("Started Keep Alive Loop")
 
         # Starting the Change Status Loop that Changes the Bot's Status Every 10 Minutes
-        log.debug("Start Change Status Loop")
+        log.info("Start Change Status Loop")
         change_status.start(self.client, self.statuses)
-        log.debug("Started Change Status Loop")
+        log.info("Started Change Status Loop")
 
         # Deleting the TOTD Image if it exists
         if os.path.exists("./data/temp/totd.png"):
@@ -68,13 +68,13 @@ class Listeners(commands.Cog, description="Generic Functions"):
             os.remove("./data/temp/totd.png")
 
         # Starting the TOTD Image Deleter Loop
-        log.debug("Starting TOTD Image Loop")
+        log.info("Starting TOTD Image Loop")
         totd_deleter.start(self.client)
-        log.debug("Started TOTD Image")
+        log.info("Started TOTD Image")
 
         # Getting the Announcement Channels for where the bot should send that it is ready
         # Channels taken from ./data/json/announcement_channels.json
-        log.debug("Getting Announcement Channels")
+        log.info("Getting Announcement Channels")
         with open(
             "./data/json/announcement_channels.json", "r", encoding="UTF-8"
         ) as file:
@@ -85,7 +85,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
 
         # Looping Through Announcement Channels
         for announcement_channel in channels["announcement_channels"]:
-            log.debug(f"Sending Message in {announcement_channel}")
+            log.info(f"Sending Message in {announcement_channel}")
 
             # Sending Message to the Channel
             channel = self.client.get_channel(int(announcement_channel))
@@ -94,18 +94,18 @@ class Listeners(commands.Cog, description="Generic Functions"):
                 await channel.send(
                     f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {datetime.now()}"
                 )
-                log.debug(f"Sent Message to {announcement_channel}")
+                log.info(f"Sent Message to {announcement_channel}")
                 if (
                     int(announcement_channel) == 880771916099641364
                     or int(announcement_channel) == 880628511512096778
                 ):
                     continue
             except:
-                log.debug(f"Can't Send Message to {announcement_channel}")
+                log.info(f"Can't Send Message to {announcement_channel}")
                 continue
 
         # Printing out the new timesrun value to the file
-        log.debug("Writing TimesRun to File")
+        log.info("Writing TimesRun to File")
         with open("./data/times_run.txt", "w", encoding="UTF-8") as file:
             print(times_run, file=file)
 
@@ -119,17 +119,15 @@ class Listeners(commands.Cog, description="Generic Functions"):
 
         log.info(f"Creating Guild Data directory for {guild.name}")
         if not os.path.exists(f"./data/guild_data/{guild.id}/"):
-            log.debug(f"Creating Guild Directory for {guild.name}")
+            log.info(f"Creating Guild Directory for {guild.name}")
             os.mkdir(f"./data/guild_data/{guild.id}/")
-            log.debug(f"Created Guild Directory for {guild.name}")
+            log.info(f"Created Guild Directory for {guild.name}")
 
-        log.debug(f"Creating quotes.json for {guild.name}")
+        log.info(f"Creating quotes.json for {guild.name}")
         with open(
             f"./data/guild_data/{guild.id}/quotes.json", "w", encoding="UTF-8"
         ) as file:
-            log.debug(
-                f"Dumping an Empty quotes array into quotes.json for {guild.name}"
-            )
+            log.info(f"Dumping an Empty quotes array into quotes.json for {guild.name}")
             json.dump({"quotes": []}, file, indent=4)
 
     @commands.Cog.listener()
@@ -154,7 +152,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
                 log.error(error)
                 return
 
-            log.debug("Error will be printed to discord server")
+            log.info("Error will be printed to discord server")
 
         # Getting the Error Channel
         channel = self.client.get_channel(int(config["errorChannel"]))
