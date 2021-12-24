@@ -2,7 +2,25 @@
 
 Discord bot for the [TM India Discord Server](https://discord.gg/aztYuhWxgU "TM India Discord invite")
 
-#### Command List
+##### *v1.6*
+
+**New Features**
+1. Website (kinda) for command list (/commandlist)
+2. COTD Data (/cotddetails)
+3. Suggestions (/suggest)
+4. Current Day TOTD (/totd)
+5. Link to Testing Server (/testingserver)
+6. **Bot Invite Link (/invitelink)**
+
+**Bug Fixes (Major)**
+1. Broken player details matchmaking rank is now fixed
+
+**Bug Fixes (Minor)**
+1. Updated Command Descriptions
+2. New Embed Colours
+3. Changed a few links to URL buttons
+
+### Command List
 Command List can be found [here](https://gist.github.com/NottCurious/f9b618bbfd8aa133d0de2655b94bfca6)
 
 
