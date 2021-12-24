@@ -1,11 +1,10 @@
-import discord
 import datetime
 import os
+import discord
 
-import util.logging.convert_logging as convert_logging
+from util.logging import convert_logging
 
-from discord.ext import tasks, commands
-
+from discord.ext import tasks
 
 log = convert_logging.get_logging()
 
@@ -14,6 +13,6 @@ log = convert_logging.get_logging()
 async def totd_deleter(client: discord.Bot):
     if os.path.exists("./data/temp/totd.png"):
         os.remove("./data/temp/totd.png")
-        log.debug(f"Removed Totd Image")
+        log.debug("Removed Totd Image")
     else:
-        log.debug(f"Totd Image Does Not Exist")
+        log.debug("Totd Image Does Not Exist")
