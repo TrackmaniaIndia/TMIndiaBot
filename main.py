@@ -1,23 +1,26 @@
-import discord
+"""Main file for the project. Launches Bot and API
+"""
+
 import os
 import subprocess
 import threading
 
-import util.logging.convert_logging as convert_logging
-
-from dotenv import load_dotenv
-from util.before_launch.file_check import file_check
+import discord
 from discord.ext import commands
+from dotenv import load_dotenv
+
+from util.before_launch.file_check import file_check
+from util.logging import convert_logging
 
 # Setting up logging
 log = convert_logging.get_logging()
-log.info(f"Logging Setup for main.py")
+log.info("Logging Setup for main.py")
 
 # Getting Bot Token
-log.info(f"Reading Bot Token")
+log.info("Reading Bot Token")
 load_dotenv()
 BOT_TOKEN = os.getenv("BOTTOKEN")
-log.info(f"Got Bot Token")
+log.info("Got Bot Token")
 
 # Creating Bot with the following intents:
 #   bans
@@ -38,11 +41,9 @@ log.info(f"Got Bot Token")
 #   value
 #   voice_states
 #   webhooks
-log.info(f"Creating Client")
-client = commands.Bot(
-    prefix="!!", intents=discord.Intents.default(), debug_guild=876042400005505066
-)
-log.info(f"Created Client")
+log.info("Creating Client")
+client = discord.Bot(intents=discord.Intents.default(), debug_guild=876042400005505066)
+log.info("Created Client")
 
 # This Thread runs the TMIndiaBotApi, clone from https://github.com/artifexdevstuff/TMIndiaBotApi
 log.info("Creating Thread for NPM Module")
@@ -72,16 +73,16 @@ if __name__ == "__main__":
 
     # Loading Cogs
     log.info("Loading Slash Cogs")
-    log.debug(f"Loading listeners.py")
+    log.debug("Loading listeners.py")
     client.load_extension("cogs.listeners")
-    log.debug(f"Loading generic.py")
-    client.load_extension(f"cogs.generic")
-    log.debug(f"Loading quote.py")
-    client.load_extension(f"cogs.quote")
-    log.debug(f"Loading trackmania.py")
-    client.load_extension(f"cogs.trackmania")
-    log.debug(f"Loading username.py")
-    client.load_extension(f"cogs.username")
+    log.debug("Loading generic.py")
+    client.load_extension("cogs.generic")
+    log.debug("Loading quote.py")
+    client.load_extension("cogs.quote")
+    log.debug("Loading trackmania.py")
+    client.load_extension("cogs.trackmania")
+    log.debug("Loading username.py")
+    client.load_extension("cogs.username")
     log.info("Loaded Slash Cogs")
 
     # Running Bot Client

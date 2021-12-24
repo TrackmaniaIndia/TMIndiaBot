@@ -1,14 +1,14 @@
+from typing import List, Union
+
 import discord
-
-import util.logging.convert_logging as convert_logging
-import util.discord.easy_embed as ezembed
-
 from discord import abc
-from discord.interactions import Interaction
-from discord.utils import MISSING
 from discord.commands import ApplicationContext
 from discord.ext.commands import Context
-from typing import Union, List
+from discord.interactions import Interaction
+from discord.utils import MISSING
+
+import util.discord.easy_embed as ezembed
+from util.logging import convert_logging
 
 log = convert_logging.get_logging()
 
@@ -70,9 +70,9 @@ class Paginator(discord.ui.View):
         self.current_page = 1
 
         # Because the bot is on the first page, we can disable the go first and back buttons as they are not useful
-        log.debug(f"Disabling Previous Button")
+        log.debug("Disabling Previous Button")
         self.previous_button.disabled = True
-        log.debug(f"Disabling Go To Start Button")
+        log.debug("Disabling Go To Start Button")
         button.disabled = True
 
         self.children[2].disabled = False
@@ -105,7 +105,7 @@ class Paginator(discord.ui.View):
 
         # Checks if the current page is the first page, if it is we have to disable the go first and back buttons
         if self.current_page == 1:
-            log.debug(f"Current Page is 1 disabling previous button and gofirst button")
+            log.debug("Current Page is 1 disabling previous button and gofirst button")
             self.go_first.disabled = True
             button.disabled = True
 
@@ -139,7 +139,7 @@ class Paginator(discord.ui.View):
 
         # Checks if the bot is on the last page, if it is we have to disable the Forward and Go Last buttons
         if self.current_page == self.page_count:
-            log.debug(f"Current Page is Last Page, Disabling Button and GoLast Button")
+            log.debug("Current Page is Last Page, Disabling Button and GoLast Button")
             self.go_last.disabled = True
             button.disabled = True
 
@@ -171,9 +171,9 @@ class Paginator(discord.ui.View):
         # Since the bot is on the last page, we have to disable the forward and last buttons
         self.current_page = len(self.pages)
 
-        log.debug(f"Disabling Forward Button")
+        log.debug("Disabling Forward Button")
         self.forward_button.disabled = True
-        log.debug(f"Disabling Go Last Button")
+        log.debug("Disabling Go Last Button")
         button.disabled = True
 
         self.children[1].disabled = False
@@ -204,23 +204,23 @@ class Paginator(discord.ui.View):
         # The kill switch removes all buttons from the paginator to effectively kill it
         # We have to remove all the buttons from the paginator, so we first disable them all and then remove them.
 
-        log.debug(f"Disabling all Buttons")
+        log.debug("Disabling all Buttons")
         self.go_first.disabled = True
         self.previous_button.disabled = True
         self.forward_button.disabled = True
         self.go_last.disabled = True
         self.end.disabled = True
-        log.debug(f"Disabled all Buttons, Removing")
+        log.debug("Disabled all Buttons, Removing")
 
         self.remove_item(self.go_first)
         self.remove_item(self.previous_button)
         self.remove_item(self.forward_button)
         self.remove_item(self.go_last)
         self.remove_item(self.end)
-        log.debug(f"Removed all buttons")
+        log.debug("Removed all buttons")
 
         page = ezembed.create_embed(
-            title=f"**This Interaction has Ended**", color=0xFF0000
+            title="**This Interaction has Ended**", color=0xFF0000
         )
         await interaction.response.edit_message(
             embed=page,
@@ -231,7 +231,7 @@ class Paginator(discord.ui.View):
         """Runs the Paginator"""
 
         # Runs the paginator
-        log.debug(f"Running Paginator")
+        log.debug("Running Paginator")
         if not isinstance(messageable, abc.Messageable):
             log.error(f"{messageable} is not abc.Messageable")
             raise TypeError("messageable should be a subclass of abc.Messageable")

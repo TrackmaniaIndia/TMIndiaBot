@@ -1,15 +1,14 @@
-import discord
-import discord
 import os
-import requests
 import threading
-
-import util.logging.convert_logging as convert_logging
-
-from discord.ext import tasks
 from datetime import datetime
+from logging import raiseExceptions
+
+import discord
+import requests
+from discord.ext import tasks
 from dotenv import load_dotenv
 
+from util.logging import convert_logging
 
 log = convert_logging.get_logging()
 
@@ -17,36 +16,37 @@ log = convert_logging.get_logging()
 @tasks.loop(minutes=10)
 async def keep_alive(client: discord.Bot):
     log.debug(f"10 Minutes have passed, Task activated - at {datetime.utcnow()}")
-    log.debug(f"Pinging API")
+    log.debug("Pinging API")
     try:
         ping_api()
-        log.debug(f"API Ping Successful")
+        log.debug("API Ping Successful")
     except:
         log.error("API is Offline")
-    log.debug(f"Sending Message to Channel to Keep This Damned Thing Alive")
-    log.debug(f"Got Channel Successfully")
+    log.debug("Sending Message to Channel to Keep This Damned Thing Alive")
+    log.debug("Got Channel Successfully")
     channel = client.get_channel(881732050451849216)
-    log.debug(f"Sending Message to Channel")
+    log.debug("Sending Message to Channel")
     await channel.send(f"Bot is still alive at {datetime.utcnow()}")
-    log.debug(f"Sent Message to Channel")
+    log.debug("Sent Message to Channel")
 
 
 def ping_api():
-    log.debug(f"Loading Dotenv")
+    log.debug("Loading Dotenv")
     load_dotenv()
-    BASE_API_URL = os.getenv("BASE_API_URL")
+    base_api_url = os.getenv("base_api_url")
 
-    log.info(f"Requesting from API")
+    log.info("Requesting from API")
     try:
-        log.debug(f"Creating Thread for API Ping")
+        log.debug("Creating Thread for API Ping")
         request_thread = threading.Thread(
-            target=requests.get, args=(str(BASE_API_URL),)
+            target=requests.get, args=(str(base_api_url),)
         )
-        log.info(f"Created Thread for Pinging API, Starting")
+        log.info("Created Thread for Pinging API, Starting")
         my_request = request_thread.start()
-        log.info(f"Request Successful, Joining Thread")
+        del my_request
+        log.info("Request Successful, Joining Thread")
         request_thread.join()
-        log.debug(f"Thread Joined")
+        log.debug("Thread Joined")
     except:
         raise Exception("API is OFFLINE")
-    log.info(f"Successfully Received Data from API")
+    log.info("Successfully Received Data from API")

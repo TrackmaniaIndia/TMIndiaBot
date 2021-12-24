@@ -1,6 +1,7 @@
-import coloredlogs
 import json
 import logging
+
+import coloredlogs
 
 
 def get_logging() -> logging.Logger:
@@ -10,7 +11,7 @@ def get_logging() -> logging.Logger:
         logging.Logger: The Logger
     """
     # Getting the verbose level for the loggers
-    with open("./data/config.json") as file:
+    with open("./data/config.json", encoding="UTF-8") as file:
         config = json.load(file)
 
         normal_logging_level = config["log_level"]
