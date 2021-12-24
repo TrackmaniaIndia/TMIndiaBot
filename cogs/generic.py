@@ -28,27 +28,24 @@ class Generic(commands.Cog, description="Generic Functions"):
 
         log.info("cogs.generic has finished initializing")
 
-    @classmethod
     @commands.slash_command(
         name="ping",
         description="Get ping of bot in ms",
     )
-    async def _ping(cls, ctx: commands.Context):
+    async def _ping(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        await ctx.respond(f"Pong! {round(cls.client.latency * 1000, 2)}ms")
+        await ctx.respond(f"Pong! {round(self.client.latency * 1000, 2)}ms")
 
-    @classmethod
     @commands.slash_command(name="version", description="Gives the current bot version")
-    async def _version(cls, ctx: commands.Context):
+    async def _version(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        await ctx.respond(f"Bot Version is {cls.version}", ephemeral=True)
+        await ctx.respond(f"Bot Version is {self.version}", ephemeral=True)
 
-    @classmethod
     @commands.slash_command(
         name="sourcecode",
         description="Sends you a link to the bot source code on github",
     )
-    async def _source(cls, ctx: commands.Context):
+    async def _source(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         log.debug("Creating Button for Source Code")
         source_code_button = discord.ui.Button(
@@ -62,26 +59,24 @@ class Generic(commands.Cog, description="Generic Functions"):
             view=ViewAdder([source_code_button]),
         )
 
-    @classmethod
     @commands.slash_command(
         guild_ids=GUILD_IDS,
         name="invitelink",
         description="Gives you an invite link for the Trackmania India discord server",
     )
-    async def _server_invite(cls, ctx: commands.Context):
+    async def _server_invite(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         await ctx.respond(
             "Here is an invite for you to share with your friends\nhttps://discord.gg/yvgFYsTKNr",
             ephemeral=True,
         )
 
-    @classmethod
     @commands.slash_command(
         guild_ids=GUILD_IDS,
         name="halloffame",
         description="Gives you the link for the TMI Hall of Fame",
     )
-    async def _link_to_hall_of_fame(cls, ctx: commands.Context):
+    async def _link_to_hall_of_fame(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         log.debug("Creating Button for Hall of Fame")
         hall_of_fame_button = discord.ui.Button(
@@ -96,12 +91,11 @@ class Generic(commands.Cog, description="Generic Functions"):
             ephemeral=True,
         )
 
-    @classmethod
     @commands.slash_command(
         name="nextproject",
         description="A Github link to the next project, has planned, in progress and finished features.",
     )
-    async def _next_project(cls, ctx: commands.Context):
+    async def _next_project(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         log.debug("Creating Button for Next Project")
         next_project_button = discord.ui.Button(
@@ -115,12 +109,11 @@ class Generic(commands.Cog, description="Generic Functions"):
             ephemeral=True,
         )
 
-    @classmethod
     @commands.slash_command(
         name="invitebot",
         description="Give an invite link for the bot",
     )
-    async def _invite_bot(cls, ctx: commands.Context):
+    async def _invite_bot(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
 
         await ctx.respond(
@@ -131,12 +124,11 @@ class Generic(commands.Cog, description="Generic Functions"):
             ephemeral=True,
         )
 
-    @classmethod
     @commands.slash_command(
         name="testingserver",
         description="Get an invite to the TMI Bot Testing Server",
     )
-    async def _testing_server_invite(cls, ctx: commands.Context):
+    async def _testing_server_invite(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
 
         await ctx.respond(
@@ -144,12 +136,11 @@ class Generic(commands.Cog, description="Generic Functions"):
             ephemeral=True,
         )
 
-    @classmethod
     @commands.slash_command(
         name="suggest",
         description="Got a Suggestion? Send it here!",
     )
-    async def _suggest(cls, ctx: commands.Context):
+    async def _suggest(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
 
         log.debug("Creating button for new github issue")
@@ -166,12 +157,11 @@ class Generic(commands.Cog, description="Generic Functions"):
             ephemeral=True,
         )
 
-    @classmethod
     @commands.slash_command(
         name="commandlist",
         description="Gives you a link to the command list",
     )
-    async def _command_list(cls, ctx: commands.Context):
+    async def _command_list(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         log.debug("Creating Button for Command List")
         command_list_button = discord.ui.Button(
@@ -185,7 +175,6 @@ class Generic(commands.Cog, description="Generic Functions"):
             view=ViewAdder([command_list_button]),
         )
 
-    @classmethod
     @commands.slash_command(
         guild_ids=[GUILD_IDS[0]],
         name="reloadall",
@@ -193,13 +182,13 @@ class Generic(commands.Cog, description="Generic Functions"):
         hidden=True,
     )
     @permissions.is_owner()
-    async def _reload_all(cls, ctx: commands.Context):
+    async def _reload_all(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         for filename in os.listdir("./cogs"):
             if filename.endswith(".py"):
                 log.info(f"Reloading cogs.{filename[:-3]}")
-                cls.client.unload_extension(f"cogs.{filename[:-3]}")
-                cls.client.load_extension(f"cogs.{filename[:-3]}")
+                self.client.unload_extension(f"cogs.{filename[:-3]}")
+                self.client.load_extension(f"cogs.{filename[:-3]}")
         await ctx.respond("Reloaded all cogs")
 
 

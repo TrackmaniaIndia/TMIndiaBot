@@ -32,13 +32,12 @@ class Listeners(commands.Cog, description="Generic Functions"):
         log.debug("Received Statuses")
         log.info("cogs.listeners has finished initializing")
 
-    @classmethod
     @commands.Cog.listener()
-    async def on_ready(cls):
+    async def on_ready(self):
         # Changes Precense to the default status
         # Default Status is:
         #    Version: VERSION! Online and Ready!
-        await cls.client.change_presence(
+        await self.client.change_presence(
             status=discord.Status.online,
             activity=discord.Game(f"Version: {version}! Online and Ready"),
         )
@@ -55,12 +54,12 @@ class Listeners(commands.Cog, description="Generic Functions"):
 
         # Starting the Keep Alive loop that periodically sends a message to a designated channel and pings the API every 30 minutes
         log.debug("Starting Keep Alive Loop")
-        keep_alive.start(cls.client)
+        keep_alive.start(self.client)
         log.debug("Started Keep Alive Loop")
 
         # Starting the Change Status Loop that Changes the Bot's Status Every 10 Minutes
         log.debug("Start Change Status Loop")
-        change_status.start(cls.client, cls.statuses)
+        change_status.start(self.client, self.statuses)
         log.debug("Started Change Status Loop")
 
         # Deleting the TOTD Image if it exists
@@ -70,7 +69,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
 
         # Starting the TOTD Image Deleter Loop
         log.debug("Starting TOTD Image Loop")
-        totd_deleter.start(cls.client)
+        totd_deleter.start(self.client)
         log.debug("Started TOTD Image")
 
         # Getting the Announcement Channels for where the bot should send that it is ready
@@ -89,7 +88,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
             log.debug(f"Sending Message in {announcement_channel}")
 
             # Sending Message to the Channel
-            channel = cls.client.get_channel(int(announcement_channel))
+            channel = self.client.get_channel(int(announcement_channel))
             try:
                 # Inside a TryExcept to prevent the bot from crashing if the channel is deleted or permissions to send messages are removed
                 await channel.send(
@@ -112,9 +111,8 @@ class Listeners(commands.Cog, description="Generic Functions"):
 
         log.info("Bot now Usable")
 
-    @classmethod
     @commands.Cog.listener()
-    async def on_guild_join(cls, guild: discord.Guild):
+    async def on_guild_join(self, guild: discord.Guild):
         log_join_guild(guild)
         # Bot prints a message when it joins a Guild
         log.critical(f"The Bot has Joined {guild.name} with id {guild.id}")
@@ -134,9 +132,8 @@ class Listeners(commands.Cog, description="Generic Functions"):
             )
             json.dump({"quotes": []}, file, indent=4)
 
-    @classmethod
     @commands.Cog.listener()
-    async def on_guild_remove(cls, guild: discord.Guild):
+    async def on_guild_remove(self, guild: discord.Guild):
         log_leave_guild(guild)
 
         # Bot prints a message when it leaves or is removed from a Guild
@@ -144,10 +141,9 @@ class Listeners(commands.Cog, description="Generic Functions"):
             f"The bot has left/been kicked/been banned from {guild.name} with id {guild.id}"
         )
 
-    @classmethod
     @commands.Cog.listener()
     async def on_application_command_error(
-        cls, ctx, error: discord.ApplicationCommandError
+        self, ctx, error: discord.ApplicationCommandError
     ):
         # Checking if Error Message Should Be Printed Out
         with open("./data/config.json", "r", encoding="UTF-8") as file:
@@ -161,7 +157,7 @@ class Listeners(commands.Cog, description="Generic Functions"):
             log.debug("Error will be printed to discord server")
 
         # Getting the Error Channel
-        channel = cls.client.get_channel(int(config["errorChannel"]))
+        channel = self.client.get_channel(int(config["errorChannel"]))
 
         embed = ezembed.create_embed(
             title="An Error Has Occured",

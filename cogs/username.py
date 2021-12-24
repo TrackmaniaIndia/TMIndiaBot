@@ -20,13 +20,12 @@ class Username(commands.Cog):
         self.client = client
         log.info("cogs.username has finished initializing")
 
-    @classmethod
     @commands.slash_command(
         name="storeusername",
         description="Stores Username in JSON File for Future Use and Speed",
     )
     async def _store_username(
-        cls,
+        self,
         ctx: commands.Context,
         username: Option(str, "Your Trackmania2020 Username", required=True),
     ):
@@ -104,12 +103,11 @@ class Username(commands.Cog):
         await ctx.respond(embed=embed)
         log.debug("Sent Success Message")
 
-    @classmethod
     @commands.slash_command(
         name="checkusername",
         description="Checks if your username is stored in the file",
     )
-    async def _check_username(cls, ctx: commands.Context):
+    async def _check_username(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         # Checking if the given username is stored in the JSON file
         if ret.check_discord_id_in_file(str(ctx.author.id)):
@@ -127,12 +125,11 @@ class Username(commands.Cog):
             )
             await ctx.respond(embed=embed)
 
-    @classmethod
     @commands.slash_command(
         name="removeusername",
         description="Removes your username from the file if present",
     )
-    async def _remove_username(cls, ctx: commands.Context):
+    async def _remove_username(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         # Removes a username from the JSON file
         # Confirmation prompt to check if the user really wants to remove their username
@@ -198,14 +195,13 @@ class Username(commands.Cog):
         )
         await ctx.respond(embed=embed)
 
-    @classmethod
     @commands.slash_command(
         name="getid",
         description="Gets the Trackmania ID of A Player",
     )
     @permissions.is_owner()
     async def _get_id(
-        cls,
+        self,
         ctx: commands.Context,
         username: Option(str, "The Trackmania2020 Username", required=True),
     ):

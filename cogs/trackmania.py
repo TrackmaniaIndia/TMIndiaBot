@@ -10,7 +10,7 @@ import util.discord.easy_embed as ezembed
 import util.trackmania.tm2020.leaderboards.campaign as tm2020_campaign
 
 from util.constants import GUILD_IDS
-from util.cog_helpers import common_functions
+from util import common_functions
 import util.trackmania.tm2020.player as tm2020_player
 from util.discord.confirmation import Confirmer
 from util.discord.paginator import Paginator
@@ -27,13 +27,12 @@ class Trackmania(commands.Cog):
         self.client = client
         log.info("cogs.trackmania has finished initializing")
 
-    @classmethod
     @commands.slash_command(
         name="playerdetails",
         description="player details for a specific player",
     )
     async def _player_details(
-        cls,
+        self,
         ctx: commands.Context,
         username: Option(str, "The Trackmania2020 Username", required=True),
     ):
@@ -78,13 +77,12 @@ class Trackmania(commands.Cog):
         # Running the Paginator
         await player_detail_paginator.run(ctx)
 
-    @classmethod
     @commands.slash_command(
         guild_ids=[876042400005505066], name="updatecampaignleaderboards"
     )
     @permissions.is_owner()
     async def _update_campaign_leaderboards(
-        cls,
+        self,
         ctx: commands.Context,
         year: Option(str, "Choose the year", choices=["2020", "2021"]),
         season: Option(
@@ -169,7 +167,6 @@ class Trackmania(commands.Cog):
             )
         )
 
-    @classmethod
     @commands.slash_command(
         guild_ids=GUILD_IDS,
         name="stalkplayerfortscc",
@@ -178,7 +175,7 @@ class Trackmania(commands.Cog):
     )
     @permissions.has_any_role("TSCC", "Moderator", "admin")
     async def _check_player(
-        cls,
+        self,
         ctx: commands.Context,
         username: Option(str, description="Username of the player", required=True),
     ):
@@ -200,13 +197,12 @@ class Trackmania(commands.Cog):
             await ctx.respond(embed=tm2020_campaign.get_player_good_maps(username))
             log.info("Player stalking was a success")
 
-    @classmethod
     @commands.slash_command(
         name="totd",
         description="Latest TOTD",
     )
     async def _totd(
-        cls,
+        self,
         ctx: commands.Context,
     ):
         log.debug("Deferring Response")
@@ -242,13 +238,12 @@ class Trackmania(commands.Cog):
                 view=ViewAdder([download_map, tmio_button]),
             )
 
-    @classmethod
     @commands.slash_command(
         name="cotddetails",
         description="COTD Data of a Given Username",
     )
     async def _cotd(
-        cls,
+        self,
         ctx: commands.Context,
         username: Option(str, "The TM2020 Username of the Player", required=True),
     ):

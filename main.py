@@ -42,9 +42,7 @@ log.info("Got Bot Token")
 #   voice_states
 #   webhooks
 log.info("Creating Client")
-client = commands.Bot(
-    prefix="!!", intents=discord.Intents.default(), debug_guild=876042400005505066
-)
+client = discord.Bot(intents=discord.Intents.default(), debug_guild=876042400005505066)
 log.info("Created Client")
 
 # This Thread runs the TMIndiaBotApi, clone from https://github.com/artifexdevstuff/TMIndiaBotApi

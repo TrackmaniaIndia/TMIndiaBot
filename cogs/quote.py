@@ -17,7 +17,6 @@ class Quote(commands.Cog, description="Quoting Functions"):
         self.client = client
         log.info("cogs.quote has finished initializing")
 
-    @classmethod
     @commands.slash_command(
         name="quote",
         description="Saves a Quote, Only Usable by Mods",
@@ -30,7 +29,7 @@ class Quote(commands.Cog, description="Quoting Functions"):
         "admin",
     )
     async def _quote(
-        cls,
+        self,
         ctx: commands.Context,
         *,
         message: Option(
@@ -66,9 +65,8 @@ class Quote(commands.Cog, description="Quoting Functions"):
         )
         await ctx.respond(embed=embed)
 
-    @classmethod
     @commands.slash_command(name="randquote", description="Shows a random saved quote")
-    async def _rand_quote(cls, ctx: commands.Context):
+    async def _rand_quote(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         # Gets a random quote from the file
         # Random Number Generator is not very consistent, need to work on an alternative
@@ -85,12 +83,11 @@ class Quote(commands.Cog, description="Quoting Functions"):
         log.debug("Sending Random Quote")
         await ctx.respond(embed=embed)
 
-    @classmethod
     @commands.slash_command(
         name="lastquote",
         description="Displays the last quote saved",
     )
-    async def _last_quote(cls, ctx: commands.Context):
+    async def _last_quote(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
         # This command sends the last quote that was saved
         log.debug("Getting the Last Quote Saved")
