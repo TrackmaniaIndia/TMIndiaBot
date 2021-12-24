@@ -1,9 +1,7 @@
-import discord
-
-import util.common_functions as common_functions
-import util.logging.convert_logging as convert_logging
-
 from datetime import datetime, timezone, timedelta
+from util import common_functions
+from util.logging import convert_logging
+import discord
 
 log = convert_logging.get_logging()
 
@@ -34,7 +32,7 @@ def create_embed(
         title=title,
         description=description,
         color=color,
-        url=discord.Embed.Empty if url == None else url,
+        url=discord.Embed.Empty if url is None else url,
     )
 
     # Adds the timestamp the embed was created on
