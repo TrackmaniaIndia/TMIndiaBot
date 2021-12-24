@@ -1,17 +1,17 @@
-import requests
 import time
 import json
+import requests
 import discord
 
-import util.logging.convert_logging as convert_logging
+from util.logging import convert_logging
 import util.discord.easy_embed as ezembed
-import util.common_functions as common_functions
+from util import common_functions
 
 log = convert_logging.get_logging()
 BASE_LEADERBOARD_URL = "http://localhost:3000/tm2020/leaderboard/"
 
 
-def _get_all_campaign_ids(year: str = "2021", season: str = "Fall") -> list[str]:
+def get_all_campaign_ids(year: str = "2021", season: str = "Fall") -> list[str]:
     """Gets a list of all campaign ids for a given year and season
 
     Args:
@@ -23,11 +23,13 @@ def _get_all_campaign_ids(year: str = "2021", season: str = "Fall") -> list[str]
         list[str]: List of ids
     """
     log.debug(f"Opening {year}/{season.lower()} Data File")
-    with open(f"./data/json/campaign/{year}/{season.lower()}.json", "r") as file:
+    with open(
+        f"./data/json/campaign/{year}/{season.lower()}.json", "r", encoding="UTF-8"
+    ) as file:
         file_data = json.load(file)
         id_list = file_data["ids"]
 
-    log.debug(f"Not Ignoring First Five Maps")
+    log.debug("Not Ignoring First Five Maps")
     return id_list
 
 
@@ -58,28 +60,34 @@ def update_leaderboards_campaign(
                 f"Got Leaderboard Data of {id}, Map No: {i + 1}, Try Number: {try_no}"
             )
 
-            log.debug(f"Sleeping for 7s")
+            log.debug("Sleeping for 7s")
             time.sleep(7)
 
-        log.debug(f"Dumping Data to a File")
+        log.debug("Dumping Data to a File")
         with open(
-            f"./data/leaderboard/{year}/{season.lower()}/{i + 1}.json", "w"
+            f"./data/leaderboard/{year}/{season.lower()}/{i + 1}.json",
+            "w",
+            encoding="UTF-8",
         ) as file:
             json.dump(leaderboard_data, file, indent=4)
 
-        log.debug(f"Sleeping for 15s")
+        log.debug("Sleeping for 15s")
         time.sleep(15)
         log.info(f"Finished Map #{i + 1}")
 
 
 def get_player_list(map_no: str, year: str = "2021", season: str = "Fall"):
     log.debug(f"Opening File, Map No -> {map_no}")
-    with open(f"./data/leaderboard/{year}/{season.lower()}/{map_no}.json", "r") as file:
+    with open(
+        f"./data/leaderboard/{year}/{season.lower()}/{map_no}.json",
+        "r",
+        encoding="UTF-8",
+    ) as file:
         data = json.load(file)
 
     player_list = []
 
-    log.debug(f"Appending Players")
+    log.debug("Appending Players")
     for player in data:
         player_list.append((player["player"]["name"], player["position"]))
 
@@ -137,7 +145,7 @@ def get_player_good_maps(
             name="**Top 100**", value="```" + top_100_string + "```", inline=False
         )
     else:
-        log.debug(f"Player does not have any top 100 ranks")
+        log.debug("Player does not have any top 100 ranks")
         player_embed.add_field(
             name="**Top 100**",
             value="Player does not have any top 100 times for maps 06-25",
@@ -150,7 +158,7 @@ def get_player_good_maps(
             name="**Top 200**", value="```" + top_200_string + "```", inline=False
         )
     else:
-        log.debug(f"Player does not have any top 200 ranks")
+        log.debug("Player does not have any top 200 ranks")
         player_embed.add_field(
             name="**Top 200**",
             value="Player does not have any top 200 times for maps 06-25",
@@ -163,7 +171,7 @@ def get_player_good_maps(
             name="**Top 300**", value="```" + top_300_string + "```", inline=False
         )
     else:
-        log.debug(f"Player does not have any top 300 ranks")
+        log.debug("Player does not have any top 300 ranks")
         player_embed.add_field(
             name="**Top 300**",
             value="Player does not have any top 300 times for maps 06-25",
@@ -176,7 +184,7 @@ def get_player_good_maps(
             name="**Top 400**", value="```" + top_400_string + "```", inline=False
         )
     else:
-        log.debug(f"Player does not have any top 400 ranks")
+        log.debug("Player does not have any top 400 ranks")
         player_embed.add_field(
             name="**Top 400**",
             value="Player does not have any top 400 times for maps 06-25",
@@ -189,7 +197,7 @@ def get_player_good_maps(
             name="**Top 500**", value="```" + top_500_string + "```", inline=False
         )
     else:
-        log.debug(f"Player does not have any top 500 ranks")
+        log.debug("Player does not have any top 500 ranks")
         player_embed.add_field(
             name="**Top 500**",
             value="Player does not have any top 500 times for maps 06-25",
