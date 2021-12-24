@@ -1,8 +1,8 @@
-import psutil
 import platform
 import json
+import psutil
 
-import util.logging.convert_logging as convert_logging
+from util.logging import convert_logging
 
 log = convert_logging.get_logging()
 
@@ -29,7 +29,7 @@ def print_system_info():
 
 def get_version():
     """Get's Current Version of the Bot"""
-    with open("./data/config.json") as file:
+    with open("./data/config.json", encoding="UTF-8") as file:
         config = json.load(file)
         version = config["bot_version"]
         file.close()
