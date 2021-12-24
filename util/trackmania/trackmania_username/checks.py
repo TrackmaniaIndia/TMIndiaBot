@@ -1,9 +1,7 @@
 import os
 import sys
 import requests
-
 from util.logging import convert_logging
-
 from util.trackmania.trackmania_username.get_stored import get_stored_usernames
 from dotenv import load_dotenv
 

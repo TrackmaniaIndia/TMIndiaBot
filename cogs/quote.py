@@ -5,7 +5,6 @@ from discord.commands.commands import Option
 from util.logging import convert_logging
 import util.quoting.quote as quote_functions
 import util.discord.easy_embed as ezembed
-
 from util.logging.command_log import log_command
 
 # Creating a logger

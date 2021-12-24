@@ -1,8 +1,6 @@
 import json
 import os
-
 from util.logging import convert_logging
-
 from dotenv import load_dotenv
 
 load_dotenv()

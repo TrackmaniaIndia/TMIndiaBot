@@ -3,7 +3,6 @@ import requests
 import os
 import json
 import shutil
-
 from util import common_functions
 from util.logging import convert_logging
 import util.discord.easy_embed as ezembed

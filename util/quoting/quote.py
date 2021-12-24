@@ -1,7 +1,6 @@
 import json
 from datetime import datetime
 import discord
-
 import util.discord.easy_embed as ezembed
 import numpy as np
 from util.logging import convert_logging

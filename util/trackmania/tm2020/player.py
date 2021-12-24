@@ -2,7 +2,6 @@ import json
 import discord
 import requests
 import flag
-
 from util import common_functions
 from util.logging import convert_logging
 import util.discord.easy_embed as ezembed

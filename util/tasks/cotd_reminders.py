@@ -1,8 +1,6 @@
 import datetime
 import discord
-
 from util.logging import convert_logging
-
 from discord.ext import tasks
 
 

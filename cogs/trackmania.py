@@ -4,11 +4,9 @@ import discord
 from discord.commands.commands import Option
 from discord.commands import permissions
 from discord.ext import commands
-
 from util.logging import convert_logging
 import util.discord.easy_embed as ezembed
 import util.trackmania.tm2020.leaderboards.campaign as tm2020_campaign
-
 from util.constants import GUILD_IDS
 from util import common_functions
 import util.trackmania.tm2020.player as tm2020_player

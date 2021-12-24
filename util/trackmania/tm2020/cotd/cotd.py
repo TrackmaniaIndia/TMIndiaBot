@@ -1,7 +1,6 @@
 import discord
 import requests
 import cv2
-
 import matplotlib.pyplot as plt
 from util.logging import convert_logging
 import util.discord.easy_embed as ezembed

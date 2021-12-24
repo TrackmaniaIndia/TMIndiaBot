@@ -5,9 +5,7 @@ from datetime import datetime
 import requests
 from dotenv import load_dotenv
 import discord
-
 from util.logging import convert_logging
-
 from discord.ext import tasks
 
 

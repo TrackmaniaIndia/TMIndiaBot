@@ -1,13 +1,9 @@
-"""Generic Functions of the Bot"""
-
 import os
 import discord
 from discord.ext import commands
 from discord.commands import permissions
-
 from util.logging import convert_logging
 import util.discord.easy_embed as ezembed
-
 from util.discord.view_adder import ViewAdder
 from util.logging.command_log import log_command
 from util.cog_helpers.generic_helper import get_version

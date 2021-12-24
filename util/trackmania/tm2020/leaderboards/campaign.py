@@ -2,7 +2,6 @@ import time
 import json
 import requests
 import discord
-
 from util.logging import convert_logging
 import util.discord.easy_embed as ezembed
 from util import common_functions

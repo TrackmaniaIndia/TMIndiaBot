@@ -2,7 +2,6 @@ import discord
 from discord.commands.commands import Option
 from discord.commands import permissions
 from discord.ext import commands
-
 import util.trackmania.trackmania_username.retrieving as ret
 import util.trackmania.trackmania_username.storing as stor
 from util.logging import convert_logging

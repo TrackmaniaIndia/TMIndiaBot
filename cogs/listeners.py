@@ -4,10 +4,8 @@ import json
 from itertools import cycle
 import discord
 from discord.ext import commands
-
 from util.logging import convert_logging
 import util.discord.easy_embed as ezembed
-
 from util.cog_helpers import generic_helper
 from util.cog_helpers.listener_helper import _get_statuses
 from util.tasks.keep_alive import keep_alive
