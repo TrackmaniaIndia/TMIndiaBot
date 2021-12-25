@@ -279,6 +279,7 @@ class Trackmania(commands.Cog):
         name="totdreminderswitch",
         descriptions="Switches on or off the TOTD Reminder",
     )
+    @permissions.is_owner()
     async def _totd_reminder_switch(self, ctx: commands.Context):
         await ctx.defer()
         log.debug(f"Opening Config Data")
