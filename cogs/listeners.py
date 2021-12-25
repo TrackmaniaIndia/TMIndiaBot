@@ -15,6 +15,7 @@ from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
 from util.tasks.totd_image_delete import totd_deleter
 from util.before_launch.folder_check import folder_check
+from util.tasks.cotd_reminders import cotd_one_reminder, cotd_three_reminder, totd_info
 
 # Creating logger
 log = convert_logging.get_logging()
@@ -77,6 +78,21 @@ class Listeners(commands.Cog, description="Generic Functions"):
         log.info("Starting TOTD Image Loop")
         totd_deleter.start(self.client)
         log.info("Started TOTD Image")
+
+        # Starting COTD One Reminder
+        log.info("Starting COTD One Reminder Loop")
+        cotd_one_reminder.start(self.client)
+        log.info("Started COTD One Reminder")
+
+        # Starting COTD Three Reminder
+        log.info("Starting COTD Three Reminder Loop")
+        cotd_three_reminder.start(self.client)
+        log.info("Started COTD Three Reminder")
+
+        # Starting TOTD Info Reminder Loop
+        log.info("Starting TOTD Info Reminder Loop")
+        totd_info.start(self.client)
+        log.info("Started Totd Info Reminder")
 
         # Getting the Announcement Channels for where the bot should send that it is ready
         # Channels taken from ./data/json/announcement_channels.json

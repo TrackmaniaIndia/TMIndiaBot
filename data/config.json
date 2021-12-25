@@ -12,5 +12,6 @@
     "discord_log_level": "info",
     "showStackTrace": true,
     "print_errors": true,
-    "errorChannel": 876069587140087828
+    "errorChannel": 876069587140087828,
+    "totdReminders": false
 }

@@ -1,5 +1,6 @@
 import threading
 import time
+import json
 
 import discord
 from discord.commands import permissions
@@ -272,6 +273,30 @@ class Trackmania(commands.Cog):
             await ctx.respond(file=image, embed=cotd_data)
         else:
             await ctx.respond(embed=cotd_data)
+
+    @commands.slash_command(
+        guild_ids=GUILD_IDS,
+        name="totdreminderswitch",
+        descriptions="Switches on or off the TOTD Reminder",
+    )
+    async def _totd_reminder_switch(self, ctx: commands.Context):
+        await ctx.defer()
+        log.debug(f"Opening Config Data")
+        with open("./data/config.json", "r", encoding="UTF-8") as file:
+            config_data = json.load(file)
+            log.debug(f"Got Config Data")
+
+        config_data["totdReminders"] = not config_data["totdReminders"]
+
+        log.critical(f'TOTD Reminders set to {config_data["totdReminders"]}')
+
+        log.debug(f"Dumping Config Data to File")
+        with open("./data/config.json", "w", encoding="UTF-8") as file:
+            json.dump(config_data, file, indent=4)
+
+        await ctx.respond(
+            f"TOTD Reminders set to: {config_data['totdReminders']}", ephemeral=True
+        )
 
 
 def setup(client: discord.Bot):
