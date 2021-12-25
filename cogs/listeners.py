@@ -14,6 +14,7 @@ from util.logging.command_log import log_join_guild, log_leave_guild
 from util.tasks.keep_alive import keep_alive
 from util.tasks.status_change import change_status
 from util.tasks.totd_image_delete import totd_deleter
+from util.before_launch.folder_check import folder_check
 
 # Creating logger
 log = convert_logging.get_logging()
@@ -51,6 +52,11 @@ class Listeners(commands.Cog, description="Generic Functions"):
 
         # Adding one to the times run
         times_run += 1
+
+        # Checking the folders
+        log.info("Checking Folders")
+        folder_check(self.client)
+        log.info("Checked Folders")
 
         # Starting the Keep Alive loop that periodically sends a message to a designated channel and pings the API every 30 minutes
         log.info("Starting Keep Alive Loop")
