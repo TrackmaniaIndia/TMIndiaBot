@@ -53,17 +53,9 @@ def update_leaderboards_campaign(
         #     continue
         leaderboard_data = []
 
-        try_no = 0
-        while len(leaderboard_data) < 500:
-            log.debug(f"Requesting for Leaderboard Data of {id}")
-            leaderboard_data = requests.get(BASE_LEADERBOARD_URL + str(id)).json()
-            log.debug(
-                f"Got Leaderboard Data of {id}, Map No: {i + 1}, Try Number: {try_no}"
-            )
-
-            log.debug("Sleeping for 7s")
-            time.sleep(7)
-
+        leaderboard_data = requests.get(
+            f"https://localhost:3000/tm2020/leaderboard/{id}/5"
+        ).json()
         log.debug("Dumping Data to a File")
         with open(
             f"./data/leaderboard/{year}/{season.lower()}/{i + 1}.json",
@@ -73,7 +65,7 @@ def update_leaderboards_campaign(
             json.dump(leaderboard_data, file, indent=4)
 
         log.debug("Sleeping for 15s")
-        time.sleep(15)
+        time.sleep(10)
         log.info(f"Finished Map #{i + 1}")
 
 
