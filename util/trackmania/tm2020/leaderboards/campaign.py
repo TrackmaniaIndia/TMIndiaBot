@@ -54,7 +54,7 @@ def update_leaderboards_campaign(
         leaderboard_data = []
 
         leaderboard_data = requests.get(
-            f"https://localhost:3000/tm2020/leaderboard/{id}/5"
+            f"http://localhost:3000/tm2020/leaderboard/{id}/5"
         ).json()
         log.debug("Dumping Data to a File")
         with open(
