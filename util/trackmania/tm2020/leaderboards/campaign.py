@@ -48,9 +48,9 @@ def update_leaderboards_campaign(
         season (str, optional): The season itself. Defaults to "Fall".
     """
     for i, id in enumerate(id_list):
-        if skip_first_five and i < 5:
-            log.debug(f"Skipping i={i}")
-            continue
+        # if skip_first_five and i < 5:
+        #     log.debug(f"Skipping i={i}")
+        #     continue
         leaderboard_data = []
 
         try_no = 0

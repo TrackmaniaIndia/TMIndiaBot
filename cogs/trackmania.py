@@ -98,7 +98,6 @@ class Trackmania(commands.Cog):
         # Try to only update the leaderboards using your testing bot so the main bot does not get slowed down by the constant
         # saving to files.
         firstfive = bool(firstfive)
-        print(firstfive)
         log.info("Creating Confirmation Prompt")
         confirm_continue = Confirmer()
 
