@@ -8,7 +8,7 @@ from typing import Optional, TYPE_CHECKING, cast
 
 import coloredlogs
 
-from bot import constants
+from TMIBot import constants
 
 TRACE_LEVEL = 5
 
@@ -91,29 +91,3 @@ def setup() -> None:
     get_logger("discord").setLevel(logging.WARNING)
 
     get_logger("asyncio").setLevel(logging.INFO)
-
-    _set_trace_loggers()
-
-
-def _set_trace_loggers() -> None:
-    """
-    Set loggers to the trace level according to the value from the BOT_TRACE_LOGGERS env var.
-    When the env var is a list of logger names delimited by a comma,
-    each of the listed loggers will be set to the trace level.
-    If this list is prefixed with a "!", all of the loggers except the listed ones will be set to the trace level.
-    Otherwise if the env var begins with a "*",
-    the root logger is set to the trace level and other contents are ignored.
-    """
-    level_filter = constants.Bot.trace_loggers
-    if level_filter:
-        if level_filter.startswith("*"):
-            get_logger().setLevel(TRACE_LEVEL)
-
-        elif level_filter.startswith("!"):
-            get_logger().setLevel(TRACE_LEVEL)
-            for logger_name in level_filter.strip("!,").split(","):
-                get_logger(logger_name).setLevel(logging.DEBUG)
-
-        else:
-            for logger_name in level_filter.strip(",").split(","):
-                get_logger(logger_name).setLevel(TRACE_LEVEL)

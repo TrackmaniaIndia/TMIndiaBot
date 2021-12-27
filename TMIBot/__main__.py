@@ -5,8 +5,8 @@ import aiohttp
 
 import bot
 from bot import constants
-from bot.bot import Bot, StartupError
-from bot.log import get_logger
+from TMIBot.bot import Bot, StartupError
+from TMIBot.log import get_logger
 
 try:
     npm_module = threading.Thread(
@@ -27,7 +27,7 @@ try:
 except StartupError as e:
     message = "Unknown Startup Error has Occured"
     if isinstance(
-            e.exception, (aiohttp.ClientConnectionError, aiohttp.ServerDisconnectedError)
+        e.exception, (aiohttp.ClientConnectionError, aiohttp.ServerDisconnectedError)
     ):
         message = "Could not Connect to the API"
 

@@ -4,4 +4,4 @@ WORKDIR /bot
 
 COPY . .
 
-CMD [ "python3", "-m", "bot"]
+CMD [ "python", "TMIBot"]

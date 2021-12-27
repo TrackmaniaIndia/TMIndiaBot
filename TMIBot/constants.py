@@ -57,7 +57,7 @@ def _env_var_constructor(loader, node):
 
 yaml.SafeLoader.add_constructor("!ENV", _env_var_constructor)
 
-with open("config.yaml", encoding="UTF-8") as file:
+with open("./config.yaml", encoding="UTF-8") as file:
     _CONFIG_YAML = yaml.safe_load(file)
 
 
@@ -150,7 +150,7 @@ class Bot(metaclass=YAMLGetter):
 
     prefix: str
     token: str
-    default_guilds: list[int]
+    default_guilds: list
     debug_guild: int
 
 

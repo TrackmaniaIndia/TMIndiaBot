@@ -8,8 +8,8 @@ import aiohttp
 import discord
 from discord.ext import commands
 
-from bot import api, constants
-from bot.log import get_logger
+from TMIBot import api, constants
+from TMIBot.log import get_logger
 
 log = get_logger()
 
@@ -51,14 +51,14 @@ class Bot(discord.Bot):
 
         return cls(
             intents=intents,
-            debug_guild=constants.DEBUG_GUILD,
+            debug_guild=constants.Bot.debug_guild,
         )
 
     def load_extensions(self) -> None:
         """Load all Enabled Extensions"""
 
         # Must be done to avoid circular import
-        from bot.utils.cogs import EXTENSIONS
+        from TMIBot.utils.cogs import EXTENSIONS
 
         extensions = set(EXTENSIONS)  # Mutable Copy
 
