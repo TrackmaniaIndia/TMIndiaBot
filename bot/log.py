@@ -2,7 +2,6 @@
 import logging
 import os
 import sys
-
 from logging import Logger, handlers
 from pathlib import Path
 from typing import Optional, TYPE_CHECKING, cast

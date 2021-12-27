@@ -1,6 +1,7 @@
-import aiohttp
-import threading
 import subprocess
+import threading
+
+import aiohttp
 
 import bot
 from bot import constants
@@ -26,7 +27,7 @@ try:
 except StartupError as e:
     message = "Unknown Startup Error has Occured"
     if isinstance(
-        e.exception, (aiohttp.ClientConnectionError, aiohttp.ServerDisconnectedError)
+            e.exception, (aiohttp.ClientConnectionError, aiohttp.ServerDisconnectedError)
     ):
         message = "Could not Connect to the API"
 

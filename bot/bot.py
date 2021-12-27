@@ -1,18 +1,14 @@
 """Class gotten from python-discord/bot which is licensed under MIT License"""
 import asyncio
 import socket
-import warnings
-from collections import defaultdict
 from contextlib import suppress
-from typing import Dict, List, Optional
-import requests
-from bot import api
+from typing import Optional
 
 import aiohttp
 import discord
 from discord.ext import commands
 
-from bot import constants
+from bot import api, constants
 from bot.log import get_logger
 
 log = get_logger()
@@ -43,7 +39,7 @@ class Bot(discord.Bot):
         while True:
             try:
                 log.info(f"Attempting site connection: {attempts + 1}")
-                response = requests.get("http://localhost:3000/")
+                await self.api_client.get("")
                 break
             except:
                 attempts += 1
