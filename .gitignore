@@ -151,7 +151,7 @@ format.bat
 /node_modules
 
 # The API
-/bot/utils/node/
+/TMIBot/utils/node/
 
 # The Makefile
 Makefile
@@ -163,7 +163,7 @@ logs/
 totd.png
 
 # Repository
-bot/data/leaderboard
+TMIBot/data/leaderboard
 
 # Graph Images
 overallranks.png
