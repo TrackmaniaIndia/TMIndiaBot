@@ -8,7 +8,7 @@ ENV PIP_NO_CACHE_DIR=false \
 RUN pip install -U poetry
 
 # Working Directory
-WORKDIR /bot 
+WORKDIR /TMIBot 
 
 # Install Project Dependencies
 COPY pyproject.toml poetry.lock ./
