@@ -4,8 +4,8 @@ import arrow
 from discord import Forbidden, http
 from discord.ext import commands
 
-from TMIBot.log import get_logger
-from TMIBot.utils.regex import MESSAGE_ID_RE
+from bot.log import get_logger
+from bot.utils.regex import MESSAGE_ID_RE
 
 log = get_logger(__name__)
 

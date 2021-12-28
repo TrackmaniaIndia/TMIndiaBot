@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from discord.ext import commands
 
-from bot import log, monkey_patches
+from bot import log, monkey_typing
 
 if TYPE_CHECKING:
     from TMIBot.bot import Bot
@@ -17,18 +17,18 @@ log.setup()
 if os.name == "nt":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-monkey_patches.patch_typing()
+monkey_typing.patch_typing()
 
 # This patches any convertors that use PartialMessage, but not the PartialMessageConverter itself
 # as library objects are made by this mapping.
 # https://github.com/Rapptz/discord.py/blob/1a4e73d59932cdbe7bf2c281f25e32529fc7ae1f/discord/ext/commands/converter.py#L984-L1004
-commands.converter.PartialMessageConverter = monkey_patches.FixedPartialMessageConverter
+commands.converter.PartialMessageConverter = monkey_typing.FixedPartialMessageConverter
 
 # Monkey-patch discord.py decorators to use the Command subclass which supports root aliases.
 # Must be patched before any cogs are added.
-commands.command = partial(commands.command, cls=monkey_patches.Command)
+commands.command = partial(commands.command, cls=monkey_typing.Command)
 commands.GroupMixin.command = partialmethod(
-    commands.GroupMixin.command, cls=monkey_patches.Command
+    commands.GroupMixin.command, cls=monkey_typing.Command
 )
 
 instance: "Bot" = None  # Global Bot instance.
