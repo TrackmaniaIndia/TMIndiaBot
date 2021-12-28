@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "TMIBot"
+name = "bot"
 version = "1.6.1"
 description = "The Open Source Trackmania Bot for the Trackmania India Discord Server."
 authors = ["Deepesh Nimma"]

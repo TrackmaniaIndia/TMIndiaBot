@@ -17,5 +17,5 @@ RUN poetry install --no-dev
 # Copy the Source Code
 COPY . .
 
-ENTRYPOINT [ "python" ]
+ENTRYPOINT [ "python3" ]
 CMD [ "-m", "TMIBot"]

@@ -5,8 +5,8 @@ import aiohttp
 
 import bot
 from bot import constants
-from TMIBot.bot import Bot, StartupError
-from TMIBot.log import get_logger
+from bot.bot import Bot, StartupError
+from bot.log import get_logger
 
 try:
     npm_module = threading.Thread(

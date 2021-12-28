@@ -2,7 +2,7 @@ from typing import Optional
 
 import aiohttp
 
-from TMIBot.constants import TMIAPI
+from .constants import TMIAPI
 
 
 class ResponseCodeError(ValueError):

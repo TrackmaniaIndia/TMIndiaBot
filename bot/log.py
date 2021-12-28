@@ -8,7 +8,7 @@ from typing import Optional, TYPE_CHECKING, cast
 
 import coloredlogs
 
-from TMIBot import constants
+from bot import constants
 
 TRACE_LEVEL = 5
 

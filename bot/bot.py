@@ -8,8 +8,8 @@ import aiohttp
 import discord
 from discord.ext import commands
 
-from TMIBot import api, constants
-from TMIBot.log import get_logger
+from bot import api, constants
+from bot.log import get_logger
 
 log = get_logger()
 

@@ -3,7 +3,7 @@ import inspect
 import pkgutil
 from typing import Iterator, NoReturn
 
-from TMIBot import cogs
+from bot import cogs
 
 
 def unqualify(name: str) -> str:

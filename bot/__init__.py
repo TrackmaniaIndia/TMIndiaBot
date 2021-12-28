@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from discord.ext import commands
 
-from TMIBot import log, monkey_patches
+from bot import log, monkey_patches
 
 if TYPE_CHECKING:
     from TMIBot.bot import Bot
