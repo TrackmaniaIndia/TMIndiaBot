@@ -178,9 +178,31 @@ class Error(metaclass=YAMLGetter):
     show_stack_trace: bool
     print_errors: bool
     totd_reminders: bool
-    
+
+
 class Channels(metaclass=YAMLGetter):
-    
+    section = "channels"
+
+    general: int
+    tm2020: int
+    tmnf: int
+    media: int
+
+    bot_updates: int
+    tmi_bot_channel: int
+
+    commands_allowed: list
+    announcement_channels: list
+    error_channel: int
+    keep_alive_channel: int
+
+
+class Roles(metaclass=YAMLGetter):
+    cotd_reminder_one: int
+    cotd_reminder_three: int
+
+    cotd_reminder_one_testing: int
+    cotd_reminder_three_testing: int
 
 
 class Colours(metaclass=YAMLGetter):
