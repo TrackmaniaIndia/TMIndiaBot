@@ -18,7 +18,7 @@ class Latency(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.guild_ids, name="ping", description="Gets Latency"
+        guild_ids=constants.Bot.default_guilds, name="ping", description="Gets Latency"
     )
     async def _ping(self, ctx: commands.Context) -> None:
         bot_ping = (arrow.utcnow() - ctx.message.created_at).total_seconds() * 1000
