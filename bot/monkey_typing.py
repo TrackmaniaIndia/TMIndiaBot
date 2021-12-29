@@ -24,7 +24,7 @@ class Command(commands.Command):
 
         if not isinstance(self.root_aliases, (list, tuple)):
             raise TypeError(
-                "Root aliases of a command must be a list or a tuple of strings."
+            	"Root aliases of a command must be a list or a tuple of strings."
             )
 
 

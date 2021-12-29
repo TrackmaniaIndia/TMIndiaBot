@@ -9,7 +9,7 @@ from discord.ext import commands
 from bot import log, monkey_typing
 
 if TYPE_CHECKING:
-    from TMIBot.bot import Bot
+    from bot.bot import Bot
 
 log.setup()
 
