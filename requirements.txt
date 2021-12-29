@@ -1,65 +1,54 @@
-aiohttp==3.7.4.post0
-aiosignal @ file:///home/deepesh/.cache/pypoetry/artifacts/30/30/0d/903be6c7ed45c2c0427a2a18486bb6ceb0a700c346a94414b6b395e16e/aiosignal-1.2.0-py3-none-any.whl
-arrow @ file:///home/deepesh/.cache/pypoetry/artifacts/d4/70/b2/8b15c441d98db1c8360d2649add0e8e44d1a2e9f702605933e39cef028/arrow-1.2.1-py3-none-any.whl
-astroid==2.9.0
-async-timeout==3.0.1
-attrs @ file:///home/deepesh/.cache/pypoetry/artifacts/f9/2e/54/025dd026b70173a331f1335fa6d1329f5993b949c2f3d623bdda20bf1f/attrs-21.2.0-py2.py3-none-any.whl
-black @ file:///home/deepesh/.cache/pypoetry/artifacts/3a/bb/f9/2162891ce42a7fe19676aa1538c230b1ff4f80b730b49cfa59e94f252b/black-21.12b0-py3-none-any.whl
-certifi @ file:///home/deepesh/.cache/pypoetry/artifacts/89/06/5b/e4bfdf1b8370bdc0a26198e81afa98f68c01a8b1b515c9108c6ad98d8a/certifi-2021.10.8-py2.py3-none-any.whl
-chardet==4.0.0
-charset-normalizer==2.0.7
-click @ file:///home/deepesh/.cache/pypoetry/artifacts/fa/59/1c/2eaf2b8f82cecf1e8d2d6dba67bd01214cf590d308bd9c917aa19c3eda/click-8.0.3-py3-none-any.whl
+aiohttp==3.8.1
+aiosignal==1.2.0
+arrow==1.2.1
+async-timeout==4.0.2
+attrs==21.3.0
+black==21.12b0
+certifi==2021.10.8
+charset-normalizer==2.0.9
+click==8.0.3
 colorama==0.4.4
 coloredlogs==15.0.1
-country-converter==0.7.4
-cycler @ file:///home/deepesh/.cache/pypoetry/artifacts/ba/28/11/cf3c90b4ca621519019fffb7d9019a6a62f7219045ac852aeaa6d70eee/cycler-0.11.0-py3-none-any.whl
-discord.py==1.7.3
-disputils==0.2.0
+cycler==0.11.0
 emoji-country-flag==1.3.0
 flake8==4.0.1
 Flask==2.0.2
-fonttools==4.28.4
-frozenlist @ file:///home/deepesh/.cache/pypoetry/artifacts/0f/12/0d/3c59b89c4aabfda75f4d86dad3182389abe0da35948dd9bfd2facb54d5/frozenlist-1.2.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl
+fonttools==4.28.5
+frozenlist==1.2.0
 humanfriendly==10.0
-idna @ file:///home/deepesh/.cache/pypoetry/artifacts/90/36/8c/81eabf6ac88608721ab27f439c9a6b9a8e6a21cc58c59ebb1a42720199/idna-3.3-py3-none-any.whl
-install==1.3.4
-isort==5.9.3
+idna==3.3
+install==1.3.5
 itsdangerous==2.0.1
 Jinja2==3.0.3
-kiwisolver @ file:///home/deepesh/.cache/pypoetry/artifacts/a5/ab/ab/d8794d6e11eae932dad471d0e6bae32350313a724d551be8097af354e4/kiwisolver-1.3.2-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl
-lazy-object-proxy==1.6.0
+kiwisolver==1.3.2
 MarkupSafe==2.0.1
-matplotlib @ file:///home/deepesh/.cache/pypoetry/artifacts/8f/fb/aa/c6ff62f3fa6a09f53cd9b87b3c2faeb62de1f03e214a78bb7e6c3902da/matplotlib-3.5.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+matplotlib==3.5.1
 mccabe==0.6.1
-multidict @ file:///home/deepesh/.cache/pypoetry/artifacts/6d/8a/e6/895c76dc5be92916c7d89b64ecd0ef73af18f92c086e9fec8040210f33/multidict-5.2.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl
-mypy-extensions @ file:///home/deepesh/.cache/pypoetry/artifacts/2f/c6/09/3e1afdcb75322c65b786e63cd7e879b6be3db36dea78ca376db5483ae4/mypy_extensions-0.4.3-py2.py3-none-any.whl
-numpy @ file:///home/deepesh/.cache/pypoetry/artifacts/9a/f4/d2/53e5f1596089351bcddb96cba2a3c6bbdcb8531c0da95478907363fdfc/numpy-1.21.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+multidict==5.2.0
+mypy-extensions==0.4.3
+numpy==1.21.5
 opencv-python==4.5.4.60
-packaging @ file:///home/deepesh/.cache/pypoetry/artifacts/d3/1f/90/3f2473250ebd055fe7f0856810677783949fc0d2e5f25bbb4dc00ad0a9/packaging-21.3-py3-none-any.whl
-pandas @ file:///home/deepesh/.cache/pypoetry/artifacts/b6/84/cc/4a348426fdb624403b3b2fa3bf768b81a47603e5549672672c2fdeee86/pandas-1.3.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-pathspec @ file:///home/deepesh/.cache/pypoetry/artifacts/48/a0/9f/f5128d9e11d591bca7a942dd80ec44f9b2de8294775c68e0b99beeef93/pathspec-0.9.0-py2.py3-none-any.whl
-Pillow @ file:///home/deepesh/.cache/pypoetry/artifacts/8f/5c/7f/ebe90487b1552fcb34dbf798a3d51fdc2a2bc649409ecb458dfa692d90/Pillow-8.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-platformdirs==2.4.0
-psutil @ file:///home/deepesh/.cache/pypoetry/artifacts/d4/24/8a/c57ce4bc0fa16dca35af2a4d7ab259f5bccf7d11893725749e71a67a63/psutil-5.8.0.tar.gz
-py-cord @ git+https://github.com/Pycord-Development/pycord@af4a096edb96718cf44a9a901568001852b3cf0e
+packaging==21.3
+pandas==1.3.5
+pathspec==0.9.0
+Pillow==8.4.0
+platformdirs==2.4.1
+psutil==5.8.0
+py-cord @ git+https://github.com/Pycord-Development/pycord@52fdbb1b00efb54a3e13f9a76be1af3aa6e21148
 pycodestyle==2.8.0
 pyflakes==2.4.0
-pylint==2.12.2
-pyparsing @ file:///home/deepesh/.cache/pypoetry/artifacts/82/58/91/afb3b5733aa35fd97a07c3a191b87d62060e45f9dfa1149e43ac4112b6/pyparsing-3.0.6-py3-none-any.whl
-pyreadline3==3.3
-python-dateutil @ file:///home/deepesh/.cache/pypoetry/artifacts/39/9b/3b/576da7c854551d780528d75132c98882925e44de0aecf8a31a4bea379c/python_dateutil-2.8.2-py2.py3-none-any.whl
-python-dotenv @ file:///home/deepesh/.cache/pypoetry/artifacts/6b/37/6c/56779e11f416c21027bce901621ae7a5fa1c89d2286e1d206e7167f3e5/python_dotenv-0.19.2-py2.py3-none-any.whl
-pytz @ file:///home/deepesh/.cache/pypoetry/artifacts/a0/f8/66/b50e6d372fa21e4d6db4b2fe5c5e94aaf59b82d02a7b3215fbc4fae889/pytz-2021.3-py2.py3-none-any.whl
+pyparsing==3.0.6
+python-dateutil==2.8.2
+python-dotenv==0.19.2
+pytz==2021.3
 PyYAML==6.0
-regex==2021.11.10
-requests @ file:///home/deepesh/.cache/pypoetry/artifacts/6a/b9/48/6be0d05d410682cd0b78969d6915808ff19194523f8b3c385de86b91e5/requests-2.26.0-py2.py3-none-any.whl
-setuptools-scm @ file:///home/deepesh/.cache/pypoetry/artifacts/45/31/de/9a7c0958deafc15bbc0840ad58c57dd875c6820e9c5fa9f10d51c78c29/setuptools_scm-6.3.2-py3-none-any.whl
-six @ file:///home/deepesh/.cache/pypoetry/artifacts/89/b2/f8/fd92b6d5daa0f8889429b2fc67ec21eedc5cae5d531ee2853828ced6c7/six-1.16.0-py2.py3-none-any.whl
+requests==2.26.0
+six==1.16.0
 toml==0.10.2
-tomli==1.2.1
-typing-extensions==3.10.0.2
-urllib3 @ file:///home/deepesh/.cache/pypoetry/artifacts/02/f2/71/677092d701b05b3002d926889fe56877b1d688548437c1b7fe72ab4397/urllib3-1.26.7-py2.py3-none-any.whl
+tomli==1.2.3
+typing_extensions==4.0.1
+urllib3==1.26.7
 Werkzeug==2.0.2
 wget==3.2
-wrapt==1.13.2
-yarl @ file:///home/deepesh/.cache/pypoetry/artifacts/ab/46/71/ee32588139cc0f07f94e65cac6c281e6376e186842dbe17a31b0c4ea0f/yarl-1.7.2-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl
+wrapt==1.13.3
+yarl==1.7.2
