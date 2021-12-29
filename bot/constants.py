@@ -249,3 +249,10 @@ FILE_LOGS: bool = _CONFIG_YAML["file_logs"].lower() == "true"
 # Paths
 BOT_DIR = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.join(BOT_DIR, os.pardir))
+
+
+class RedirectOutput(metaclass=YAMLGetter):
+    section = "redirect_output"
+
+    delete_delay: int
+    delete_invocation: bool
