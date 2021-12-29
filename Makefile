@@ -1,2 +1,2 @@
 all:
-	python.exe .\main.py
+	python3 -m bot
