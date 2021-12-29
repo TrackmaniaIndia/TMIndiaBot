@@ -1,5 +1,4 @@
 import json
-
 import country_converter as coco
 import discord
 import flag
@@ -14,36 +13,38 @@ base_api_url = "http://localhost:3000"
 
 
 def get_player_id(username: str) -> str:
-    """
-    Grabs player id for given username from api
+    log.debug(f'Getting Player ID for "{username}"')
 
-    Args:
-        username (str): The username of the player
+    log.debug(f'Checking ID File for "{username}"')
+    with open("./data/json/ids.json", "r", encoding="UTF-8") as file:
+        player_list = json.load(file)["IDS"]
+        log.debug(f"Got Player list -> {player_list}")
 
-    Returns:
-        str: the player id
-    """
-    # Checking the File
-    log.debug("Checking if Player ID is already stored in the file")
-    username_list = _get_username_list()
+    log.debug("Looping Through Player List")
+    for player in player_list:
+        if player["Username"].lower() == username.lower():
+            log.debug(f"Found {player['Username']} -> {player['ID']}")
+            return player["ID"]
 
-    if username.lower() in username_list:
-        log.debug("Username is stored in the file")
-        id_list = _get_username_id_list()
-
-        log.debug(
-            f"{username}'s ID is {id_list[username_list.index(username.lower())]}"
-        )
-        return id_list[username_list.index(username.lower())]
-
-    log.debug(f"Getting Player ID for {username}")
+    log.debug(f'Player not in List -> "{username}"')
+    log.debug("Getting from API")
     player_data = requests.get(f"{base_api_url}/tm2020/player/{username}/id").json()
-    log.debug("Received Player Data, Parsing")
+
     try:
         player_id = player_data["id"]
-    except:
-        player_id = None
-    log.debug(f"Player ID is {player_id}")
+    except KeyError:
+        log.critical(f"Username is not valid. Username Given -> {username}")
+        return None
+
+    log.debug(f"Saving {player_id} to file")
+    player_list.append({"Username": username, "ID": player_id})
+
+    log.debug("Opening File")
+    with open("./data/json/ids.json", "w", encoding="UTF-8") as file:
+        log.debug("Writing to File")
+        json.dump({"IDS": player_list}, file, indent=4)
+
+    log.debug(f"Returning {player_id}")
     return player_id
 
 
@@ -350,35 +351,3 @@ def add_meta_details(
     log.debug("Added TMIO Link")
     log.debug(f"Returning {player_page}")
     return player_page
-
-
-def _get_username_list() -> list[str]:
-    log.debug("Getting Username List")
-    username_list = []
-
-    log.debug("Opening Usernames File")
-    with open("./data/json/tm2020_usernames.json", "r", encoding="UTF-8") as file:
-        username_data = json.load(file)
-        for user in username_data["Usernames"]:
-            username_list.append(
-                str(username_data["Usernames"][user]["TM2020 Username"]).lower()
-            )
-
-    log.debug(f"Got Username List -> {username_list}")
-    return username_list
-
-
-def _get_username_id_list() -> list[str]:
-    log.debug("Getting Username List")
-    username_ids = []
-
-    log.debug("Opening Usernames File")
-    with open("./data/json/tm2020_usernames.json", "r", encoding="UTF-8") as file:
-        username_data = json.load(file)
-        for user in username_data["Usernames"]:
-            username_ids.append(
-                str(username_data["Usernames"][user]["TM2020 ID"]).lower()
-            )
-
-    log.debug(f"Got Username List -> {username_ids}")
-    return username_ids

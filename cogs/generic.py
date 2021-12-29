@@ -45,13 +45,13 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     async def _source(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        log.debug("Creating Button for Source Code")
+        log.info("Creating Button for Source Code")
         source_code_button = discord.ui.Button(
             label="Source Code (Github)",
             style=discord.ButtonStyle.url,
             url="https://github.com/NottCurious/TMIndiaBot",
         )
-        log.debug("Created Button for Source Code, Sending a message")
+        log.info("Created Button for Source Code, Sending a message")
         await ctx.respond(
             content="Hey!\nHere is the source code. The bot is open source and licensed under the MIT License. It is currently developed and maintained by NottCurious and Artifex.\nAll Issues/Feature Requests/Bug Reports and Pull Requests are welcome and appreciated!",
             view=ViewAdder([source_code_button]),
@@ -76,13 +76,13 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     async def _link_to_hall_of_fame(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        log.debug("Creating Button for Hall of Fame")
+        log.info("Creating Button for Hall of Fame")
         hall_of_fame_button = discord.ui.Button(
             label="TMI Hall of Fame (Google Sheets)",
             style=discord.ButtonStyle.url,
             url="https://tinyurl.com/TMIndiaLB",
         )
-        log.debug("Created Button for Hall of Fame, Sending a message")
+        log.info("Created Button for Hall of Fame, Sending a message")
         await ctx.respond(
             "Please click the button to be redirected to the hall of fame",
             view=ViewAdder([hall_of_fame_button]),
@@ -95,7 +95,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     async def _next_project(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        log.debug("Creating Button for Next Project")
+        log.info("Creating Button for Next Project")
         next_project_button = discord.ui.Button(
             label="Next Project - v1.6.1 (Github)",
             style=discord.ButtonStyle.url,
@@ -141,13 +141,13 @@ class Generic(commands.Cog, description="Generic Functions"):
     async def _suggest(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
 
-        log.debug("Creating button for new github issue")
+        log.info("Creating button for new github issue")
         suggestion_button = discord.ui.Button(
             label="Suggest Here! (Github)",
             style=discord.ButtonStyle.url,
             url="https://github.com/NottCurious/TMIndiaBot/issues/new",
         )
-        log.debug("Created Button")
+        log.info("Created Button")
 
         await ctx.respond(
             content='Hey!\nPlease click the link below to open an "issue" where you can send your suggestion. Please put a short title and expand in the description and NottCurious will get back to you shortly',
@@ -161,7 +161,7 @@ class Generic(commands.Cog, description="Generic Functions"):
     )
     async def _command_list(self, ctx: commands.Context):
         log_command(ctx, ctx.command.name)
-        log.debug("Creating Button for Command List")
+        log.info("Creating Button for Command List")
         command_list_button = discord.ui.Button(
             label="Command List (Github)",
             style=discord.ButtonStyle.url,
