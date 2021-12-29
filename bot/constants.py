@@ -29,9 +29,9 @@ def _env_var_constructor(loader, node):
     variables. If the environment variable is set, returns the
     value of it. Otherwise, returns `None`.
     Example usage in the YAML configuration:
-            # Optional app configuration. Set `MY_APP_KEY` in the environment to use it.
-            application:
-                    key: !ENV 'MY_APP_KEY'
+                    # Optional app configuration. Set `MY_APP_KEY` in the environment to use it.
+                    application:
+                                    key: !ENV 'MY_APP_KEY'
     """
 
     default = None
@@ -99,21 +99,21 @@ class YAMLGetter(type):
     `subsection` is an optional attribute specifying the section
     within the section from which configuration should be loaded.
     Example Usage:
-            # config.yml
-            bot:
-                    prefixes:
-                            direct_message: ''
-                            guild: '!'
-            # config.py
-            class Prefixes(metaclass=YAMLGetter):
-                    section = "bot"
-                    subsection = "prefixes"
-            # Usage in Python code
-            from config import Prefixes
-            def get_prefix(bot, message):
-                    if isinstance(message.channel, PrivateChannel):
-                            return Prefixes.direct_message
-                    return Prefixes.guild
+                    # config.yml
+                    bot:
+                                    prefixes:
+                                                    direct_message: ''
+                                                    guild: '!'
+                    # config.py
+                    class Prefixes(metaclass=YAMLGetter):
+                                    section = "bot"
+                                    subsection = "prefixes"
+                    # Usage in Python code
+                    from config import Prefixes
+                    def get_prefix(bot, message):
+                                    if isinstance(message.channel, PrivateChannel):
+                                                    return Prefixes.direct_message
+                                    return Prefixes.guild
     """
 
     subsection = None

@@ -18,31 +18,13 @@ else:
     LoggerClass = logging.getLoggerClass()
 
 
-class CustomLogger(LoggerClass):
-    """Custom Implementation of the `Logger` class with an added `trace` method"""
-
-    def trace(self, msg: str, *args, **kwargs) -> None:
-        """
-        Log 'msg % args' with severity 'TRACE'.
-        To pass exception information, use the keyword argument exc_info with
-        a true value, e.g.
-        logger.trace("Houston, we have an %s", "interesting problem", exc_info=1)
-        """
-        if self.isEnabledFor(TRACE_LEVEL):
-            self.log(TRACE_LEVEL, msg, *args, **kwargs)
-
-
-def get_logger(name: Optional[str] = None) -> CustomLogger:
+def get_logger(name: Optional[str] = None) -> Logger:
     """Utility to make mypy recognise that logger is of type `CustomLogger`."""
-    return cast(CustomLogger, logging.getLogger(name))
+    return cast(Logger, logging.getLogger(name))
 
 
 def setup() -> None:
     """Setup Loggers."""
-    logging.TRACE = TRACE_LEVEL
-    logging.addLevelName(TRACE_LEVEL, "TRACE")
-    logging.setLoggerClass(CustomLogger)
-
     root_log = get_logger()
 
     format_string = "%(asctime)s [%(levelname)s] - [%(filename)s > %(funcName)s() > %(lineno)s] - %(message)s"
@@ -79,7 +61,7 @@ def setup() -> None:
     }
 
     coloredlogs.install(
-        level=TRACE_LEVEL,
+        level=logging.INFO,
         logger=root_log,
         stream=sys.stdout,
         fmt=format_string,

@@ -58,7 +58,7 @@ class Bot(discord.Bot):
         """Load all Enabled Extensions"""
 
         # Must be done to avoid circular import
-        from TMIBot.utils.cogs import EXTENSIONS
+        from bot.utils.cogs import EXTENSIONS
 
         extensions = set(EXTENSIONS)  # Mutable Copy
 
@@ -70,25 +70,6 @@ class Bot(discord.Bot):
         super().add_cog(cog)
         log.info(f"Cog loaded: {cog.qualified_name}")
 
-    def add_command(self, command: commands.Command) -> None:
-        """Add `command` as normal and then add its root aliases to the bot."""
-        super().add_command(command)
-        self._add_root_aliases(command)
-
-    def remove_command(self, name: str) -> Optional[commands.Command]:
-        """
-        Remove a command/alias as normal and then remove its root aliases from the bot.
-        Individual root aliases cannot be removed by this function.
-        To remove them, either remove the entire command or manually edit `bot.all_commands`.
-        """
-        command = super().remove_command(name)
-        if command is None:
-            # Even if it's a root alias, there's no way to get the Bot instance to remove the alias.
-            return
-
-        self._remove_root_aliases(command)
-        return command
-
     async def close(self) -> None:
         """Close the Discord connection and the aiohttp session, connector, statsd client, and resolver."""
         # Done before super().close() to allow tasks finish before the HTTP session closes.
@@ -99,10 +80,6 @@ class Bot(discord.Bot):
         for cog in list(self.cogs):
             with suppress(Exception):
                 self.remove_cog(cog)
-
-        # Wait until all tasks that have to be completed before bot is closing is done
-        log.trace("Waiting for tasks before closing.")
-        await asyncio.gather(*self.closing_tasks)
 
         # Now actually do full close of bot
         await super().close()

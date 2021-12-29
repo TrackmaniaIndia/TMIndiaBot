@@ -1,3 +1,4 @@
+aiodns==3.0.0
 aiohttp==3.8.1
 aiosignal==1.2.0
 arrow==1.2.1
@@ -5,6 +6,7 @@ async-timeout==4.0.2
 attrs==21.3.0
 black==21.12b0
 certifi==2021.10.8
+cffi==1.15.0
 charset-normalizer==2.0.9
 click==8.0.3
 colorama==0.4.4
@@ -35,7 +37,9 @@ Pillow==8.4.0
 platformdirs==2.4.1
 psutil==5.8.0
 py-cord @ git+https://github.com/Pycord-Development/pycord@52fdbb1b00efb54a3e13f9a76be1af3aa6e21148
+pycares==4.1.2
 pycodestyle==2.8.0
+pycparser==2.21
 pyflakes==2.4.0
 pyparsing==3.0.6
 python-dateutil==2.8.2

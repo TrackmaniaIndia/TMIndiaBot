@@ -8,7 +8,7 @@ ENV PIP_NO_CACHE_DIR=false \
 RUN pip install -U poetry
 
 # Working Directory
-WORKDIR /TMIBot 
+WORKDIR /bot 
 
 # Install Project Dependencies
 COPY pyproject.toml poetry.lock ./
@@ -18,4 +18,4 @@ RUN poetry install --no-dev
 COPY . .
 
 ENTRYPOINT [ "python3" ]
-CMD [ "-m", "TMIBot"]
+CMD [ "-m", "bot"]

@@ -22,7 +22,7 @@ try:
     else:
         print("temp")
     bot.instance = Bot.create()
-    bot.instance.load_extension()
+    bot.instance.load_extensions()
     bot.instance.run(constants.Bot.token)
 except StartupError as e:
     message = "Unknown Startup Error has Occured"
