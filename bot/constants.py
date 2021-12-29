@@ -169,6 +169,18 @@ class Bot(metaclass=YAMLGetter):
     token: str
     default_guilds: list
     debug_guild: int
+    version: str
+
+
+class Error(metaclass=YAMLGetter):
+    section = "error"
+
+    show_stack_trace: bool
+    print_errors: bool
+    totd_reminders: bool
+    
+class Channels(metaclass=YAMLGetter):
+    
 
 
 class Colours(metaclass=YAMLGetter):
