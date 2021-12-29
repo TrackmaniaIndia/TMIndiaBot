@@ -12,7 +12,7 @@ def unqualify(name: str) -> str:
 
 
 def walk_extensions() -> Iterator[str]:
-    """Yield extension names from the bot.exts subpackage."""
+    """Yield extension names from the bot.cogs subpackage."""
 
     def on_error(name: str) -> NoReturn:
         raise ImportError(name=name)  # pragma: no cover

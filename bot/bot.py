@@ -36,13 +36,11 @@ class Bot(discord.Bot):
         # Connect to Bot API
         attempts = 0
 
-        while True:
-            try:
-                log.info(f"Attempting site connection: {attempts + 1}")
-                await self.api_client.get("")
-                break
-            except:
-                attempts += 1
+        try:
+            log.info(f"Attempting site connection: {attempts + 1}")
+            await self.api_client.get("")
+        except:
+            attempts += 1
 
     @classmethod
     def create(cls) -> "Bot":

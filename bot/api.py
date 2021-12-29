@@ -34,6 +34,10 @@ class APIClient:
     def _url_for(endpoint: str) -> str:
         return f"{TMIAPI.tmiapi}{endpoint}"
 
+    async def close(self) -> None:
+        """Close the AIOHTTP Session"""
+        await self.session.close()
+
     async def maybe_raise_for_status(
         selfe, response: aiohttp.ClientResponse, should_raise: bool
     ) -> None:
