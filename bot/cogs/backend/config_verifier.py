@@ -1,5 +1,5 @@
 from discord.ext.commands import Cog
-from discord.guild import Guild
+
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
