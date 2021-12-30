@@ -1,12 +1,8 @@
-import arrow
-import datetime
-from aiohttp import client_exceptions
 from discord import Embed
 from discord.ext import commands
 
-from bot.bot import Bot
 from bot import constants
-from bot.constants import Channels
+from bot.bot import Bot
 
 DESCRIPTIONS = ("Discord API latency",)
 ROUND_LATENCY = 3
