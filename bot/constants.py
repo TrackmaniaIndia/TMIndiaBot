@@ -227,9 +227,49 @@ class Colours(metaclass=YAMLGetter):
     yellow: int
 
 
-class Emotes(metaclass=YAMLGetter):
+class Emojis(metaclass=YAMLGetter):
     section = "style"
     subsection = "emojis"
+
+    badge_bug_hunter: str
+    badge_bug_hunter_level_2: str
+    badge_early_supporter: str
+    badge_hypesquad: str
+    badge_hypesquad_balance: str
+    badge_hypesquad_bravery: str
+    badge_hypesquad_brilliance: str
+    badge_partner: str
+    badge_staff: str
+    badge_verified_bot_developer: str
+    verified_bot: str
+    bot: str
+
+    defcon_shutdown: str  # noqa: E704
+    defcon_unshutdown: str  # noqa: E704
+    defcon_update: str  # noqa: E704
+
+    failmail: str
+
+    incident_actioned: str
+    incident_investigating: str
+    incident_unactioned: str
+
+    status_dnd: str
+    status_idle: str
+    status_offline: str
+    status_online: str
+
+    ducky_dave: str
+
+    trashcan: str
+
+    bullet: str
+    check_mark: str
+    cross_mark: str
+    new: str
+    pencil: str
+
+    ok_hand: str
 
     twitch: str
     twitter: str

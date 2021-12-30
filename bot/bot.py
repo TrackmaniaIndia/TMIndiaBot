@@ -156,8 +156,8 @@ class Bot(commands.Bot):
         """
 
         if (
-                guild.id != constants.Guild.tmi_server
-                and guild.id != constants.Guild.testing_server
+            guild.id != constants.Guild.tmi_server
+            and guild.id != constants.Guild.testing_server
         ):
             return
 
@@ -172,8 +172,8 @@ class Bot(commands.Bot):
     async def on_guild_unavailable(self, guild: discord.Guild) -> None:
         """Clear the internal guild available event when constants.Guild.id becomes unavailable."""
         if (
-                guild.id != constants.Guild.tmi_server
-                and guild.id != constants.Guild.testing_server
+            guild.id != constants.Guild.tmi_server
+            and guild.id != constants.Guild.testing_server
         ):
             return
 
@@ -187,17 +187,17 @@ class Bot(commands.Bot):
         """
         await self._guild_available.wait()
 
-    async def on_error(self, event: str, *args, **kwargs) -> None:
-        """Log errors raised in event listeners rather than printing them to stderr."""
-        # self.stats.incr(f"errors.event.{event}")
+    # async def on_error(self, event: str, *args, **kwargs) -> None:
+    #     """Log errors raised in event listeners rather than printing them to stderr."""
+    #     # self.stats.incr(f"errors.event.{event}")
 
-        # with push_scope() as scope:
-        #     scope.set_tag("event", event)
-        #     scope.set_extra("args", args)
-        #     scope.set_extra("kwargs", kwargs)
+    #     # with push_scope() as scope:
+    #     #     scope.set_tag("event", event)
+    #     #     scope.set_extra("args", args)
+    #     #     scope.set_extra("kwargs", kwargs)
 
-        #     log.exception(f"Unhandled exception in {event}.")
-        log.exception(f"Unhandled exception in {event}.")
+    #     #     log.exception(f"Unhandled exception in {event}.")
+    #     log.exception(f"Unhandled exception in {event}.")
 
     def _add_root_aliases(self, command: commands.Command) -> None:
         """Recursively add root aliases for `command` and any of its subcommand"""

@@ -61,7 +61,7 @@ def setup() -> None:
     }
 
     coloredlogs.install(
-        level=logging.INFO,
+        level=logging.DEBUG if constants.DEBUG_MODE else logging.INFO,
         logger=root_log,
         stream=sys.stdout,
         fmt=format_string,
