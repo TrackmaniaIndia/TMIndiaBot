@@ -8,6 +8,7 @@ from discord.ext.commands import (
 )
 
 from bot.api import ResponseCodeError
+from bot.errors import LockedResourceError
 from bot.bot import Bot
 from bot.constants import Colours
 from bot.log import get_logger
@@ -50,17 +51,17 @@ class ErrorHandler(Cog):
 
         if hasattr(e, "handled"):
             log.debug(
-                f"Command {command} had its error already handled locally; ignoring"
+                f"Command {ctx.command} had its error already handled locally; ignoring"
             )
             return
 
         debug_message = (
-            f"Command {command} invoked by {ctx.message.author} with error "
+            f"Command {ctx.command} invoked by {ctx.message.author} with error "
             f"{e.__class__.__name__}: {e}"
         )
 
         if isinstance(e, errors.CommandNotFound) and not getattr(
-                ctx, "invoked_from_error_handler", False
+            ctx, "invoked_from_error_handler", False
         ):
             await self.try_get_tag(ctx)
         elif isinstance(e, errors.UserInputError):
@@ -75,12 +76,6 @@ class ErrorHandler(Cog):
         elif isinstance(e, errors.CommandInvokeError):
             if isinstance(e.original, ResponseCodeError):
                 await self.handle_api_error(ctx, e.original)
-            elif isinstance(e.original, LockedResourceError):
-                await ctx.send(
-                    f"{e.original} Please wait for it to finish and try again later."
-                )
-            elif isinstance(e.original, InvalidInfractedUserError):
-                await ctx.send(f"Cannot infract that user. {e.original.reason}")
             else:
                 await self.handle_unexpected_error(ctx, e.original)
         elif isinstance(e, errors.ConversionError):
@@ -111,6 +106,10 @@ class ErrorHandler(Cog):
         the context to prevent infinite recursion in the case of a CommandNotFound exception.
         """
         tags_get_command = self.bot.get_command("tags get")
+
+        if tags_get_command is None:
+            return
+
         ctx.invoked_from_error_handler = True
 
         log_msg = "Cancelling attempt to fall back to a tag due to failed checks."
@@ -138,7 +137,7 @@ class ErrorHandler(Cog):
             if not cmd.hidden:
                 raw_commands += (cmd.name, *cmd.aliases)
         if similar_command_data := difflib.get_close_matches(
-                command_name, raw_commands, 1
+            command_name, raw_commands, 1
         ):
             similar_command_name = similar_command_data[0]
             similar_command = self.bot.get_command(similar_command_name)
@@ -165,7 +164,7 @@ class ErrorHandler(Cog):
             await ctx.send(embed=e, delete_after=10.0)
 
     async def handle_user_input_error(
-            self, ctx: Context, e: errors.UserInputError
+        self, ctx: Context, e: errors.UserInputError
     ) -> None:
         """
         Send an error message in `ctx` for UserInputError, sometimes invoking the help command too.
@@ -178,27 +177,30 @@ class ErrorHandler(Cog):
         """
         if isinstance(e, errors.MissingRequiredArgument):
             embed = self._get_error_embed("Missing required argument", e.param.name)
-            self.bot.stats.incr("errors.missing_required_argument")
+            log.debug("Missing Required Argument")
         elif isinstance(e, errors.TooManyArguments):
             embed = self._get_error_embed("Too many arguments", str(e))
-            self.bot.stats.incr("errors.too_many_arguments")
+            log.debug("Too Many Arguements")
         elif isinstance(e, errors.BadArgument):
             embed = self._get_error_embed("Bad argument", str(e))
-            self.bot.stats.incr("errors.bad_argument")
+            log.debug("Bad Argument")
         elif isinstance(e, errors.BadUnionArgument):
             embed = self._get_error_embed("Bad argument", f"{e}\n{e.errors[-1]}")
-            self.bot.stats.incr("errors.bad_union_argument")
+            log.debug("Bad (Union) Argument")
         elif isinstance(e, errors.ArgumentParsingError):
             embed = self._get_error_embed("Argument parsing error", str(e))
+            log.debug("Argument Parsing Error")
             await ctx.send(embed=embed)
-            self.bot.stats.incr("errors.argument_parsing_error")
             return
         else:
             embed = self._get_error_embed(
                 "Input error",
                 "Something about your input seems off. Check the arguments and try again.",
             )
-            self.bot.stats.incr("errors.other_user_input_error")
+            # self.bot.stats.incr("errors.other_user_input_error")
+            log.debug(
+                "Input Error: Something about your input seems off. Check the arguments and try again."
+            )
 
         await ctx.send(embed=embed)
         await self.send_command_help(ctx)
@@ -221,12 +223,12 @@ class ErrorHandler(Cog):
         )
 
         if isinstance(e, bot_missing_errors):
-            ctx.bot.stats.incr("errors.bot_permission_error")
+            log.debug("errors.bot_permission_error")
             await ctx.send(
                 "Sorry, it looks like I don't have the permissions or roles I need to do that."
             )
         elif isinstance(e, (ContextCheckFailure, errors.NoPrivateMessage)):
-            ctx.bot.stats.incr("errors.wrong_channel_or_dm_error")
+            log.debug("errors.wrong_channel_or_dm_error")
             await ctx.send(e)
 
     @staticmethod
@@ -235,16 +237,16 @@ class ErrorHandler(Cog):
         if e.status == 404:
             log.debug(f"API responded with 404 for command {ctx.command}")
             await ctx.send("There does not seem to be anything matching your query.")
-            ctx.bot.stats.incr("errors.api_error_404")
+            log.debug("errors.api_error_404")
         elif e.status == 400:
             content = await e.response.json()
             log.debug(f"API responded with 400 for command {ctx.command}: %r.", content)
             await ctx.send("According to the API, your request is malformed.")
-            ctx.bot.stats.incr("errors.api_error_400")
+            log.debug("errors.api_error_400")
         elif 500 <= e.status < 600:
             log.warning(f"API responded with {e.status} for command {ctx.command}")
             await ctx.send("Sorry, there seems to be an internal issue with the API.")
-            ctx.bot.stats.incr("errors.api_internal_server_error")
+            log.debug("errors.api_internal_server_error")
         else:
             log.warning(
                 f"Unexpected API response for command {ctx.command}: {e.status}"
@@ -252,7 +254,7 @@ class ErrorHandler(Cog):
             await ctx.send(
                 f"Got an unexpected status code from the API (`{e.status}`)."
             )
-            ctx.bot.stats.incr(f"errors.api_error_{e.status}")
+            log.debug(f"errors.api_error_{e.status}")
 
     @staticmethod
     async def handle_unexpected_error(ctx: Context, e: errors.CommandError) -> None:
@@ -262,27 +264,27 @@ class ErrorHandler(Cog):
             f"```{e.__class__.__name__}: {e}```"
         )
 
-        ctx.bot.stats.incr("errors.unexpected")
+        log.debug("errors.unexpected")
 
-        with push_scope() as scope:
-            scope.user = {"id": ctx.author.id, "username": str(ctx.author)}
+        # with push_scope() as scope:
+        #     scope.user = {"id": ctx.author.id, "username": str(ctx.author)}
 
-            scope.set_tag("command", ctx.command.qualified_name)
-            scope.set_tag("message_id", ctx.message.id)
-            scope.set_tag("channel_id", ctx.channel.id)
+        #     scope.set_tag("command", ctx.command.qualified_name)
+        #     scope.set_tag("message_id", ctx.message.id)
+        #     scope.set_tag("channel_id", ctx.channel.id)
 
-            scope.set_extra("full_message", ctx.message.content)
+        #     scope.set_extra("full_message", ctx.message.content)
 
-            if ctx.guild is not None:
-                scope.set_extra(
-                    "jump_to",
-                    f"https://discordapp.com/channels/{ctx.guild.id}/{ctx.channel.id}/{ctx.message.id}",
-                )
+        #     if ctx.guild is not None:
+        #         scope.set_extra(
+        #             "jump_to",
+        #             f"https://discordapp.com/channels/{ctx.guild.id}/{ctx.channel.id}/{ctx.message.id}",
+        #         )
 
-            log.error(
-                f"Error executing command invoked by {ctx.message.author}: {ctx.message.content}",
-                exc_info=e,
-            )
+        log.error(
+            f"Error executing command invoked by {ctx.message.author}: {ctx.message.content}",
+            exc_info=e,
+        )
 
 
 def setup(bot: Bot) -> None:
