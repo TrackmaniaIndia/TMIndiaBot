@@ -2,6 +2,7 @@ aiodns==3.0.0
 aiohttp==3.8.1
 aiosignal==1.2.0
 arrow==1.2.1
+astroid==2.9.0
 async-timeout==4.0.2
 attrs==21.3.0
 black==21.12b0
@@ -20,9 +21,11 @@ frozenlist==1.2.0
 humanfriendly==10.0
 idna==3.3
 install==1.3.5
+isort==5.10.1
 itsdangerous==2.0.1
 Jinja2==3.0.3
 kiwisolver==1.3.2
+lazy-object-proxy==1.7.1
 MarkupSafe==2.0.1
 matplotlib==3.5.1
 mccabe==0.6.1
@@ -36,11 +39,12 @@ pathspec==0.9.0
 Pillow==8.4.0
 platformdirs==2.4.1
 psutil==5.8.0
-py-cord @ git+https://github.com/Pycord-Development/pycord@52fdbb1b00efb54a3e13f9a76be1af3aa6e21148
+py-cord @ git+https://github.com/Pycord-Development/pycord@758ff5f19ba6948e9abfd5670ec8d6786d707c7d
 pycares==4.1.2
 pycodestyle==2.8.0
 pycparser==2.21
 pyflakes==2.4.0
+pylint==2.12.2
 pyparsing==3.0.6
 python-dateutil==2.8.2
 python-dotenv==0.19.2
