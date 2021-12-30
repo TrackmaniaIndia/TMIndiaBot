@@ -69,7 +69,6 @@ def _join_var_constructor(loader, node):
 yaml.SafeLoader.add_constructor("!ENV", _env_var_constructor)
 yaml.SafeLoader.add_constructor("!JOIN", _join_var_constructor)
 
-
 with open("./config.yaml", encoding="UTF-8") as file:
     _CONFIG_YAML = yaml.safe_load(file)
 

@@ -9,10 +9,10 @@ class ResponseCodeError(ValueError):
     """Raised when a non-OK HTTP Response is received"""
 
     def __init__(
-        self,
-        response: aiohttp.ClientResponse,
-        response_json: Optional[dict] = None,
-        response_text: str = "",
+            self,
+            response: aiohttp.ClientResponse,
+            response_json: Optional[dict] = None,
+            response_text: str = "",
     ):
         self.status = response.status
         self.response_json = response_json or {}
@@ -39,7 +39,7 @@ class APIClient:
         await self.session.close()
 
     async def maybe_raise_for_status(
-        selfe, response: aiohttp.ClientResponse, should_raise: bool
+            selfe, response: aiohttp.ClientResponse, should_raise: bool
     ) -> None:
         """Raise ResponseCodeError for non-OK response if an exception should be raised"""
         if should_raise and response.status >= 400:
@@ -51,17 +51,17 @@ class APIClient:
                 raise ResponseCodeError(response=response, response_text=response_text)
 
     async def request(
-        self, method: str, endpoint: str, *, raise_for_status: bool = True, **kwargs
+            self, method: str, endpoint: str, *, raise_for_status: bool = True, **kwargs
     ) -> dict:
         """Send an HTTP request to the site API and return the JSON response."""
         async with self.session.request(
-            method.upper(), self._url_for(endpoint), **kwargs
+                method.upper(), self._url_for(endpoint), **kwargs
         ) as resp:
             await self.maybe_raise_for_status(resp, raise_for_status)
             return await resp.json()
 
     async def get(
-        self, endpoint: str, *, raise_for_status: bool = True, **kwargs
+            self, endpoint: str, *, raise_for_status: bool = True, **kwargs
     ) -> dict:
         """Site API GET."""
         return await self.request(
@@ -69,7 +69,7 @@ class APIClient:
         )
 
     async def patch(
-        self, endpoint: str, *, raise_for_status: bool = True, **kwargs
+            self, endpoint: str, *, raise_for_status: bool = True, **kwargs
     ) -> dict:
         """Site API PATCH."""
         return await self.request(
@@ -77,7 +77,7 @@ class APIClient:
         )
 
     async def post(
-        self, endpoint: str, *, raise_for_status: bool = True, **kwargs
+            self, endpoint: str, *, raise_for_status: bool = True, **kwargs
     ) -> dict:
         """Site API POST."""
         return await self.request(
@@ -85,7 +85,7 @@ class APIClient:
         )
 
     async def put(
-        self, endpoint: str, *, raise_for_status: bool = True, **kwargs
+            self, endpoint: str, *, raise_for_status: bool = True, **kwargs
     ) -> dict:
         """Site API PUT."""
         return await self.request(
@@ -93,7 +93,7 @@ class APIClient:
         )
 
     async def delete(
-        self, endpoint: str, *, raise_for_status: bool = True, **kwargs
+            self, endpoint: str, *, raise_for_status: bool = True, **kwargs
     ) -> Optional[dict]:
         """Site API DELETE."""
         async with self.session.delete(self._url_for(endpoint), **kwargs) as resp:
