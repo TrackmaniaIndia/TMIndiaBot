@@ -32,6 +32,7 @@ class Bot(commands.Bot):
 
         self._connector = None
         self._resolver = None
+        self._guild_available = asyncio.Event()
 
     async def ping_services(self) -> None:
         """A helper to make sure all the services the bot relies on are available on startup."""
@@ -147,16 +148,56 @@ class Bot(commands.Bot):
 
         await super().login(*args, **kwargs)
 
+    async def on_guild_available(self, guild: discord.Guild) -> None:
+        """
+        Set the internal guild available event when constants.Guild.id becomes available.
+        If the cache appears to still be empty (no members, no channels, or no roles), the event
+        will not be set.
+        """
+
+        if (
+            guild.id != constants.Guild.tmi_server
+            and guild.id != constants.Guild.testing_server
+        ):
+            return
+
+        if not guild.roles or not guild.members or not guild.channels:
+            msg = "Guild available event was dispatched but cache is empty"
+            log.warning(msg)
+
+            return
+
+        self._guild_available.set()
+
+    async def on_guild_unavailable(self, guild: discord.Guild) -> None:
+        """Clear the internal guild available event when constants.Guild.id becomes unavailable."""
+        if (
+            guild.id != constants.Guild.tmi_server
+            and guild.id != constants.Guild.testing_server
+        ):
+            return
+
+        self._guild_available.clear()
+
+    async def wait_until_guild_available(self) -> None:
+        """
+        Wait until the constants.Guild.id guild is available (and the cache is ready).
+        The on_ready event is inadequate because it only waits 2 seconds for a GUILD_CREATE
+        gateway event before giving up and thus not populating the cache for unavailable guilds.
+        """
+        await self._guild_available.wait()
+
     async def on_error(self, event: str, *args, **kwargs) -> None:
         """Log errors raised in event listeners rather than printing them to stderr."""
-        self.stats.incr(f"errors.event.{event}")
+        # self.stats.incr(f"errors.event.{event}")
 
-        with push_scope() as scope:
-            scope.set_tag("event", event)
-            scope.set_extra("args", args)
-            scope.set_extra("kwargs", kwargs)
+        # with push_scope() as scope:
+        #     scope.set_tag("event", event)
+        #     scope.set_extra("args", args)
+        #     scope.set_extra("kwargs", kwargs)
 
-            log.exception(f"Unhandled exception in {event}.")
+        #     log.exception(f"Unhandled exception in {event}.")
+        log.exception(f"Unhandled exception in {event}.")
 
     def _add_root_aliases(self, command: commands.Command) -> None:
         """Recursively add root aliases for `command` and any of its subcommand"""
@@ -167,7 +208,7 @@ class Bot(commands.Bot):
             if alias in self.all_commands:
                 raise commands.CommandRegistrationError(alias, alias_conflict=True)
 
-        self.all_command[alias] = command
+            self.all_commands[alias] = command
 
     def _remove_root_aliases(self, command: commands.Command) -> None:
         """Recursively remove root aliases for `command` and any of its subcommands."""

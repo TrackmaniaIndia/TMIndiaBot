@@ -194,11 +194,22 @@ class Channels(metaclass=YAMLGetter):
 
 
 class Roles(metaclass=YAMLGetter):
+    section = "roles"
+
     cotd_reminder_one: int
     cotd_reminder_three: int
 
     cotd_reminder_one_testing: int
     cotd_reminder_three_testing: int
+
+    bypass_roles: list
+
+
+class Guild(metaclass=YAMLGetter):
+    section = "guild"
+
+    tmi_server: int
+    testing_server: int
 
 
 class Colours(metaclass=YAMLGetter):
