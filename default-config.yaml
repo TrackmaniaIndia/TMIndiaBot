@@ -1,0 +1,73 @@
+debug: !ENV [ "BOT_DEBUG", "true" ]
+file_logs: !ENV [ "FILE_LOGS", "false" ]
+
+
+bot:
+  prefix: "!!"
+  token: "TOKEN" # Testing Bot
+  default_guilds: [ 876042400005505066 ]
+  debug_guild: 876042400005505066
+  version: "v2.0.0-alpha"
+
+error:
+  show_stack_trace: true
+  print_errors: true
+  totd_reminders: false
+
+channels:
+  general: 805317201498210314
+  tm2020: 842626465421852692
+  tmnf: 842626465421852692
+  media: 808607992416174120
+
+  bot_updates: 880628511512096778
+  tmi_bot_channel: 880771916099641364
+
+  commands_allowed: [ 842626465421852692, 880628511512096778, 876042400731123724 ]
+  announcement_channels: [ 880628511512096778, 876335103146623016 ]
+  error_channel: 876069587140087800
+  keep_alive_channel: 881732050451849216
+
+roles:
+  # Main Server
+  cotd_reminder_one: 924146405642219520
+  cotd_reminder_three: 924146521405026375
+
+  # Testing
+  cotd_reminder_one_testing: 924150185020522577
+  cotd_reminder_three_testing: 924150185020522577
+
+urls:
+  tmiapi: "http://localhost:3000/"
+
+style:
+  colours:
+    blue: 0x3775a8
+    bright_green: 0x01d277
+    orange: 0xe67e22
+    pink: 0xcf84e0
+    purple: 0xb734eb
+    soft_green: 0x68c290
+    soft_orange: 0xf9cb54
+    soft_red: 0xcd6d6d
+    white: 0xfffffe
+    yellow: 0xffd241
+
+  emojis:
+    twitch: <:twitch:895250576751853598>
+    twitter: <:twitter:895250587157946388>
+    youtube: <:youtube:895250572599513138>
+    tmio: <:tmio:895664664057356378>
+
+    # Medals
+    author_medal: <:author:894268580902883379>
+    gold_medal: <:gold:894268580970004510>
+    silver_medal: <:silver:894268580655411220>
+    bronze_medal: <:bronze:894268580181458975>
+
+redirect_output:
+  delete_delay: 15
+  delete_invocation: true
+
+# config:
+#   required_keys: [ 'bot.token', 'bot.default_guilds' ]
