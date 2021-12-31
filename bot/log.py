@@ -80,6 +80,9 @@ def setup() -> None:
 def log_command(ctx: Context, command: str):
     """
     Logs a command to a file.
+
+    `ctx`: Command Invocation Context
+    `command`: The Command Name
     """
     debug_or_info = constants.DEBUG_MODE
 
