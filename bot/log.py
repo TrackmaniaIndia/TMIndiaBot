@@ -8,6 +8,8 @@ from typing import Optional, TYPE_CHECKING, cast
 
 import coloredlogs
 
+from discord.ext.commands import Context
+
 from bot import constants
 
 TRACE_LEVEL = 5
@@ -73,3 +75,22 @@ def setup() -> None:
     get_logger("discord").setLevel(logging.WARNING)
 
     get_logger("asyncio").setLevel(logging.INFO)
+
+
+def log_command(ctx: Context, command: str):
+    """
+    Logs a command to a file.
+    """
+    debug_or_info = constants.DEBUG_MODE
+
+    if not debug_or_info:
+        log.info(f"{ctx.author} used {command} in {ctx.guild.name}")
+    else:
+        log.debug(
+            f"{ctx.author.id}|{ctx.author.name}|{ctx.author.discriminator}|{ctx.guild.id}|{ctx.guild.name}|{ctx.channel.id}|{ctx.channel.name}|{command}"
+        )
+
+    with open("logs/commands.log", "a", encoding="UTF-8") as file:
+        file.write(
+            f"{datetime.datetime.now()}|{ctx.author.id}|{ctx.author.name}|{ctx.author.discriminator}|{ctx.guild.id}|{ctx.guild.name}|{ctx.channel.id}|{ctx.channel.name}|{command}\n"
+        )
