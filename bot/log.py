@@ -1,5 +1,6 @@
 """Class gotten from python-discord/bot which is licensed under MIT License"""
 import logging
+import datetime
 import os
 import sys
 from logging import Logger, handlers
@@ -84,6 +85,7 @@ def log_command(ctx: Context, command: str):
     `ctx`: Command Invocation Context
     `command`: The Command Name
     """
+    log = get_logger(__name__)
     debug_or_info = constants.DEBUG_MODE
 
     if not debug_or_info:
