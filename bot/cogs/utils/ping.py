@@ -3,6 +3,7 @@ from discord.ext import commands
 
 from bot import constants
 from bot.bot import Bot
+from bot.utils.discord import easy_embed as ezembed
 
 DESCRIPTIONS = ("Discord API latency",)
 ROUND_LATENCY = 3
@@ -18,7 +19,7 @@ class Latency(commands.Cog):
     async def _ping(self, ctx: commands.Context) -> None:
         discord_ping = f"{self.bot.latency * 1000:.{ROUND_LATENCY}f} ms"
 
-        embed = Embed(title="Pong!")
+        embed = ezembed.create_embed(title="Pong!")
 
         for desc, latency in zip(DESCRIPTIONS, [discord_ping]):
             embed.add_field(name=desc, value=latency, inline=False)
@@ -30,7 +31,7 @@ class Latency(commands.Cog):
     async def ping(self, ctx: commands.Context) -> None:
         discord_ping = f"{self.bot.latency * 1000:.{ROUND_LATENCY}f} ms"
 
-        embed = Embed(title="Pong!")
+        embed = ezembed.create_embed(title="Pong!")
 
         for desc, latency in zip(DESCRIPTIONS, [discord_ping]):
             embed.add_field(name=desc, value=latency, inline=False)

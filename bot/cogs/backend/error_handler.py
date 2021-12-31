@@ -13,6 +13,7 @@ from bot.bot import Bot
 from bot.constants import Colours
 from bot.log import get_logger
 from bot.utils.checks import ContextCheckFailure
+from bot.utils.discord import easy_embed as ezembed
 
 log = get_logger(__name__)
 
@@ -26,7 +27,9 @@ class ErrorHandler(Cog):
     def _get_error_embed(self, title: str, body: str) -> Embed:
         """Return an Embed that Contains the exception."""
 
-        return Embed(title=title, color=Colours.soft_red, description=body)
+        return ezembed.create_embed(
+            title=title, color=Colours.soft_red, description=body
+        )
 
     @Cog.listener()
     async def on_command_error(self, ctx: Context, e: errors.CommandError) -> None:
