@@ -38,7 +38,7 @@ class GetSourceCode(commands.Cog):
         description="Gives a link for the github source code",
     )
     async def _source_code(self, ctx: commands.Context):
-        log_command(ctx, "Source Code")
+        log_command(ctx, "source_code")
 
         await ctx.send(
             content=self._msg,

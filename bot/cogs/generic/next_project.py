@@ -26,7 +26,7 @@ class GetHallOfFame(commands.Cog):
         description="Gives a link for the TMI Hall of Fame",
     )
     async def _next_project_slash(self, ctx: commands.Context):
-        log_command(ctx, "TMI Hall of Fame Slash")
+        log_command(ctx, "next_project_slash")
         await ctx.respond(
             content=self._msg,
             view=ViewAdder([self._next_project_button]),
@@ -38,7 +38,7 @@ class GetHallOfFame(commands.Cog):
         description="Gives a link for the TMI Hall of Fame",
     )
     async def _next_project(self, ctx: commands.Context):
-        log_command(ctx, "TMI Hall of Fame")
+        log_command(ctx, "next_project")
         await ctx.send(
             content=self._msg,
             view=ViewAdder([self._next_project_button]),
