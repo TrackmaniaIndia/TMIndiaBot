@@ -13,6 +13,12 @@ log = get_logger(__name__)
 class GetHallOfFame(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
+        self._msg = "Please click the button to be redirected to the hall of fame"
+        self._hall_of_fame_button = discord.ui.Button(
+            label="TMI Hall of Fame (Github)",
+            style=discord.ButtonStyle.url,
+            url="https://github.com/NottCurious/TMIndiaBot",
+        )
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
@@ -21,19 +27,9 @@ class GetHallOfFame(commands.Cog):
     )
     async def _hall_of_fame_slash(self, ctx: commands.Context):
         log_command(ctx, "TMI Hall of Fame Slash")
-        log.info("Creating button for source code")
-
-        hall_of_fame_button = discord.ui.Button(
-            label="TMI Hall of Fame (Github)",
-            style=discord.ButtonStyle.url,
-            url="https://github.com/NottCurious/TMIndiaBot",
-        )
-
-        log.debug("Created a button for TMI Hall of Fame, Sending a message")
-
         await ctx.respond(
-            "Please click the button to be redirected to the hall of fame",
-            view=ViewAdder([hall_of_fame_button]),
+            content=self._msg,
+            view=ViewAdder([self._hall_of_fame_button]),
             ephemeral=True,
         )
 
@@ -43,19 +39,9 @@ class GetHallOfFame(commands.Cog):
     )
     async def _hall_of_fame(self, ctx: commands.Context):
         log_command(ctx, "TMI Hall of Fame")
-        log.info("Creating button for source code")
-
-        hall_of_fame_button = discord.ui.Button(
-            label="TMI Hall of Fame (Github)",
-            style=discord.ButtonStyle.url,
-            url="https://github.com/NottCurious/TMIndiaBot",
-        )
-
-        log.debug("Created a button for TMI Hall of Fame, Sending a message")
-
         await ctx.send(
-            "Please click the button to be redirected to the hall of fame",
-            view=ViewAdder([hall_of_fame_button]),
+            content=self._msg,
+            view=ViewAdder([self._hall_of_fame_button]),
         )
 
 

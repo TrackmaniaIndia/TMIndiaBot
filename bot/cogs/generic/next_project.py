@@ -13,7 +13,8 @@ log = get_logger(__name__)
 class GetHallOfFame(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
-        self.next_project_button = discord.ui.Button(
+        self._msg = "Here is the link to the next project"
+        self._next_project_button = discord.ui.Button(
             label="Next Project - v2.1 (Github)",
             style=discord.ButtonStyle.url,
             url="https://github.com/NottCurious/TMIndiaBot/projects/8",
@@ -26,9 +27,10 @@ class GetHallOfFame(commands.Cog):
     )
     async def _next_project_slash(self, ctx: commands.Context):
         log_command(ctx, "TMI Hall of Fame Slash")
-        await ctx.send(
-            "Here is the link to the next project",
-            view=ViewAdder([self.next_project_button]),
+        await ctx.respond(
+            content=self._msg,
+            view=ViewAdder([self._next_project_button]),
+            ephemeral=True,
         )
 
     @commands.command(
@@ -38,8 +40,8 @@ class GetHallOfFame(commands.Cog):
     async def _next_project(self, ctx: commands.Context):
         log_command(ctx, "TMI Hall of Fame")
         await ctx.send(
-            "Here is the link to the next project",
-            view=ViewAdder([self.next_project_button]),
+            content=self._msg,
+            view=ViewAdder([self._next_project_button]),
         )
 
 
