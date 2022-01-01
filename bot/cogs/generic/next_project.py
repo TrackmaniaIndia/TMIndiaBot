@@ -10,7 +10,7 @@ from bot.utils.discord.view_adder import ViewAdder
 log = get_logger(__name__)
 
 
-class GetHallOfFame(commands.Cog):
+class GetNextProject(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self._msg = "Here is the link to the next project"
