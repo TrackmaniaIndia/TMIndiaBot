@@ -47,4 +47,4 @@ class GetNextProject(commands.Cog):
 
 def setup(bot: Bot) -> None:
     """Setup the SourceCode Cog"""
-    bot.add_cog(GetHallOfFame(bot))
+    bot.add_cog(GetNextProject(bot))
