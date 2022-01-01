@@ -156,8 +156,8 @@ class Bot(commands.Bot):
         """
 
         if (
-            guild.id != constants.Guild.tmi_server
-            and guild.id != constants.Guild.testing_server
+                guild.id != constants.Guild.tmi_server
+                and guild.id != constants.Guild.testing_server
         ):
             return
 
@@ -172,8 +172,8 @@ class Bot(commands.Bot):
     async def on_guild_unavailable(self, guild: discord.Guild) -> None:
         """Clear the internal guild available event when constants.Guild.id becomes unavailable."""
         if (
-            guild.id != constants.Guild.tmi_server
-            and guild.id != constants.Guild.testing_server
+                guild.id != constants.Guild.tmi_server
+                and guild.id != constants.Guild.testing_server
         ):
             return
 

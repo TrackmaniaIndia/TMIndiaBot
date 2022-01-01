@@ -1,37 +1,37 @@
 {
-    "name": "TMIndiaBotApi",
-    "version": "1.1.3",
-    "description": "",
-    "main": "index.mjs",
-    "scripts": {
-        "start": "node bot/utils/node/TMIndiaBotApi/index.mjs",
-        "dev": "nodemon bot/utils/node/TMIndiaBotApi/index.mjs"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/artifexdevstuff/TMIndiaBotApi.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/artifexdevstuff/TMIndiaBotApi/issues"
-    },
-    "homepage": "https://github.com/artifexdevstuff/TMIndiaBotApi#readme",
-    "dependencies": {
-        "chalk": "^5.0.0",
-        "cheerio": "^1.0.0-rc.10",
-        "cheerio-tableparser": "^1.0.1",
-        "express": "^4.17.1",
-        "gbx": "^0.6.0",
-        "glob": "^7.2.0",
-        "memory-cache": "^0.2.0",
-        "morgan": "^1.10.0",
-        "node-fetch": "^3.1.0",
-        "trackmania.io": "^3.0.4"
-    },
-    "devDependencies": {
-        "nodemon": "^2.0.15"
-    },
-    "type": "commonjs"
+  "name": "TMIndiaBotApi",
+  "version": "1.1.3",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node bot/utils/node/TMIndiaBotApi/index.mjs",
+    "dev": "nodemon bot/utils/node/TMIndiaBotApi/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artifexdevstuff/TMIndiaBotApi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/artifexdevstuff/TMIndiaBotApi/issues"
+  },
+  "homepage": "https://github.com/artifexdevstuff/TMIndiaBotApi#readme",
+  "dependencies": {
+    "chalk": "^5.0.0",
+    "cheerio": "^1.0.0-rc.10",
+    "cheerio-tableparser": "^1.0.1",
+    "express": "^4.17.1",
+    "gbx": "^0.6.0",
+    "glob": "^7.2.0",
+    "memory-cache": "^0.2.0",
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.1.0",
+    "trackmania.io": "^3.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "type": "commonjs"
 }

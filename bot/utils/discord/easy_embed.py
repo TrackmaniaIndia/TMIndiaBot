@@ -1,5 +1,4 @@
 import typing
-
 from datetime import datetime, timedelta, timezone
 
 import discord
@@ -10,10 +9,10 @@ log = get_logger(__name__)
 
 
 def create_embed(
-    title: str,
-    description: str = "",
-    color: typing.Union[int, discord.Colour] = None,
-    url: str = None,
+        title: str,
+        description: str = "",
+        color: typing.Union[int, discord.Colour] = None,
+        url: str = None,
 ) -> discord.Embed:
     """Creates an Embed with Basic Data Fields Filled Out
     Args:

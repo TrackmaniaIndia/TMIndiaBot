@@ -1,6 +1,6 @@
 """Class gotten from python-discord/bot which is licensed under MIT License"""
-import logging
 import datetime
+import logging
 import os
 import sys
 from logging import Logger, handlers
@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Optional, TYPE_CHECKING, cast
 
 import coloredlogs
-
 from discord.ext.commands import Context
 
 from bot import constants
