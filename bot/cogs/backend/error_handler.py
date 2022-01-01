@@ -64,7 +64,7 @@ class ErrorHandler(Cog):
         )
 
         if isinstance(e, errors.CommandNotFound) and not getattr(
-                ctx, "invoked_from_error_handler", False
+            ctx, "invoked_from_error_handler", False
         ):
             await self.try_get_tag(ctx)
         elif isinstance(e, errors.UserInputError):
@@ -140,7 +140,7 @@ class ErrorHandler(Cog):
             if not cmd.hidden:
                 raw_commands += (cmd.name, *cmd.aliases)
         if similar_command_data := difflib.get_close_matches(
-                command_name, raw_commands, 1
+            command_name, raw_commands, 1
         ):
             similar_command_name = similar_command_data[0]
             similar_command = self.bot.get_command(similar_command_name)
@@ -167,7 +167,7 @@ class ErrorHandler(Cog):
             await ctx.send(embed=e, delete_after=10.0)
 
     async def handle_user_input_error(
-            self, ctx: Context, e: errors.UserInputError
+        self, ctx: Context, e: errors.UserInputError
     ) -> None:
         """
         Send an error message in `ctx` for UserInputError, sometimes invoking the help command too.
