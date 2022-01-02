@@ -1,0 +1,116 @@
+import json
+import datetime
+
+import numpy as np
+import discord
+
+import bot.utils.discord.easy_embed as ezembed
+from bot.log import get_logger
+from bot.utils.commons import get_random_color
+
+log = get_logger(__name__)
+
+
+def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
+    """Save a Quote to the JSON File
+    Args:
+        message (str): The Message
+        author (str): The Author
+    """
+
+    log.info(
+        f"Saving {message} by {author} at {datetime.datetime.utcnow()} from guild {guild_id}"
+    )
+
+    quotes = []
+    date_created = datetime.datetime.now().strftime("%c")
+    timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+
+    log.debug("Opening JSON File")
+    with open(
+        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
+    ) as file:
+        log.debug("Loading Quotes JSON File")
+        quotes = json.load(file)
+        log.debug("Opened Quotes JSON File")
+
+    new_quote_dict = {
+        "Message": message,
+        "Author": author,
+        "Message Link": message_link,
+        "Date Created": date_created,
+        "Timestamp": timestamp,
+        "Number": int(__get_number_of_quotes(guild_id) + 1),
+    }
+
+    quotes["quotes"].append(new_quote_dict)
+
+    log.debug("Dumping to Quotes File")
+    with open(
+        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "w", encoding="UTF-8"
+    ) as file:
+        json.dump(quotes, file, indent=4)
+    log.debug("Dumped to Quotes File")
+
+
+def _quote_dict_to_embed(quote: dict) -> discord.Embed:
+    message_link = quote["Message Link"]
+
+    title = f"***Quote #{quote['Number']}***"
+    description = f"```\"{quote['Message']}\" - {quote['Author']}```"
+    color = get_random_color()
+
+    embed = ezembed.create_embed(title=title, description=description, color=color)
+    embed.add_field(
+        name="***Message***", value=f"[Jump!]({message_link})", inline=False
+    )
+    embed.add_field(name="***Date Created***", value=quote["Date Created"], inline=True)
+    embed.add_field(name="***Number***", value=quote["Number"], inline=True)
+
+    try:
+        embed.add_field(
+            name="***Uploaded***", value=f"<t:{quote['Timestamp']}:R>", inline=False
+        )
+    except KeyError:
+        log.debug("Timestamp not saved")
+
+    return embed
+
+
+def _get_random_quote_dict(guild_id: str) -> dict:
+    log.debug(
+        f"Generating Random number Between 0 and {__get_number_of_quotes(guild_id)}"
+    )
+    number = np.random.randint(low=0, high=__get_number_of_quotes(guild_id) - 1)
+
+    log.debug("Opening File")
+    with open(
+        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
+    ) as file:
+        quotes = json.load(file)["quotes"]
+        log.debug(f"Returning #{number}")
+        return quotes[number]
+
+
+def _get_last_quote(guild_id: str) -> discord.Embed:
+    log.debug("Opening JSON File")
+    with open(
+        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
+    ) as file:
+        log.debug("Loading JSON file")
+        quotes = json.load(file)
+        log.debug("Read JSON file, returning last quote")
+
+        return quote_dict_to_embed(quotes["quotes"][-1])
+
+
+def _get_number_of_quotes(guild_id: str):
+    log.debug("Opening JSON File")
+    with open(
+        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
+    ) as file:
+        log.debug("Loading JSON file")
+        quotes = json.load(file)
+        log.debug("Read JSON file, returning length of quotes array")
+
+        return len(quotes["quotes"])

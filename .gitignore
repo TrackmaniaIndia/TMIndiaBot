@@ -132,9 +132,9 @@ dmypy.json
 prefixes.json
 
 # Community Creators File
-/data/community_creators.json
+bot/resources/community_creators.json
 
-/data/times_run.txt
+bot/resources/times_run.txt
 
 format.bat
 
@@ -142,7 +142,7 @@ format.bat
 
 /.vscode/
 
-/data/cotddata.png
+bot/resources/cotddata.png
 
 # Now we don't have to keep changing it
 /util/constants.py
@@ -151,7 +151,7 @@ format.bat
 /node_modules
 
 # The API
-/util/node/
+/bot/utils/node/
 
 # The Makefile
 Makefile
@@ -163,7 +163,7 @@ logs/
 totd.png
 
 # Repository
-data/leaderboard
+botbot/resources/leaderboard
 
 # Graph Images
 overallranks.png
@@ -324,3 +324,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
+config.yaml
+bot/utils/node/TMIndiaBotApi
