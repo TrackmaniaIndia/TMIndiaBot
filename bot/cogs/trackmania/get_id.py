@@ -27,9 +27,9 @@ class GetID(commands.Cog):
         description="Gets an ID for a specific username",
     )
     async def _get_id_slash(
-            self,
-            ctx: commands.Context,
-            username: Option(str, "The username of the player", required=True),
+        self,
+        ctx: commands.Context,
+        username: Option(str, "The username of the player", required=True),
     ):
         log_command(ctx, "get_id_slash")
 
