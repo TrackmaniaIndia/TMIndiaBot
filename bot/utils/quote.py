@@ -14,12 +14,12 @@ log = get_logger(__name__)
 def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
     """Save a Quote to the JSON File
     Args:
-        message (str): The Message
+        msg (str): The Message
         author (str): The Author
     """
 
     log.info(
-        f"Saving {message} by {author} at {datetime.datetime.utcnow()} from guild {guild_id}"
+        f"Saving {msg} by {author} at {datetime.datetime.utcnow()} from guild {guild_id}"
     )
 
     quotes = []
@@ -35,12 +35,12 @@ def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
         log.debug("Opened Quotes JSON File")
 
     new_quote_dict = {
-        "Message": message,
+        "Message": msg,
         "Author": author,
         "Message Link": message_link,
         "Date Created": date_created,
         "Timestamp": timestamp,
-        "Number": int(__get_number_of_quotes(guild_id) + 1),
+        "Number": int(_get_number_of_quotes(guild_id) + 1),
     }
 
     quotes["quotes"].append(new_quote_dict)
@@ -79,9 +79,9 @@ def _quote_dict_to_embed(quote: dict) -> discord.Embed:
 
 def _get_random_quote_dict(guild_id: str) -> dict:
     log.debug(
-        f"Generating Random number Between 0 and {__get_number_of_quotes(guild_id)}"
+        f"Generating Random number Between 0 and {_get_number_of_quotes(guild_id)}"
     )
-    number = np.random.randint(low=0, high=__get_number_of_quotes(guild_id) - 1)
+    number = np.random.randint(low=0, high=_get_number_of_quotes(guild_id) - 1)
 
     log.debug("Opening File")
     with open(
@@ -92,7 +92,7 @@ def _get_random_quote_dict(guild_id: str) -> dict:
         return quotes[number]
 
 
-def _get_last_quote(guild_id: str) -> discord.Embed:
+def get_last_quote(guild_id: str) -> discord.Embed:
     log.debug("Opening JSON File")
     with open(
         f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
@@ -101,7 +101,7 @@ def _get_last_quote(guild_id: str) -> discord.Embed:
         quotes = json.load(file)
         log.debug("Read JSON file, returning last quote")
 
-        return quote_dict_to_embed(quotes["quotes"][-1])
+        return _quote_dict_to_embed(quotes["quotes"][-1])
 
 
 def _get_number_of_quotes(guild_id: str):
