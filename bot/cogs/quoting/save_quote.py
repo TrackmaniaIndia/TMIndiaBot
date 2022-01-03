@@ -5,10 +5,10 @@ from discord.ext import commands
 
 import bot.utils.discord.easy_embed as ezembed
 import bot.utils.quote as quote_functions
+from bot import constants
+from bot.bot import Bot
 from bot.log import get_logger
 from bot.log import log_command
-from bot.bot import Bot
-from bot import constants
 from bot.utils.commons import get_random_color
 
 log = get_logger(__name__)
@@ -26,14 +26,14 @@ class SaveQuote(commands.Cog):
     )
     @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Developer")
     async def _save_quote_slash(
-        self,
-        ctx: commands.Context,
-        *,
-        message: Option(str, "Message to Quote", required=True),
-        author: Option(str, "The author of the message", required=True),
-        message_link: Option(
-            str, "The Link to the Message you want to quote", required=True
-        ),
+            self,
+            ctx: commands.Context,
+            *,
+            message: Option(str, "Message to Quote", required=True),
+            author: Option(str, "The author of the message", required=True),
+            message_link: Option(
+                str, "The Link to the Message you want to quote", required=True
+            ),
     ):
         log_command(ctx, "save_quote_slash")
 

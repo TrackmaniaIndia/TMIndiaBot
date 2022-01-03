@@ -14,11 +14,11 @@ log = get_logger(__name__)
 
 
 def in_whitelist(
-    *,
-    channels: t.Container[int] = (),
-    roles: t.Container[int] = (),
-    redirect: t.Optional[int] = Channels.commands_allowed,
-    fail_silently: bool = False,
+        *,
+        channels: t.Container[int] = (),
+        roles: t.Container[int] = (),
+        redirect: t.Optional[int] = Channels.commands_allowed,
+        fail_silently: bool = False,
 ) -> t.Callable:
     """
     Check if a command was issued in a whitelisted context.
@@ -57,10 +57,10 @@ def has_no_roles(*roles: t.Union[str, int]) -> t.Callable:
 
 
 def redirect_output(
-    destination_channel: int,
-    bypass_roles: t.Optional[t.Container[int]] = None,
-    channels: t.Optional[t.Container[int]] = None,
-    ping_user: bool = True,
+        destination_channel: int,
+        bypass_roles: t.Optional[t.Container[int]] = None,
+        channels: t.Optional[t.Container[int]] = None,
+        ping_user: bool = True,
 ) -> t.Callable:
     """
     Changes the channel in the context of the command to redirect the output to a certain channel.
@@ -81,7 +81,7 @@ def redirect_output(
                 return
 
             if bypass_roles and any(
-                role.id in bypass_roles for role in ctx.author.roles
+                    role.id in bypass_roles for role in ctx.author.roles
             ):
                 log.debug(f"{ctx.author} has role to bypass output redirection.")
                 await func(self, ctx, *args, **kwargs)
