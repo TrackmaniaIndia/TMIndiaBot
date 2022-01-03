@@ -54,9 +54,7 @@ class APIClient:
         self, method: str, endpoint: str, *, raise_for_status: bool = True, **kwargs
     ) -> dict:
         """Send an HTTP request to the site API and return the JSON response."""
-        async with self.session.request(
-            method.upper(), self._url_for(endpoint), **kwargs
-        ) as resp:
+        async with self.session.request(method.upper(), endpoint, **kwargs) as resp:
             await self.maybe_raise_for_status(resp, raise_for_status)
             return await resp.json()
 
