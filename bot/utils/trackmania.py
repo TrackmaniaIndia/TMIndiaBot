@@ -1,15 +1,20 @@
 import discord
+import asyncio
 from bot.api import APIClient
 
 
 class TrackmaniaUtils:
     def __init__(self, username: str):
-        self.username = usernames
+        self.username = username
         self.api_client = APIClient()
 
-    def get_id(self):
-        id_data = self.api_client.request(
-            "GET", f"http://localhost:3000/tm2020/player/{self.username}/id"
+    async def close(self):
+        await self.api_client.close()
+        return
+
+    async def get_id(self):
+        id_data = await self.api_client.get(
+            f"http://localhost:3000/tm2020/player/{self.username}/id"
         )
 
         try:

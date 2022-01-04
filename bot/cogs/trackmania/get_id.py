@@ -19,7 +19,6 @@ log = get_logger(__name__)
 class GetID(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
-        self.id_url = "http://localhost:3000/tm2020/player/{}/id"
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
@@ -38,7 +37,10 @@ class GetID(commands.Cog):
         log.debug(f"Created TrackmaniaUtil object for {username}")
 
         log.info(f"Getting ID for {username}")
-        id = username_obj.get_id()
+        id = await username_obj.get_id()
+
+        await username_obj.close()
+        del username_obj
 
         await ctx.respond(
             embed=ezembed.create_embed(
@@ -56,7 +58,10 @@ class GetID(commands.Cog):
         log.debug(f"Created TrackmaniaUtil object for {username}")
 
         log.info(f"Getting ID for {username}")
-        id = username_obj.get_id()
+        id = await username_obj.get_id()
+
+        await username_obj.close()
+        del username_obj
 
         await ctx.send(
             embed=ezembed.create_embed(
