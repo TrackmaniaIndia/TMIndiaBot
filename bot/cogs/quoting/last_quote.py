@@ -1,15 +1,10 @@
-import discord
-from discord.commands import permissions
-from discord.commands.commands import Option
 from discord.ext import commands
 
-import bot.utils.discord.easy_embed as ezembed
 import bot.utils.quote as quote_functions
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 from bot.log import log_command
-from bot.utils.commons import get_random_color
 
 log = get_logger(__name__)
 

@@ -3,16 +3,10 @@ from __future__ import annotations
 import re
 import typing as t
 from datetime import datetime, timezone
-from ssl import CertificateError
 
-import dateutil.parser
-import dateutil.tz
 import discord
-from aiohttp import ClientConnectionError
-from dateutil.relativedelta import relativedelta
 from discord.ext.commands import (
     BadArgument,
-    Bot,
     Context,
     Converter,
     IDConverter,
@@ -22,11 +16,8 @@ from discord.ext.commands import (
 from discord.utils import escape_markdown, snowflake_time
 
 from bot import cogs
-from bot.api import ResponseCodeError
 from bot.log import get_logger
 from bot.utils.extensions import EXTENSIONS, unqualify
-from bot.utils.regex import INVITE_RE
-from bot.utils.time import parse_duration_string
 
 log = get_logger(__name__)
 

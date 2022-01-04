@@ -1,5 +1,3 @@
-import discord
-import asyncio
 from bot.api import APIClient
 
 

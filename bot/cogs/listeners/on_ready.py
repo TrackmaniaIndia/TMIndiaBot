@@ -1,15 +1,15 @@
+import datetime
 import json
 import os
-import datetime
 from itertools import cycle
 
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 
+from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 from bot.utils.tasks import change_status, keep_alive, totd_image_deleter
-from bot import constants
 
 log = get_logger(__name__)
 

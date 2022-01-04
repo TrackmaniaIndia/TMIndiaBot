@@ -1,11 +1,12 @@
-import discord
 import datetime
 import sys
-from discord.ext import commands, tasks
 
+from discord.ext import tasks
+
+import discord
+from bot.api import APIClient
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.api import APIClient
 
 log = get_logger(__name__)
 

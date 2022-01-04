@@ -10,7 +10,6 @@ from discord.ext.commands import (
 from bot.api import ResponseCodeError
 from bot.bot import Bot
 from bot.constants import Colours
-from bot.errors import LockedResourceError
 from bot.log import get_logger
 from bot.utils.checks import ContextCheckFailure
 from bot.utils.discord import easy_embed as ezembed
