@@ -35,7 +35,7 @@ async def keep_alive(bot: Bot):
         sys.exit(-1)
 
     log.debug("Sending a Message to the Designated Channel")
-    channel = bot.get_channel()
+    channel = bot.get_channel(881732050451849216)
     await channel.send(f"Bot is still alive at {datetime.datetime.utcnow()} UTC")
 
 
@@ -55,7 +55,7 @@ async def _ping_api():
         await api_client.get("http://localhost:3000/")
     except:
         log.error("API is OFFLINE")
-        raise OfflineAPI("API is Offline")
+        # raise OfflineAPI("API is Offline")
     await api_client.close()
     del api_client
 

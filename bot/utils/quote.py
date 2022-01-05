@@ -54,6 +54,14 @@ def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
 
 
 def _quote_dict_to_embed(quote: dict) -> discord.Embed:
+    """Changes a given quote dict to an embed format
+
+    Args:
+        quote (dict): The quote in `dict` format
+
+    Returns:
+        discord.Embed: The embed itself.
+    """
     message_link = quote["Message Link"]
 
     title = f"***Quote #{quote['Number']}***"
@@ -78,6 +86,14 @@ def _quote_dict_to_embed(quote: dict) -> discord.Embed:
 
 
 def _get_random_quote_dict(guild_id: str) -> dict:
+    """Gets a random quote from a guild_id in a `dict` format.
+
+    Args:
+        guild_id (str): The guild id where the command was invoked.
+
+    Returns:
+        dict: The quote in `dict` format.
+    """
     log.debug(
         f"Generating Random number Between 0 and {_get_number_of_quotes(guild_id)}"
     )
@@ -93,6 +109,14 @@ def _get_random_quote_dict(guild_id: str) -> dict:
 
 
 def get_last_quote(guild_id: str) -> discord.Embed:
+    """Get's the last quote saved for a specific guild_id
+
+    Args:
+        guild_id (str): The guild_id where the command was invoked.
+
+    Returns:
+        discord.Embed: The quote in `discord.Embed` format.
+    """
     log.debug("Opening JSON File")
     with open(
         f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
@@ -105,6 +129,14 @@ def get_last_quote(guild_id: str) -> discord.Embed:
 
 
 def _get_number_of_quotes(guild_id: str):
+    """Gets the number of quotes saved for a specific guild_id
+
+    Args:
+        guild_id (str): The guild where the command was invoked in.
+
+    Returns:
+        int: The number of quotes saved.
+    """
     log.debug("Opening JSON File")
     with open(
         f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"

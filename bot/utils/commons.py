@@ -6,16 +6,35 @@ bot = get_logger(__name__)
 
 
 def get_ordinal_number(num: int) -> str:
+    """
+    1 -> 1st
+    2 -> 2nd
+    3 -> 3rd
+    15 -> 15th
+    """
     return str(num) + {1: "st", 2: "nd", 3: "rd"}.get(
         4 if 10 <= num % 100 < 20 else num % 10, "th"
     )
 
 
 def add_commas(num: int) -> str:
+    """Adds commas to an integer in the international number format
+
+    - 1000 -> 1,000
+    - 100000 -> 100,000
+    - 1000000 -> 1,000,000
+
+    Args:
+        num (int): The number
+
+    Returns:
+        str: The number with commas
+    """
     return "{:,}".format(num)
 
 
 def format_seconds(ms: int) -> str:
+    """Formats milliseconds into min:sec:ms format"""
     sec, ms = divmod(ms, 1000)
     min, sec = divmod(sec, 60)
 
@@ -26,6 +45,6 @@ def get_random_color() -> int:
     """Get Random Color for Embed Colors
 
     Returns:
-        int: [description]
+        int: The colour
     """
     return random.randint(0, 0xFFFFFF)

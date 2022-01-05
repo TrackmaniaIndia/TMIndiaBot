@@ -25,7 +25,7 @@ class ResponseCodeError(ValueError):
 
 
 class APIClient:
-    """TMI API Wrapper"""
+    """API Wrapper"""
 
     def __init__(self, **session_kwargs):
         self.session = aiohttp.ClientSession(**session_kwargs)
