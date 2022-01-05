@@ -11,13 +11,13 @@ the custom configuration. Any settings left
 out in the custom user configuration will stay
 their default values from `config-default.yml`.
 """
-import os
 
+
+import os
 import yaml
+import dotenv
 
 try:
-    import dotenv
-
     dotenv.load_dotenv()
 except ModuleNotFoundError:
     pass
