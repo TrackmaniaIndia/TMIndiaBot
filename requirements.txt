@@ -40,7 +40,7 @@ pathspec==0.9.0
 Pillow==8.4.0
 platformdirs==2.4.1
 psutil==5.8.0
-py-cord @ git+https://github.com/Pycord-Development/pycord@9aafd033e77be75ffcb4956a012be24378e55d5d
+py-cord @ git+https://github.com/Pycord-Development/pycord@ef92c70db27df57c94e899d7d6c14f78622d5a8c
 pycares==4.1.2
 pycodestyle==2.8.0
 pycparser==2.21
