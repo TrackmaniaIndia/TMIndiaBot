@@ -24,6 +24,7 @@ class StartupError(Exception):
 
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
+        """Initalizing the Bot"""
         log.debug("Initializing commands.Bot class")
         super().__init__(*args, **kwargs)
 

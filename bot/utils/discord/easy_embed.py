@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import discord
 
 from bot.log import get_logger
+from bot.utils.commons import get_random_color
 
 log = get_logger(__name__)
 
@@ -26,7 +27,7 @@ def create_embed(
 
     if color is None:
         log.debug("Colour is None, Assigning Random Colour")
-        color = common_functions.get_random_color()
+        color = get_random_color()
 
     # Creates an Embed with the Given Title, Description and Color
     log.debug(

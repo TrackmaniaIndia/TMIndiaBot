@@ -1,9 +1,8 @@
-from discord import Embed
 from discord.ext import commands
 
 from bot import constants
 from bot.bot import Bot
-from bot.log import get_logger, log_command
+from bot.log import log_command
 
 
 class BotVersion(commands.Cog):
