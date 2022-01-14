@@ -12,6 +12,8 @@ click==8.0.3
 coloredlogs==15.0.1
 country-converter==0.7.4
 cycler==0.11.0
+dictionaries==0.0.2
+emoji-country-flag==1.3.0
 fonttools==4.28.5
 frozenlist==1.2.0
 humanfriendly==10.0
