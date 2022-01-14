@@ -1,5 +1,8 @@
 import country_converter as coco
 import flag
+import json
+
+import discord
 
 from bot.utils.database import Database
 from bot.utils.commons import add_commas, get_random_color
@@ -56,9 +59,9 @@ class TrackmaniaUtils:
 
     async def get_player_data(self, player_id: str) -> list[discord.Embed]:
         log.debug(f"Getting Data for {player_id}")
-        raw_player_data = requests.get(
+        raw_player_data = await self.api_client.get(
             f"http://localhost:3000/tm2020/player/{player_id}"
-        ).json()
+        )
 
         log.debug("Getting Player Flag Unicode")
         player_flag_unicode = self._get_player_country_flag(raw_player_data)
@@ -82,11 +85,11 @@ class TrackmaniaUtils:
             color=get_random_color(),
         )
         page_two = ezembed.create_embed(
-            title=f"Player Data for {player_data_unicode} {display_name} - Page 2",
+            title=f"Player Data for {player_flag_unicode} {display_name} - Page 2",
             color=get_random_color(),
         )
         page_three = ezembed.create_embed(
-            title=f"Player Data for {player_data_unicode} {display_name} - Page 3",
+            title=f"Player Data for {player_flag_unicode} {display_name} - Page 3",
             color=get_random_color(),
         )
 
@@ -173,11 +176,11 @@ class TrackmaniaUtils:
                     * 100
                 )
             else:
-                log.debug("Player Has Not Won a Single Match")
+                log.debug("Player Has Not Won a Single Royal Match")
                 progression_to_next_div = "0"
 
             log.debug(
-                f"Creating Royal Data String with {rank}, {wins}, {current_division} and {progression_to_next_div}"
+                f"Creating Royal Data String with {rank}, {wins}, {current_div} and {progression_to_next_div}"
             )
             royal_data_string = f"```Rank: {rank}\nWins: {wins}\nCurrent Division: {current_div}\nProgression to Next Division: {progression_to_next_div}%```"
 
@@ -196,12 +199,16 @@ class TrackmaniaUtils:
 
             rank = matchmaking_data["info"]["rank"]
             score = matchmaking_data["info"]["score"]
-            current_div = matchmaking_data["info"]["division"]["position"]
+            current_div = int(matchmaking_data["info"]["division"]["position"])
 
-            with open("./data/json/mm_ranks.json", "r", encoding="UTF-8") as file:
+            log.debug("Opening the MM Ranks File")
+            with open(
+                "./bot/resources/json/mm_ranks.json", "r", encoding="UTF-8"
+            ) as file:
                 mm_ranks = json.load(file)
                 current_div = mm_ranks["rank_data"][str(current_div - 1)]
 
+            log.debug("Calculating Progression to Next Division")
             progression_to_next_div = (
                 round(
                     (score - matchmaking_data["info"]["division"]["minpoints"])
@@ -235,7 +242,7 @@ class TrackmaniaUtils:
         trophy_count_string += f"Total Points: {total_points}\n\n"
         log.debug(f"Added Total Points -> {total_points}")
 
-        for i, trophy_count in enumerate(raw_data["trophies"]["counts"]):
+        for i, trophy_count in enumerate(raw_player_data["trophies"]["counts"]):
             trophy_count_string = (
                 trophy_count_string + f"Trophy {i + 1}: {trophy_count}\n"
             )
@@ -244,27 +251,27 @@ class TrackmaniaUtils:
         log.debug(f"Final Trophy Count -> {trophy_count_string}")
         return trophy_count_string
 
-    def _get_zones_and_positions(self, raw_data) -> str:
+    def _get_zones_and_positions(self, raw_player_data) -> str:
         """
         Converts raw_player_data into location and their ranks
         """
         ranks_string = ""
 
         log.debug("Getting Zones")
-        zone_one = raw_data["trophies"]["zone"]["name"]
-        zone_two = raw_data["trophies"]["zone"]["parent"]["name"]
-        zone_three = raw_data["trophies"]["zone"]["parent"]["parent"]["name"]
+        zone_one = raw_player_data["trophies"]["zone"]["name"]
+        zone_two = raw_player_data["trophies"]["zone"]["parent"]["name"]
+        zone_three = raw_player_data["trophies"]["zone"]["parent"]["parent"]["name"]
 
         try:
-            zone_four = raw_data["trophies"]["zone"]["parent"]["parent"]["parent"][
-                "name"
-            ]
+            zone_four = raw_player_data["trophies"]["zone"]["parent"]["parent"][
+                "parent"
+            ]["name"]
         except:
             zone_four = ""
 
         log.debug(f"Got Zones -> {zone_one}, {zone_two}, {zone_three}, {zone_four}")
         log.debug("Getting Position Data")
-        raw_zone_positions = raw_data["trophies"]["zonepositions"]
+        raw_zone_positions = raw_player_data["trophies"]["zonepositions"]
         zone_one_position = raw_zone_positions[0]
         zone_two_position = raw_zone_positions[1]
         zone_three_position = raw_zone_positions[2]
@@ -301,11 +308,11 @@ class TrackmaniaUtils:
     def _add_meta_details(
         self,
         player_page: discord.Embed,
-        raw_data,
+        raw_player_data,
     ) -> discord.Embed:
         log.debug("Adding Meta Details for Player")
 
-        meta_data = raw_data["meta"]
+        meta_data = raw_player_data["meta"]
 
         try:
             log.debug("Checking if Player has Twitch")
@@ -344,8 +351,8 @@ class TrackmaniaUtils:
             log.debug("Player does not have a YouTube Account Linked to TMIO")
 
         log.debug("Adding TMIO")
-        display_name = raw_data["displayname"]
-        player_id = raw_data["accountid"]
+        display_name = raw_player_data["displayname"]
+        player_id = raw_player_data["accountid"]
         player_page.add_field(
             name="TMIO",
             value=f"[{display_name}](https://trackmania.io/#/player/{player_id})",
