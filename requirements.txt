@@ -26,7 +26,7 @@ pandas==1.3.5
 pathspec==0.9.0
 Pillow==9.0.0
 platformdirs==2.4.1
-py-cord @ git+https://github.com/Pycord-Development/pycord@ef92c70db27df57c94e899d7d6c14f78622d5a8c
+py-cord @ git+https://github.com/Pycord-Development/pycord@f88326088ef5fc638b809e9cad2588871dc1e781
 pycares==4.1.2
 pycparser==2.21
 pyparsing==3.0.6
