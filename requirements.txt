@@ -10,6 +10,7 @@ cffi==1.15.0
 charset-normalizer==2.0.10
 click==8.0.3
 coloredlogs==15.0.1
+country-converter==0.7.4
 cycler==0.11.0
 fonttools==4.28.5
 frozenlist==1.2.0
