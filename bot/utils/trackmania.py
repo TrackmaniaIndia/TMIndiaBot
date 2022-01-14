@@ -1,4 +1,9 @@
+from bot.utils.database import Database
+
 from bot.api import APIClient
+from bot.log import get_logger
+
+log = get_logger(__name__)
 
 
 class TrackmaniaUtils:
@@ -22,14 +27,27 @@ class TrackmaniaUtils:
         Returns:
             str: The ID of the player
         """
-        id_data = await self.api_client.get(
-            f"http://localhost:3000/tm2020/player/{self.username}/id"
-        )
+        log.debug("Checking if the ID is in the file")
+        id = Database.retrieve_id(self.username)
 
-        try:
-            return id_data["id"]
-        except KeyError:
-            raise NotAValidUsername
+        if id is None:
+            log.debug("Getting the data from the TMIndiaBotAPI")
+            id_data = await self.api_client.get(
+                f"http://localhost:3000/tm2020/player/{self.username}/id"
+            )
+
+            try:
+                id = id_data["id"]
+            except KeyError:
+                id = None
+
+            log.debug("Storing the Username and ID to the file")
+            Database.store_id(self.username, id)
+
+        else:
+            log.debug("Username exists in file")
+
+        return id
 
 
 class NotAValidUsername(Exception):
