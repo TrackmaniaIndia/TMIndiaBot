@@ -27,6 +27,8 @@ class GetID(commands.Cog):
     ):
         log_command(ctx, "get_id_slash")
 
+        await ctx.defer()
+
         log.debug(f"Creating TrackmaniaUtil object for {username}")
         username_obj = TrackmaniaUtils(username)
         log.debug(f"Created TrackmaniaUtil object for {username}")

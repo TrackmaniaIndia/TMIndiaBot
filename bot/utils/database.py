@@ -27,7 +27,7 @@ class Database:
         log.debug("Looping through the IDs Array")
         for player in ids:
             if player["Username"].lower() == player_username.lower():
-                log.debug(
+                log.info(
                     f'Returning the ID of Username: {player["Username"]} and ID: {player["ID"]}'
                 )
                 return player["ID"]
@@ -49,12 +49,12 @@ class Database:
 
         try:
             with open("./bot/resources/json/ids.json", "r", encoding="UTF-8") as file:
-                ids_data["IDS"] = json.load(file)
+                ids_data = json.load(file)["IDS"]
 
             ids_data.append({"Username": player_username, "ID": player_id})
 
             with open("./bot/resources/json/ids.json", "w", encoding="UTF-8") as file:
-                json.dump(ids_data, file, indent=4)
+                json.dump({"IDS": ids_data}, file, indent=4)
 
             return True
         except:
