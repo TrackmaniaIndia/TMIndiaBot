@@ -66,19 +66,24 @@ class GetID(commands.Cog):
             ),
         )
 
-    # @_get_id_slash.error
-    # async def error(self, ctx: commands.Context, error: Exception):
-    #     log.error(error)
+    @_get_id.error
+    async def error(self, ctx: commands.Context, error: Exception):
+        log.error(error)
 
-    #     if isinstance(error, NotAValidUsername):
-    #         log.error("Invalid Username")
+        if isinstance(error, commands.MissingRequiredArgument):
+            log.error("Missing required arguments")
 
-    #         await ctx.send(
-    #             embed=ezembed.create_embed(
-    #                 title="That is not a valid username",
-    #                 color=constants.Colours.soft_red,
-    #             )
-    #         )
+            log.debug("Creating Error Embed")
+            await ctx.send(
+                embed=ezembed.create_embed(
+                    title=":warning: Missing required argument: Username",
+                    description="**Username is a required argument that is missing**, \n\nUsage: playerdetails {Username}",
+                    color=0xFF0000,
+                )
+            )
+
+            log.debug("Sent error Embed")
+            return None
 
 
 def setup(bot: Bot):
