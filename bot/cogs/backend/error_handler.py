@@ -178,7 +178,9 @@ class ErrorHandler(Cog):
         * Other: send an error message and the help command
         """
         if isinstance(e, errors.MissingRequiredArgument):
-            embed = self._get_error_embed("Missing required argument", e.param.name)
+            embed = self._get_error_embed(
+                f"Missing required argument: {e.param.name}", e.param.name
+            )
             log.debug("Missing Required Argument")
         elif isinstance(e, errors.TooManyArguments):
             embed = self._get_error_embed("Too many arguments", str(e))
