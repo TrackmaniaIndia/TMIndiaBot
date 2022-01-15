@@ -13,8 +13,9 @@ their default values from `config-default.yml`.
 """
 
 import os
-import yaml
+
 import dotenv
+import yaml
 
 try:
     dotenv.load_dotenv()

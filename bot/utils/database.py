@@ -1,5 +1,5 @@
-import typing
 import json
+import typing
 
 from bot.log import get_logger
 

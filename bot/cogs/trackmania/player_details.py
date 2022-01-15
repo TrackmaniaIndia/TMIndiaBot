@@ -1,13 +1,12 @@
 from discord.commands import Option
-from discord.ext.pages import Paginator
 from discord.ext import commands
+from discord.ext.pages import Paginator
 
 import bot.utils.discord.easy_embed as ezembed
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.trackmania import TrackmaniaUtils
-from bot.utils.database import Database
 
 log = get_logger(__name__)
 

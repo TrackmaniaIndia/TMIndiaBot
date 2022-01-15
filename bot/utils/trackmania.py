@@ -1,21 +1,18 @@
+import json
+import os
+import shutil
+from datetime import datetime, timezone, timedelta
+
 import country_converter as coco
 import flag
-import json
-from datetime import datetime, timezone, timedelta
-import threading
-import wget
-import os
 import requests
-import shutil
 
 import discord
-
-from bot.utils.database import Database
-from bot.utils.commons import add_commas, get_random_color, format_seconds
-from bot.utils.discord import easy_embed as ezembed
-
 from bot.api import APIClient
 from bot.log import get_logger
+from bot.utils.commons import add_commas, get_random_color, format_seconds
+from bot.utils.database import Database
+from bot.utils.discord import easy_embed as ezembed
 
 log = get_logger(__name__)
 
