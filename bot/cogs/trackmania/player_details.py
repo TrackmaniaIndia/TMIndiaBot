@@ -125,25 +125,6 @@ class PlayerDetails(commands.Cog):
 
         await player_detail_paginator.send(ctx)
 
-    @_player_details.error
-    async def error(self, ctx: commands.Context, error: commands.CommandError):
-        log.error(error)
-
-        if isinstance(error, commands.MissingRequiredArgument):
-            log.error("Missing required arguments")
-
-            log.debug("Creating Error Embed")
-            await ctx.send(
-                embed=ezembed.create_embed(
-                    title=":warning: Missing required argument: Username",
-                    description="**Username is a required argument that is missing**, \n\nUsage: playerdetails {Username}",
-                    color=0xFF0000,
-                )
-            )
-
-            log.debug("Sent error Embed")
-            return None
-
 
 def setup(bot: Bot):
     """Adds the PlayerDetails cog"""
