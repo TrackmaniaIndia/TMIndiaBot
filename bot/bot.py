@@ -85,6 +85,7 @@ class Bot(commands.Bot):
         """Add `command` as normal and then add its root aliases to the bot."""
         super().add_command(command)
         self._add_root_aliases(command)
+        log.info(f"Added {command.name}")
 
     def remove_command(self, name: str) -> Optional[commands.Command]:
         """
@@ -98,6 +99,7 @@ class Bot(commands.Bot):
             return
 
         self._remove_root_aliases(command)
+        log.info(f"Removed {command.name}")
         return command
 
     async def close(self) -> None:
@@ -109,27 +111,33 @@ class Bot(commands.Bot):
 
         for cog in list(self.cogs):
             with suppress(Exception):
+                log.debug(f"Removing {cog.name}")
                 self.remove_cog(cog)
 
         # Now actually do full close of bot
         await super().close()
 
+        log.info("Closing the API Client")
         if self.api_client:
             await self.api_client.close()
 
+        log.info("Closing the Connector")
         if self._connector:
             await self._connector.close()
 
+        log.info("Closing the Resolver")
         if self._resolver:
             await self._resolver.close()
 
     async def login(self, *args, **kwargs) -> None:
         """Re-create the connector and set up sessions before logging into Discord."""
         # Use asyncio for DNS resolution instead of threads so threads aren't spammed.
+        log.info("Creating a resolver")
         self._resolver = aiohttp.AsyncResolver()
 
         # Use AF_INET as its socket family to prevent HTTPS related problems both locally
         # and in production.
+        log.info("Creating a connector")
         self._connector = aiohttp.TCPConnector(
             resolver=self._resolver,
             family=socket.AF_INET,
@@ -168,6 +176,7 @@ class Bot(commands.Bot):
 
             return
 
+        log.info(f"{guild.name} is available")
         self._guild_available.set()
 
     async def on_guild_unavailable(self, guild: discord.Guild) -> None:
@@ -178,6 +187,7 @@ class Bot(commands.Bot):
         ):
             return
 
+        log.info(f"{guild.name} is unavailable")
         self._guild_available.clear()
 
     async def wait_until_guild_available(self) -> None:
