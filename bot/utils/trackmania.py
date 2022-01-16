@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import typing
 from datetime import datetime, timezone, timedelta
 
 import country_converter as coco
@@ -60,7 +61,21 @@ class TrackmaniaUtils:
 
         return id
 
-    async def get_player_data(self, player_id: str) -> list[discord.Embed]:
+    async def get_player_data(
+        self, player_id: str
+    ) -> typing.Union[list, discord.Embed, None]:
+        """Gets the player data as a list of embeds
+        Page 1 contains the Zone, Zone Ranks and Metadata of the player
+        Page 2 contains the Matchmaking and Royal Data
+        Page 3 contains the individual trophy counts
+
+        Args:
+            player_id (str): The player's id
+
+        Returns:
+            typing.Union[list, discord.Embed, None]: The player data in a list of 3 embed.
+            If the player does not exist, returns a single error embed.
+        """
         log.debug(f"Getting Data for {player_id}")
         raw_player_data = await self.api_client.get(
             f"http://localhost:3000/tm2020/player/{player_id}"
@@ -122,7 +137,8 @@ class TrackmaniaUtils:
         log.debug(f"Returning {page_one}, {page_two} and {page_three}")
         return [page_one, page_two, page_three]
 
-    def _get_player_country_flag(self, raw_player_data):
+    def _get_player_country_flag(self, raw_player_data: dict):
+        """Gets the country that the player is from as unicode characters"""
         log.debug("Getting Zones")
 
         try:
@@ -155,7 +171,8 @@ class TrackmaniaUtils:
             log.error("Player has never played Trackmania 2020")
             return ":flag_white:"
 
-    def _get_royal_data(self, raw_player_data) -> str:
+    def _get_royal_data(self, raw_player_data: dict) -> str:
+        """Gets the royal data of the player as a string"""
         log.debug("Getting Player Data")
 
         try:
@@ -194,7 +211,8 @@ class TrackmaniaUtils:
                 "An Error Occured While Getting Royal Data, Player has not played Royal"
             )
 
-    def _get_matchmaking_data(self, raw_player_data) -> str:
+    def _get_matchmaking_data(self, raw_player_data: dict) -> str:
+        """Gets the matchmaking data of the player as a string"""
         log.debug("Getting Matchmaking Data")
 
         try:
@@ -236,7 +254,8 @@ class TrackmaniaUtils:
             log.error("Player has never Played Matchmaking")
             return "An error Occured While Getting Matchmaking Data, Player has not played Matchmaking"
 
-    def _get_trophy_count(self, raw_player_data) -> str:
+    def _get_trophy_count(self, raw_player_data: dict) -> str:
+        """The trophy counts as a string"""
         log.debug("Getting Trophy Counts")
         trophy_count_string = "```\n"
 
@@ -311,8 +330,17 @@ class TrackmaniaUtils:
     def _add_meta_details(
         self,
         player_page: discord.Embed,
-        raw_player_data,
+        raw_player_data: dict,
     ) -> discord.Embed:
+        """Adds the Metadata of a player to the first page of the embed
+
+        Args:
+            player_page (discord.Embed): the first page of player details
+            raw_player_data (dict): player data from the api
+
+        Returns:
+            discord.Embed: First page of the embed after metadata has been added
+        """
         log.debug("Adding Meta Details for Player")
 
         meta_data = raw_player_data["meta"]
@@ -379,6 +407,7 @@ class TrackmaniaUtils:
 class TOTDUtils:
     @staticmethod
     def _download_thumbail(url: str) -> None:
+        """Downloads the Thumbnail from Nadeo's API and stores in `./bot/resources/temp/totd.png`"""
         if os.path.exists("./bot/resources/temp/totd.png"):
             log.debug("Thumbnail already downloaded")
             return
@@ -397,6 +426,14 @@ class TOTDUtils:
 
     @staticmethod
     def _parse_mx_tags(self, tags: str) -> str:
+        """Parses Maniaexchange tags to their strings
+
+        Args:
+            tags (str): The tags as a string of `ints`
+
+        Returns:
+            str: The tags as a string of `strings`
+        """
         log.debug(f"Tags -> {tags}")
         log.debug("Removing Spaces")
         tags.replace(" ", "")
@@ -421,6 +458,7 @@ class TOTDUtils:
 
     @staticmethod
     async def today():
+        """The data of the current day's totd"""
         log.info("Creating an API Client")
         api_client = APIClient()
         log.info("Created an API Client")
