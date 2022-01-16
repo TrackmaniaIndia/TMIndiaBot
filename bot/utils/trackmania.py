@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import asyncio
 import typing
 from datetime import datetime, timezone, timedelta
 import time
@@ -635,20 +636,23 @@ class Leaderboards:
         for i, id in enumerate(id_list):
             leaderboard_data = []
 
+            log.debug("Getting Data from API")
             leaderboard_data = await api_client.get(
                 f"http://localhost:3000/tm2020/leaderboard/{id}/5"
             )
+            log.debug("Got Data from API")
 
-            log.debug("Dumping Data to a File")
             with open(
                 f"./bot/resources/leaderboard/{year}/{season.lower()}/{i + 1}.json",
                 "w",
                 encoding="UTF-8",
             ) as file:
+                log.debug(f"Dumping Data to File -> {year}>{season}>{i+1}")
                 json.dump(leaderboard_data, file, indent=4)
 
             log.debug("Sleeping for 10s")
-            time.sleep(10)
+            # time.sleep(10)
+            await asyncio.sleep(10)
             log.debug(f"Finished Map #{i + 1}")
 
         await api_client.close()
