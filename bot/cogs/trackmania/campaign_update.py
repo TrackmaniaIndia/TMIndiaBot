@@ -99,3 +99,7 @@ class CampaignUpdate(commands.Cog):
                 color=discord.Colour.green(),
             )
         )
+
+
+def setup(bot: Bot):
+    bot.add_cog(CampaignUpdate(bot))
