@@ -610,7 +610,7 @@ class Leaderboards:
             encoding="UTF-8",
         ) as file:
             file_data = json.load(file)
-            id_list = fild_data["ids"]
+            id_list = file_data["ids"]
 
         log.debug("Not Ignoring First Five Maps")
         return id_list
@@ -648,7 +648,7 @@ class Leaderboards:
                 json.dump(leaderboard_data, file, indent=4)
 
             log.debug("Sleeping for 10s")
-            time.sleep(10)
+            time.sleep(20)
             log.debug(f"Finished Map #{i + 1}")
 
     @staticmethod

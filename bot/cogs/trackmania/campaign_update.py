@@ -2,6 +2,8 @@ from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
 
+import threading
+
 from bot.utils.discord.easy_embed import EZEmbed
 from bot import constants
 from bot.bot import Bot
@@ -13,7 +15,7 @@ log = get_logger(__name__)
 
 
 class CampaignUpdate(commands.Cog):
-    def __init__(bot: Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     @commands.slash_command(
@@ -32,6 +34,7 @@ class CampaignUpdate(commands.Cog):
             str, "Want to Update the First Five as Well?", choices=["True", "False"]
         ),
     ):
+        await ctx.defer()
         log_command(ctx, "update_campaign_leaderboards_slash")
 
         firstfive = bool(firstfive)
@@ -63,7 +66,7 @@ class CampaignUpdate(commands.Cog):
 
         # Deleting the Confirmation Prompt
         log.info("Deleting Original Message")
-        await message.delete_original_message()
+        await message.delete()
         log.info("Deleted Message")
 
         # Checking if the Confirmation Prompt was Cancelled
