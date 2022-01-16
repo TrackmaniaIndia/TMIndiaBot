@@ -3,7 +3,7 @@ import json
 
 import numpy as np
 
-import bot.utils.discord.easy_embed as ezembed
+from bot.utils.discord.easy_embed import EZEmbed
 import discord
 from bot.log import get_logger
 from bot.utils.commons import get_random_color
@@ -68,7 +68,7 @@ def _quote_dict_to_embed(quote: dict) -> discord.Embed:
     description = f"```\"{quote['Message']}\" - {quote['Author']}```"
     color = get_random_color()
 
-    embed = ezembed.create_embed(title=title, description=description, color=color)
+    embed = EZEmbed.create_embed(title=title, description=description, color=color)
     embed.add_field(
         name="***Message***", value=f"[Jump!]({message_link})", inline=False
     )

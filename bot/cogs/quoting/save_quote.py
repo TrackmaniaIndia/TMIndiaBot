@@ -2,7 +2,7 @@ from discord.commands import Option
 from discord.commands import permissions
 from discord.ext import commands
 
-import bot.utils.discord.easy_embed as ezembed
+from bot.utils.discord.easy_embed import EZEmbed
 import bot.utils.quote as quote_functions
 from bot import constants
 from bot.bot import Bot
@@ -44,7 +44,7 @@ class SaveQuote(commands.Cog):
 
         quote_functions.save(message, author, message_link, ctx.guild.id)
 
-        embed = ezembed.create_embed(
+        embed = EZEmbed.create_embed(
             title=":white_check_mark: Saved",
             description=f'Saved "{message}" by {author} with [Jump!]({message_link})',
             color=get_random_color(),

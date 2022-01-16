@@ -2,7 +2,7 @@ from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
 
-import bot.utils.discord.easy_embed as ezembed
+from bot.utils.discord.easy_embed import EZEmbed
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
@@ -36,7 +36,7 @@ class PlayerDetails(commands.Cog):
             # An Invalid Username was given, sending a message to the user
             log.critical("Invalid Player Username Received, Sending Error Message")
             await ctx.respond(
-                embed=ezembed.create_embed(
+                embed=EZEmbed.create_embed(
                     title="Invalid Username Given",
                     description=f"Username Given: {username}",
                     color=common_functions.get_random_color(),
@@ -89,7 +89,7 @@ class PlayerDetails(commands.Cog):
             # An Invalid Username was given, sending a message to the user
             log.critical("Invalid Player Username Received, Sending Error Message")
             await ctx.send(
-                embed=ezembed.create_embed(
+                embed=EZEmbed.create_embed(
                     title="Invalid Username Given",
                     description=f"Username Given: {username}",
                     color=common_functions.get_random_color(),

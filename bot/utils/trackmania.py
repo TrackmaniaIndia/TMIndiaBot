@@ -13,7 +13,7 @@ from bot.api import APIClient
 from bot.log import get_logger
 from bot.utils.commons import add_commas, get_random_color, format_seconds
 from bot.utils.database import Database
-from bot.utils.discord import easy_embed as ezembed
+from bot.utils.discord.easy_embed import EZEmbed
 
 log = get_logger(__name__)
 
@@ -91,22 +91,22 @@ class TrackmaniaUtils:
         log.debug("Checking if Player has Played the Game")
         if raw_player_data["trophies"]["points"] == 0:
             return [
-                ezembed.create_embed(
+                EZEmbed.create_embed(
                     title=f"{player_flag_unicode} {display_name} has never played Trackmania 2020",
                     color=0xFF0000,
                 )
             ]
 
         log.debug("Creating Two Embeds")
-        page_one = ezembed.create_embed(
+        page_one = EZEmbed.create_embed(
             title=f"Player Data for {player_flag_unicode} {display_name} - Page 1",
             color=get_random_color(),
         )
-        page_two = ezembed.create_embed(
+        page_two = EZEmbed.create_embed(
             title=f"Player Data for {player_flag_unicode} {display_name} - Page 2",
             color=get_random_color(),
         )
-        page_three = ezembed.create_embed(
+        page_three = EZEmbed.create_embed(
             title=f"Player Data for {player_flag_unicode} {display_name} - Page 3",
             color=get_random_color(),
         )
@@ -546,7 +546,7 @@ class TOTDUtils:
         else:
             day_suffix = "th"
 
-        embed = ezembed.create_embed(
+        embed = EZEmbed.create_embed(
             title=f"Here is the {current_day}{day_suffix} {current_month} TOTD",
             color=get_random_color(),
         )

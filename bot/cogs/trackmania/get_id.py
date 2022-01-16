@@ -1,7 +1,7 @@
 from discord.commands import Option
 from discord.ext import commands
 
-import bot.utils.discord.easy_embed as ezembed
+from bot.utils.discord.easy_embed import EZEmbed
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
@@ -40,7 +40,7 @@ class GetID(commands.Cog):
         del username_obj
 
         await ctx.respond(
-            embed=ezembed.create_embed(
+            embed=EZEmbed.create_embed(
                 title=f"Here is the ID for {username}", description=id
             ),
             ephemeral=True,
@@ -61,7 +61,7 @@ class GetID(commands.Cog):
         del username_obj
 
         await ctx.send(
-            embed=ezembed.create_embed(
+            embed=EZEmbed.create_embed(
                 title=f"Here is the ID for {username}", description=id
             ),
         )
