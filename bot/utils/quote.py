@@ -3,10 +3,10 @@ import json
 
 import numpy as np
 
-from bot.utils.discord.easy_embed import EZEmbed
 import discord
 from bot.log import get_logger
 from bot.utils.commons import get_random_color
+from bot.utils.discord.easy_embed import EZEmbed
 
 log = get_logger(__name__)
 
