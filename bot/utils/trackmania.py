@@ -648,7 +648,7 @@ class Leaderboards:
                 json.dump(leaderboard_data, file, indent=4)
 
             log.debug("Sleeping for 10s")
-            time.sleep(20)
+            time.sleep(10)
             log.debug(f"Finished Map #{i + 1}")
 
         await api_client.close()

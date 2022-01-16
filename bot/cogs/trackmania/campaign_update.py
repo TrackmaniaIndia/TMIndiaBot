@@ -97,7 +97,7 @@ class CampaignUpdate(commands.Cog):
         )
 
         # Sleeping 30s to allow our API requests to restore
-        time.sleep(30)
+        # time.sleep(30)
 
         # Sending a "Finished" message
         await ctx.send(
