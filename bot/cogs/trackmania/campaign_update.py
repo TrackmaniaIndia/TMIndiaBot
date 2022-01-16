@@ -1,3 +1,5 @@
+import asyncio
+
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
@@ -82,14 +84,17 @@ class CampaignUpdate(commands.Cog):
         log.info("Got the Fall IDs")
 
         # Starting Long Update Process using a seperate Thread to allow bot to complete other processes
-        log.info("Updating Leaderboards\nCreating Thread to Update Leaderboards")
-        leaderboard_update = threading.Thread(
-            target=Leaderboards.update_campaign_leaderboards,
-            args=(fall_ids, year, season, firstfive),
+        # log.info("Updating Leaderboards\nCreating Thread to Update Leaderboards")
+        # leaderboard_update = threading.Thread(
+        #     target=Leaderboards.update_campaign_leaderboards,
+        #     args=(fall_ids, year, season, firstfive),
+        # )
+        # log.info("Thread Created to Update Leaderboards\nStarting Thread")
+        # leaderboard_update.run()
+        # log.info("Thread Finished\nLeaderboards Updates, Sleeping for 30s to save API")
+        await Leaderboards.update_campaign_leaderboards(
+            fall_ids, year, season, firstfive
         )
-        log.info("Thread Created to Update Leaderboards\nStarting Thread")
-        leaderboard_update.run()
-        log.info("Thread Finished\nLeaderboards Updates, Sleeping for 30s to save API")
 
         # Sleeping 30s to allow our API requests to restore
         time.sleep(30)

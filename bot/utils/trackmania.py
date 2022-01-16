@@ -616,7 +616,7 @@ class Leaderboards:
         return id_list
 
     @staticmethod
-    def update_campaign_leaderboards(
+    async def update_campaign_leaderboards(
         id_list: list[str],
         year: str = "2021",
         season: str = "Fall",
@@ -635,14 +635,14 @@ class Leaderboards:
         for i, id in enumerate(id_list):
             leaderboard_data = []
 
-            leaderboard_data = api_client.get(
+            leaderboard_data = await api_client.get(
                 f"http://localhost:3000/tm2020/leaderboard/{id}/5"
             )
 
             log.debug("Dumping Data to a File")
             with open(
                 f"./bot/resources/leaderboard/{year}/{season.lower()}/{i + 1}.json",
-                "w+",
+                "w",
                 encoding="UTF-8",
             ) as file:
                 json.dump(leaderboard_data, file, indent=4)
@@ -650,6 +650,8 @@ class Leaderboards:
             log.debug("Sleeping for 10s")
             time.sleep(20)
             log.debug(f"Finished Map #{i + 1}")
+
+        await api_client.close()
 
     @staticmethod
     def get_player_list(map_no: str, year: str = "2021", season: str = "Fall"):
