@@ -1,4 +1,5 @@
 import random
+import time
 
 from bot.log import get_logger
 
@@ -58,3 +59,7 @@ class Commons:
             return [long_list]
 
         return [long_list[i : i + n] for i in range(0, len(long_list), length)]
+
+    @staticmethod
+    def timestamp() -> int:
+        return int(time.time())
