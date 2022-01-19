@@ -14,10 +14,18 @@ log = get_logger(__name__)
 
 
 class Birthday:
-    def __init__(self, ctx: commands.Context, year: int, month: str, day: int):
-        self.username = ctx.author.name
-        self.discriminator = ctx.author.discriminator
-        self.id = ctx.author.id
+    def __init__(
+        self,
+        username: str,
+        discriminator: int,
+        id: int,
+        year: int,
+        month: str,
+        day: int,
+    ):
+        self.username = username
+        self.discriminator = discriminator
+        self.id = id
 
         self.year = year
         self.month = month

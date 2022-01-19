@@ -3,7 +3,7 @@ import json
 
 import discord
 from discord.ext import commands
-from discord.commands import Option
+from discord.commands import Option, permissions
 
 from bot.bot import Bot
 from bot.log import get_logger, log_command
@@ -13,7 +13,7 @@ from bot.utils.birthdays import Birthday
 log = get_logger(__name__)
 
 
-class AddBirthday(commands.Cog):
+class SetBirthday(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
@@ -26,12 +26,18 @@ class AddBirthday(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="addbirthday",
+        name="setbirthday",
         description="Adds your birthday to the server list!",
     )
-    async def _add_birthday_slash(
+    @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Developer")
+    async def _set_birthday_slash(
         self,
         ctx: commands.Context,
+        user: Option(
+            discord.User,
+            description="The user you want to set the birthday for",
+            required=True,
+        ),
         year: Option(int, "The year you were born!", required=True),
         month: Option(
             str,
@@ -41,7 +47,7 @@ class AddBirthday(commands.Cog):
         ),
         day: Option(int, "The day you were born on", required=True),
     ):
-        log_command(ctx, "add_birthday_slash")
+        log_command(ctx, "set_birthday_slash")
 
         # Checks
         if day <= 0 or day >= 32:
@@ -67,14 +73,20 @@ class AddBirthday(commands.Cog):
             return
 
         log.debug("All date checks passed, Saving")
-        Birthday(
-            ctx.author.name, ctx.author.discriminator, ctx.author.id, year, month, day
-        ).save()
+
+        # # Jank Solution
+        # log.debug("Changing fields of context")
+        # ctx.__setattr__("author.name", user.name)
+        # # ctx.author.discriminator = user.discriminator
+        # # ctx.author.id = user.id
+
+        Birthday(user.name, user.discriminator, user.id, year, month, day).save()
 
         await ctx.respond(
-            f"Successfully Saved:\nDate: {day} {month}, {year}", ephemeral=True
+            f"Successfully Saved:\nName: {user.name}\nID: {user.id}\nDate: {day} {month}, {year}",
+            ephemeral=True,
         )
 
 
 def setup(bot: Bot):
-    bot.add_cog(AddBirthday(bot))
+    bot.add_cog(SetBirthday(bot))
