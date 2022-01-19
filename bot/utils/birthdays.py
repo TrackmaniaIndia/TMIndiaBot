@@ -121,6 +121,30 @@ class Birthday:
         return EZEmbed.create_embed(description=Birthday.__format_lst([smallest_diff]))
 
     @staticmethod
+    def month_birthdays(month: int) -> list[discord.Embed]:
+        MONTHS = constants.Consts.months
+
+        log.debug("Opening the birthdays.json file")
+        with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+            birthdays = Birthday.__split_birthdays(json.load(file)["birthdays"])[month]
+
+        if len(birthdays) == 0:
+            return None
+        elif len(birthdays) > 10:
+            birthdays = Commons.split_list_of_lists(Birthday._sort_birthdays(birthdays))
+            embed_list = []
+            for birthday_lst in birthdays:
+                embed_list.append(
+                    EZEmbed.create_embed(
+                        description=Birthday.__format_string(birthday_lst)
+                    )
+                )
+
+            return embed_list
+        else:
+            return [EZEmbed.create_embed(description=Birthday.__format_lst(birthdays))]
+
+    @staticmethod
     def _sort_birthdays(birthdays: list) -> list:
         return Birthday.__append_birthdays(Birthday.__split_birthdays(birthdays))
 

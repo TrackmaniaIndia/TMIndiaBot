@@ -28,13 +28,13 @@ class ListBirthdays(commands.Cog):
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
         name="listbirthdays",
-        description="Adds your birthday to the server list!",
+        description="Lists all the birthdays saved with the bot!",
     )
-    async def _add_birthday_slash(
+    async def _list_birthdays_slash(
         self,
         ctx: commands.Context,
     ):
-        log_command(ctx, "add_birthday_slash")
+        log_command(ctx, "list_birthdays_slash")
 
         birthdays_embeds = Birthday.list_birthdays()
 

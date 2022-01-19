@@ -22,7 +22,8 @@ class NextBirthday(commands.Cog):
         name="nextbirthday",
         description="Gets the person who's birthday is the closest",
     )
-    async def _next_birthday(self, ctx: commands.Context):
+    async def _next_birthday_slash(self, ctx: commands.Context):
+        log_command(ctx, "_next_birthday_slash")
         await ctx.respond(embed=Birthday.next_birthday())
 
 
