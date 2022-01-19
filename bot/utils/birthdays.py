@@ -57,16 +57,9 @@ class Birthday:
     def list_birthdays() -> list[discord.Embed]:
         MONTHS = constants.Consts.months
 
-        log.debug(f"Opening the birthdays.json file")
+        log.debug("Opening the birthdays.json file")
         with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
-            birthdays = json.load(file)["birthdays"]
-
-        if len(birthdays) == 0:
-            return None
-        elif len(birthdays) == 1:
-            return "one person"
-
-        birthdays = Birthday._sort_birthdays(birthdays)
+            birthdays = Birthday._sort_birthdays(json.load(file)["birthdays"])
 
         if len(birthdays) > 10:
             birthdays = Commons.split_list_of_lists(birthdays)
@@ -81,6 +74,51 @@ class Birthday:
             return embed_list
         else:
             return [EZEmbed.create_embed(description=Birthday.__format_lst(birthdays))]
+
+    @staticmethod
+    def next_birthday() -> discord.Embed:
+        MONTHS = constants.Consts.months
+
+        log.debug("Opening the birthdays.json file")
+        with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+            birthdays = Birthday._sort_birthdays(json.load(file)["birthdays"])
+
+        log.debug("Looping through birthday list to find next birthday")
+        year = int(datetime.now().date().strftime("%Y"))
+        smallest_diff = birthdays[0]
+        timestamp_diff = 0
+        for person in birthdays:
+            if (
+                int(
+                    Commons.timestamp_date(
+                        year=year,
+                        month=MONTHS.index(person["Month"]) + 1,
+                        day=person["Day"],
+                    )
+                    - Commons.timestamp()
+                )
+                < timestamp_diff
+                and int(
+                    Commons.timestamp_date(
+                        year=year,
+                        month=MONTHS.index(person["Month"]) + 1,
+                        day=person["Day"],
+                    )
+                    - Commons.timestamp()
+                )
+                > 0
+            ):
+                timestamp_diff = int(
+                    Commons.timestamp_date(
+                        year=year,
+                        month=MONTHS.index(person["Month"]),
+                        day=person["Day"],
+                    )
+                    - Commons.timestamp()
+                )
+                smallest_diff = person
+
+        return EZEmbed.create_embed(description=Birthday.__format_lst([smallest_diff]))
 
     @staticmethod
     def _sort_birthdays(birthdays: list) -> list:
@@ -141,13 +179,9 @@ class Birthday:
             log.debug(f"Adding {person['Name']} to the string")
             year = int(datetime.now().date().strftime("%Y"))
 
-            t1 = int(time.time())
-            t2 = int(
-                datetime(
-                    year=year,
-                    month=MONTHS.index(person["Month"]) + 1,
-                    day=int(person["Day"]),
-                ).timestamp()
+            t1 = Commons.timestamp()
+            t2 = Commons.timestamp_date(
+                year=year, month=MONTHS.index(person["Month"]) + 1, day=person["Day"]
             )
 
             age = year - int(person["Year"])
