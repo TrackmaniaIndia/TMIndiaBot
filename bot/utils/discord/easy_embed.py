@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 import discord
 
 from bot.log import get_logger
-from bot.utils.commons import get_random_color
+from bot.utils.commons import Commons
 
 log = get_logger(__name__)
 
@@ -29,7 +29,7 @@ class EZEmbed:
 
         if color is None:
             log.debug("Colour is None, Assigning Random Colour")
-            color = get_random_color()
+            color = Commons.get_random_color()
 
         # Creates an Embed with the Given Title, Description and Color
         log.debug(

@@ -12,7 +12,7 @@ import requests
 import discord
 from bot.api import APIClient
 from bot.log import get_logger
-from bot.utils.commons import add_commas, get_random_color, format_seconds
+from bot.utils.commons import Commons
 from bot.utils.database import Database
 from bot.utils.discord.easy_embed import EZEmbed
 
@@ -101,15 +101,15 @@ class TrackmaniaUtils:
         log.debug("Creating Two Embeds")
         page_one = EZEmbed.create_embed(
             title=f"Player Data for {player_flag_unicode} {display_name} - Page 1",
-            color=get_random_color(),
+            color=Commons.get_random_color(),
         )
         page_two = EZEmbed.create_embed(
             title=f"Player Data for {player_flag_unicode} {display_name} - Page 2",
-            color=get_random_color(),
+            color=Commons.get_random_color(),
         )
         page_three = EZEmbed.create_embed(
             title=f"Player Data for {player_flag_unicode} {display_name} - Page 3",
-            color=get_random_color(),
+            color=Commons.get_random_color(),
         )
 
         zones, zone_ranks = self._get_zones_and_positions(raw_player_data)
@@ -261,7 +261,7 @@ class TrackmaniaUtils:
         trophy_count_string = "```\n"
 
         log.debug("Adding Total Points")
-        total_points = add_commas(raw_player_data["trophies"]["points"])
+        total_points = Commons.add_commas(raw_player_data["trophies"]["points"])
         trophy_count_string += f"Total Points: {total_points}\n\n"
         log.debug(f"Added Total Points -> {total_points}")
 
@@ -472,15 +472,17 @@ class TOTDUtils:
         author_name = totd_data["authorplayer"]["name"]
         thumbnail_url = totd_data["thumbnailUrl"]
 
-        author_time = format_seconds(int(totd_data["authorScore"]))
-        gold_time = format_seconds(int(totd_data["goldScore"]))
-        silver_time = format_seconds(int(totd_data["silverScore"]))
-        bronze_time = format_seconds(int(totd_data["bronzeScore"]))
+        author_time = Commons.format_seconds(int(totd_data["authorScore"]))
+        gold_time = Commons.format_seconds(int(totd_data["goldScore"]))
+        silver_time = Commons.format_seconds(int(totd_data["silverScore"]))
+        bronze_time = Commons.format_seconds(int(totd_data["bronzeScore"]))
 
         nadeo_uploaded = totd_data["timestamp"]
 
         wr_holder = totd_data["leaderboard"]["tops"][0]["player"]["name"]
-        wr_time = format_seconds(int(totd_data["leaderboard"]["tops"][0]["time"]))
+        wr_time = Commons.format_seconds(
+            int(totd_data["leaderboard"]["tops"][0]["time"])
+        )
 
         tmio_id = totd_data["mapUid"]
         log.debug("Parsed TOTD Data")
@@ -549,7 +551,7 @@ class TOTDUtils:
 
         embed = EZEmbed.create_embed(
             title=f"Here is the {current_day}{day_suffix} {current_month} TOTD",
-            color=get_random_color(),
+            color=Commons.get_random_color(),
         )
         log.debug("Creating Image File")
         image = discord.File("./bot/resources/temp/totd.png", filename="totd.png")
@@ -683,7 +685,7 @@ class Leaderboards:
 
         player_embed = EZEmbed.create_embed(
             title=f"{player_name} is good at the following maps",
-            color=get_random_color(),
+            color=Commons.get_random_color(),
         )
 
         t100_str, t200_str, t300_str, t400_str, t500_str = "", "", "", "", ""

@@ -39,7 +39,7 @@ class PlayerDetails(commands.Cog):
                 embed=EZEmbed.create_embed(
                     title="Invalid Username Given",
                     description=f"Username Given: {username}",
-                    color=common_functions.get_random_color(),
+                    color=common_functions.Commons.get_random_color(),
                 ),
                 delete_after=5,
                 ephemeral=False,
@@ -92,7 +92,7 @@ class PlayerDetails(commands.Cog):
                 embed=EZEmbed.create_embed(
                     title="Invalid Username Given",
                     description=f"Username Given: {username}",
-                    color=common_functions.get_random_color(),
+                    color=common_functions.Commons.get_random_color(),
                 ),
                 delete_after=5,
                 ephemeral=False,
