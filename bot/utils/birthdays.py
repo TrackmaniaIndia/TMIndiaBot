@@ -7,6 +7,8 @@ from discord.ext import commands
 
 from bot import constants
 from bot.log import get_logger
+from bot.utils.commons import Commons
+from bot.utils.discord.easy_embed import EZEmbed
 
 log = get_logger(__name__)
 
@@ -21,7 +23,7 @@ class Birthday:
         self.month = month
         self.day = day
 
-        self.months = constants.Consts.months
+        self.MONTHS = constants.Consts.months
 
     def save(self):
         log.debug("Opening Birthday List")
@@ -52,8 +54,8 @@ class Birthday:
             json.dump(birthdays, file, indent=4)
 
     @staticmethod
-    def list_birthdays() -> str:
-        months = constants.Consts.months
+    def list_birthdays() -> list[discord.Embed]:
+        MONTHS = constants.Consts.months
 
         log.debug(f"Opening the birthdays.json file")
         with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
@@ -66,6 +68,62 @@ class Birthday:
 
         birthdays = Birthday._sort_birthdays(birthdays)
 
+        if len(birthdays) > 10:
+            birthdays = Commons.split_list_of_lists(birthdays)
+            embed_list = []
+            for birthday_lst in birthdays:
+                embed_list.append(
+                    EZEmbed.create_embed(
+                        description=Birthday.__format_string(birthday_lst)
+                    )
+                )
+
+            return embed_list
+        else:
+            return [EZEmbed.create_embed(description=Birthday.__format_lst(birthdays))]
+
+    @staticmethod
+    def _sort_birthdays(birthdays: list) -> list:
+        return Birthday.__append_birthdays(Birthday.__split_birthdays(birthdays))
+
+    @staticmethod
+    def __split_birthdays(birthdays: list) -> list[list]:
+        MONTHS: list = constants.Consts.months
+        # First by month, then by day
+
+        # First split all birthdays into 12 lists depending on month
+        birthdays_month_sep: list[list] = [[] for i in range(12)]
+
+        log.debug("Splitting the original birthday list by month")
+        for person in birthdays:
+            birthdays_month_sep[MONTHS.index(person["Month"])].append(person)
+
+        # Sort all the lists individually
+        log.debug("Sorting lists individually")
+        for i, month_list in enumerate(birthdays_month_sep):
+            log.debug(f"Sorting {MONTHS[i]}")
+            birthdays_month_sep[i] = sorted(
+                birthdays_month_sep[i], key=lambda person: person["Day"]
+            )
+
+        return birthdays_month_sep
+
+    @staticmethod
+    def __append_birthdays(birthdays_month_sep: list[list]) -> list[dict]:
+        MONTHS: list = constants.Consts.months
+        # Append all lists
+        log.debug("Appending all lists")
+        birthdays = []
+        for i, month_list in enumerate(birthdays_month_sep):
+            log.debug(f"Adding {MONTHS[i]}")
+            for person in month_list:
+                birthdays.append(person)
+
+        return birthdays
+
+    @staticmethod
+    def __format_lst(birthdays: list) -> str:
+        MONTHS: list = constants.Consts.months
         # For the string:
         #   loops through list, adding people
         #   Name:
@@ -79,7 +137,6 @@ class Birthday:
         #            t2 += 31536000
         #            age += 1
         birthdays_str = ""
-
         for person in birthdays:
             log.debug(f"Adding {person['Name']} to the string")
             year = int(datetime.now().date().strftime("%Y"))
@@ -88,7 +145,7 @@ class Birthday:
             t2 = int(
                 datetime(
                     year=year,
-                    month=months.index(person["Month"]) + 1,
+                    month=MONTHS.index(person["Month"]) + 1,
                     day=int(person["Day"]),
                 ).timestamp()
             )
@@ -100,44 +157,6 @@ class Birthday:
                 t2 += 31536000
                 age += 1
 
-            birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {person['Day']} {person['Month']}\nTurning `{age}` in <t:{t2}:R>\n\n"
+            birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` in <t:{t2}:R>\n\n"
 
         return birthdays_str
-
-    @staticmethod
-    def _sort_birthdays(birthdays: list) -> list:
-        return Birthday.__append_birthdays(Birthday.__split_birthdays(birthdays))
-
-    @staticmethod
-    def __split_birthdays(birthdays: list) -> list[list]:
-        months: list = constants.Consts.months
-        # First by month, then by day
-
-        # First split all birthdays into 12 lists depending on month
-        birthdays_month_sep: list[list] = [[] for i in range(12)]
-
-        log.debug("Splitting the original birthday list by month")
-        for person in birthdays:
-            birthdays_month_sep[months.index(person["Month"])].append(person)
-
-        # Sort all the lists individually
-        log.debug("Sorting lists individually")
-        for i, month_list in enumerate(birthdays_month_sep):
-            log.debug(f"Sorting {months[i]}")
-            birthdays_month_sep[i] = sorted(
-                birthdays_month_sep[i], key=lambda person: person["Day"]
-            )
-
-        return birthdays_month_sep
-
-    def __append_birthdays(birthdays_month_sep: list[list]) -> list[dict]:
-        months: list = constants.Consts.months
-        # Append all lists
-        log.debug("Appending all lists")
-        birthdays = []
-        for i, month_list in enumerate(birthdays_month_sep):
-            log.debug(f"Adding {months[i]}")
-            for person in month_list:
-                birthdays.append(person)
-
-        return birthdays

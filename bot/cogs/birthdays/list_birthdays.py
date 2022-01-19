@@ -4,6 +4,7 @@ import json
 import discord
 from discord.ext import commands
 from discord.commands import Option
+from discord.ext.pages import Paginator
 
 from bot.bot import Bot
 from bot.log import get_logger, log_command
@@ -35,9 +36,14 @@ class ListBirthdays(commands.Cog):
     ):
         log_command(ctx, "add_birthday_slash")
 
-        birth_str = Birthday.list_birthdays()
+        birthdays_embeds = Birthday.list_birthdays()
 
-        await ctx.respond(content=birth_str)
+        if len(birthdays_embeds) == 1:
+            await ctx.respond(embed=birthdays_embeds[0], ephemeral=True)
+        else:
+            birthdays_paginator = Paginator(pages=birthdays_embeds)
+
+            await birthdays_paginator.respond(ctx.interaction, ephemeral=True)
 
 
 def setup(bot: Bot):

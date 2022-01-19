@@ -50,3 +50,11 @@ class Commons:
             int: The colour
         """
         return random.randint(0, 0xFFFFFF)
+
+    @staticmethod
+    def split_list_of_lists(long_list: list, length: int = 5) -> list[list]:
+        if len(long_list) <= length:
+            log.debug("Original list size is smaller than length")
+            return [long_list]
+
+        return [long_list[i : i + n] for i in range(0, len(long_list), length)]
