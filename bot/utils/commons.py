@@ -1,5 +1,6 @@
 import random
 import time
+import datetime
 
 from bot.log import get_logger
 
@@ -63,3 +64,7 @@ class Commons:
     @staticmethod
     def timestamp() -> int:
         return int(time.time())
+
+    @staticmethod
+    def timestamp_date(year: int, month: int, day: int) -> int:
+        return int(datetime.datetime(year=year, month=month, day=day).timestamp())
