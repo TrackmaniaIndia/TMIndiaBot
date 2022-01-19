@@ -282,6 +282,12 @@ class Emojis(metaclass=YAMLGetter):
     bronze_medal: str
 
 
+class Consts(metaclass=YAMLGetter):
+    section = "Consts"
+
+    months: list
+
+
 class TMIAPI(metaclass=YAMLGetter):
     section = "urls"
 
