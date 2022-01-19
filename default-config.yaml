@@ -3,11 +3,11 @@ file_logs: !ENV [ "FILE_LOGS", "false" ]
 
 
 bot:
-  prefix: "DEFAULT PREFIX HERE"
-  token: "TOKEN HERE" # Testing Bot
+  prefix: "!!"
+  token: "TOKEN"
   default_guilds: [ 876042400005505066 ]
   debug_guild: 876042400005505066
-  version: "BOT VERSION HERE"
+  version: "v2.0.0-alpha"
 
 error:
   show_stack_trace: true
@@ -117,6 +117,3 @@ Consts:
 redirect_output:
   delete_delay: 15
   delete_invocation: true
-
-# config:
-#   required_keys: [ 'bot.token', 'bot.default_guilds' ]
