@@ -12,7 +12,7 @@ log = get_logger(__name__)
 class EZEmbed:
     @staticmethod
     def create_embed(
-        title: str,
+        title: str = None,
         description: str = "",
         color: typing.Union[int, discord.Colour] = None,
         url: str = None,
