@@ -106,6 +106,10 @@ class Birthday:
 
     @staticmethod
     def _sort_birthdays(birthdays: list) -> list:
+        return Birthday.__append_birthdays(Birthday.__split_birthdays(birthdays))
+
+    @staticmethod
+    def __split_birthdays(birthdays: list) -> list[list]:
         months: list = constants.Consts.months
         # First by month, then by day
 
@@ -115,7 +119,6 @@ class Birthday:
         log.debug("Splitting the original birthday list by month")
         for person in birthdays:
             birthdays_month_sep[months.index(person["Month"])].append(person)
-        print(birthdays_month_sep)
 
         # Sort all the lists individually
         log.debug("Sorting lists individually")
@@ -125,6 +128,10 @@ class Birthday:
                 birthdays_month_sep[i], key=lambda person: person["Day"]
             )
 
+        return birthdays_month_sep
+
+    def __append_birthdays(birthdays_month_sep: list[list]) -> list[dict]:
+        months: list = constants.Consts.months
         # Append all lists
         log.debug("Appending all lists")
         birthdays = []
