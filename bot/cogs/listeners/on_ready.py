@@ -9,7 +9,12 @@ from discord.ext import commands
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.tasks import change_status, keep_alive, totd_image_deleter
+from bot.utils.tasks import (
+    change_status,
+    keep_alive,
+    totd_image_deleter,
+    todays_birthday,
+)
 
 log = get_logger(__name__)
 
@@ -67,6 +72,11 @@ class OnReady(
         log.info("Starting TOTDImageDeleter")
         totd_image_deleter.start(self.bot)
         log.info("Started TOTDImageDeleter")
+
+        # Starting BirthdayReminder
+        log.info("Starting BirthdayReminder")
+        todays_birthday.start(self.bot)
+        log.info("Started BirthdayReminder")
 
         # Getting the Announcement Channels for where the bot should send that it is ready
         # Channels taken from ./bot/resources/json/announcement_channels.json
