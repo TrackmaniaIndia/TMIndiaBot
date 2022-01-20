@@ -7,6 +7,8 @@ import discord
 from bot.api import APIClient
 from bot.bot import Bot
 from bot.log import get_logger
+from bot import constants
+from bot.utils.birthdays import Birthday
 
 log = get_logger(__name__)
 
@@ -46,6 +48,29 @@ async def totd_image_deleter(bot: Bot):
         log.debug("Removed the TOTD Image")
     else:
         log.debug("TOTD Image does not exist")
+
+
+@tasks.loop(time=datetime.time(hour=0, minute=30, second=0))
+async def todays_birthday(bot: Bot):
+    log.debug("Checking if it is anyone's birthday today")
+    birthday_embed = Birthday.today_birthday()
+
+    if birthday_embed is not None:
+        log.debug("A birthday is today")
+
+        log.debug("Getting channel")
+
+        try:
+            tmi_guild = bot.get_guild(constants.Guild.tmi_guild)
+            general_channel = bot.get_guild(constants.Channels.general)
+
+            await general_channel.send(embed=birthday_embed)
+        except:
+            log.debug("Testing bot is running")
+            return
+
+    log.debug("There is no birthday today")
+    return
 
 
 async def _ping_api():

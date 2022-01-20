@@ -1,5 +1,6 @@
 import json
 import time
+import typing
 from datetime import date, datetime
 
 import discord
@@ -151,6 +152,29 @@ class Birthday:
             return embed_list
         else:
             return [EZEmbed.create_embed(description=Birthday.__format_lst(birthdays))]
+
+    @staticmethod
+    def today_birthday() -> typing.Union[None, discord.Embed]:
+        MONTHS = constants.Consts.months
+
+        log.debug("Opening the birthdays.json file")
+        with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+            birthdays = Birthday._sort_birthdays(json.load(file)["birthdays"])
+
+        todays_day = int(datetime.now().date().strftime("%d"))
+        todays_month = MONTHS[int(datetime.now().date().strftime("%m")) - 1]
+
+        log.debug("Looping through birthdays")
+        for person in birthdays:
+            if (
+                person["Day"] == todays_day
+                and person["Month"].lower() == todays_month.lower()
+            ):
+                log.info(f"It is {person['Name']}'s birthday today")
+                return EZEmbed(description=Birthday.__format_lst([person]))
+
+        log.debug("No one's birthday today")
+        return None
 
     @staticmethod
     def _sort_birthdays(birthdays: list) -> list:
