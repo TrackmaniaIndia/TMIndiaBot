@@ -1,26 +1,14 @@
-<<<<<<< HEAD
 from discord.commands import Option
 from discord.commands import permissions
 from discord.ext import commands
 
-=======
-from discord.commands import permissions
-from discord.commands.commands import Option
-from discord.ext import commands
-
-import bot.utils.discord.easy_embed as ezembed
->>>>>>> main
 import bot.utils.quote as quote_functions
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 from bot.log import log_command
-<<<<<<< HEAD
 from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
-=======
-from bot.utils.commons import get_random_color
->>>>>>> main
 
 log = get_logger(__name__)
 
@@ -56,17 +44,10 @@ class SaveQuote(commands.Cog):
 
         quote_functions.save(message, author, message_link, ctx.guild.id)
 
-<<<<<<< HEAD
         embed = EZEmbed.create_embed(
             title=":white_check_mark: Saved",
             description=f'Saved "{message}" by {author} with [Jump!]({message_link})',
             color=Commons.get_random_color(),
-=======
-        embed = ezembed.create_embed(
-            title=":white_check_mark: Saved",
-            description=f'Saved "{message}" by {author} with [Jump!]({message_link})',
-            color=get_random_color(),
->>>>>>> main
         )
 
         await ctx.send_followup(embed=embed)

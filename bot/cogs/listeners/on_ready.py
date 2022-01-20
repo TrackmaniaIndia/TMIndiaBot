@@ -9,16 +9,12 @@ from discord.ext import commands
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-<<<<<<< HEAD
 from bot.utils.tasks import (
     change_status,
     keep_alive,
     totd_image_deleter,
     todays_birthday,
 )
-=======
-from bot.utils.tasks import change_status, keep_alive, totd_image_deleter
->>>>>>> main
 
 log = get_logger(__name__)
 
@@ -77,14 +73,11 @@ class OnReady(
         totd_image_deleter.start(self.bot)
         log.info("Started TOTDImageDeleter")
 
-<<<<<<< HEAD
         # Starting BirthdayReminder
         log.info("Starting BirthdayReminder")
         todays_birthday.start(self.bot)
         log.info("Started BirthdayReminder")
 
-=======
->>>>>>> main
         # Getting the Announcement Channels for where the bot should send that it is ready
         # Channels taken from ./bot/resources/json/announcement_channels.json
         log.info("Getting Announcement Channels")
@@ -102,7 +95,7 @@ class OnReady(
             try:
                 # Inside a TryExcept to prevent the bot from crashing if the channel is deleted or permissions to send messages are removed
                 await channel.send(
-                    f"Bot is Ready, Version: {version} - Times Run: {times_run} - Time of Start: {datetime.now()}"
+                    f"Bot is Ready, Version: {constants.Bot.version} - Times Run: {times_run} - Time of Start: {datetime.now()}"
                 )
                 log.info(f"Sent Message to {announcement_channel}")
                 if (
