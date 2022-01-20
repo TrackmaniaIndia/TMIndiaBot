@@ -1,13 +1,12 @@
-import os
 import json
+import os
 
-import discord
-from discord.ext import commands
 from discord.commands import Option
+from discord.ext import commands
 
+from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot import constants
 from bot.utils.birthdays import Birthday
 
 log = get_logger(__name__)

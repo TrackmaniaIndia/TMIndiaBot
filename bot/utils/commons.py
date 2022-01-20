@@ -6,6 +6,7 @@ from bot.log import get_logger
 
 log = get_logger(__name__)
 
+
 class Commons:
     @staticmethod
     def get_ordinal_number(num: int) -> str:
