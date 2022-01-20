@@ -4,7 +4,7 @@ file_logs: !ENV [ "FILE_LOGS", "false" ]
 
 bot:
   prefix: "!!"
-  token: "TOKEN" # Testing Bot
+  token: "TOKEN"
   default_guilds: [ 876042400005505066 ]
   debug_guild: 876042400005505066
   version: "v2.0.0-alpha"
@@ -22,23 +22,29 @@ channels:
 
   bot_updates: 880628511512096778
   tmi_bot_channel: 880771916099641364
-
+  
   commands_allowed: [ 842626465421852692, 880628511512096778, 876042400731123724 ]
   announcement_channels: [ 880628511512096778, 876335103146623016 ]
   error_channel: 876069587140087800
   keep_alive_channel: 881732050451849216
 
+guild:
+  tmi_server: 805313762663333919
+  testing_server: 876042400005505066
+
 roles:
+  # Main Server Moderators
+  moderator_roles: [ 876045429693902868, 805318382441988096, 858620171334057994 ]
+  
   # Main Server
   cotd_reminder_one: 924146405642219520
   cotd_reminder_three: 924146521405026375
-
+  
   # Testing
   cotd_reminder_one_testing: 924150185020522577
   cotd_reminder_three_testing: 924150185020522577
-
-urls:
-  tmiapi: "http://localhost:3000/"
+  
+  bypass_roles: [ 805318382441988096, 858620171334057994 ]
 
 style:
   colours:
@@ -54,20 +60,60 @@ style:
     yellow: 0xffd241
 
   emojis:
+    badge_bug_hunter: "<:bug_hunter_lvl1:743882896372269137>"
+    badge_bug_hunter_level_2: "<:bug_hunter_lvl2:743882896611344505>"
+    badge_early_supporter: "<:early_supporter:743882896909140058>"
+    badge_hypesquad: "<:hypesquad_events:743882896892362873>"
+    badge_hypesquad_balance: "<:hypesquad_balance:743882896460480625>"
+    badge_hypesquad_bravery: "<:hypesquad_bravery:743882896745693335>"
+    badge_hypesquad_brilliance: "<:hypesquad_brilliance:743882896938631248>"
+    badge_partner: "<:partner:748666453242413136>"
+    badge_staff: "<:discord_staff:743882896498098226>"
+    badge_verified_bot_developer: "<:verified_bot_dev:743882897299210310>"
+    bot: "<:bot:812712599464443914>"
+    verified_bot: "<:verified_bot:811645219220750347>"
+
+    defcon_shutdown: "<:defcondisabled:470326273952972810>"
+    defcon_unshutdown: "<:defconenabled:470326274213150730>"
+    defcon_update: "<:defconsettingsupdated:470326274082996224>"
+
+    failmail: "<:failmail:633660039931887616>"
+
+    incident_actioned: "<:incident_actioned:714221559279255583>"
+    incident_investigating: "<:incident_investigating:714224190928191551>"
+    incident_unactioned: "<:incident_unactioned:714223099645526026>"
+
+    status_dnd: ":purple_circle:"
+    status_idle: ":yellow_circle:"
+    status_offline: ":red_circle:"
+    status_online: ":green_circle:"
+
+    ducky_dave: "<:ducky_dave:742058418692423772>"
+
+    trashcan: "<:trashcan:637136429717389331>"
+
+    bullet: "\u2022"
+    check_mark: "\u2705"
+    cross_mark: "\u274C"
+    new: "\U0001F195"
+    pencil: "\u270F"
+
+    ok_hand: ":ok_hand:"
+
     twitch: <:twitch:895250576751853598>
     twitter: <:twitter:895250587157946388>
     youtube: <:youtube:895250572599513138>
     tmio: <:tmio:895664664057356378>
-
+    
     # Medals
     author_medal: <:author:894268580902883379>
     gold_medal: <:gold:894268580970004510>
     silver_medal: <:silver:894268580655411220>
     bronze_medal: <:bronze:894268580181458975>
 
+Consts:
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
 redirect_output:
   delete_delay: 15
   delete_invocation: true
-
-# config:
-#   required_keys: [ 'bot.token', 'bot.default_guilds' ]

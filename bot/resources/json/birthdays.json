@@ -1,0 +1,28 @@
+{
+    "birthdays": [
+        {
+            "Name": "Kunal1398",
+            "Discriminator": "1999",
+            "ID": 527497533916708874,
+            "Year": 2004,
+            "Month": "February",
+            "Day": 4
+        },
+        {
+            "Name": "Trackmania India",
+            "Discriminator": "2089",
+            "ID": 901407301175484447,
+            "Year": 2020,
+            "Month": "August",
+            "Day": 24
+        },
+        {
+            "Name": "NottCurious",
+            "Discriminator": "4351",
+            "ID": 250257390643970059,
+            "Year": 2004,
+            "Month": "September",
+            "Day": 24
+        }
+    ]
+}

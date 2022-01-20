@@ -12,7 +12,7 @@ from bot.bot import Bot
 from bot.constants import Colours
 from bot.log import get_logger
 from bot.utils.checks import ContextCheckFailure
-from bot.utils.discord import easy_embed as ezembed
+from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
 
@@ -26,7 +26,7 @@ class ErrorHandler(Cog):
     def _get_error_embed(self, title: str, body: str) -> Embed:
         """Return an Embed that Contains the exception."""
 
-        return ezembed.create_embed(
+        return EZEmbed.create_embed(
             title=title, color=Colours.soft_red, description=body
         )
 
@@ -178,7 +178,9 @@ class ErrorHandler(Cog):
         * Other: send an error message and the help command
         """
         if isinstance(e, errors.MissingRequiredArgument):
-            embed = self._get_error_embed("Missing required argument", e.param.name)
+            embed = self._get_error_embed(
+                f"Missing required argument: {e.param.name}", e.param.name
+            )
             log.debug("Missing Required Argument")
         elif isinstance(e, errors.TooManyArguments):
             embed = self._get_error_embed("Too many arguments", str(e))

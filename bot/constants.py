@@ -12,8 +12,9 @@ out in the custom user configuration will stay
 their default values from `config-default.yml`.
 """
 
-
 import os
+
+import dotenv
 import yaml
 import dotenv
 
@@ -280,6 +281,12 @@ class Emojis(metaclass=YAMLGetter):
     gold_medal: str
     silver_medal: str
     bronze_medal: str
+
+
+class Consts(metaclass=YAMLGetter):
+    section = "Consts"
+
+    months: list
 
 
 class TMIAPI(metaclass=YAMLGetter):
