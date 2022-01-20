@@ -1,7 +1,6 @@
 import datetime
 import os
 import sys
-import os
 
 from discord.ext import tasks
 
@@ -10,7 +9,6 @@ from bot import constants
 from bot.api import APIClient
 from bot.bot import Bot
 from bot.log import get_logger
-from bot import constants
 from bot.utils.birthdays import Birthday
 
 log = get_logger(__name__)

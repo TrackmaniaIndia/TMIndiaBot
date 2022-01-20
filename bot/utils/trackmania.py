@@ -4,12 +4,12 @@ import os
 import shutil
 import typing
 from datetime import datetime, timezone, timedelta
-from matplotlib import pyplot as plt
-import cv2
 
 import country_converter as coco
+import cv2
 import flag
 import requests
+from matplotlib import pyplot as plt
 
 import discord
 from bot.api import APIClient

@@ -16,8 +16,6 @@ import os
 
 import dotenv
 import yaml
-import dotenv
-import yaml
 
 try:
     dotenv.load_dotenv()
