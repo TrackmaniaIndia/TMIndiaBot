@@ -1,10 +1,12 @@
 import datetime
+import os
 import sys
 import os
 
 from discord.ext import tasks
 
 import discord
+from bot import constants
 from bot.api import APIClient
 from bot.bot import Bot
 from bot.log import get_logger

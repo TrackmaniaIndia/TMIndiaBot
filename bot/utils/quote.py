@@ -28,7 +28,7 @@ def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
 
     log.debug("Opening JSON File")
     with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
+            f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
     ) as file:
         log.debug("Loading Quotes JSON File")
         quotes = json.load(file)
@@ -47,7 +47,7 @@ def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
 
     log.debug("Dumping to Quotes File")
     with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "w", encoding="UTF-8"
+            f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "w", encoding="UTF-8"
     ) as file:
         json.dump(quotes, file, indent=4)
     log.debug("Dumped to Quotes File")
@@ -101,7 +101,7 @@ def _get_random_quote_dict(guild_id: str) -> dict:
 
     log.debug("Opening File")
     with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
+            f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
     ) as file:
         quotes = json.load(file)["quotes"]
         log.debug(f"Returning #{number}")
@@ -119,7 +119,7 @@ def get_last_quote(guild_id: str) -> discord.Embed:
     """
     log.debug("Opening JSON File")
     with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
+            f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
     ) as file:
         log.debug("Loading JSON file")
         quotes = json.load(file)
@@ -139,7 +139,7 @@ def _get_number_of_quotes(guild_id: str):
     """
     log.debug("Opening JSON File")
     with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
+            f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
     ) as file:
         log.debug("Loading JSON file")
         quotes = json.load(file)

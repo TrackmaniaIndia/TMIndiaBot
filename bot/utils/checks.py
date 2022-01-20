@@ -35,11 +35,11 @@ class InWhitelistCheckFailure(ContextCheckFailure):
 
 
 def in_whitelist_check(
-    ctx: Context,
-    channels: Container[int] = (),
-    roles: Container[int] = (),
-    redirect: Optional[int] = constants.Channels.commands_allowed,
-    fail_silently: bool = False,
+        ctx: Context,
+        channels: Container[int] = (),
+        roles: Container[int] = (),
+        redirect: Optional[int] = constants.Channels.commands_allowed,
+        fail_silently: bool = False,
 ):
     """
     Check if a command was issued in a whitelisted context.

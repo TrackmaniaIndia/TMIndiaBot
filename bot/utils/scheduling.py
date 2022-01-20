@@ -61,7 +61,7 @@ class Scheduler:
         self._log.debug(f"Scheduled task #{task_id} {id(task)}.")
 
     def schedule_at(
-        self, time: datetime, task_id: t.Hashable, coroutine: t.Coroutine
+            self, time: datetime, task_id: t.Hashable, coroutine: t.Coroutine
     ) -> None:
         """
         Schedule `coroutine` to be executed at the given `time`.
@@ -82,7 +82,7 @@ class Scheduler:
         self.schedule(task_id, coroutine)
 
     def schedule_later(
-        self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
+            self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
     ) -> None:
         """
         Schedule `coroutine` to be executed after the given `delay` number of seconds.
@@ -113,7 +113,7 @@ class Scheduler:
             self.cancel(task_id)
 
     async def _await_later(
-        self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
+            self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
     ) -> None:
         """Await `coroutine` after the given `delay` number of seconds."""
         try:
@@ -177,11 +177,11 @@ class Scheduler:
 
 
 def create_task(
-    coro: t.Awaitable,
-    *,
-    suppressed_exceptions: tuple[t.Type[Exception]] = (),
-    event_loop: t.Optional[asyncio.AbstractEventLoop] = None,
-    **kwargs,
+        coro: t.Awaitable,
+        *,
+        suppressed_exceptions: tuple[t.Type[Exception]] = (),
+        event_loop: t.Optional[asyncio.AbstractEventLoop] = None,
+        **kwargs,
 ) -> asyncio.Task:
     """
     Wrapper for creating asyncio `Task`s which logs exceptions raised in the task.
@@ -199,7 +199,7 @@ def create_task(
 
 
 def _log_task_exception(
-    task: asyncio.Task, *, suppressed_exceptions: t.Tuple[t.Type[Exception]]
+        task: asyncio.Task, *, suppressed_exceptions: t.Tuple[t.Type[Exception]]
 ) -> None:
     """Retrieve and log the exception raised in `task` if one exists."""
     with contextlib.suppress(asyncio.CancelledError):
