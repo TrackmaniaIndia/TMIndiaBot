@@ -35,10 +35,10 @@ class TrackmaniaUtils:
         """Gets the ID of the Player from the API
 
         Raises:
-            NotAValidUsername: If the username is not valid, this exception is raised.
+                NotAValidUsername: If the username is not valid, this exception is raised.
 
         Returns:
-            str: The ID of the player
+                str: The ID of the player
         """
         log.debug("Checking if the ID is in the file")
         id = Database.retrieve_id(self.username)
@@ -72,11 +72,11 @@ class TrackmaniaUtils:
         Page 3 contains the individual trophy counts
 
         Args:
-            player_id (str): The player's id
+                player_id (str): The player's id
 
         Returns:
-            typing.Union[list, discord.Embed, None]: The player data in a list of 3 embed.
-            If the player does not exist, returns a single error embed.
+                typing.Union[list, discord.Embed, None]: The player data in a list of 3 embed.
+                If the player does not exist, returns a single error embed.
         """
         log.debug(f"Getting Data for {player_id}")
         raw_player_data = await self.api_client.get(
@@ -337,11 +337,11 @@ class TrackmaniaUtils:
         """Adds the Metadata of a player to the first page of the embed
 
         Args:
-            player_page (discord.Embed): the first page of player details
-            raw_player_data (dict): player data from the api
+                player_page (discord.Embed): the first page of player details
+                raw_player_data (dict): player data from the api
 
         Returns:
-            discord.Embed: First page of the embed after metadata has been added
+                discord.Embed: First page of the embed after metadata has been added
         """
         log.debug("Adding Meta Details for Player")
 
@@ -431,10 +431,10 @@ class TOTDUtils:
         """Parses Maniaexchange tags to their strings
 
         Args:
-            tags (str): The tags as a string of `ints`
+                tags (str): The tags as a string of `ints`
 
         Returns:
-            str: The tags as a string of `strings`
+                str: The tags as a string of `strings`
         """
         log.debug(f"Tags -> {tags}")
         log.debug("Removing Spaces")
@@ -600,10 +600,10 @@ class Leaderboards:
     def get_campaign_ids(year: str = "2021", season: str = "Fall") -> list[str]:
         """Gets a list of all campaign ids for a given year and season
         Args:
-            year (str, optional): The year of the season. Defaults to "2021".
-            season (str, optional): The season itself. Defaults to "Fall".
+                year (str, optional): The year of the season. Defaults to "2021".
+                season (str, optional): The season itself. Defaults to "Fall".
         Returns:
-            list[str]: List of ids
+                list[str]: List of ids
         """
         log.debug(f"Opening {year}/{season.lower()} Data File")
 
@@ -627,9 +627,9 @@ class Leaderboards:
     ):
         """Updates the leaderboard files for the campaign
         Args:
-            id_list (list[str]): Campaign map id list
-            year (str, optional): The year of the season. Defaults to "2021"
-            season (str, optional): The season itself. Defaults to "Fall".
+                id_list (list[str]): Campaign map id list
+                year (str, optional): The year of the season. Defaults to "2021"
+                season (str, optional): The season itself. Defaults to "Fall".
         """
         log.info("Creating APIClient for Updating Campaign Leaderboards")
         api_client = APIClient()
@@ -690,24 +690,36 @@ class Leaderboards:
         )
 
         t100_str, t200_str, t300_str, t400_str, t500_str = "", "", "", "", ""
+        for i in range(6, 26, 1):
+            player_list = Leaderboards.get_player_list(str(i), year, season.lower())
 
-        for player_tuple in player_list:
-            if player_tuple[0].lower() == player_name.lower():
-                if int(player_tuple[1]) <= 100:
-                    log.debug(f"{player_name} is a top 100 player for Map {i}")
-                    t100_str = t100_str + str(i) + " - " + str(player_tuple[1]) + "\n"
-                elif int(player_tuple[1]) <= 200 and int(player_tuple[1]) > 100:
-                    log.debug(f"{player_name} is a top 200 player for Map {i}")
-                    t200_str = t200_str + str(i) + " - " + str(player_tuple[1]) + "\n"
-                elif int(player_tuple[1]) <= 300 and int(player_tuple[1]) > 200:
-                    log.debug(f"{player_name} is a top 300 player for Map {i}")
-                    t300_str = t300_str + str(i) + " - " + str(player_tuple[1]) + "\n"
-                elif int(player_tuple[1]) <= 400 and int(player_tuple[1]) > 300:
-                    log.debug(f"{player_name} is a top 400 player for Map {i}")
-                    t400_str = t400_str + str(i) + " - " + str(player_tuple[1]) + "\n"
-                elif int(player_tuple[1]) <= 500 and int(player_tuple[1]) > 400:
-                    log.debug(f"{player_name} is a top 500 player for Map {i}")
-                    t500_str = t500_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+            for player_tuple in player_list:
+                if player_tuple[0].lower() == player_name.lower():
+                    if int(player_tuple[1]) <= 100:
+                        log.debug(f"{player_name} is a top 100 player for Map {i}")
+                        t100_str = (
+                            t100_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                        )
+                    elif int(player_tuple[1]) <= 200 and int(player_tuple[1]) > 100:
+                        log.debug(f"{player_name} is a top 200 player for Map {i}")
+                        t200_str = (
+                            t200_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                        )
+                    elif int(player_tuple[1]) <= 300 and int(player_tuple[1]) > 200:
+                        log.debug(f"{player_name} is a top 300 player for Map {i}")
+                        t300_str = (
+                            t300_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                        )
+                    elif int(player_tuple[1]) <= 400 and int(player_tuple[1]) > 300:
+                        log.debug(f"{player_name} is a top 400 player for Map {i}")
+                        t400_str = (
+                            t400_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                        )
+                    elif int(player_tuple[1]) <= 500 and int(player_tuple[1]) > 400:
+                        log.debug(f"{player_name} is a top 500 player for Map {i}")
+                        t500_str = (
+                            t500_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                        )
 
         if t100_str != "":
             log.debug(f"Appending T100 String for {player_name}")
@@ -781,7 +793,7 @@ class NotAValidUsername(Exception):
     """Raised when the Username given is not valid.
 
     Args:
-        Exception ([type]): [description]
+            Exception ([type]): [description]
     """
 
     def __init__(self, excp: Exception):

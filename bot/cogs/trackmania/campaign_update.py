@@ -16,7 +16,7 @@ class CampaignUpdate(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
+        guild_ids=[constants.Guild.testing_server],
         name="update_campaign_leaderboards",
         description="Updates the leaderboards for campaigns",
     )
