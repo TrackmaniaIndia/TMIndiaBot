@@ -1,11 +1,8 @@
 import json
-import time
 import typing
-from datetime import date, datetime
+from datetime import datetime
 
 import discord
-from discord.ext import commands
-
 from bot import constants
 from bot.log import get_logger
 from bot.utils.commons import Commons
@@ -16,13 +13,13 @@ log = get_logger(__name__)
 
 class Birthday:
     def __init__(
-        self,
-        username: str,
-        discriminator: int,
-        id: int,
-        year: int,
-        month: str,
-        day: int,
+            self,
+            username: str,
+            discriminator: int,
+            id: int,
+            year: int,
+            month: str,
+            day: int,
     ):
         self.username = username
         self.discriminator = discriminator
@@ -98,24 +95,24 @@ class Birthday:
         timestamp_diff = 0
         for person in birthdays:
             if (
-                int(
-                    Commons.timestamp_date(
-                        year=year,
-                        month=MONTHS.index(person["Month"]) + 1,
-                        day=person["Day"],
+                    int(
+                        Commons.timestamp_date(
+                            year=year,
+                            month=MONTHS.index(person["Month"]) + 1,
+                            day=person["Day"],
+                        )
+                        - Commons.timestamp()
                     )
-                    - Commons.timestamp()
+                    < timestamp_diff
+                    and int(
+                Commons.timestamp_date(
+                    year=year,
+                    month=MONTHS.index(person["Month"]) + 1,
+                    day=person["Day"],
                 )
-                < timestamp_diff
-                and int(
-                    Commons.timestamp_date(
-                        year=year,
-                        month=MONTHS.index(person["Month"]) + 1,
-                        day=person["Day"],
-                    )
-                    - Commons.timestamp()
-                )
-                > 0
+                - Commons.timestamp()
+            )
+                    > 0
             ):
                 timestamp_diff = int(
                     Commons.timestamp_date(
@@ -167,8 +164,8 @@ class Birthday:
         log.debug("Looping through birthdays")
         for person in birthdays:
             if (
-                person["Day"] == todays_day
-                and person["Month"].lower() == todays_month.lower()
+                    person["Day"] == todays_day
+                    and person["Month"].lower() == todays_month.lower()
             ):
                 log.info(f"It is {person['Name']}'s birthday today")
                 return EZEmbed(description=Birthday.__format_lst([person]))

@@ -4,12 +4,12 @@ import os
 import shutil
 import typing
 from datetime import datetime, timezone, timedelta
-from matplotlib import pyplot as plt
-import cv2
 
 import country_converter as coco
+import cv2
 import flag
 import requests
+from matplotlib import pyplot as plt
 
 import discord
 from bot.api import APIClient
@@ -66,7 +66,7 @@ class TrackmaniaUtils:
         return id
 
     async def get_player_data(
-        self, player_id: str
+            self, player_id: str
     ) -> typing.Union[list, discord.Embed, None]:
         """Gets the player data as a list of embeds
         Page 1 contains the Zone, Zone Ranks and Metadata of the player
@@ -313,16 +313,16 @@ class TrackmaniaUtils:
 
             if wins != 0:
                 progression_to_next_div = (
-                    round(
-                        (wins - royal_data["info"]["division"]["minwins"])
-                        / (
-                            royal_data["info"]["division"]["maxwins"]
-                            - royal_data["info"]["division"]["minwins"]
-                            + 1
-                        ),
-                        4,
-                    )
-                    * 100
+                        round(
+                            (wins - royal_data["info"]["division"]["minwins"])
+                            / (
+                                    royal_data["info"]["division"]["maxwins"]
+                                    - royal_data["info"]["division"]["minwins"]
+                                    + 1
+                            ),
+                            4,
+                        )
+                        * 100
                 )
             else:
                 log.debug("Player Has Not Won a Single Royal Match")
@@ -353,23 +353,23 @@ class TrackmaniaUtils:
 
             log.debug("Opening the MM Ranks File")
             with open(
-                "./bot/resources/json/mm_ranks.json", "r", encoding="UTF-8"
+                    "./bot/resources/json/mm_ranks.json", "r", encoding="UTF-8"
             ) as file:
                 mm_ranks = json.load(file)
                 current_div = mm_ranks["rank_data"][str(current_div - 1)]
 
             log.debug("Calculating Progression to Next Division")
             progression_to_next_div = (
-                round(
-                    (score - matchmaking_data["info"]["division"]["minpoints"])
-                    / (
-                        matchmaking_data["info"]["division"]["maxpoints"]
-                        - matchmaking_data["info"]["division"]["minpoints"]
-                        + 1
-                    ),
-                    4,
-                )
-                * 100
+                    round(
+                        (score - matchmaking_data["info"]["division"]["minpoints"])
+                        / (
+                                matchmaking_data["info"]["division"]["maxpoints"]
+                                - matchmaking_data["info"]["division"]["minpoints"]
+                                + 1
+                        ),
+                        4,
+                    )
+                    * 100
             )
 
             log.debug(
@@ -395,7 +395,7 @@ class TrackmaniaUtils:
 
         for i, trophy_count in enumerate(raw_player_data["trophies"]["counts"]):
             trophy_count_string = (
-                trophy_count_string + f"Trophy {i + 1}: {trophy_count}\n"
+                    trophy_count_string + f"Trophy {i + 1}: {trophy_count}\n"
             )
         trophy_count_string += "```"
 
@@ -457,9 +457,9 @@ class TrackmaniaUtils:
         return zones_string, ranks_string
 
     def _add_meta_details(
-        self,
-        player_page: discord.Embed,
-        raw_player_data: dict,
+            self,
+            player_page: discord.Embed,
+            raw_player_data: dict,
     ) -> discord.Embed:
         """Adds the Metadata of a player to the first page of the embed
 
@@ -622,8 +622,8 @@ class TOTDUtils:
         log.debug("Parsing Time Uploaded to Timestamp")
         nadeo_timestamp = (
             datetime.strptime(nadeo_uploaded[:-6], "%Y-%m-%dT%H:%M:%S")
-            .replace(tzinfo=timezone.utc)
-            .timestamp()
+                .replace(tzinfo=timezone.utc)
+                .timestamp()
         )
         log.debug("Parsed Time Uploaded to Timestamps")
 
@@ -735,9 +735,9 @@ class Leaderboards:
         log.debug(f"Opening {year}/{season.lower()} Data File")
 
         with open(
-            f"./bot/resources/json/campaign/{year}/{season.lower()}.json",
-            "r",
-            encoding="UTF-8",
+                f"./bot/resources/json/campaign/{year}/{season.lower()}.json",
+                "r",
+                encoding="UTF-8",
         ) as file:
             file_data = json.load(file)
             id_list = file_data["ids"]
@@ -747,10 +747,10 @@ class Leaderboards:
 
     @staticmethod
     async def update_campaign_leaderboards(
-        id_list: list[str],
-        year: str = "2021",
-        season: str = "Fall",
-        skip_first_five: bool = False,
+            id_list: list[str],
+            year: str = "2021",
+            season: str = "Fall",
+            skip_first_five: bool = False,
     ):
         """Updates the leaderboard files for the campaign
         Args:
@@ -772,11 +772,11 @@ class Leaderboards:
             log.debug("Got Data from API")
 
             with open(
-                f"./bot/resources/leaderboard/{year}/{season.lower()}/{i + 1}.json",
-                "w",
-                encoding="UTF-8",
+                    f"./bot/resources/leaderboard/{year}/{season.lower()}/{i + 1}.json",
+                    "w",
+                    encoding="UTF-8",
             ) as file:
-                log.debug(f"Dumping Data to File -> {year}>{season}>{i+1}")
+                log.debug(f"Dumping Data to File -> {year}>{season}>{i + 1}")
                 json.dump(leaderboard_data, file, indent=4)
 
             log.debug("Sleeping for 10s")
@@ -791,9 +791,9 @@ class Leaderboards:
         log.debug(f"Opening File, Map No -> {map_no}")
 
         with open(
-            f"./bot/resources/leaderboard/{year}/{season.lower()}/{map_no}.json",
-            "r",
-            encoding="UTF-8",
+                f"./bot/resources/leaderboard/{year}/{season.lower()}/{map_no}.json",
+                "r",
+                encoding="UTF-8",
         ) as file:
             data = json.load(file)
 
@@ -807,7 +807,7 @@ class Leaderboards:
 
     @staticmethod
     def get_player_good_maps(
-        player_name: str, year: str = "2021", season: str = "Fall"
+            player_name: str, year: str = "2021", season: str = "Fall"
     ) -> discord.Embed:
         log.debug(f"Getting Player Details for Player name -> {player_name}")
 
@@ -825,27 +825,27 @@ class Leaderboards:
                     if int(player_tuple[1]) <= 100:
                         log.debug(f"{player_name} is a top 100 player for Map {i}")
                         t100_str = (
-                            t100_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                                t100_str + str(i) + " - " + str(player_tuple[1]) + "\n"
                         )
                     elif int(player_tuple[1]) <= 200 and int(player_tuple[1]) > 100:
                         log.debug(f"{player_name} is a top 200 player for Map {i}")
                         t200_str = (
-                            t200_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                                t200_str + str(i) + " - " + str(player_tuple[1]) + "\n"
                         )
                     elif int(player_tuple[1]) <= 300 and int(player_tuple[1]) > 200:
                         log.debug(f"{player_name} is a top 300 player for Map {i}")
                         t300_str = (
-                            t300_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                                t300_str + str(i) + " - " + str(player_tuple[1]) + "\n"
                         )
                     elif int(player_tuple[1]) <= 400 and int(player_tuple[1]) > 300:
                         log.debug(f"{player_name} is a top 400 player for Map {i}")
                         t400_str = (
-                            t400_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                                t400_str + str(i) + " - " + str(player_tuple[1]) + "\n"
                         )
                     elif int(player_tuple[1]) <= 500 and int(player_tuple[1]) > 400:
                         log.debug(f"{player_name} is a top 500 player for Map {i}")
                         t500_str = (
-                            t500_str + str(i) + " - " + str(player_tuple[1]) + "\n"
+                                t500_str + str(i) + " - " + str(player_tuple[1]) + "\n"
                         )
 
         if t100_str != "":
@@ -1228,7 +1228,7 @@ class COTDUtil:
 
     @staticmethod
     def _create_rank_plot(
-        ranks: list, dates: list, ids: list, plot_name: str, image_name: str
+            ranks: list, dates: list, ids: list, plot_name: str, image_name: str
     ):
         log.debug("Clearing Plot")
         plt.clf()

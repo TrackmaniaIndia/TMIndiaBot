@@ -1,9 +1,8 @@
 import typing
-from typing import List
 from datetime import datetime, timedelta, timezone
+from typing import List
 
 import discord
-
 from bot.log import get_logger
 from bot.utils.commons import Commons
 
@@ -22,7 +21,7 @@ class Confirmer(discord.ui.View):
 
     @discord.ui.button(label="Confirm", style=discord.ButtonStyle.green)
     async def confirm(
-        self, button: discord.ui.Button, interaction: discord.Interaction
+            self, button: discord.ui.Button, interaction: discord.Interaction
     ):
         """If this button is clicked, prompt returns a True value
         Args:
@@ -72,10 +71,10 @@ class Confirmer(discord.ui.View):
 class EZEmbed:
     @staticmethod
     def create_embed(
-        title: str = None,
-        description: str = "",
-        color: typing.Union[int, discord.Colour] = None,
-        url: str = None,
+            title: str = None,
+            description: str = "",
+            color: typing.Union[int, discord.Colour] = None,
+            url: str = None,
     ) -> discord.Embed:
         """Creates an Embed with Basic Data Fields Filled Out
         Args:
