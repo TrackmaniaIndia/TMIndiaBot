@@ -46,7 +46,8 @@ class TrackmaniaUtils:
         if id is None:
             log.debug("Getting the data from the TMIndiaBotAPI")
             id_data = await self.api_client.get(
-                f"http://localhost:3000/tm2020/player/{self.username}/id"
+                f"http://localhost:3000/tm2020/player/{self.username}/id",
+                raise_for_status=False,
             )
 
             try:

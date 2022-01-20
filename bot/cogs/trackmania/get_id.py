@@ -41,7 +41,8 @@ class GetID(commands.Cog):
 
         await ctx.respond(
             embed=EZEmbed.create_embed(
-                title=f"Here is the ID for {username}", description=id
+                title=f"Here is the ID for {username}",
+                description=id if id is not None else "Invalid Username.",
             ),
             ephemeral=True,
         )
