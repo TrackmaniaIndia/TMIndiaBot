@@ -1,3 +1,4 @@
+"""API Related Functions"""
 from typing import Optional
 
 import aiohttp
@@ -14,6 +15,7 @@ class ResponseCodeError(ValueError):
         response_json: Optional[dict] = None,
         response_text: str = "",
     ):
+        super().__init__(response_text)
         self.status = response.status
         self.response_json = response_json or {}
         self.response_text = response_text
@@ -23,7 +25,7 @@ class ResponseCodeError(ValueError):
         response = self.response_json if self.response_json else self.response_text
         return f"Status: {self.status} Response: {response}"
 
-
+# pylint: disable=W0612
 class APIClient:
     """API Wrapper"""
 
@@ -38,17 +40,18 @@ class APIClient:
         """Close the AIOHTTP Session"""
         await self.session.close()
 
+    # pylint: disable=R0201
     async def maybe_raise_for_status(
-        selfe, response: aiohttp.ClientResponse, should_raise: bool
+        self, response: aiohttp.ClientResponse, should_raise: bool
     ) -> None:
         """Raise ResponseCodeError for non-OK response if an exception should be raised"""
         if should_raise and response.status >= 400:
             try:
                 response_json = await response.json()
                 raise ResponseCodeError(response=response, response_json=response_json)
-            except aiohttp.ContentTypeError:
+            except aiohttp.ContentTypeError as content_type_error:
                 response_text = await response.text()
-                raise ResponseCodeError(response=response, response_text=response_text)
+                raise ResponseCodeError(response=response, response_text=response_text) from content_type_error
 
     async def request(
         self, method: str, endpoint: str, *, raise_for_status: bool = True, **kwargs
