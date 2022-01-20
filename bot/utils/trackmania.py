@@ -4,6 +4,8 @@ import os
 import shutil
 import typing
 from datetime import datetime, timezone, timedelta
+from matplotlib import pyplot as plt
+import cv2
 
 import country_converter as coco
 import flag
@@ -138,6 +140,131 @@ class TrackmaniaUtils:
 
         log.debug(f"Returning {page_one}, {page_two} and {page_three}")
         return [page_one, page_two, page_three]
+
+    async def get_cotd_data(self, user_id: str) -> discord.Embed:
+        log.debug(f"Requesting COTD Data for {user_id} (Username: {self.username})")
+        cotd_data = await self.api_client.get(
+            f"http://localhost:3000/tm2020/player/{user_id}/cotd"
+        )
+
+        try:
+            if cotd_data["error"]:
+                log.critical(f"{self.username} has never played a cotd")
+                return (
+                    EZEmbed.create_embed(
+                        title="This player has never played a COTD", colour=0xFF0000
+                    ),
+                    None,
+                )
+        except:
+            pass
+
+        log.debug("Parsing Best Rank Overall Data")
+        best_rank_overall = COTDUtil.get_best_rank_overall(cotd_data)
+        best_div_overall = COTDUtil.get_best_div_overall(cotd_data)
+        best_div_rank_overall = COTDUtil.get_best_div_rank_overall(cotd_data)
+        log.debug("Parsed Best Rank Overall Data")
+
+        log.debug("Parsing Best Rank Primary Data")
+        best_rank_primary = COTDUtil.get_best_rank_primary(cotd_data)
+        best_div_primary = COTDUtil.get_best_div_primary(cotd_data)
+        best_div_rank_primary = COTDUtil.get_best_div_rank_primary(cotd_data)
+        log.debug("Parsed Best Rank Primary Data")
+
+        log.debug("Parsing Average Rank Overall Data")
+        average_rank_overall = COTDUtil.get_average_rank_overall(cotd_data)
+        average_div_overall = COTDUtil.get_average_div_overall(cotd_data)
+        average_div_rank_overall = COTDUtil.get_average_div_rank_overall(cotd_data)
+        log.debug("Parsed Average Rank Overall Data")
+
+        log.debug("Parsing Average Rank Primary Data")
+        average_rank_primary = COTDUtil.get_average_rank_primary(cotd_data)
+        average_div_primary = COTDUtil.get_average_div_primary(cotd_data)
+        average_div_rank_primary = COTDUtil.get_average_div_rank_primary(cotd_data)
+        log.debug("Parsed Average Rank Primary Data")
+
+        log.debug("Creating Strings for Embed")
+        best_data_overall = f"```Best Rank: {best_rank_overall}\nBest Div: {best_div_overall}\nBest Rank in Div: {best_div_rank_overall}\n```"
+        best_data_primary = f"```Best Rank: {best_rank_primary}\nBest Div: {best_div_primary}\nBest Rank in Div: {best_div_rank_primary}\n```"
+        average_data_overall = f"```Average Rank: {average_rank_overall}\nAverage Div: {average_div_overall}\nAverage Rank in Div: {average_div_rank_overall}\n```"
+        average_data_primary = f"```Average Rank: {average_rank_primary}\nAverage Div: {average_div_primary}\nAverage Rank in Div: {average_div_rank_primary}\n```"
+        log.debug("Created Strings for Embed")
+
+        log.debug("Creating Embed Page")
+        cotd_data_embed = EZEmbed.create_embed(
+            title=f"COTD Data for {self.username}", color=Commons.get_random_color()
+        )
+
+        log.debug("Created Embed Page")
+        log.debug("Adding Fields")
+
+        cotd_data_embed.add_field(
+            name="Best Data Overall", value=best_data_overall, inline=False
+        )
+        cotd_data_embed.add_field(
+            name="Best Data Primary (No Reruns)", value=best_data_primary, inline=False
+        )
+        cotd_data_embed.add_field(
+            name="Average Data Overall", value=average_data_overall, inline=False
+        )
+        cotd_data_embed.add_field(
+            name="Average Data Primary (No Reruns)",
+            value=average_data_primary,
+            inline=False,
+        )
+        log.debug("Added Fields")
+
+        cotd_data_embed.set_footer(
+            text="This function does not include COTDs where the player has left after the 15mins qualifying"
+        )
+
+        log.debug("Getting Rank Data for Plots")
+        ranks_overall = COTDUtil.get_list_of_ranks_overall(cotd_data)
+        ranks_primary = COTDUtil.get_list_of_ranks_primary(cotd_data)
+
+        log.debug("Getting IDs of Ranks for Plots")
+        dates_overall = COTDUtil.get_list_of_dates_overall(cotd_data)
+        dates_primary = COTDUtil.get_list_of_dates_primary(cotd_data)
+
+        log.debug("Getting IDs for Plot")
+        ids_overall = COTDUtil.get_list_of_ids_overall(cotd_data)
+        ids_primary = COTDUtil.get_list_of_ids_primary(cotd_data)
+
+        log.debug("Creating Plots for Ranks Overall and Ranks Primary")
+
+        # Use Threading here
+        log.debug("Creating Plot for Overall")
+        COTDUtil._create_rank_plot(
+            ranks=ranks_overall,
+            dates=dates_overall,
+            ids=ids_overall,
+            plot_name="Overall Ranks (With Reruns)",
+            image_name="overallranks",
+        )
+
+        log.debug("Creating Plot for Primary")
+        COTDUtil._create_rank_plot(
+            ranks=ranks_primary,
+            dates=dates_primary,
+            ids=ids_primary,
+            plot_name="Primary Rank Graph (No Reruns)",
+            image_name="primaryranks",
+        )
+
+        log.debug("Concatenating Both Graphs into One")
+        COTDUtil._concat_graphs()
+
+        log.debug("Opening Concatenated Graphs")
+        image = discord.File(
+            "./bot/resources/temp/concatenated_graphs.png",
+            filename="concatenated_graphs.png",
+        )
+        log.debug("Opened Concatenated graphs")
+
+        log.debug("Adding the Image to the Embed")
+        cotd_data_embed.set_image(url="attachment://concatenated_graphs.png")
+
+        return cotd_data_embed, image
 
     def _get_player_country_flag(self, raw_player_data: dict):
         """Gets the country that the player is from as unicode characters"""
@@ -787,6 +914,369 @@ class Leaderboards:
             )
 
         return player_embed
+
+
+class COTDUtil:
+    @staticmethod
+    def get_best_rank_primary(cotd_data) -> int:
+        log.debug(
+            "Getting Best Primary Best Rank -> {}".format(
+                cotd_data["stats"]["bestprimary"]["bestrank"]
+            )
+        )
+        return cotd_data["stats"]["bestprimary"]["bestrank"]
+
+    @staticmethod
+    def get_best_div_primary(cotd_data) -> int:
+        log.debug(
+            "Getting Primary Best Div -> {}".format(
+                cotd_data["stats"]["bestprimary"]["bestdiv"]
+            )
+        )
+        return cotd_data["stats"]["bestprimary"]["bestdiv"]
+
+    @staticmethod
+    def get_best_rank_primary_time(cotd_data) -> int:
+        log.debug(
+            "Getting the time of Primary Best -> {}".format(
+                cotd_data["stats"]["bestprimary"]["bestranktime"]
+            )
+        )
+        return cotd_data["stats"]["bestprimary"]["bestranktime"]
+
+    @staticmethod
+    def get_best_div_primary_time(cotd_data) -> int:
+        log.debug(
+            "Getting the time of Primary Best Div -> {}".format(
+                cotd_data["stats"]["bestprimary"]["bestdivtime"]
+            )
+        )
+        return cotd_data["stats"]["bestprimary"]["bestdivtime"]
+
+    @staticmethod
+    def get_best_div_rank_primary(cotd_data) -> int:
+        log.debug(
+            "Getting the Best Rank in Div -> {}".format(
+                cotd_data["stats"]["bestprimary"]["bestrankindiv"]
+            )
+        )
+        return cotd_data["stats"]["bestprimary"]["bestrankindiv"]
+
+    @staticmethod
+    def get_best_rank_overall(cotd_data) -> int:
+        log.debug(
+            "Getting the Overall Best Rank -> {}".format(
+                cotd_data["stats"]["bestoverall"]["bestrank"]
+            )
+        )
+        return cotd_data["stats"]["bestoverall"]["bestrank"]
+
+    @staticmethod
+    def get_best_div_overall(cotd_data) -> int:
+        log.debug(
+            "Getting the Overall Best Div -> {}".format(
+                cotd_data["stats"]["bestoverall"]["bestdiv"]
+            )
+        )
+        return cotd_data["stats"]["bestoverall"]["bestdiv"]
+
+    @staticmethod
+    def get_best_rank_overall_time(cotd_data) -> int:
+        log.debug(
+            f'Getting the time of Overall Best Rank -> {cotd_data["stats"]["bestoverall"]["bestranktime"]}'
+        )
+        return cotd_data["stats"]["bestoverall"]["bestranktime"]
+
+    @staticmethod
+    def get_best_div_overall_time(cotd_data) -> int:
+        log.debug(
+            "Getting the time of Overall Best Div -> {}".format(
+                cotd_data["stats"]["bestoverall"]["bestdivtime"]
+            )
+        )
+        return cotd_data["stats"]["bestoverall"]["bestdivtime"]
+
+    @staticmethod
+    def get_best_div_rank_overall(cotd_data) -> int:
+        log.debug(
+            "Getting the Best Rank in Div Overall -> {}".format(
+                cotd_data["stats"]["bestoverall"]["bestrankindiv"]
+            )
+        )
+        return cotd_data["stats"]["bestoverall"]["bestrankindiv"]
+
+    @staticmethod
+    def return_cotds(cotd_data):
+        log.debug("Returning all COTDs")
+        return cotd_data["cotds"]
+
+    @staticmethod
+    def return_cotds_without_reruns(cotd_data):
+        log.debug("Returning COTDs without reruns")
+        cotds_safe = []
+
+        for cotd in cotd_data["cotds"]:
+            if "#2" in cotd["name"] or "#3" in cotd["name"]:
+                continue
+            cotds_safe.append(cotd)
+
+        return cotds_safe
+
+    @staticmethod
+    def get_num_cotds_played(cotds):
+        log.debug(f"Number of COTDs Played -> {len(cotds)}")
+        return len(cotds)
+
+    @staticmethod
+    def remove_unfinished_cotds(cotds):
+        log.debug("Looping around COTDs")
+        cotds_safe = []
+
+        for cotd in cotds:
+            if not cotd["score"] == 0:
+                cotds_safe.append(cotd)
+
+        log.debug(f"{len(cotds_safe)} COTDs Finished out of Given Set")
+        return cotds_safe
+
+    @staticmethod
+    def get_average_rank_overall(cotd_data):
+        cotds = COTDUtil.return_cotds(cotd_data)
+
+        cotds_played = COTDUtil.get_num_cotds_played(cotds)
+
+        rank_total = 0
+
+        # Looping Through COTDs
+        for cotd in cotds:
+            rank_total += int(cotd["rank"])
+
+        log.debug(f"Average Rank Overall -> {round(rank_total / cotds_played, 2)}")
+        return round(rank_total / cotds_played, 2)
+
+    @staticmethod
+    def get_average_rank_primary(cotd_data):
+        cotds = COTDUtil.return_cotds_without_reruns(cotd_data)
+
+        cotds_played = COTDUtil.get_num_cotds_played(cotds)
+
+        rank_total = 0
+
+        for cotd in cotds:
+            rank_total += int(cotd["rank"])
+
+        try:
+            log.debug(f"Average Rank Primary -> {round(rank_total / cotds_played, 2)}")
+            return round(rank_total / cotds_played, 2)
+        except:
+            log.debug("Average Rank Primary -> 0")
+            return 0
+
+    @staticmethod
+    def get_average_div_overall(cotd_data):
+        cotds = COTDUtil.return_cotds(cotd_data)
+
+        cotds_played = COTDUtil.get_num_cotds_played(cotds)
+
+        div_total = 0
+
+        # Looping Through COTDs
+        for cotd in cotds:
+            div_total += int(cotd["div"])
+
+        log.debug(f"Average Div Overall -> {round(div_total / cotds_played, 2)}")
+        return round(div_total / cotds_played, 2)
+
+    @staticmethod
+    def get_average_div_primary(cotd_data):
+        cotds = COTDUtil.return_cotds_without_reruns(cotd_data)
+
+        cotds_played = COTDUtil.get_num_cotds_played(cotds)
+
+        div_total = 0
+
+        for cotd in cotds:
+            div_total += int(cotd["div"])
+
+        try:
+            log.debug(f"Average Div Primary -> {round(div_total / cotds_played, 2)}")
+            return round(div_total / cotds_played, 2)
+        except:
+            log.debug("Average Div Primary -> 0")
+            return 0
+
+    @staticmethod
+    def get_average_div_rank_overall(cotd_data):
+        cotds = COTDUtil.return_cotds(cotd_data)
+
+        cotds_played = COTDUtil.get_num_cotds_played(cotds)
+
+        div_rank_total = 0
+
+        for cotd in cotds:
+            div_rank_total += int(cotd["div"])
+
+        log.debug(
+            f"Average Div Rank Overall -> {round(div_rank_total / cotds_played, 2)}"
+        )
+        return round(div_rank_total / cotds_played, 2)
+
+    @staticmethod
+    def get_average_div_rank_primary(cotd_data):
+        cotds = COTDUtil.return_cotds_without_reruns(cotd_data)
+
+        cotds_played = COTDUtil.get_num_cotds_played(cotds)
+
+        div_rank_total = 0
+
+        for cotd in cotds:
+            div_rank_total += int(cotd["divrank"])
+
+        try:
+            log.debug(
+                f"Average Div Rank Primary -> {round(div_rank_total / cotds_played, 2)}"
+            )
+            return round(div_rank_total / cotds_played, 2)
+        except:
+            log.debug("Average Div Rank Primary -> 0")
+            return 0
+
+    @staticmethod
+    def get_list_of_ranks_overall(cotd_data):
+        cotds = COTDUtil.return_cotds(cotd_data)
+        cotds = COTDUtil.remove_unfinished_cotds(cotds)
+
+        ranks = []
+
+        for cotd in cotds:
+            ranks.append(cotd["rank"])
+
+        log.debug(f"Ranks are {ranks[::-1]}")
+        return ranks[::-1]
+
+    @staticmethod
+    def get_list_of_ranks_primary(cotd_data):
+        cotds = COTDUtil.return_cotds_without_reruns(cotd_data)
+        cotds = COTDUtil.remove_unfinished_cotds(cotds)
+
+        ranks = []
+
+        for cotd in cotds:
+            ranks.append(cotd["rank"])
+
+        log.debug(f"Ranks are {ranks[::-1]}")
+        return ranks[::-1]
+
+    @staticmethod
+    def get_list_of_dates_overall(cotd_data):
+        cotds = COTDUtil.return_cotds(cotd_data)
+        cotds = COTDUtil.remove_unfinished_cotds(cotds)
+
+        timestamps = []
+
+        for cotd in cotds:
+            timestamps.append(cotd["name"][15:])
+
+        log.debug(f"Timestamps are {timestamps[::-1]}")
+        return timestamps[::-1]
+
+    @staticmethod
+    def get_list_of_dates_primary(cotd_data):
+        cotds = COTDUtil.return_cotds_without_reruns(cotd_data)
+        cotds = COTDUtil.remove_unfinished_cotds(cotds)
+
+        timestamps = []
+
+        for cotd in cotds:
+            timestamps.append(cotd["name"][15:])
+
+        log.debug(f"Timestamps are {timestamps[::-1]}")
+        return timestamps[::-1]
+
+    @staticmethod
+    def get_list_of_ids_overall(cotd_data):
+        cotds = COTDUtil.return_cotds(cotd_data)
+        cotds = COTDUtil.remove_unfinished_cotds(cotds)
+
+        ids = []
+
+        for cotd in cotds:
+            ids.append(cotd["id"])
+
+        log.debug(f"IDs are {ids[::-1]}")
+        return ids[::-1]
+
+    @staticmethod
+    def get_list_of_ids_primary(cotd_data):
+        cotds = COTDUtil.return_cotds_without_reruns(cotd_data)
+        cotds = COTDUtil.remove_unfinished_cotds(cotds)
+
+        ids = []
+
+        for cotd in cotds:
+            ids.append(cotd["id"])
+
+        log.debug(f"IDs are {ids[::-1]}")
+        return ids[::-1]
+
+    @staticmethod
+    def get_num_wins(cotd_data):
+        log.debug(
+            "Getting number of wins -> {}".format(cotd_data["stats"]["totalwins"])
+        )
+        return cotd_data["stats"]["totalwins"]
+
+    @staticmethod
+    def _create_rank_plot(
+        ranks: list, dates: list, ids: list, plot_name: str, image_name: str
+    ):
+        log.debug("Clearing Plot")
+        plt.clf()
+
+        if len(dates) >= 40:
+            log.debug(
+                f"{plot_name} -> Player has played more than 40 COTDs, using ids instead of dates"
+            )
+            plt.plot(ids, ranks, label=plot_name)
+            plt.xlabel("COTD IDs")
+        else:
+            log.debug(
+                f"{plot_name} -> Player has less than 40 COTDs, using dates instead of ids"
+            )
+            plt.plot(dates, ranks, label=plot_name)
+            plt.xlabel("COTD Dates")
+
+        log.debug(f"{plot_name} -> Setting Plot Rotation to 90Deg")
+        plt.xticks(rotation=90)
+
+        log.debug(f"{plot_name} -> Setting YLabel to Ranks")
+        plt.ylabel("Ranks")
+
+        log.debug(f"{plot_name} -> Setting title to {plot_name}")
+        plt.title(f"Rank Graph for {plot_name}")
+
+        log.debug(f"{plot_name} -> Setting Tight Layout")
+        plt.tight_layout()
+
+        log.debug(f"{plot_name} -> Saving the Plot to Computer")
+        plt.savefig("./bot/resources/temp/" + image_name)
+
+    @staticmethod
+    def _concat_graphs():
+        log.info("Concatenating Graphs")
+        log.debug("Opening First Graph")
+        first_graph = cv2.imread("./bot/resources/temp/overallranks.png")
+        log.debug("First Graph Opened")
+        log.debug("Opening Second Graph")
+        second_graph = cv2.imread("./bot/resources/temp/primaryranks.png")
+        log.debug("Second Graph Opened")
+
+        log.debug("Concatenating Graphs")
+        concatenated_graphs = cv2.hconcat([first_graph, second_graph])
+        log.debug("Concatenated Graphs")
+
+        log.info("Saving Graphs")
+        cv2.imwrite("./bot/resources/temp/concatenated_graphs.png", concatenated_graphs)
 
 
 class NotAValidUsername(Exception):

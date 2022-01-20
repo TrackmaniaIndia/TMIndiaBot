@@ -73,7 +73,7 @@ class Bot(commands.Bot):
         extensions = set(EXTENSIONS)  # Mutable Copy
 
         for extension in extensions:
-            log.debug(f"Loading {extension}")
+            log.info(f"Loading {extension}")
             self.load_extension(extension)
 
     def add_cog(self, cog: commands.Cog) -> None:
