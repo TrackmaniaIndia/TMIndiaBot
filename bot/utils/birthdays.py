@@ -8,7 +8,7 @@ from discord.ext import commands
 from bot import constants
 from bot.log import get_logger
 from bot.utils.commons import Commons
-from bot.utils.discord.easy_embed import EZEmbed
+from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
 

@@ -2,7 +2,7 @@ from discord.ext import commands
 
 from bot import constants
 from bot.bot import Bot
-from bot.utils.discord.easy_embed import EZEmbed
+from bot.utils.discord import EZEmbed
 
 DESCRIPTIONS = ("Discord API latency",)
 ROUND_LATENCY = 3

@@ -14,7 +14,7 @@ from bot.api import APIClient
 from bot.log import get_logger
 from bot.utils.commons import Commons
 from bot.utils.database import Database
-from bot.utils.discord.easy_embed import EZEmbed
+from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
 

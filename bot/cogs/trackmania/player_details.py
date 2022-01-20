@@ -5,7 +5,7 @@ from discord.ext.pages import Paginator
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord.easy_embed import EZEmbed
+from bot.utils.discord import EZEmbed
 from bot.utils.trackmania import TrackmaniaUtils
 
 log = get_logger(__name__)

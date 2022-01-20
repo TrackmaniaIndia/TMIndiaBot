@@ -5,7 +5,7 @@ from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 from bot.log import log_command
-from bot.utils.discord.easy_embed import EZEmbed
+from bot.utils.discord import EZEmbed
 from bot.utils.trackmania import TrackmaniaUtils
 
 log = get_logger(__name__)
