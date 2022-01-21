@@ -57,5 +57,5 @@ class Database:
                 json.dump({"IDS": ids_data}, file, indent=4)
 
             return True
-        except:
+        except BaseException:
             return False

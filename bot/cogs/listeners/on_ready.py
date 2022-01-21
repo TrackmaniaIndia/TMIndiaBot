@@ -65,9 +65,11 @@ class OnReady(
 
         # Deleting the TOTD Image if it exists
         if os.path.exists("./bot/resources/temp/totd.png"):
-            log.critical("TOTD Image Exists, Deleting")
-            os.remove("./bot/resources/temp/totd.png")
-
+            if int(datetime.datetime.now().hour) >= 23:
+                log.critical("TOTD Image Exists, Deleting")
+                os.remove("./bot/resources/temp/totd.png")
+            else:
+                log.critical("Time is not after 11pm, not deleting TOTD Image")
         # Starting TOTDImageDeleter
         log.info("Starting TOTDImageDeleter")
         totd_image_deleter.start(self.bot)
@@ -93,7 +95,9 @@ class OnReady(
             # Sending Message to the Channel
             channel = self.bot.get_channel(int(announcement_channel))
             try:
-                # Inside a TryExcept to prevent the bot from crashing if the channel is deleted or permissions to send messages are removed
+                # Inside a TryExcept to prevent the bot from crashing if the
+                # channel is deleted or permissions to send messages are
+                # removed
                 await channel.send(
                     f"Bot is Ready, Version: {constants.Bot.version} - Times Run: {times_run} - Time of Start: {datetime.now()}"
                 )
@@ -103,7 +107,7 @@ class OnReady(
                     or int(announcement_channel) == 880628511512096778
                 ):
                     continue
-            except:
+            except BaseException:
                 log.info(f"Can't Send Message to {announcement_channel}")
                 continue
 

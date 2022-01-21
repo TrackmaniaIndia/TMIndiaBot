@@ -22,7 +22,10 @@ class StartupError(Exception):
         self.exception = base
 
 
+# pylint: disable=too-many-ancestors, bare-except, unused-variable
 class Bot(commands.Bot):
+    """The bot instance"""
+
     def __init__(self, *args, **kwargs):
         """Initalizing the Bot"""
         log.debug("Initializing commands.Bot class")
@@ -41,16 +44,17 @@ class Bot(commands.Bot):
         attempts = 0
 
         try:
-            log.info(f"Attempting site connection to Localhost")
+            log.info("Attempting site connection to Localhost")
             await self.api_client.get("")
-        except:
+        except BaseException:
             attempts += 1
 
     @classmethod
     def create(cls) -> "Bot":
         """Create and return an instance of the Bot."""
         log.debug(
-            f"Creating a bot with default intents and default guild -> {constants.Bot.debug_guild}"
+            "Creating a bot with default intents and default guild -> %s",
+            constants.Bot.debug_guild,
         )
         loop = asyncio.get_event_loop()
         intents = discord.Intents.default()
@@ -73,19 +77,19 @@ class Bot(commands.Bot):
         extensions = set(EXTENSIONS)  # Mutable Copy
 
         for extension in extensions:
-            log.info(f"Loading {extension}")
+            log.info("Loading %s", extension)
             self.load_extension(extension)
 
     def add_cog(self, cog: commands.Cog) -> None:
         """Adds a "cog" to the bot and logs the operation."""
         super().add_cog(cog)
-        log.info(f"Cog loaded: {cog.qualified_name}")
+        log.info("Cog loaded: %s", cog.qualified_name)
 
     def add_command(self, command: commands.Command) -> None:
         """Add `command` as normal and then add its root aliases to the bot."""
         super().add_command(command)
         self._add_root_aliases(command)
-        log.info(f"Added {command.name}")
+        log.info("Added %s", command.name)
 
     def remove_command(self, name: str) -> Optional[commands.Command]:
         """
@@ -95,23 +99,25 @@ class Bot(commands.Bot):
         """
         command = super().remove_command(name)
         if command is None:
-            # Even if it's a root alias, there's no way to get the Bot instance to remove the alias.
+            # Even if it's a root alias, there's no way to get the Bot instance
+            # to remove the alias.
             return
 
         self._remove_root_aliases(command)
-        log.info(f"Removed {command.name}")
+        log.info("Removed %s", command.name)
         return command
 
     async def close(self) -> None:
         """Close the Discord connection and the aiohttp session, connector, statsd client, and resolver."""
-        # Done before super().close() to allow tasks finish before the HTTP session closes.
+        # Done before super().close() to allow tasks finish before the HTTP
+        # session closes.
         for ext in list(self.extensions):
             with suppress(Exception):
                 self.unload_extension(ext)
 
         for cog in list(self.cogs):
             with suppress(Exception):
-                log.debug(f"Removing {cog.name}")
+                log.debug("Removing %s", cog.name)
                 self.remove_cog(cog)
 
         # Now actually do full close of bot
@@ -131,7 +137,8 @@ class Bot(commands.Bot):
 
     async def login(self, *args, **kwargs) -> None:
         """Re-create the connector and set up sessions before logging into Discord."""
-        # Use asyncio for DNS resolution instead of threads so threads aren't spammed.
+        # Use asyncio for DNS resolution instead of threads so threads aren't
+        # spammed.
         log.info("Creating a resolver")
         self._resolver = aiohttp.AsyncResolver()
 
@@ -164,10 +171,7 @@ class Bot(commands.Bot):
         will not be set.
         """
 
-        if (
-                guild.id != constants.Guild.tmi_server
-                and guild.id != constants.Guild.testing_server
-        ):
+        if guild.id not in (constants.Guild.tmi_server, constants.Guild.testing_server):
             return
 
         if not guild.roles or not guild.members or not guild.channels:
@@ -176,18 +180,15 @@ class Bot(commands.Bot):
 
             return
 
-        log.info(f"{guild.name} is available")
+        log.info("%s is available", guild.name)
         self._guild_available.set()
 
     async def on_guild_unavailable(self, guild: discord.Guild) -> None:
         """Clear the internal guild available event when constants.Guild.id becomes unavailable."""
-        if (
-                guild.id != constants.Guild.tmi_server
-                and guild.id != constants.Guild.testing_server
-        ):
+        if guild.id not in (constants.Guild.tmi_server, constants.Guild.testing_server):
             return
 
-        log.info(f"{guild.name} is unavailable")
+        log.info("%s is unavailable", guild.name)
         self._guild_available.clear()
 
     async def wait_until_guild_available(self) -> None:

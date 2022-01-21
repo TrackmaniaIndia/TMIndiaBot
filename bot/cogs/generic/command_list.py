@@ -24,7 +24,7 @@ class GetCommandList(commands.Cog):
         name="commandlist",
         description="Gives a link for the TMI Hall of Fame",
     )
-    async def _hall_of_fame_slash(self, ctx: commands.Context):
+    async def _command_list_slash(self, ctx: commands.Context):
         log_command(ctx, "command_list_slash")
         await ctx.respond(
             content=self._msg,
@@ -36,7 +36,7 @@ class GetCommandList(commands.Cog):
         name="commandlist",
         description="Gives a link for the TMI Hall of Fame",
     )
-    async def _hall_of_fame(self, ctx: commands.Context):
+    async def _command_list(self, ctx: commands.Context):
         log_command(ctx, "command_list")
         await ctx.send(
             content=self._msg,

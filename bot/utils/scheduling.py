@@ -61,7 +61,7 @@ class Scheduler:
         self._log.debug(f"Scheduled task #{task_id} {id(task)}.")
 
     def schedule_at(
-            self, time: datetime, task_id: t.Hashable, coroutine: t.Coroutine
+        self, time: datetime, task_id: t.Hashable, coroutine: t.Coroutine
     ) -> None:
         """
         Schedule `coroutine` to be executed at the given `time`.
@@ -82,7 +82,7 @@ class Scheduler:
         self.schedule(task_id, coroutine)
 
     def schedule_later(
-            self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
+        self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
     ) -> None:
         """
         Schedule `coroutine` to be executed after the given `delay` number of seconds.
@@ -113,7 +113,7 @@ class Scheduler:
             self.cancel(task_id)
 
     async def _await_later(
-            self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
+        self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
     ) -> None:
         """Await `coroutine` after the given `delay` number of seconds."""
         try:
@@ -122,14 +122,16 @@ class Scheduler:
             )
             await asyncio.sleep(delay)
 
-            # Use asyncio.shield to prevent the coroutine from cancelling itself.
+            # Use asyncio.shield to prevent the coroutine from cancelling
+            # itself.
             self._log.trace(f"Done waiting for #{task_id}; now awaiting the coroutine.")
             await asyncio.shield(coroutine)
         finally:
             # Close it to prevent unawaited coroutine warnings,
             # which would happen if the task was cancelled during the sleep.
             # Only close it if it's not been awaited yet. This check is important because the
-            # coroutine may cancel this task, which would also trigger the finally block.
+            # coroutine may cancel this task, which would also trigger the
+            # finally block.
             state = inspect.getcoroutinestate(coroutine)
             if state == "CORO_CREATED":
                 self._log.debug(f"Explicitly closing the coroutine for #{task_id}.")
@@ -152,7 +154,8 @@ class Scheduler:
 
         if scheduled_task and done_task is scheduled_task:
             # A task for the ID exists and is the same as the done task.
-            # Since this is the done callback, the task is already done so no need to cancel it.
+            # Since this is the done callback, the task is already done so no
+            # need to cancel it.
             self._log.trace(f"Deleting task #{task_id} {id(done_task)}.")
             del self._scheduled_tasks[task_id]
         elif scheduled_task:
@@ -177,11 +180,11 @@ class Scheduler:
 
 
 def create_task(
-        coro: t.Awaitable,
-        *,
-        suppressed_exceptions: tuple[t.Type[Exception]] = (),
-        event_loop: t.Optional[asyncio.AbstractEventLoop] = None,
-        **kwargs,
+    coro: t.Awaitable,
+    *,
+    suppressed_exceptions: tuple[t.Type[Exception]] = (),
+    event_loop: t.Optional[asyncio.AbstractEventLoop] = None,
+    **kwargs,
 ) -> asyncio.Task:
     """
     Wrapper for creating asyncio `Task`s which logs exceptions raised in the task.
@@ -199,7 +202,7 @@ def create_task(
 
 
 def _log_task_exception(
-        task: asyncio.Task, *, suppressed_exceptions: t.Tuple[t.Type[Exception]]
+    task: asyncio.Task, *, suppressed_exceptions: t.Tuple[t.Type[Exception]]
 ) -> None:
     """Retrieve and log the exception raised in `task` if one exists."""
     with contextlib.suppress(asyncio.CancelledError):

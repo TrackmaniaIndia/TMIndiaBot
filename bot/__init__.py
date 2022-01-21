@@ -2,14 +2,10 @@
 import asyncio
 import os
 from functools import partial, partialmethod
-from typing import TYPE_CHECKING
 
 from discord.ext import commands
 
 from bot import log, monkey_typing
-
-if TYPE_CHECKING:
-    from bot.bot import Bot
 
 log.setup()
 
@@ -30,5 +26,3 @@ commands.command = partial(commands.command, cls=monkey_typing.Command)
 commands.GroupMixin.command = partialmethod(
     commands.GroupMixin.command, cls=monkey_typing.Command
 )
-
-instance: "Bot" = None  # Global Bot instance.
