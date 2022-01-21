@@ -915,6 +915,49 @@ class Leaderboards:
 
         return player_embed
 
+    @staticmethod
+    def get_world_records(year: str = "2021", season: str = "Fall"):
+        log.debug(f"Getting World Records for {season} {year}")
+
+        log.debug("Creating Embeds")
+        white_maps = EZEmbed.create_embed(
+            title="World Records for White Maps", color=0xFFFFFF
+        )
+        green_maps = EZEmbed.create_embed(
+            title="World Records for Green Maps", color=0x00FF00
+        )
+        blue_maps = EZEmbed.create_embed(
+            title="World Records for Blue Maps", color=0x0000FF
+        )
+        red_maps = EZEmbed.create_embed(
+            title="World Records for Red Maps", color=0xFF0000
+        )
+        black_maps = EZEmbed.create_embed(
+            title="World Records for Black Maps", color=0x000000
+        )
+
+        maps = (white_maps, green_maps, blue_maps, red_maps, black_maps)
+        map_colors = ('white', 'green', 'blue', 'red', 'black')
+
+        log.debug("Looping Through Maps")
+        for i in range(0, 5):
+            log.debug(f'Adding {map_colors[i]} Records')
+            for j in range(0, 5):
+                with open(
+                    f"./bot/resources/leaderboard/{year}/{season.lower()}/{(i * 5) + j + 1}.json",
+                    "r",
+                    encoding="UTF-8",
+                ) as file:
+                    leaderboard_data = json.load(file)
+                    wr_holder = leaderboard_data[0]
+            
+                    username = f'{wr_holder["player"]["name"]}'
+                    value = f'Map No: {(i * 5) + j + 1}\nTime: {Commons.format_seconds(wr_holder["time"])}'
+                    maps[i].add_field(name=username, value=value, inline=False)
+                    
+        log.debug('Returning Maps')
+        return maps
+
 
 class COTDUtil:
     @staticmethod
