@@ -188,6 +188,7 @@ class Channels(metaclass=YAMLGetter):
 
     bot_updates: int
     tmi_bot_channel: int
+    testing_general: int
 
     commands_allowed: list
     announcement_channels: list
