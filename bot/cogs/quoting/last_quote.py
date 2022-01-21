@@ -1,4 +1,5 @@
 from discord.ext import commands
+import discord
 
 import bot.utils.quote as quote_functions
 from bot import constants
@@ -18,6 +19,7 @@ class LastQuote(commands.Cog):
         name="lastquote",
         description="Gets the last quote saved",
     )
+    @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)
     async def _last_quote_slash(self, ctx: commands.Context):
         log_command(ctx, "last_quote_slash")
 
@@ -27,6 +29,7 @@ class LastQuote(commands.Cog):
         await ctx.respond(embed=quote_embed)
 
     @commands.command(name="lastquote", description="Gets the last quote saved")
+    @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)
     async def _last_quote(self, ctx: commands.Context):
         log_command(ctx, "last_quote")
 

@@ -62,6 +62,7 @@ class TOTD(commands.Cog):
             )
 
     @commands.command(name="totd", description="Latest TOTD")
+    @discord.ext.commands.cooldown(1, 30, commands.BucketType.guild)
     async def _totd(self, ctx: commands.Context):
         log_command(ctx, "totd")
 

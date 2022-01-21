@@ -1,3 +1,4 @@
+import discord
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
@@ -21,6 +22,7 @@ class PlayerDetails(commands.Cog):
         name="playerdetails",
         description="Gets the player details of a sepcific username",
     )
+    @discord.ext.commands.cooldown(1, 15, commands.BucketType.guild)
     async def _player_details_slash(
         self,
         ctx: commands.Context,
@@ -76,6 +78,7 @@ class PlayerDetails(commands.Cog):
         name="playerdetails",
         description="Gets the player details of a sepcific username",
     )
+    @discord.ext.commands.cooldown(1, 10, commands.BucketType.guild)
     async def _player_details(
         self,
         ctx: commands.Context,
