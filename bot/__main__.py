@@ -1,7 +1,7 @@
 """Launches the Bot"""
 import subprocess
-import threading
 import sys
+import threading
 
 import aiohttp
 

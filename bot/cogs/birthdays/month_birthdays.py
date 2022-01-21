@@ -1,6 +1,6 @@
 from discord.commands import Option
-from discord.ext.pages import Paginator
 from discord.ext import commands
+from discord.ext.pages import Paginator
 
 from bot import constants
 from bot.bot import Bot

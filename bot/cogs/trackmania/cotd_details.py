@@ -1,6 +1,6 @@
+import discord
 from discord.commands import Option
 from discord.ext import commands
-import discord
 
 from bot import constants
 from bot.bot import Bot

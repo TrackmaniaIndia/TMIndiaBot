@@ -1,5 +1,5 @@
-from discord.ext import commands
 import discord
+from discord.ext import commands
 
 import bot.utils.quote as quote_functions
 from bot import constants
