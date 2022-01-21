@@ -14,9 +14,9 @@ class GetNextProject(commands.Cog):
         self.bot = bot
         self._msg = "Here is the link to the next project"
         self._next_project_button = discord.ui.Button(
-            label="Next Project - v2.1 (Github)",
+            label="Next Project - v2.0.1 (Github)",
             style=discord.ButtonStyle.url,
-            url="https://github.com/NottCurious/TMIndiaBot/projects/8",
+            url="https://github.com/NottCurious/TMIndiaBot/projects/9",
         )
 
     @commands.slash_command(

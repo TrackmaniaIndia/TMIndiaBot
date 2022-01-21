@@ -7,6 +7,7 @@ from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import EZEmbed
 from bot.utils.trackmania import TrackmaniaUtils
+from bot.utils.commons import Commons
 
 log = get_logger(__name__)
 
@@ -39,7 +40,7 @@ class PlayerDetails(commands.Cog):
                 embed=EZEmbed.create_embed(
                     title="Invalid Username Given",
                     description=f"Username Given: {username}",
-                    color=common_functions.Commons.get_random_color(),
+                    color=Commons.get_random_color(),
                 ),
                 delete_after=5,
                 ephemeral=False,
@@ -92,7 +93,7 @@ class PlayerDetails(commands.Cog):
                 embed=EZEmbed.create_embed(
                     title="Invalid Username Given",
                     description=f"Username Given: {username}",
-                    color=common_functions.Commons.get_random_color(),
+                    color=Commons.get_random_color(),
                 ),
                 delete_after=5,
                 ephemeral=False,

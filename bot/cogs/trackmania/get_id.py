@@ -63,7 +63,7 @@ class GetID(commands.Cog):
 
         await ctx.send(
             embed=EZEmbed.create_embed(
-                title=f"Here is the ID for {username}", description=id
+                title=f"Here is the ID for {username}", description=id if id is not None else "Invalid Username Given."
             ),
         )
 
