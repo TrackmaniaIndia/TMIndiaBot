@@ -116,4 +116,3 @@ class Snowflake(IDConverter):
             raise BadArgument(f"{error}: timestamp is too far into the future.")
 
         return snowflake
-
