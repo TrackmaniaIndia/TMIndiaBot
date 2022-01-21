@@ -1,23 +1,16 @@
-import asyncio
 import json
-import os
-import shutil
 import typing
-from datetime import datetime, timezone, timedelta
 
 import country_converter as coco
-import cv2
 import flag
-import requests
-from matplotlib import pyplot as plt
 
 import discord
 from bot.api import APIClient
 from bot.log import get_logger
 from bot.utils.commons import Commons
+from bot.utils.cotd_util import COTDUtil
 from bot.utils.database import Database
 from bot.utils.discord import EZEmbed
-from bot.utils.cotd_util import COTDUtil
 
 log = get_logger(__name__)
 

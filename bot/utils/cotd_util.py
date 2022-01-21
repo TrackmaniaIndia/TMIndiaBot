@@ -1,16 +1,17 @@
-from matplotlib import pyplot as plt
-import cv2
-from datetime import datetime, timezone, timedelta
-import requests
-import os
 import json
+import os
+import shutil
+from datetime import datetime, timezone, timedelta
+
+import cv2
+import requests
+from matplotlib import pyplot as plt
 import discord
 
-from bot.log import get_logger
 from bot.api import APIClient
+from bot.log import get_logger
 from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
-import shutil
 
 log = get_logger(__name__)
 

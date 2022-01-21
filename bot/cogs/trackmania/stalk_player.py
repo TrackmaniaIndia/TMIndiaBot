@@ -4,8 +4,8 @@ from discord.ext import commands
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.trackmania import TrackmaniaUtils
 from bot.utils.leaderboard import Leaderboards
+from bot.utils.trackmania import TrackmaniaUtils
 
 log = get_logger(__name__)
 

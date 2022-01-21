@@ -4,16 +4,13 @@ import re
 import typing as t
 from datetime import datetime, timezone
 
-import discord
 from discord.ext.commands import (
     BadArgument,
     Context,
     Converter,
     IDConverter,
-    MemberConverter,
-    UserConverter,
 )
-from discord.utils import escape_markdown, snowflake_time
+from discord.utils import snowflake_time
 
 from bot import cogs
 from bot.log import get_logger
