@@ -22,17 +22,33 @@ class CampaignWRs(commands.Cog):
         name="world_records",
         description="Gets the world records for campaign maps",
     )
-    async def _world_records_slash(self, ctx: commands.Context, year: Option(str, description='Year of Season', choices=["2020", "2021", "2022"]), season: Option(str, 'The season', choices=['Winter', 'Spring', 'Summer', 'Fall'])):
-        log_command(ctx, 'world_records_slash')
-        illegal_combinations = [("2020", 'Winter'), ("2020", "Spring"), ("2022", "Spring"), ("2022", "Summer"), ("2022", "Fall")]
-        
+    async def _world_records_slash(
+        self,
+        ctx: commands.Context,
+        year: Option(
+            str, description="Year of Season", choices=["2020", "2021", "2022"]
+        ),
+        season: Option(
+            str, "The season", choices=["Winter", "Spring", "Summer", "Fall"]
+        ),
+    ):
+        log_command(ctx, "world_records_slash")
+        illegal_combinations = [
+            ("2020", "Winter"),
+            ("2020", "Spring"),
+            ("2022", "Spring"),
+            ("2022", "Summer"),
+            ("2022", "Fall"),
+        ]
+
         if (year, season) in illegal_combinations:
-            await ctx.respond('Illegal Combination')
+            await ctx.respond("Illegal Combination")
             return
-        
+
         maps = Leaderboards.get_world_records(year, season)
         maps_pag = Paginator(pages=maps)
         await maps_pag.respond(ctx.interaction)
+
 
 def setup(bot: Bot):
     bot.add_cog(CampaignWRs(bot))

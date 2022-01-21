@@ -937,11 +937,11 @@ class Leaderboards:
         )
 
         maps = (white_maps, green_maps, blue_maps, red_maps, black_maps)
-        map_colors = ('white', 'green', 'blue', 'red', 'black')
+        map_colors = ("white", "green", "blue", "red", "black")
 
         log.debug("Looping Through Maps")
         for i in range(0, 5):
-            log.debug(f'Adding {map_colors[i]} Records')
+            log.debug(f"Adding {map_colors[i]} Records")
             for j in range(0, 5):
                 with open(
                     f"./bot/resources/leaderboard/{year}/{season.lower()}/{(i * 5) + j + 1}.json",
@@ -950,12 +950,12 @@ class Leaderboards:
                 ) as file:
                     leaderboard_data = json.load(file)
                     wr_holder = leaderboard_data[0]
-            
+
                     username = f'{wr_holder["player"]["name"]}'
                     value = f'Map No: {(i * 5) + j + 1}\nTime: {Commons.format_seconds(wr_holder["time"])}'
                     maps[i].add_field(name=username, value=value, inline=False)
-                    
-        log.debug('Returning Maps')
+
+        log.debug("Returning Maps")
         return maps
 
 
