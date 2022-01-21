@@ -61,7 +61,7 @@ def _stringify_time_unit(value: int, unit: str) -> str:
 
 
 def discord_timestamp(
-        timestamp: ValidTimestamp, format: TimestampFormats = TimestampFormats.DATE_TIME
+    timestamp: ValidTimestamp, format: TimestampFormats = TimestampFormats.DATE_TIME
 ) -> str:
     """Create and format a Discord flavored markdown timestamp."""
     if format not in TimestampFormats:
@@ -83,7 +83,7 @@ def discord_timestamp(
 
 
 def humanize_delta(
-        delta: relativedelta, precision: str = "seconds", max_units: int = 6
+    delta: relativedelta, precision: str = "seconds", max_units: int = 6
 ) -> str:
     """
     Returns a human-readable version of the relativedelta.
@@ -118,7 +118,8 @@ def humanize_delta(
         time_strings[-1] = f"{time_strings[-2]} and {time_strings[-1]}"
         del time_strings[-2]
 
-    # If nothing has been found, just make the value 0 precision, e.g. `0 days`.
+    # If nothing has been found, just make the value 0 precision, e.g. `0
+    # days`.
     if not time_strings:
         humanized = _stringify_time_unit(0, precision)
     else:
@@ -185,10 +186,10 @@ def format_infraction(timestamp: str) -> str:
 
 
 def format_infraction_with_duration(
-        date_to: Optional[str],
-        date_from: Optional[datetime.datetime] = None,
-        max_units: int = 2,
-        absolute: bool = True,
+    date_to: Optional[str],
+    date_from: Optional[datetime.datetime] = None,
+    max_units: int = 2,
+    absolute: bool = True,
 ) -> Optional[str]:
     """
     Return `date_to` formatted as a discord timestamp with the timestamp duration since `date_from`.

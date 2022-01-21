@@ -1,5 +1,3 @@
-import difflib
-
 from discord import Embed
 from discord.ext.commands import (
     Cog,
@@ -57,11 +55,16 @@ class ErrorHandler(Cog):
             )
             return
 
-        debug_message = (
-            f"Command {ctx.command} invoked by {ctx.message.author} with error "
-            f"{e.__class__.__name__}: {e}"
-        )
-
+        try:
+            debug_message = (
+                f"Command {ctx.command} invoked by {ctx.message.author} with error "
+                f"{e.__class__.__name__}: {e}"
+            )
+        except AttributeError:
+            debug_message = (
+                f"Command {ctx.command} invoked by {ctx.author.name} with error "
+                f"{e.__class__.__name__}: {e}"
+            )
         if isinstance(e, errors.CommandNotFound) and not getattr(
             ctx, "invoked_from_error_handler", False
         ):
@@ -91,79 +94,30 @@ class ErrorHandler(Cog):
             # MaxConcurrencyReached, ExtensionError
             await self.handle_unexpected_error(ctx, e)
 
-    async def send_command_help(self, ctx: Context) -> None:
-        """Return a prepared `help` command invocation coroutine."""
-        if ctx.command:
-            self.bot.help_command.context = ctx
-            await ctx.send_help(ctx.command)
-            return
-
-        await ctx.send_help()
-
-    async def try_get_tag(self, ctx: Context) -> None:
-        """
-        Attempt to display a tag by interpreting the command name as a tag name.
-        The invocation of tags get respects its checks. Any CommandErrors raised will be handled
-        by `on_command_error`, but the `invoked_from_error_handler` attribute will be added to
-        the context to prevent infinite recursion in the case of a CommandNotFound exception.
-        """
-        tags_get_command = self.bot.get_command("tags get")
-
-        if tags_get_command is None:
-            return
-
-        ctx.invoked_from_error_handler = True
-
-        log_msg = "Cancelling attempt to fall back to a tag due to failed checks."
-        try:
-            if not await tags_get_command.can_run(ctx):
-                log.debug(log_msg)
-                return
-        except errors.CommandError as tag_error:
-            log.debug(log_msg)
-            await self.on_command_error(ctx, tag_error)
-            return
-
-        if await ctx.invoke(tags_get_command, argument_string=ctx.message.content):
-            return
-
-        if not any(role.id in MODERATION_ROLES for role in ctx.author.roles):
-            await self.send_command_suggestion(ctx, ctx.invoked_with)
-
-    async def send_command_suggestion(self, ctx: Context, command_name: str) -> None:
-        """Sends user similar commands if any can be found."""
-        # No similar tag found, or tag on cooldown -
-        # searching for a similar command
-        raw_commands = []
-        for cmd in self.bot.walk_commands():
-            if not cmd.hidden:
-                raw_commands += (cmd.name, *cmd.aliases)
-        if similar_command_data := difflib.get_close_matches(
-            command_name, raw_commands, 1
-        ):
-            similar_command_name = similar_command_data[0]
-            similar_command = self.bot.get_command(similar_command_name)
-
-            if not similar_command:
-                return
-
-            log_msg = "Cancelling attempt to suggest a command due to failed checks."
-            try:
-                if not await similar_command.can_run(ctx):
-                    log.debug(log_msg)
-                    return
-            except errors.CommandError as cmd_error:
-                log.debug(log_msg)
-                await self.on_command_error(ctx, cmd_error)
-                return
-
-            misspelled_content = ctx.message.content
-            e = Embed()
-            e.set_author(name="Did you mean:", icon_url=Icons.questionmark)
-            e.description = (
-                f"{misspelled_content.replace(command_name, similar_command_name, 1)}"
+    @Cog.listener()
+    async def on_application_command_error(
+        self, ctx: Context, e: errors.CommandError
+    ) -> None:
+        if hasattr(e, "handled"):
+            log.debug(
+                f"Command {ctx.command} had its error already handled locally; ignoring"
             )
-            await ctx.send(embed=e, delete_after=10.0)
+            return
+
+        try:
+            debug_message = (
+                f"Command {ctx.command} invoked by {ctx.message.author} with error "
+                f"{e.__class__.__name__}: {e}"
+            )
+        except AttributeError:
+            debug_message = (
+                f"Command {ctx.command} invoked by {ctx.author.name} with error "
+                f"{e.__class__.__name__}: {e}"
+            )
+
+        if isinstance(e, errors.CommandOnCooldown):
+            log.debug(debug_message)
+            await ctx.respond(e)
 
     async def handle_user_input_error(
         self, ctx: Context, e: errors.UserInputError
@@ -207,7 +161,6 @@ class ErrorHandler(Cog):
             )
 
         await ctx.send(embed=embed)
-        await self.send_command_help(ctx)
 
     @staticmethod
     async def handle_check_failure(ctx: Context, e: errors.CheckFailure) -> None:

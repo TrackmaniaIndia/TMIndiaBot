@@ -8,6 +8,8 @@ bot:
   default_guilds: [ 876042400005505066 ]
   debug_guild: 876042400005505066
   version: "v2.0.0-alpha"
+  totd_reminders: False
+  totd_info: False
 
 error:
   show_stack_trace: true
@@ -22,6 +24,7 @@ channels:
 
   bot_updates: 880628511512096778
   tmi_bot_channel: 880771916099641364
+  testing_general: 876042400731123724
   
   commands_allowed: [ 842626465421852692, 880628511512096778, 876042400731123724 ]
   announcement_channels: [ 880628511512096778, 876335103146623016 ]

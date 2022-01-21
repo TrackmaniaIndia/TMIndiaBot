@@ -12,10 +12,9 @@ out in the custom user configuration will stay
 their default values from `config-default.yml`.
 """
 
+
 import os
 
-import dotenv
-import yaml
 import dotenv
 import yaml
 
@@ -47,7 +46,8 @@ def _env_var_constructor(loader, node):
         value = loader.construct_sequence(node)
 
         if len(value) >= 2:
-            # If we have at least two values, then we have both a key and a default value
+            # If we have at least two values, then we have both a key and a
+            # default value
             default = value[1]
             key = value[0]
         else:
@@ -167,6 +167,8 @@ class Bot(metaclass=YAMLGetter):
     default_guilds: list
     debug_guild: int
     version: str
+    totd_reminders: bool
+    totd_info: bool
 
 
 class Error(metaclass=YAMLGetter):
@@ -187,6 +189,7 @@ class Channels(metaclass=YAMLGetter):
 
     bot_updates: int
     tmi_bot_channel: int
+    testing_general: int
 
     commands_allowed: list
     announcement_channels: list

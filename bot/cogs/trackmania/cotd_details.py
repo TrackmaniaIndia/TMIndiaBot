@@ -1,3 +1,4 @@
+import discord
 from discord.commands import Option
 from discord.ext import commands
 
@@ -18,6 +19,7 @@ class COTDDetails(commands.Cog):
         name="cotddetails",
         description="COTD Details of a player including 2 graphs with and without reruns",
     )
+    @discord.ext.commands.cooldown(1, 30, commands.BucketType.user)
     async def _cotd_details_slash(
         self,
         ctx: commands.Cog,

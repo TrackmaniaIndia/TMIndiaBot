@@ -18,7 +18,7 @@ def walk_extensions() -> Iterator[str]:
         raise ImportError(name=name)  # pragma: no cover
 
     for module in pkgutil.walk_packages(
-            cogs.__path__, f"{cogs.__name__}.", onerror=on_error
+        cogs.__path__, f"{cogs.__name__}.", onerror=on_error
     ):
         if unqualify(module.name).startswith("_"):
             # Ignore module/package names starting with an underscore.

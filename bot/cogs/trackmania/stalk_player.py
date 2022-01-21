@@ -4,7 +4,8 @@ from discord.ext import commands
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.trackmania import TrackmaniaUtils, Leaderboards
+from bot.utils.leaderboard import Leaderboards
+from bot.utils.trackmania import TrackmaniaUtils
 
 log = get_logger(__name__)
 
@@ -22,7 +23,8 @@ class StalkPlayer(commands.Cog):
     ):
         log_command(ctx, "stalk_player_slash")
 
-        # Check if the Username is in the top 500 for any maps in the TSCC Map Pool
+        # Check if the Username is in the top 500 for any maps in the TSCC Map
+        # Pool
 
         log.info("Deferring Response")
         await ctx.defer()

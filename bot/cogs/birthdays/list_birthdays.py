@@ -43,6 +43,21 @@ class ListBirthdays(commands.Cog):
 
             await birthdays_paginator.respond(ctx.interaction, ephemeral=True)
 
+    @commands.command(
+        name="listbirthdays", description="Lists all the birthdays saved with the bot!"
+    )
+    async def _list_birthdays(self, ctx: commands.Context):
+        log_command(ctx, "list_birthdays")
+
+        birthdays_embeds = Birthday.list_birthdays()
+
+        if len(birthdays_embeds) == 1:
+            await ctx.send(embed=birthdays_embeds[0])
+        else:
+            birthdays_paginator = Paginator(pages=birthdays_embeds)
+
+            await birthdays_paginator.send(ctx)
+
 
 def setup(bot: Bot):
     bot.add_cog(ListBirthdays(bot))

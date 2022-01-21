@@ -1,4 +1,6 @@
+"""Launches the Bot"""
 import subprocess
+import sys
 import threading
 
 import aiohttp
@@ -37,14 +39,14 @@ try:
     log.critical("Running Bot")
     bot.instance.run(constants.Bot.token)
 except StartupError as e:
-    message = "Unknown Startup Error has Occured"
+    MESSAGE = "Unknown Startup Error has Occured"
     if isinstance(
-            e.exception, (aiohttp.ClientConnectionError, aiohttp.ServerDisconnectedError)
+        e.exception, (aiohttp.ClientConnectionError, aiohttp.ServerDisconnectedError)
     ):
-        message = "Could not Connect to the API"
+        MESSAGE = "Could not Connect to the API"
 
     log = get_logger("bot")
     log.fatal("", exc_info=e.exception)
-    log.fatal(message)
+    log.fatal(MESSAGE)
 
-    exit(-1)
+    sys.exit(-1)
