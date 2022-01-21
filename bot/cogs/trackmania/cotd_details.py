@@ -81,13 +81,12 @@ class COTDDetails(commands.Cog):
             return
 
         cotd_data, image = await player_obj.get_cotd_data(player_id)
+        await player_obj.close()
 
         if image is not None:
-            await ctx.respond(file=image, embed=cotd_data)
+            await ctx.send(file=image, embed=cotd_data)
         else:
-            await ctx.respond(embed=cotd_data)
-
-        await player_obj.close()
+            await ctx.send(embed=cotd_data)
 
 
 def setup(bot: Bot):
