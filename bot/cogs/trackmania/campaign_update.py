@@ -79,7 +79,8 @@ class CampaignUpdate(commands.Cog):
         fall_ids = Leaderboards.get_campaign_ids(year=year, season=season)
         log.info("Got the Fall IDs")
 
-        # Starting Long Update Process using a seperate Thread to allow bot to complete other processes
+        # Starting Long Update Process using a seperate Thread to allow bot to
+        # complete other processes
         await Leaderboards.update_campaign_leaderboards(
             fall_ids, year, season, firstfive
         )

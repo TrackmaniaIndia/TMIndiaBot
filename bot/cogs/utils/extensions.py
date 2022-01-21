@@ -135,7 +135,8 @@ class Extensions(commands.Cog):
         categories = self.group_extension_statuses()
         for category, extensions in sorted(categories.items()):
             # Treat each category as a single line by concatenating everything.
-            # This ensures the paginator will not cut off a page in the middle of a category.
+            # This ensures the paginator will not cut off a page in the middle
+            # of a category.
             category = category.replace("_", " ").title()
             extensions = "\n".join(sorted(extensions))
             lines.append(f"**{category}**\n{extensions}\n")

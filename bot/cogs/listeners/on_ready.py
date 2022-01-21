@@ -95,7 +95,9 @@ class OnReady(
             # Sending Message to the Channel
             channel = self.bot.get_channel(int(announcement_channel))
             try:
-                # Inside a TryExcept to prevent the bot from crashing if the channel is deleted or permissions to send messages are removed
+                # Inside a TryExcept to prevent the bot from crashing if the
+                # channel is deleted or permissions to send messages are
+                # removed
                 await channel.send(
                     f"Bot is Ready, Version: {constants.Bot.version} - Times Run: {times_run} - Time of Start: {datetime.now()}"
                 )
@@ -105,7 +107,7 @@ class OnReady(
                     or int(announcement_channel) == 880628511512096778
                 ):
                     continue
-            except:
+            except BaseException:
                 log.info(f"Can't Send Message to {announcement_channel}")
                 continue
 

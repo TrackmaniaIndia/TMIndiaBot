@@ -118,7 +118,8 @@ def humanize_delta(
         time_strings[-1] = f"{time_strings[-2]} and {time_strings[-1]}"
         del time_strings[-2]
 
-    # If nothing has been found, just make the value 0 precision, e.g. `0 days`.
+    # If nothing has been found, just make the value 0 precision, e.g. `0
+    # days`.
     if not time_strings:
         humanized = _stringify_time_unit(0, precision)
     else:

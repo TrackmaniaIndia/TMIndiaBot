@@ -135,7 +135,7 @@ class TrackmaniaUtils:
             log.debug("Adding Meta Data to Page One")
             page_one = self._add_meta_details(page_one, raw_player_data)
             log.debug("Added Meta Data to Page One")
-        except:
+        except BaseException:
             log.debug("Player does not have Meta Data")
 
         log.debug(f"Returning {page_one}, {page_two} and {page_three}")
@@ -156,7 +156,7 @@ class TrackmaniaUtils:
                     ),
                     None,
                 )
-        except:
+        except BaseException:
             pass
 
         log.debug("Parsing Best Rank Overall Data")
@@ -296,7 +296,7 @@ class TrackmaniaUtils:
 
             log.debug(f"Unicode Letters are {unicode_letters}")
             return unicode_letters
-        except:
+        except BaseException:
             log.error("Player has never played Trackmania 2020")
             return ":flag_white:"
 
@@ -335,7 +335,7 @@ class TrackmaniaUtils:
 
             log.debug(f"Created Royal Data String -> {royal_data_string}")
             return royal_data_string
-        except:
+        except BaseException:
             return (
                 "An Error Occured While Getting Royal Data, Player has not played Royal"
             )
@@ -379,7 +379,7 @@ class TrackmaniaUtils:
 
             log.debug(f"Created Matchmaking Data String -> {matchmaking_data_string}")
             return matchmaking_data_string
-        except:
+        except BaseException:
             log.error("Player has never Played Matchmaking")
             return "An error Occured While Getting Matchmaking Data, Player has not played Matchmaking"
 
@@ -417,7 +417,7 @@ class TrackmaniaUtils:
             zone_four = raw_player_data["trophies"]["zone"]["parent"]["parent"][
                 "parent"
             ]["name"]
-        except:
+        except BaseException:
             zone_four = ""
 
         log.debug(f"Got Zones -> {zone_one}, {zone_two}, {zone_three}, {zone_four}")
@@ -483,7 +483,7 @@ class TrackmaniaUtils:
                 inline=True,
             )
             log.debug("Twitch Added for Player")
-        except:
+        except BaseException:
             log.debug("Player does not have a Twitch Account Linked to TMIO")
 
         try:
@@ -495,7 +495,7 @@ class TrackmaniaUtils:
                 inline=True,
             )
             log.debug("Twitter Added for Player")
-        except:
+        except BaseException:
             log.debug("Player does not have a Twitter Account Linked to TMIO")
 
         try:
@@ -507,7 +507,7 @@ class TrackmaniaUtils:
                 inline=True,
             )
             log.debug("YouTube Added for Player")
-        except:
+        except BaseException:
             log.debug("Player does not have a YouTube Account Linked to TMIO")
 
         log.debug("Adding TMIO")
@@ -525,7 +525,7 @@ class TrackmaniaUtils:
                     name="TMGL", value="This Player Participates in TMGL", inline=True
                 )
                 log.debug("Added TMGL Field")
-        except:
+        except BaseException:
             log.debug("Player does not participate in TMGL")
 
         log.debug("Added TMIO Link")
@@ -656,7 +656,7 @@ class TOTDUtils:
 
             mx_timestamps = mx_dt.replace(tzinfo=timezone.utc).timestamp()
             mx_uploaded = f"<t:{int(mx_timestamps)}:R>"
-        except:
+        except BaseException:
             log.critical("Map has never been uploaded to trackmania.exchange")
 
         log.debug("Creating Embed")
@@ -691,7 +691,7 @@ class TOTDUtils:
             embed.add_field(
                 name="Tags", value=TOTDUtils._parse_mx_tags(mania_tags), inline=False
             )
-        except:
+        except BaseException:
             pass
 
         embed.add_field(
@@ -700,7 +700,7 @@ class TOTDUtils:
 
         try:
             embed.add_field(name="Time Uploaded to TMX", value=mx_uploaded, inline=True)
-        except:
+        except BaseException:
             pass
 
         embed.add_field(name="Medal Times", value=medal_times, inline=False)
@@ -710,7 +710,7 @@ class TOTDUtils:
 
         try:
             tmx_link = f"https://trackmania.exchange/maps/{tmx_code}/"
-        except:
+        except BaseException:
             tmx_link = None
 
         log.debug("Created Embed")
@@ -1068,7 +1068,7 @@ class COTDUtil:
         try:
             log.debug(f"Average Rank Primary -> {round(rank_total / cotds_played, 2)}")
             return round(rank_total / cotds_played, 2)
-        except:
+        except BaseException:
             log.debug("Average Rank Primary -> 0")
             return 0
 
@@ -1101,7 +1101,7 @@ class COTDUtil:
         try:
             log.debug(f"Average Div Primary -> {round(div_total / cotds_played, 2)}")
             return round(div_total / cotds_played, 2)
-        except:
+        except BaseException:
             log.debug("Average Div Primary -> 0")
             return 0
 
@@ -1137,7 +1137,7 @@ class COTDUtil:
                 f"Average Div Rank Primary -> {round(div_rank_total / cotds_played, 2)}"
             )
             return round(div_rank_total / cotds_played, 2)
-        except:
+        except BaseException:
             log.debug("Average Div Rank Primary -> 0")
             return 0
 

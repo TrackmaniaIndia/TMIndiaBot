@@ -46,7 +46,7 @@ class Bot(commands.Bot):
         try:
             log.info("Attempting site connection to Localhost")
             await self.api_client.get("")
-        except:
+        except BaseException:
             attempts += 1
 
     @classmethod
@@ -99,7 +99,8 @@ class Bot(commands.Bot):
         """
         command = super().remove_command(name)
         if command is None:
-            # Even if it's a root alias, there's no way to get the Bot instance to remove the alias.
+            # Even if it's a root alias, there's no way to get the Bot instance
+            # to remove the alias.
             return
 
         self._remove_root_aliases(command)
@@ -108,7 +109,8 @@ class Bot(commands.Bot):
 
     async def close(self) -> None:
         """Close the Discord connection and the aiohttp session, connector, statsd client, and resolver."""
-        # Done before super().close() to allow tasks finish before the HTTP session closes.
+        # Done before super().close() to allow tasks finish before the HTTP
+        # session closes.
         for ext in list(self.extensions):
             with suppress(Exception):
                 self.unload_extension(ext)
@@ -135,7 +137,8 @@ class Bot(commands.Bot):
 
     async def login(self, *args, **kwargs) -> None:
         """Re-create the connector and set up sessions before logging into Discord."""
-        # Use asyncio for DNS resolution instead of threads so threads aren't spammed.
+        # Use asyncio for DNS resolution instead of threads so threads aren't
+        # spammed.
         log.info("Creating a resolver")
         self._resolver = aiohttp.AsyncResolver()
 

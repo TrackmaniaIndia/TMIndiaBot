@@ -22,7 +22,8 @@ class StalkPlayer(commands.Cog):
     ):
         log_command(ctx, "stalk_player_slash")
 
-        # Check if the Username is in the top 500 for any maps in the TSCC Map Pool
+        # Check if the Username is in the top 500 for any maps in the TSCC Map
+        # Pool
 
         log.info("Deferring Response")
         await ctx.defer()

@@ -33,7 +33,7 @@ async def keep_alive(bot: Bot):
     try:
         await _ping_api()
         log.debug("API Ping Successfull")
-    except:
+    except BaseException:
         log.error("API is Offline")
         sys.exit(-1)
 
@@ -66,7 +66,7 @@ async def todays_birthday(bot: Bot):
             general_channel = bot.get_guild(constants.Channels.general)
 
             await general_channel.send(embed=birthday_embed)
-        except:
+        except BaseException:
             log.debug("Testing bot is running")
             return
 
@@ -79,7 +79,7 @@ async def _ping_api():
 
     try:
         await api_client.get("http://localhost:3000/")
-    except:
+    except BaseException:
         log.error("API is OFFLINE")
         # raise OfflineAPI("API is Offline")
     await api_client.close()

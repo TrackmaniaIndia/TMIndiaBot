@@ -122,14 +122,16 @@ class Scheduler:
             )
             await asyncio.sleep(delay)
 
-            # Use asyncio.shield to prevent the coroutine from cancelling itself.
+            # Use asyncio.shield to prevent the coroutine from cancelling
+            # itself.
             self._log.trace(f"Done waiting for #{task_id}; now awaiting the coroutine.")
             await asyncio.shield(coroutine)
         finally:
             # Close it to prevent unawaited coroutine warnings,
             # which would happen if the task was cancelled during the sleep.
             # Only close it if it's not been awaited yet. This check is important because the
-            # coroutine may cancel this task, which would also trigger the finally block.
+            # coroutine may cancel this task, which would also trigger the
+            # finally block.
             state = inspect.getcoroutinestate(coroutine)
             if state == "CORO_CREATED":
                 self._log.debug(f"Explicitly closing the coroutine for #{task_id}.")
@@ -152,7 +154,8 @@ class Scheduler:
 
         if scheduled_task and done_task is scheduled_task:
             # A task for the ID exists and is the same as the done task.
-            # Since this is the done callback, the task is already done so no need to cancel it.
+            # Since this is the done callback, the task is already done so no
+            # need to cancel it.
             self._log.trace(f"Deleting task #{task_id} {id(done_task)}.")
             del self._scheduled_tasks[task_id]
         elif scheduled_task:

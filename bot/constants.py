@@ -12,8 +12,8 @@ out in the custom user configuration will stay
 their default values from `config-default.yml`.
 """
 
-import os
 
+import os
 import dotenv
 import yaml
 
@@ -45,7 +45,8 @@ def _env_var_constructor(loader, node):
         value = loader.construct_sequence(node)
 
         if len(value) >= 2:
-            # If we have at least two values, then we have both a key and a default value
+            # If we have at least two values, then we have both a key and a
+            # default value
             default = value[1]
             key = value[0]
         else:
