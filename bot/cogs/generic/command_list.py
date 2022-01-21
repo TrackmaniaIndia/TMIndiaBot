@@ -22,7 +22,7 @@ class GetCommandList(commands.Cog):
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
         name="commandlist",
-        description="Gives a link for the TMI Hall of Fame",
+        description="Gives a link for the TMIBot Command List",
     )
     async def _command_list_slash(self, ctx: commands.Context):
         log_command(ctx, "command_list_slash")
@@ -34,7 +34,7 @@ class GetCommandList(commands.Cog):
 
     @commands.command(
         name="commandlist",
-        description="Gives a link for the TMI Hall of Fame",
+        description="Gives a link for the TMIBot Command List",
     )
     async def _command_list(self, ctx: commands.Context):
         log_command(ctx, "command_list")

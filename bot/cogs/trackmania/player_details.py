@@ -44,9 +44,10 @@ class PlayerDetails(commands.Cog):
                     description=f"Username Given: {username}",
                     color=Commons.get_random_color(),
                 ),
-                delete_after=5,
+                delete_after=15,
                 ephemeral=False,
             )
+            await player_obj.close()
             return
 
         log.info("Getting Player Data")
@@ -98,9 +99,9 @@ class PlayerDetails(commands.Cog):
                     description=f"Username Given: {username}",
                     color=Commons.get_random_color(),
                 ),
-                delete_after=5,
-                ephemeral=False,
+                delete_after=15,
             )
+            await player_obj.close()
             return
 
         log.info("Getting Player Data")

@@ -16,13 +16,13 @@ class GetNextProject(commands.Cog):
         self._next_project_button = discord.ui.Button(
             label="Next Project - v2.0.1 (Github)",
             style=discord.ButtonStyle.url,
-            url="https://github.com/NottCurious/TMIndiaBot/projects/9",
+            url="https://github.com/TrackmaniaIndia/TMIndiaBot/projects/9",
         )
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
         name="nextproject",
-        description="Gives a link for the TMI Hall of Fame",
+        description="Gives a link for the next TMIBot Project",
     )
     async def _next_project_slash(self, ctx: commands.Context):
         log_command(ctx, "next_project_slash")
@@ -34,7 +34,7 @@ class GetNextProject(commands.Cog):
 
     @commands.command(
         name="nextproject",
-        description="Gives a link for the TMI Hall of Fame",
+        description="Gives a link for the next TMIBot Project",
     )
     async def _next_project(self, ctx: commands.Context):
         log_command(ctx, "next_project")

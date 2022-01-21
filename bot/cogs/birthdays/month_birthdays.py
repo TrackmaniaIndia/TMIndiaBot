@@ -12,7 +12,7 @@ log = get_logger(__name__)
 
 class MonthBirthdays(commands.Cog):
     def __init__(self, bot: Bot):
-        self.bot = Bot
+        self.bot = bot
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,

@@ -6,8 +6,8 @@ from datetime import datetime, timezone, timedelta
 import cv2
 import requests
 from matplotlib import pyplot as plt
-import discord
 
+import discord
 from bot.api import APIClient
 from bot.log import get_logger
 from bot.utils.commons import Commons
