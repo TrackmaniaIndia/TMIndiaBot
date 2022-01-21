@@ -166,6 +166,8 @@ class Bot(metaclass=YAMLGetter):
     default_guilds: list
     debug_guild: int
     version: str
+    totd_reminders: bool
+    totd_info: bool
 
 
 class Error(metaclass=YAMLGetter):

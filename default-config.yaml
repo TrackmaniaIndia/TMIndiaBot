@@ -8,6 +8,8 @@ bot:
   default_guilds: [ 876042400005505066 ]
   debug_guild: 876042400005505066
   version: "v2.0.0-alpha"
+  totd_reminders: False
+  totd_info: False
 
 error:
   show_stack_trace: true
