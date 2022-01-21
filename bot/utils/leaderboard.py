@@ -1,5 +1,6 @@
 import asyncio
 import json
+from re import I
 
 import discord
 
@@ -54,7 +55,7 @@ class Leaderboards:
         for i, id in enumerate(id_list):
             leaderboard_data = []
 
-            log.debug("Getting Data from API")
+            log.debug(f"Getting Data from API for Map {i}")
             leaderboard_data = await api_client.get(
                 f"http://localhost:3000/tm2020/leaderboard/{id}/5"
             )
@@ -70,7 +71,7 @@ class Leaderboards:
 
             log.debug("Sleeping for 10s")
             # time.sleep(10)
-            await asyncio.sleep(10)
+            await asyncio.sleep(20)
             log.debug(f"Finished Map #{i + 1}")
 
         await api_client.close()
