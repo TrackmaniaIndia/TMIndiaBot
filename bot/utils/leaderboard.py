@@ -3,7 +3,6 @@ import json
 from re import I
 
 import discord
-
 from bot.api import APIClient
 from bot.log import get_logger
 from bot.utils.commons import Commons

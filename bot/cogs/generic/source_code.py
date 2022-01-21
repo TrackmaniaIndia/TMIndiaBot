@@ -16,7 +16,7 @@ class GetSourceCode(commands.Cog):
         self._source_code_button = discord.ui.Button(
             label="Source Code (Github)",
             style=discord.ButtonStyle.url,
-            url="https://github.com/NottCurious/TMIndiaBot",
+            url="https://github.com/TrackmaniaIndia/TMIndiaBot",
         )
 
     @commands.slash_command(

@@ -41,6 +41,43 @@ class COTDDetails(commands.Cog):
             await ctx.respond(
                 f"Invalid Username Given\nUsername Given: {username}", ephemeral=True
             )
+            await player_obj.close()
+            return
+
+        cotd_data, image = await player_obj.get_cotd_data(player_id)
+
+        if image is not None:
+            await ctx.respond(file=image, embed=cotd_data)
+        else:
+            await ctx.respond(embed=cotd_data)
+
+        await player_obj.close()
+
+    @commands.command(
+        name="cotddetails",
+        description="COTD Details of a player including 2 graphs with and without reruns",
+    )
+    @discord.ext.commands.cooldown(1, 30, commands.BucketType.user)
+    async def _cotd_details(
+        self,
+        ctx: commands.Cog,
+        username: str,
+    ):
+        log_command(ctx, "cotd_details")
+
+        log.debug(f"Creating a TrackmaniaUtils object with username -> {username}")
+        player_obj = TrackmaniaUtils(username)
+        log.debug(f"Created a TrackmaniaUtils object with username -> {username}")
+
+        log.debug("Getting player id")
+        player_id = await player_obj.get_id()
+        log.debug(f"Got player id -> {player_id}")
+
+        if player_id is None:
+            await ctx.send(
+                f"Invalid Username Given\nUsername Given: {username}", delete_after=15
+            )
+            await player_obj.close()
             return
 
         cotd_data, image = await player_obj.get_cotd_data(player_id)

@@ -65,11 +65,7 @@ class ErrorHandler(Cog):
                 f"Command {ctx.command} invoked by {ctx.author.name} with error "
                 f"{e.__class__.__name__}: {e}"
             )
-        if isinstance(e, errors.CommandNotFound) and not getattr(
-            ctx, "invoked_from_error_handler", False
-        ):
-            await self.try_get_tag(ctx)
-        elif isinstance(e, errors.UserInputError):
+        if isinstance(e, errors.UserInputError):
             log.debug(debug_message)
             await self.handle_user_input_error(ctx, e)
         elif isinstance(e, errors.CheckFailure):

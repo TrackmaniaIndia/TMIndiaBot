@@ -24,7 +24,7 @@ def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
 
     quotes = []
     date_created = datetime.datetime.now().strftime("%c")
-    timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+    timestamp = int(datetime.datetime.timestamp(datetime.datetime.now()))
 
     log.debug("Opening JSON File")
     with open(

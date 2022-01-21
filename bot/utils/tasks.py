@@ -3,8 +3,8 @@ import os
 import sys
 
 from discord.ext import tasks
-import discord
 
+import discord
 from bot import constants
 from bot.api import APIClient
 from bot.bot import Bot
