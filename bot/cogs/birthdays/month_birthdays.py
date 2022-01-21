@@ -37,36 +37,42 @@ class MonthBirthdays(commands.Cog):
         elif len(birthdays_embeds) == 1:
             await ctx.respond(embed=birthdays_embeds[0], ephemeral=True)
         else:
-            log.debug('Creating birthdays paginator')
+            log.debug("Creating birthdays paginator")
             birthdays_paginator = Paginator(pages=birthdays_embeds)
 
-            log.debug('Responding with birthdays paginator')
+            log.debug("Responding with birthdays paginator")
             await birthdays_paginator.respond(ctx.interaction, ephemeral=True)
-            log.debug('Birthdays paginator finished')
-            
-    @commands.command(name='birthdaysofmonth', description='Lists all the birthdays of a specific month saved with the bot!')
+            log.debug("Birthdays paginator finished")
+
+    @commands.command(
+        name="birthdaysofmonth",
+        description="Lists all the birthdays of a specific month saved with the bot!",
+    )
     async def _month_birthdays(self, ctx: commands.Context, month: str):
         log_command(ctx, "month_birthdays")
-                
+
         try:
-            birthdays_embeds = Birthday.month_birthdays(month=constants.Consts.months.index(month))
-        except ValueError as invalid_month:
-            raise commands.BadArgument('Invalid Month') from invalid_month
-        
-        if birthdays_embeds is None:
-            await ctx.send(f'That month does not have any birthdays -> {month}\nIf this message is wrong please use the `addbirthday` slash command to add your birthday'
+            birthdays_embeds = Birthday.month_birthdays(
+                month=constants.Consts.months.index(month)
             )
-            
+        except ValueError as invalid_month:
+            raise commands.BadArgument("Invalid Month") from invalid_month
+
+        if birthdays_embeds is None:
+            await ctx.send(
+                f"That month does not have any birthdays -> {month}\nIf this message is wrong please use the `addbirthday` slash command to add your birthday"
+            )
+
         elif len(birthdays_embeds) == 1:
             await ctx.send(embed=birthdays_embeds[0])
         else:
-            log.debug('Creating birthdays paginator')
+            log.debug("Creating birthdays paginator")
             birthdays_paginator = Paginator(pages=birthdays_embeds)
-            
-            log.debug('Sending birthdays paginator')
+
+            log.debug("Sending birthdays paginator")
             await birthdays_paginator.send(ctx)
-            log.debug('Birthdays paginator finished')
-        
+            log.debug("Birthdays paginator finished")
+
 
 def setup(bot: Bot):
     bot.add_cog(MonthBirthdays(bot))
