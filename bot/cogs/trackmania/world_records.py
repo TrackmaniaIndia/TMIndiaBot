@@ -71,7 +71,7 @@ class CampaignWRs(commands.Cog):
             ("2022", "Fall"),
         ]
 
-        if (year, season) in illegal_combinations:
+        if (year, season.capitalize()) in illegal_combinations:
             await ctx.send(f"Illegal Combination\nCombination Given: {year} {season}")
             return
 
