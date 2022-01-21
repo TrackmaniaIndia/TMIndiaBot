@@ -25,6 +25,7 @@ class ResponseCodeError(ValueError):
         response = self.response_json if self.response_json else self.response_text
         return f"Status: {self.status} Response: {response}"
 
+
 # pylint: disable=W0612
 class APIClient:
     """API Wrapper"""
@@ -51,7 +52,9 @@ class APIClient:
                 raise ResponseCodeError(response=response, response_json=response_json)
             except aiohttp.ContentTypeError as content_type_error:
                 response_text = await response.text()
-                raise ResponseCodeError(response=response, response_text=response_text) from content_type_error
+                raise ResponseCodeError(
+                    response=response, response_text=response_text
+                ) from content_type_error
 
     async def request(
         self, method: str, endpoint: str, *, raise_for_status: bool = True, **kwargs

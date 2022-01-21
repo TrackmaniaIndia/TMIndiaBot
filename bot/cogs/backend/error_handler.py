@@ -57,11 +57,16 @@ class ErrorHandler(Cog):
             )
             return
 
-        debug_message = (
-            f"Command {ctx.command} invoked by {ctx.message.author} with error "
-            f"{e.__class__.__name__}: {e}"
-        )
-
+        try:
+            debug_message = (
+                f"Command {ctx.command} invoked by {ctx.message.author} with error "
+                f"{e.__class__.__name__}: {e}"
+            )
+        except AttributeError:
+            debug_message = (
+                f"Command {ctx.command} invoked by {ctx.author.name} with error "
+                f"{e.__class__.__name__}: {e}"
+            )
         if isinstance(e, errors.CommandNotFound) and not getattr(
             ctx, "invoked_from_error_handler", False
         ):
@@ -90,6 +95,31 @@ class ErrorHandler(Cog):
         else:
             # MaxConcurrencyReached, ExtensionError
             await self.handle_unexpected_error(ctx, e)
+
+    @Cog.listener()
+    async def on_application_command_error(
+        self, ctx: Context, e: errors.CommandError
+    ) -> None:
+        if hasattr(e, "handled"):
+            log.debug(
+                f"Command {ctx.command} had its error already handled locally; ignoring"
+            )
+            return
+
+        try:
+            debug_message = (
+                f"Command {ctx.command} invoked by {ctx.message.author} with error "
+                f"{e.__class__.__name__}: {e}"
+            )
+        except AttributeError:
+            debug_message = (
+                f"Command {ctx.command} invoked by {ctx.author.name} with error "
+                f"{e.__class__.__name__}: {e}"
+            )
+
+        if isinstance(e, errors.CommandOnCooldown):
+            log.debug(debug_message)
+            await ctx.respond(e)
 
     async def handle_user_input_error(
         self, ctx: Context, e: errors.UserInputError

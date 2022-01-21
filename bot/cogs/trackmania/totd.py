@@ -17,6 +17,7 @@ class TOTD(commands.Cog):
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds, name="totd", description="Latest TOTD"
     )
+    @discord.ext.commands.cooldown(1, 30, commands.BucketType.guild)
     async def _totd_slash(self, ctx: commands.Context):
         log_command(ctx, "totd_slash")
 

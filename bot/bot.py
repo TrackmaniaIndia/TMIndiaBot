@@ -21,9 +21,11 @@ class StartupError(Exception):
         super().__init__()
         self.exception = base
 
+
 # pylint: disable=too-many-ancestors, bare-except, unused-variable
 class Bot(commands.Bot):
     """The bot instance"""
+
     def __init__(self, *args, **kwargs):
         """Initalizing the Bot"""
         log.debug("Initializing commands.Bot class")
@@ -51,7 +53,8 @@ class Bot(commands.Bot):
     def create(cls) -> "Bot":
         """Create and return an instance of the Bot."""
         log.debug(
-            "Creating a bot with default intents and default guild -> %s", constants.Bot.debug_guild
+            "Creating a bot with default intents and default guild -> %s",
+            constants.Bot.debug_guild,
         )
         loop = asyncio.get_event_loop()
         intents = discord.Intents.default()
