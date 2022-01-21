@@ -37,7 +37,7 @@ class TOTDUtils:
             log.critical("Image could not be retrieved")
 
     @staticmethod
-    def _parse_mx_tags(self, tags: str) -> str:
+    def _parse_mx_tags(tags: str) -> str:
         """Parses Maniaexchange tags to their strings
 
         Args:
@@ -48,14 +48,14 @@ class TOTDUtils:
         """
         log.debug(f"Tags -> {tags}")
         log.debug("Removing Spaces")
-        tags.replace(" ", "")
+        # tags.replace(" ", "")
         log.debug(f"Without Spaces -> {tags}")
 
         tags = tags.split(",")
 
         tag_string = ""
 
-        with open("./bot/resources/json/mxtags.json", "r") as file:
+        with open("./bot/resources/json/mxtags.json", "r", encoding="UTF-8") as file:
             mxtags = json.load(file)["mx"]
 
             for i, tag in enumerate(tags):
@@ -77,6 +77,9 @@ class TOTDUtils:
 
         log.debug("Getting TOTD Data from API")
         totd_data = await api_client.get("http://localhost:3000/tm2020/totd/latest")
+        mx_data = await api_client.get(
+            f"https://trackmania.exchange/api/maps/get_map_info/uid/{totd_data['mapUid']}"
+        )
 
         log.debug("Parsing TOTD Data")
         map_name = totd_data["name"]
@@ -128,9 +131,9 @@ class TOTDUtils:
 
         log.debug("Parsing TM Exchange Data")
         try:
-            mania_tags = totd_data["exchange"]["Tags"]
-            mx_uploaded = totd_data["exchange"]["UploadedAt"]
-            tmx_code = totd_data["exchange"]["TrackID"]
+            mania_tags = mx_data["Tags"]
+            mx_uploaded = mx_data["UploadedAt"]
+            tmx_code = mx_data["TrackID"]
 
             try:
                 mx_dt = datetime.strptime(mx_uploaded[:-3], "%Y-%m-%dT%H:%M:%S")
