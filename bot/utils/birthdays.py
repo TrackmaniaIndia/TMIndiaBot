@@ -73,7 +73,7 @@ class Birthday:
             for birthday_lst in birthdays:
                 embed_list.append(
                     EZEmbed.create_embed(
-                        description=Birthday.__format_string(birthday_lst)
+                        description=Birthday.__format_lst(birthday_lst)
                     )
                 )
 
@@ -243,6 +243,9 @@ class Birthday:
                 log.debug("Birthday has passed, adding one year to t2 timestamp")
                 t2 += 31536000
                 age += 1
+
+            # Removing the +530 IST Offset
+            t2 -= 19800
 
             birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` in <t:{t2}:R>\n\n"
 

@@ -65,10 +65,10 @@ async def todays_birthday(bot: Bot):
         log.debug("Getting channel")
 
         try:
-            tmi_guild = bot.get_guild(constants.Guild.tmi_guild)
-            general_channel = bot.get_guild(constants.Channels.general)
+            general_channel = bot.get_channel(constants.Channels.general)
 
             await general_channel.send(embed=birthday_embed)
+            return
         except BaseException:
             log.debug("Testing bot is running")
             return
