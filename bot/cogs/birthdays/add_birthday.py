@@ -44,12 +44,16 @@ class AddBirthday(commands.Cog):
 
         # Checks
         if day <= 0 or day >= 32:
-            await ctx.respond("Invalid Date Given. I wasn't born yesterday... well I was... you know what I mean.", ephemeral=True)
+            await ctx.respond(
+                "Invalid Date Given. I wasn't born yesterday... well I was... you know what I mean.",
+                ephemeral=True,
+            )
             return
         if month.lower() == "february" and day >= 30:
             log.error("30+ Days in February")
             await ctx.respond(
-                "February does not have more than 30 days\nYou think I am stupid?", ephemeral=True
+                "February does not have more than 30 days\nYou think I am stupid?",
+                ephemeral=True,
             )
             return
         if year % 4 != 0 and day == 29:
