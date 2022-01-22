@@ -42,7 +42,8 @@ class Birthday:
         for person in birthdays["birthdays"]:
             if person["ID"] == self.id:
                 log.critical("Player already has a saved birthday, popping")
-                birthdays["birthdays"].pop(birthdays["birthdays"].index(person))
+                birthdays["birthdays"].pop(
+                    birthdays["birthdays"].index(person))
 
         birthdays["birthdays"].append(
             {
@@ -73,7 +74,7 @@ class Birthday:
             for birthday_lst in birthdays:
                 embed_list.append(
                     EZEmbed.create_embed(
-                        description=Birthday.__format_string(birthday_lst)
+                        description=Birthday.__format_lst(birthday_lst)
                     )
                 )
 
@@ -132,12 +133,14 @@ class Birthday:
 
         log.debug("Opening the birthdays.json file")
         with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
-            birthdays = Birthday.__split_birthdays(json.load(file)["birthdays"])[month]
+            birthdays = Birthday.__split_birthdays(
+                json.load(file)["birthdays"])[month]
 
         if len(birthdays) == 0:
             return None
         elif len(birthdays) > 10:
-            birthdays = Commons.split_list_of_lists(Birthday._sort_birthdays(birthdays))
+            birthdays = Commons.split_list_of_lists(
+                Birthday._sort_birthdays(birthdays))
             embed_list = []
             for birthday_lst in birthdays:
                 embed_list.append(
