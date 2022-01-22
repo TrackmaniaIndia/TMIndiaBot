@@ -53,8 +53,7 @@ async def totd_image_deleter(bot: Bot):
 
 
 @tasks.loop(
-    time=datetime.time(hour=0, minute=30, second=0,
-                       tzinfo=datetime.timezone.utc)
+    time=datetime.time(hour=0, minute=30, second=0, tzinfo=datetime.timezone.utc)
 )
 async def todays_birthday(bot: Bot):
     log.debug("Checking if it is anyone's birthday today")
@@ -80,8 +79,7 @@ async def todays_birthday(bot: Bot):
 
 # 15 minutes before the COTD
 @tasks.loop(
-    time=datetime.time(hour=17, minute=45, second=0,
-                       tzinfo=datetime.timezone.utc)
+    time=datetime.time(hour=17, minute=45, second=0, tzinfo=datetime.timezone.utc)
 )
 async def cotd_one_reminder(bot: Bot):
     log.info("It is time for COTD #1")
@@ -106,8 +104,7 @@ async def cotd_one_reminder(bot: Bot):
     )
 
     guild = (
-        guild if guild is not None else bot.get_guild(
-            constants.Guild.testing_server)
+        guild if guild is not None else bot.get_guild(constants.Guild.testing_server)
     )
 
     channel, role = bot.get_channel(channel_id), guild.get_role(role_id)
@@ -120,8 +117,7 @@ async def cotd_one_reminder(bot: Bot):
 
 # 15 Minutes before the COTD
 @tasks.loop(
-    time=datetime.time(hour=9, minute=45, second=0,
-                       tzinfo=datetime.timezone.utc)
+    time=datetime.time(hour=9, minute=45, second=0, tzinfo=datetime.timezone.utc)
 )
 async def cotd_three_reminder(bot: Bot):
     log.info("it is time for COTD Rerun #3")
@@ -146,8 +142,7 @@ async def cotd_three_reminder(bot: Bot):
     )
 
     guild = (
-        guild if guild is not None else bot.get_guild(
-            constants.Guild.testing_server)
+        guild if guild is not None else bot.get_guild(constants.Guild.testing_server)
     )
 
     channel, role = bot.get_channel(channel_id), guild.get_role(role_id)

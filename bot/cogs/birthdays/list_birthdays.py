@@ -34,12 +34,12 @@ class ListBirthdays(commands.Cog):
     ):
         log_command(ctx, "list_birthdays_slash")
 
-        log.debug('Getting Birthdays Embeds')
+        log.debug("Getting Birthdays Embeds")
         birthdays_embeds = Birthday.list_birthdays()
-        log.debug('Got Birthdays Embeds')
+        log.debug("Got Birthdays Embeds")
 
         if len(birthdays_embeds) == 1:
-            log.debug('There is only 1 Page')
+            log.debug("There is only 1 Page")
             await ctx.respond(embed=birthdays_embeds[0], ephemeral=True)
         else:
             log.debug("There are multiple pages, creating Paginator")
@@ -53,12 +53,12 @@ class ListBirthdays(commands.Cog):
     async def _list_birthdays(self, ctx: commands.Context):
         log_command(ctx, "list_birthdays")
 
-        log.debug('Getting Birthdays Embeds')
+        log.debug("Getting Birthdays Embeds")
         birthdays_embeds = Birthday.list_birthdays()
-        log.debug('Got Birthdays Embeds')
+        log.debug("Got Birthdays Embeds")
 
         if len(birthdays_embeds) == 1:
-            log.debug('There is only 1 Page')
+            log.debug("There is only 1 Page")
             await ctx.send(embed=birthdays_embeds[0])
         else:
             log.debug("There are multiple pages, creating Paginator")
