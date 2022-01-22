@@ -168,7 +168,7 @@ class Birthday:
                 and person["Month"].lower() == todays_month.lower()
             ):
                 log.info(f"It is {person['Name']}'s birthday today")
-                return EZEmbed(description=Birthday.__format_lst([person]))
+                return EZEmbed.create_embed(description=Birthday.__format_lst([person]))
 
         log.debug("No one's birthday today")
         return None
