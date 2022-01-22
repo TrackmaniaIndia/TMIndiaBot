@@ -247,6 +247,9 @@ class Birthday:
                 t2 += 31536000
                 age += 1
 
+            # Removing the +530 IST Offset
+            t2 -= 19800
+
             birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` in <t:{t2}:R>\n\n"
 
         return birthdays_str
