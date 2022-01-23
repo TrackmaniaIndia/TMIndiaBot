@@ -92,7 +92,7 @@ class Birthday:
         log.debug("Looping through birthday list to find next birthday")
         year = int(datetime.now().date().strftime("%Y"))
         smallest_diff = birthdays[0]
-        timestamp_diff = 0
+        timestamp_diff = 100000000
         for person in birthdays:
             if (
                 int(
@@ -117,7 +117,7 @@ class Birthday:
                 timestamp_diff = int(
                     Commons.timestamp_date(
                         year=year,
-                        month=MONTHS.index(person["Month"]),
+                        month=MONTHS.index(person["Month"]) + 1,
                         day=person["Day"],
                     )
                     - Commons.timestamp()
