@@ -1,6 +1,7 @@
 import datetime
 import os
 import sys
+import requests
 
 from discord.ext import tasks
 
@@ -32,10 +33,9 @@ async def keep_alive(bot: Bot):
     log.debug("Keeping Bot Alive")
 
     try:
-        await _ping_api()
+        await _ping_api(bot)
         log.debug("API Ping Successfull")
     except BaseException:
-        log.error("API is Offline")
         sys.exit(-1)
 
     log.debug("Sending a Message to the Designated Channel")
@@ -153,16 +153,14 @@ async def cotd_three_reminder(bot: Bot):
     await channel.send(content=message)
 
 
-async def _ping_api():
-    api_client = APIClient()
-
+async def _ping_api(bot: Bot):
     try:
-        await api_client.get("http://localhost:3000/")
+        await bot.wait_until_ready()
+        # await api_client.get("http://localhost:3000/")
+        requests.get("http://localhost:3000")
     except BaseException:
-        log.error("API is OFFLINE")
+        return
         # raise OfflineAPI("API is Offline")
-    await api_client.close()
-    del api_client
 
 
 class OfflineAPI(Exception):
