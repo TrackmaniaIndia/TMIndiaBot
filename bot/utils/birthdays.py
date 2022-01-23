@@ -94,13 +94,11 @@ class Birthday:
         smallest_diff = birthdays[0]
         timestamp_diff = 100000000
         for person in birthdays:
-            log.debug(f"Checking if {person['Name']} has a birthday this year")
-            print(MONTHS.index(person["Month"]) + 1)
             if (
                 int(
                     Commons.timestamp_date(
                         year=year,
-                        month=int(MONTHS.index(person["Month"]) + 1),
+                        month=MONTHS.index(person["Month"]) + 1,
                         day=person["Day"],
                     )
                     - Commons.timestamp()
@@ -119,7 +117,7 @@ class Birthday:
                 timestamp_diff = int(
                     Commons.timestamp_date(
                         year=year,
-                        month=MONTHS.index(person["Month"]),
+                        month=MONTHS.index(person["Month"]) + 1,
                         day=person["Day"],
                     )
                     - Commons.timestamp()
