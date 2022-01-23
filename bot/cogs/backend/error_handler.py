@@ -28,67 +28,67 @@ class ErrorHandler(Cog):
             title=title, color=Colours.soft_red, description=body
         )
 
-    @Cog.listener()
-    async def on_command_error(self, ctx: Context, e: errors.CommandError) -> None:
-        """
-        Provide generic command error handling.
-        Error handling is deferred to any local error handler, if present. This is done by
-        checking for the presence of a `handled` attribute on the error.
-        Error handling emits a single error message in the invoking context `ctx` and a log message,
-        prioritised as follows:
-        1. If the name fails to match a command:
-            * If it matches shh+ or unshh+, the channel is silenced or unsilenced respectively.
-              Otherwise if it matches a tag, the tag is invoked
-            * If CommandNotFound is raised when invoking the tag (determined by the presence of the
-              `invoked_from_error_handler` attribute), this error is treated as being unexpected
-              and therefore sends an error message
-        2. UserInputError: see `handle_user_input_error`
-        3. CheckFailure: see `handle_check_failure`
-        4. CommandOnCooldown: send an error message in the invoking context
-        5. ResponseCodeError: see `handle_api_error`
-        6. Otherwise, if not a DisabledCommand, handling is deferred to `handle_unexpected_error`
-        """
+    # @Cog.listener()
+    # async def on_command_error(self, ctx: Context, e: errors.CommandError) -> None:
+    #     """
+    #     Provide generic command error handling.
+    #     Error handling is deferred to any local error handler, if present. This is done by
+    #     checking for the presence of a `handled` attribute on the error.
+    #     Error handling emits a single error message in the invoking context `ctx` and a log message,
+    #     prioritised as follows:
+    #     1. If the name fails to match a command:
+    #         * If it matches shh+ or unshh+, the channel is silenced or unsilenced respectively.
+    #           Otherwise if it matches a tag, the tag is invoked
+    #         * If CommandNotFound is raised when invoking the tag (determined by the presence of the
+    #           `invoked_from_error_handler` attribute), this error is treated as being unexpected
+    #           and therefore sends an error message
+    #     2. UserInputError: see `handle_user_input_error`
+    #     3. CheckFailure: see `handle_check_failure`
+    #     4. CommandOnCooldown: send an error message in the invoking context
+    #     5. ResponseCodeError: see `handle_api_error`
+    #     6. Otherwise, if not a DisabledCommand, handling is deferred to `handle_unexpected_error`
+    #     """
 
-        if hasattr(e, "handled"):
-            log.debug(
-                f"Command {ctx.command} had its error already handled locally; ignoring"
-            )
-            return
+    #     if hasattr(e, "handled"):
+    #         log.debug(
+    #             f"Command {ctx.command} had its error already handled locally; ignoring"
+    #         )
+    #         return
 
-        try:
-            debug_message = (
-                f"Command {ctx.command} invoked by {ctx.message.author} with error "
-                f"{e.__class__.__name__}: {e}"
-            )
-        except AttributeError:
-            debug_message = (
-                f"Command {ctx.command} invoked by {ctx.author.name} with error "
-                f"{e.__class__.__name__}: {e}"
-            )
-        if isinstance(e, errors.UserInputError):
-            log.debug(debug_message)
-            await self.handle_user_input_error(ctx, e)
-        elif isinstance(e, errors.CheckFailure):
-            log.debug(debug_message)
-            await self.handle_check_failure(ctx, e)
-        elif isinstance(e, errors.CommandOnCooldown):
-            log.debug(debug_message)
-            await ctx.send(e)
-        elif isinstance(e, errors.CommandInvokeError):
-            if isinstance(e.original, ResponseCodeError):
-                await self.handle_api_error(ctx, e.original)
-            else:
-                await self.handle_unexpected_error(ctx, e.original)
-        elif isinstance(e, errors.ConversionError):
-            if isinstance(e.original, ResponseCodeError):
-                await self.handle_api_error(ctx, e.original)
-            else:
-                await self.handle_unexpected_error(ctx, e.original)
-        elif isinstance(e, errors.DisabledCommand):
-            log.debug(debug_message)
-        else:
-            # MaxConcurrencyReached, ExtensionError
-            await self.handle_unexpected_error(ctx, e)
+    #     try:
+    #         debug_message = (
+    #             f"Command {ctx.command} invoked by {ctx.message.author} with error "
+    #             f"{e.__class__.__name__}: {e}"
+    #         )
+    #     except AttributeError:
+    #         debug_message = (
+    #             f"Command {ctx.command} invoked by {ctx.author.name} with error "
+    #             f"{e.__class__.__name__}: {e}"
+    #         )
+    #     if isinstance(e, errors.UserInputError):
+    #         log.debug(debug_message)
+    #         await self.handle_user_input_error(ctx, e)
+    #     elif isinstance(e, errors.CheckFailure):
+    #         log.debug(debug_message)
+    #         await self.handle_check_failure(ctx, e)
+    #     elif isinstance(e, errors.CommandOnCooldown):
+    #         log.debug(debug_message)
+    #         await ctx.send(e)
+    #     elif isinstance(e, errors.CommandInvokeError):
+    #         if isinstance(e.original, ResponseCodeError):
+    #             await self.handle_api_error(ctx, e.original)
+    #         else:
+    #             await self.handle_unexpected_error(ctx, e.original)
+    #     elif isinstance(e, errors.ConversionError):
+    #         if isinstance(e.original, ResponseCodeError):
+    #             await self.handle_api_error(ctx, e.original)
+    #         else:
+    #             await self.handle_unexpected_error(ctx, e.original)
+    #     elif isinstance(e, errors.DisabledCommand):
+    #         log.debug(debug_message)
+    #     else:
+    #         # MaxConcurrencyReached, ExtensionError
+    #         await self.handle_unexpected_error(ctx, e)
 
     @Cog.listener()
     async def on_application_command_error(
