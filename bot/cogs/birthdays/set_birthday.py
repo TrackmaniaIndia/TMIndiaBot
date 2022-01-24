@@ -9,6 +9,7 @@ from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.birthdays import Birthday
+from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
 
@@ -82,6 +83,17 @@ class SetBirthday(commands.Cog):
 
         Birthday(user.name, user.discriminator, user.id, year, month, day).save()
 
+        log.debug("Sending the message to the #mod-logs channel")
+        try:
+            channel = self.bot.get_channel(constants.Channels.mod_logs)
+
+            log.debug("Creating embed")
+            description = f"Requestor: {ctx.author.name}#{ctx.author.discriminator} set birthday of `{user.name}#{user.discriminator}` to `{day} {month}, {year}`"
+
+            await channel.send(embed=EZEmbed.create_embed(description=description))
+        except:
+            log.debug("Testing Bot is being run, sending message")
+            pass
         await ctx.respond(
             f"Successfully Saved:\nName: {user.name}\nID: {user.id}\nDate: {day} {month}, {year}",
             ephemeral=True,
