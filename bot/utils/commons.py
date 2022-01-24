@@ -68,3 +68,8 @@ class Commons:
     @staticmethod
     def timestamp_date(year: int, month: int, day: int) -> int:
         return int(datetime.datetime(year=year, month=month, day=day).timestamp())
+
+    @staticmethod
+    def get_times_run() -> int:
+        with open("./bot/resources/times_run.txt", "r", encoding="UTF-8") as file:
+            return int(file.read())
