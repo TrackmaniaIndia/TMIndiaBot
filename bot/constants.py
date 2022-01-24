@@ -196,6 +196,8 @@ class Channels(metaclass=YAMLGetter):
     error_channel: int
     keep_alive_channel: int
 
+    mod_logs: int
+
 
 class Roles(metaclass=YAMLGetter):
     section = "roles"
