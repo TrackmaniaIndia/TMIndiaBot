@@ -18,6 +18,221 @@ log = get_logger(__name__)
 
 class TOTDUtils:
     @staticmethod
+    async def today():
+        log.debug("Checking if TOTD Data has already been saved for today")
+        todays_day = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime(
+            "%d"
+        )
+        todays_month = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime(
+            "%B"
+        )
+
+        if os.path.exists("./bot/resources/json/totd.json"):
+            log.debug("totd.json exists")
+            with open("./bot/resources/json/totd.json", "r", encoding="UTF-8") as file:
+                totd_data = json.load(file)
+
+                log.debug("totd.json exists for wrong day")
+                if (
+                    totd_data["Day"] == todays_day
+                    and totd_data["Month"] == todays_month
+                ):
+                    return TOTDUtils.build_totd_embed_from_file()
+
+        log.debug("Deleting totd.png")
+        if os.path.exists("./bot/resources/temp/totd.png"):
+            os.remove("./bot/resources/temp/totd.png")
+
+        log.debug("Creating API Client")
+        api_client = APIClient()
+        log.debug("Created API Client")
+
+        log.debug("Gathering TOTD Data")
+        (
+            map_name,
+            author_name,
+            thumbnail_url,
+            download_link,
+            map_uid,
+            author_time,
+            gold_time,
+            silver_time,
+            bronze_time,
+            wr_holder,
+            wr_time,
+            nadeo_uploaded,
+        ) = await TOTDUtils._gather_totd_tmio_data(api_client)
+
+        log.debug("Gathering TMX Data")
+        mania_tags, mx_uploaded, tmx_code = await TOTDUtils._gather_totd_tmx_data(
+            api_client, map_uid
+        )
+
+        log.debug("Parsing TOTD Data")
+        totd_data = {
+            "Map Name": map_name,
+            "Author": author_name,
+            "Thumbnail URL": thumbnail_url,
+            "Download Link": download_link,
+            "UID": map_uid,
+            "Author Time": author_time,
+            "Gold Time": gold_time,
+            "Silver Time": silver_time,
+            "Bronze Time": bronze_time,
+            "WR Holder": wr_holder,
+            "WR Time": wr_time,
+            "Nadeo Uploaded": nadeo_uploaded,
+            "Mania Tags": mania_tags,
+            "TMX Uploaded": mx_uploaded,
+            "TMX Code": tmx_code,
+            "Day": todays_day,
+            "Month": todays_month,
+        }
+
+        log.debug("Saving TOTD Data")
+        with open("./bot/resources/json/totd.json", "w", encoding="UTF-8") as file:
+            json.dump(totd_data, file, indent=4)
+
+        log.debug("Building TOTD Embed from File")
+        await api_client.close()
+        return TOTDUtils.build_totd_embed_from_file()
+
+    @staticmethod
+    def build_totd_embed_from_file():
+        log.debug("Getting Data")
+        with open("./bot/resources/json/totd.json", "r", encoding="UTF-8") as file:
+            totd_data = json.load(file)
+
+        log.debug("Building Embed")
+        # Add Day Suffix
+        # Add Day Suffix
+        if int(totd_data["Day"]) % 10 == 1:
+            day_suffix = "st"
+        elif int(totd_data["Day"]) % 10 == 2:
+            day_suffix = "nd"
+        elif int(totd_data["Day"]) % 10 == 3:
+            day_suffix = "rd"
+        else:
+            day_suffix = "th"
+
+        embed = EZEmbed.create_embed(
+            title=f"Here is the {totd_data['Day']}{day_suffix} {totd_data['Month']} TOTD",
+            color=Commons.get_random_color(),
+        )
+
+        log.debug("Creating Image File")
+        image = discord.File("./bot/resources/temp/totd.png", filename="totd.png")
+        embed.set_image(url="attachment://totd.png")
+        embed.add_field(name="Map Name", value=totd_data["Map Name"], inline=False)
+        embed.add_field(name="Author", value=totd_data["Author"], inline=True)
+
+        if totd_data["Mania Tags"] is not None:
+            embed.add_field(name="Tags", value=totd_data["Mania Tags"], inline=False)
+
+        embed.add_field(
+            name="Time Uploaded to Nadeo server",
+            value=totd_data["Nadeo Uploaded"],
+            inline=False,
+        )
+
+        if totd_data["TMX Uploaded"] is not None:
+            embed.add_field(
+                name="Time Uploaded to TMX server",
+                value=totd_data["TMX Uploaded"],
+                inline=True,
+            )
+
+        embed.add_field(
+            name="Medal Times",
+            value=f"Author: {totd_data['Author Time']}\nGold: {totd_data['Gold Time']}\nSilver: {totd_data['Silver Time']}\nBronze: {totd_data['Bronze Time']}",
+            inline=False,
+        )
+        embed.add_field(
+            name="World Record",
+            value=f"{totd_data['WR Holder']} - {totd_data['WR Time']}",
+            inline=False,
+        )
+
+        tmio_link = f"https://trackmania.io/#/leaderboard/{totd_data['UID']}"
+
+        if totd_data["TMX Code"] is not None:
+            return (
+                embed,
+                image,
+                totd_data["Download Link"],
+                tmio_link,
+                f"https://trackmania.exchange/maps/{totd_data['TMX Code']}",
+            )
+        else:
+            return embed, image, totd_data["Download Link"], tmio_link
+
+    @staticmethod
+    async def _gather_totd_tmio_data(api_client: APIClient) -> tuple:
+        log.debug("Pinging API")
+        raw_totd_data = await api_client.get("http://localhost:3000/tm2020/totd/latest")
+
+        map_name = raw_totd_data["name"]
+        author_name = raw_totd_data["authorplayer"]["name"]
+        thumbnail_url = raw_totd_data["thumbnailUrl"]
+        map_uid = raw_totd_data["mapUid"]
+
+        author_time = Commons.format_seconds(int(raw_totd_data["authorScore"]))
+        gold_time = Commons.format_seconds(int(raw_totd_data["goldScore"]))
+        silver_time = Commons.format_seconds(int(raw_totd_data["silverScore"]))
+        bronze_time = Commons.format_seconds(int(raw_totd_data["bronzeScore"]))
+
+        wr_holder = raw_totd_data["leaderboard"]["tops"][0]["player"]["name"]
+        wr_time = Commons.format_seconds(
+            int(raw_totd_data["leaderboard"]["tops"][0]["time"])
+        )
+
+        nadeo_uploaded = f"<t:{int(datetime.strptime(raw_totd_data['timestamp'][:-6], '%Y-%m-%dT%H:%M:%S').replace(tzinfo=timezone.utc).timestamp())}:R>"
+
+        download_link = raw_totd_data["fileUrl"]
+        TOTDUtils._download_thumbail(download_link)
+
+        log.debug("Returning TMIO Data")
+        return (
+            map_name,
+            author_name,
+            thumbnail_url,
+            download_link,
+            map_uid,
+            author_time,
+            gold_time,
+            silver_time,
+            bronze_time,
+            wr_holder,
+            wr_time,
+            nadeo_uploaded,
+        )
+
+    @staticmethod
+    async def _gather_totd_tmx_data(api_client: APIClient, map_uid: str) -> tuple:
+        log.debug("Pinging TMX API")
+        raw_tmx_data = await api_client.get(
+            f"https://trackmania.exchange/api/maps/get_map_info/uid/{map_uid}"
+        )
+
+        try:
+            mania_tags = raw_tmx_data["Tags"]
+            mx_uploaded = raw_tmx_data["UploadedAt"]
+            tmx_code = raw_tmx_data["TrackID"]
+
+            try:
+                mx_dt = datetime.strptime(mx_uploaded[:-3], "%Y-%m-%dT%H:%M:%S")
+            except ValueError:
+                mx_dt = datetime.strptime(mx_uploaded[:-4], "%Y-%m-%dT%H:%M:%S")
+
+            mx_timestamps = mx_dt.replace(tzinfo=timezone.utc).timestamp()
+            mx_uploaded = f"<t:{int(mx_timestamps)}:R>"
+        except BaseException:
+            log.critical("Map has never been uploaded to trackmania.exchange")
+            return None, None, None
+
+        return mania_tags, mx_uploaded, tmx_code
+
+    @staticmethod
     def _download_thumbail(url: str) -> None:
         """Downloads the Thumbnail from Nadeo's API and stores in `./bot/resources/temp/totd.png`"""
         if os.path.exists("./bot/resources/temp/totd.png"):
@@ -67,145 +282,6 @@ class TOTDUtils:
 
         log.debug(f"Tag String -> {tag_string}")
         return tag_string[:-2]
-
-    @staticmethod
-    async def today():
-        """The data of the current day's totd"""
-        log.info("Creating an API Client")
-        api_client = APIClient()
-        log.info("Created an API Client")
-
-        log.debug("Getting TOTD Data from API")
-        totd_data = await api_client.get("http://localhost:3000/tm2020/totd/latest")
-        mx_data = await api_client.get(
-            f"https://trackmania.exchange/api/maps/get_map_info/uid/{totd_data['mapUid']}"
-        )
-
-        log.debug("Parsing TOTD Data")
-        map_name = totd_data["name"]
-        author_name = totd_data["authorplayer"]["name"]
-        thumbnail_url = totd_data["thumbnailUrl"]
-
-        author_time = Commons.format_seconds(int(totd_data["authorScore"]))
-        gold_time = Commons.format_seconds(int(totd_data["goldScore"]))
-        silver_time = Commons.format_seconds(int(totd_data["silverScore"]))
-        bronze_time = Commons.format_seconds(int(totd_data["bronzeScore"]))
-
-        nadeo_uploaded = totd_data["timestamp"]
-
-        wr_holder = totd_data["leaderboard"]["tops"][0]["player"]["name"]
-        wr_time = Commons.format_seconds(
-            int(totd_data["leaderboard"]["tops"][0]["time"])
-        )
-
-        tmio_id = totd_data["mapUid"]
-        log.debug("Parsed TOTD Data")
-
-        log.debug("Parsing Download Link")
-        download_link = totd_data["fileUrl"]
-        log.debug("Parsed Download Link")
-
-        log.debug("Parsing Time Uploaded to Timestamp")
-        nadeo_timestamp = (
-            datetime.strptime(nadeo_uploaded[:-6], "%Y-%m-%dT%H:%M:%S")
-            .replace(tzinfo=timezone.utc)
-            .timestamp()
-        )
-        log.debug("Parsed Time Uploaded to Timestamps")
-
-        log.debug("Creating Strings from Parsed Data")
-        medal_times = f"<:author:894268580902883379> {author_time}\n<:gold:894268580970004510> {gold_time}\n<:silver:894268580655411220> {silver_time}\n<:bronze:894268580181458975> {bronze_time}"
-        world_record = f"Holder: {wr_holder}\nTime: {wr_time}"
-
-        nadeo_uploaded = f"<t:{int(nadeo_timestamp)}:R>"
-
-        log.debug("Created Strings from Parsed Data")
-
-        log.debug(
-            "Getting Map Thumbnail\nChecking if map Thumbnail has Already been Downloaded"
-        )
-
-        if not os.path.exists("./bot/resources/temp/totd.png"):
-            log.critical("Map Thumbail has not been downloaded")
-            TOTDUtils._download_thumbail(thumbnail_url)
-
-        log.debug("Parsing TM Exchange Data")
-        try:
-            mania_tags = mx_data["Tags"]
-            mx_uploaded = mx_data["UploadedAt"]
-            tmx_code = mx_data["TrackID"]
-
-            try:
-                mx_dt = datetime.strptime(mx_uploaded[:-3], "%Y-%m-%dT%H:%M:%S")
-            except ValueError:
-                mx_dt = datetime.strptime(mx_uploaded[:-4], "%Y-%m-%dT%H:%M:%S")
-
-            mx_timestamps = mx_dt.replace(tzinfo=timezone.utc).timestamp()
-            mx_uploaded = f"<t:{int(mx_timestamps)}:R>"
-        except BaseException:
-            log.critical("Map has never been uploaded to trackmania.exchange")
-
-        log.debug("Creating Embed")
-        current_day = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime(
-            "%d"
-        )
-        current_month = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime(
-            "%B"
-        )
-
-        # Add Day Suffix
-        if int(current_day) % 10 == 1:
-            day_suffix = "st"
-        elif int(current_day) % 10 == 2:
-            day_suffix = "nd"
-        elif int(current_day) % 10 == 3:
-            day_suffix = "rd"
-        else:
-            day_suffix = "th"
-
-        embed = EZEmbed.create_embed(
-            title=f"Here is the {current_day}{day_suffix} {current_month} TOTD",
-            color=Commons.get_random_color(),
-        )
-        log.debug("Creating Image File")
-        image = discord.File("./bot/resources/temp/totd.png", filename="totd.png")
-        embed.set_image(url="attachment://totd.png")
-        embed.add_field(name="Map Name", value=map_name, inline=False)
-        embed.add_field(name="Author", value=author_name, inline=True)
-
-        try:
-            embed.add_field(
-                name="Tags", value=TOTDUtils._parse_mx_tags(mania_tags), inline=False
-            )
-        except BaseException:
-            pass
-
-        embed.add_field(
-            name="Time Uploaded to Nadeo server", value=nadeo_uploaded, inline=False
-        )
-
-        try:
-            embed.add_field(name="Time Uploaded to TMX", value=mx_uploaded, inline=True)
-        except BaseException:
-            pass
-
-        embed.add_field(name="Medal Times", value=medal_times, inline=False)
-        embed.add_field(name="Word record", value=world_record, inline=False)
-
-        tmio_link = f"https://trackmania.io/#/leaderboard/{tmio_id}"
-
-        try:
-            tmx_link = f"https://trackmania.exchange/maps/{tmx_code}/"
-        except BaseException:
-            tmx_link = None
-
-        log.debug("Created Embed")
-
-        log.info("Closing the API Client")
-        await api_client.close()
-        log.info("Closed the API Embed")
-
-        return embed, image, download_link, tmio_link, tmx_link
 
 
 class COTDUtil:
