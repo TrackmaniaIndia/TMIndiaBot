@@ -1,18 +1,17 @@
 import datetime
 import os
 import sys
-import requests
 
+import requests
 from discord.ext import tasks
 
 import discord
 from bot import constants
-from bot.api import APIClient
 from bot.bot import Bot
 from bot.log import get_logger
 from bot.utils.birthdays import Birthday
-from bot.utils.discord import ViewAdder
 from bot.utils.cotd_util import TOTDUtils
+from bot.utils.discord import ViewAdder
 
 log = get_logger(__name__)
 
