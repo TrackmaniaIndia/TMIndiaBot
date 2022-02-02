@@ -43,7 +43,9 @@ async def keep_alive(bot: Bot):
     await channel.send(f"Bot is still alive at {datetime.datetime.utcnow()} UTC")
 
 
-@tasks.loop(time=datetime.time(hour=16, minute=58, second=50))
+@tasks.loop(
+    time=datetime.time(hour=16, minute=58, second=50, tzinfo=datetime.timezone.utc)
+)
 async def totd_image_deleter(bot: Bot):
     if os.path.exists("./bot/resources/temp/totd.png"):
         os.remove("./bot/resources/temp/totd.png")
@@ -67,8 +69,13 @@ async def todays_birthday(bot: Bot):
         try:
             general_channel = bot.get_channel(constants.Channels.general)
 
-            await general_channel.send(embed=birthday_embed)
-            return
+            if general_channel is not None:
+                await general_channel.send(embed=birthday_embed)
+                return
+            else:
+                general_channel = bot.get_channel(constants.Channels.testing_general)
+                await general_channel.send(embed=birthday_embed)
+                return
         except BaseException:
             log.debug("Testing bot is running")
             return
