@@ -111,7 +111,7 @@ async def todays_birthday(bot: Bot):
 
 
 @tasks.loop(
-    time=datetime.time(hour=9, minute=8, second=30, tzinfo=datetime.timezone.utc)
+    time=datetime.time(hour=17, minute=0, second=0, tzinfo=datetime.timezone.utc)
 )
 async def today_totd(bot: Bot):
     log.info("Getting TOTD Info")
