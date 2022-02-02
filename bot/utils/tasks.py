@@ -55,33 +55,51 @@ async def totd_image_deleter(bot: Bot):
 
 
 @tasks.loop(
-    time=datetime.time(hour=0, minute=30, second=0, tzinfo=datetime.timezone.utc)
+    time=datetime.time(hour=8, minute=56, second=30, tzinfo=datetime.timezone.utc)
 )
 async def todays_birthday(bot: Bot):
     log.debug("Checking if it is anyone's birthday today")
-    birthday_embed = Birthday.today_birthday()
+    birthdays_list = Birthday.today_birthday()
 
-    if birthday_embed is not None:
-        log.debug("A birthday is today")
+    if birthdays_list is not None:
+        log.info("There is a birthday today")
 
-        log.debug("Getting channel")
+        if len(birthdays_list) > 1:
+            log.debug("There are multiple birthdays today")
 
-        try:
+            log.debug("Getting channel")
             general_channel = bot.get_channel(constants.Channels.general)
 
-            if general_channel is not None:
-                await general_channel.send(embed=birthday_embed)
-                return
-            else:
+            if general_channel is None:
+                log.debug("Testing bot is running, getting testing discord channel")
                 general_channel = bot.get_channel(constants.Channels.testing_general)
-                await general_channel.send(embed=birthday_embed)
-                return
-        except BaseException:
-            log.debug("Testing bot is running")
-            return
 
-    log.debug("There is no birthday today")
-    return
+            for birthday_embed in birthdays_list:
+                log.debug(f"Sending {birthday_embed}")
+                await general_channel.send(
+                    content="Hey Everyone! Today we have a birthday",
+                    embed=birthday_embed,
+                )
+            return
+        else:
+            log.debug("Only one birthday today")
+
+            log.debug("Getting channel")
+            general_channel = bot.get_channel(constants.Channels.general)
+
+            if general_channel is None:
+                log.debug("Testing bot is running, getting testing discord channel")
+                general_channel = bot.get_channel(constants.Channels.testing_general)
+
+            log.debug(f"Sending {birthdays_list[0]}")
+            await general_channel.send(
+                content="Hey Everyone! Today we have a birthday",
+                embed=birthdays_list[0],
+            )
+            return
+    else:
+        log.debug("No birthdays today")
+        return
 
 
 # 15 minutes before the COTD
