@@ -32,12 +32,14 @@ class TOTDUtils:
             with open("./bot/resources/json/totd.json", "r", encoding="UTF-8") as file:
                 totd_data = json.load(file)
 
-                log.debug("totd.json exists for wrong day")
+                log.debug("totd.json exists")
                 if (
                     totd_data["Day"] == todays_day
                     and totd_data["Month"] == todays_month
                 ):
+                    log.debug("Taking TOTD Data from File")
                     return TOTDUtils.build_totd_embed_from_file()
+        log.debug("Data in TOTD.json file is for wrong day")
 
         log.debug("Deleting totd.png")
         if os.path.exists("./bot/resources/temp/totd.png"):
@@ -94,7 +96,10 @@ class TOTDUtils:
             json.dump(totd_data, file, indent=4)
 
         log.debug("Building TOTD Embed from File")
-        await api_client.close()
+        try:
+            await api_client.close()
+        except:
+            pass
         return TOTDUtils.build_totd_embed_from_file()
 
     @staticmethod
@@ -121,7 +126,10 @@ class TOTDUtils:
         )
 
         log.debug("Creating Image File")
-        image = discord.File("./bot/resources/temp/totd.png", filename="totd.png")
+        try:
+            image = discord.File("./bot/resources/temp/totd.png", filename="totd.png")
+        except FileNotFoundError:
+            image = None
         embed.set_image(url="attachment://totd.png")
         embed.add_field(name="Map Name", value=totd_data["Map Name"], inline=False)
         embed.add_field(name="Author", value=totd_data["Author"], inline=True)
@@ -164,7 +172,7 @@ class TOTDUtils:
                 f"https://trackmania.exchange/maps/{totd_data['TMX Code']}",
             )
         else:
-            return embed, image, totd_data["Download Link"], tmio_link
+            return embed, image, totd_data["Download Link"], tmio_link, None
 
     @staticmethod
     async def _gather_totd_tmio_data(api_client: APIClient) -> tuple:
@@ -188,7 +196,7 @@ class TOTDUtils:
 
         nadeo_uploaded = f"<t:{int(datetime.strptime(raw_totd_data['timestamp'][:-6], '%Y-%m-%dT%H:%M:%S').replace(tzinfo=timezone.utc).timestamp())}:R>"
 
-        download_link = raw_totd_data["fileUrl"]
+        download_link = raw_totd_data["thumbnailUrl"]
         TOTDUtils._download_thumbail(download_link)
 
         log.debug("Returning TMIO Data")
@@ -210,10 +218,14 @@ class TOTDUtils:
     @staticmethod
     async def _gather_totd_tmx_data(api_client: APIClient, map_uid: str) -> tuple:
         log.debug("Pinging TMX API")
-        raw_tmx_data = await api_client.get(
-            f"https://trackmania.exchange/api/maps/get_map_info/uid/{map_uid}"
-        )
 
+        try:
+            raw_tmx_data = await api_client.get(
+                f"https://trackmania.exchange/api/maps/get_map_info/uid/{map_uid}"
+            )
+        except:
+            await api_client.close()
+            return None, None, None
         try:
             mania_tags = raw_tmx_data["Tags"]
             mx_uploaded = raw_tmx_data["UploadedAt"]
@@ -235,9 +247,10 @@ class TOTDUtils:
     @staticmethod
     def _download_thumbail(url: str) -> None:
         """Downloads the Thumbnail from Nadeo's API and stores in `./bot/resources/temp/totd.png`"""
-        if os.path.exists("./bot/resources/temp/totd.png"):
-            log.debug("Thumbnail already downloaded")
-            return
+        log.debug("Downloading Thumbnail")
+        # if os.path.exists("./bot/resources/temp/totd.png"):
+        #     log.debug("Thumbnail already downloaded")
+        #     return
 
         req = requests.get(url, stream=True)
 
