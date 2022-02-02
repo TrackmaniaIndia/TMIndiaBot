@@ -115,7 +115,7 @@ style:
     bronze_medal: <:bronze:894268580181458975>
 
 Consts:
-    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
 
 redirect_output:
   delete_delay: 15

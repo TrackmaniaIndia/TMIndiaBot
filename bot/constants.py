@@ -12,7 +12,6 @@ out in the custom user configuration will stay
 their default values from `config-default.yml`.
 """
 
-
 import os
 
 import dotenv

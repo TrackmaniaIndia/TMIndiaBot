@@ -1,6 +1,5 @@
 import asyncio
 import json
-from re import I
 
 import discord
 from bot.api import APIClient
@@ -65,7 +64,7 @@ class Leaderboards:
                 "w",
                 encoding="UTF-8",
             ) as file:
-                log.debug(f"Dumping Data to File -> {year}>{season}>{i+1}")
+                log.debug(f"Dumping Data to File -> {year}>{season}>{i + 1}")
                 json.dump(leaderboard_data, file, indent=4)
 
             log.debug("Sleeping for 10s")
