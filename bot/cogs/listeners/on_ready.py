@@ -14,6 +14,7 @@ from bot.utils.tasks import (
     keep_alive,
     totd_image_deleter,
     todays_birthday,
+    today_totd,
 )
 
 log = get_logger(__name__)
@@ -79,6 +80,11 @@ class OnReady(
         log.info("Starting BirthdayReminder")
         todays_birthday.start(self.bot)
         log.info("Started BirthdayReminder")
+
+        # Starting TOTD Info task
+        log.info("Starting TOTD Info")
+        today_totd.start(self.bot)
+        log.info("Started TOTD Info")
 
         # Getting the Announcement Channels for where the bot should send that it is ready
         # Channels taken from ./bot/resources/json/announcement_channels.json
