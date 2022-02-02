@@ -1,6 +1,7 @@
 import json
 import typing
 from datetime import datetime
+from typing import List
 
 import discord
 from bot import constants
@@ -151,7 +152,7 @@ class Birthday:
             return [EZEmbed.create_embed(description=Birthday.__format_lst(birthdays))]
 
     @staticmethod
-    def today_birthday() -> typing.Union[None, discord.Embed]:
+    def today_birthday() -> typing.Union[None, List[discord.Embed]]:
         MONTHS = constants.Consts.months
 
         log.debug("Opening the birthdays.json file")
@@ -161,6 +162,8 @@ class Birthday:
         todays_day = int(datetime.now().date().strftime("%d"))
         todays_month = MONTHS[int(datetime.now().date().strftime("%m")) - 1]
 
+        birthday_list = []
+
         log.debug("Looping through birthdays")
         for person in birthdays:
             if (
@@ -168,10 +171,17 @@ class Birthday:
                 and person["Month"].lower() == todays_month.lower()
             ):
                 log.info(f"It is {person['Name']}'s birthday today")
-                return EZEmbed.create_embed(description=Birthday.__format_lst([person]))
+                birthday_list.append(
+                    EZEmbed.create_embed(
+                        description=Birthday.__format_lst_today([person])
+                    )
+                )
 
-        log.debug("No one's birthday today")
-        return None
+        if len(birthday_list) > 0:
+            return birthday_list
+        else:
+            log.debug("No one's birthday today")
+            return None
 
     @staticmethod
     def _sort_birthdays(birthdays: list) -> list:
@@ -248,5 +258,44 @@ class Birthday:
             t2 -= 19800
 
             birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` in <t:{t2}:R>\n\n"
+
+        return birthdays_str
+
+    @staticmethod
+    def __format_lst_today(birthdays: list) -> str:
+        MONTHS: list = constants.Consts.months
+        # For the string:
+        #   loops through list, adding people
+        #   Name:
+        #   Birthday: day month
+        #   Turning age_xx in time_yy(using <t::R> discord)
+        #
+        # Logic:
+        #   get current timestamp -> t1
+        #   get timestamp of person at birthday on current year -> t2
+        #       if t2 - t1 < 0:
+        #            t2 += 31536000
+        #            age += 1
+        birthdays_str = ""
+        for person in birthdays:
+            log.debug(f"Adding {person['Name']} to the string")
+            year = int(datetime.now().date().strftime("%Y"))
+
+            t1 = Commons.timestamp()
+            t2 = Commons.timestamp_date(
+                year=year, month=MONTHS.index(person["Month"]) + 1, day=person["Day"]
+            )
+
+            age = year - int(person["Year"])
+
+            if t2 - t1 <= 0:
+                log.debug("Birthday has passed, adding one year to t2 timestamp")
+                t2 += 31536000
+                age += 1
+
+            # Removing the +530 IST Offset
+            t2 -= 19800
+
+            birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` **TODAY!!**\n\n"
 
         return birthdays_str
