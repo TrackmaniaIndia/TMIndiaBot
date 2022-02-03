@@ -1,85 +1,74 @@
 # TMIndiaBot
+![Issue Count](https://img.shields.io/github/issues/TrackmaniaIndia/TMIndiaBot?color=critical&style=for-the-badge&label=issues)
+![License](https://img.shields.io/badge/License-MIT-orange.svg?color=informational&style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/TrackmaniaIndia/TMIndiaBot?style=for-the-badge)
 
-Discord bot for the [TM India Discord Server](https://discord.gg/aztYuhWxgU "TM India Discord invite")
+Discord Bot for the [TM India Discord Server](https://discord.gg/aztYuhWxgU "TM India Discord invite")
 
-#### *v2.0*
 
-**Complete Rewrite of the Bot**
+## Suggestions and Bugs
+Feel free to open an issue to report bugs or suggest new features.
 
-**Command List**
+## Command List
+Command List Gist is [here](https://gist.github.com/NottCurious/f9b618bbfd8aa133d0de2655b94bfca6)
 
-1. Generic
-    * Command List *(/commandlist)*
-    * Hall of Fame *(/halloffame)*
-    * Next Project *(/nextproject)*
-    * Source Code *(/sourcecode)*
-    * Version *(/version)*
+## Release Notes
+Release Notes are often listed alongside the release on the [releases page](https://github.com/TrackmaniaIndia/TMIndiaBot/releases)
 
-2. Quoting
-    * Last Quote *(/lastquote)*
-    * Rand Quote *(/randquote)*
+## Developer Updates
+Developer Updates can be found [here](UPDATES.md)
 
-3. Trackmania
-    * COTD Details *(/cotddetails)*
-    * Get ID *(/getid)*
-    * Player Details *(/playerdetails)*
-    * TOTD *(/totd)*
-    * World Records *(/worldrecords)*
+## Development Environment Setup 
 
-4. Birthdays
-    * Add Birthday *(/addbirthday)*
-    * List Birthday *(/listbirthday)*
-    * Birthdays of Month *(/birthdaysofmonth)*
-    * Next Birthday *(/nextbirthday)*
+> Skip this section if you're not developer.
 
-5. Utilities
-    * Ping *(/ping)*
+##### Currently we use Python 3.9.x to develop this bot.
 
-### Command List
+### Windows
+```cmd
+git clone https://github.com/TrackmaniaIndia/TMIndiaBot.git
+(or) git clone git@github.com/TrackmaniaIndia/TMIndiaBot.git
 
-Command List can be found [here](https://gist.github.com/NottCurious/f9b618bbfd8aa133d0de2655b94bfca6)
+cd TMIndiaBot
+.\pre-run\windows.bat
 
-#### Developers
+python -m virtualenv venv
+.\venv\bin\activate
 
-NottCurious
+pip install -r requirements.txt
+```
 
-* [Github](https://github.com/NottCurious)
-* Discord: NottCurious#4351
-* Main Bot Dev
+### Linux
+```shell
+git clone https://github.com/TrackmaniaIndia/TMIndiaBot.git
+(or) git clone git@github.com/TrackmaniaIndia/TMIndiaBot.git
 
-Artifex
+cd TMIndiaBot
+chmod +x pre-run/linux.sh
+source pre-run/linux.sh
 
-* [Github](https://github.com/Artifexdevstuff)
-* Discord: Dmart bag#9718
-* Bot Dev
+python3 -m virtualenv venv
+source venv/bin/activate
 
-Calcium the Penguin
+pip install -r requirements.txt
+```
 
-* Discord: Calcium The Bored Penguin#2006
-* Contributor
 
-#### Special Thanks
+## Developers and Contributors
+1. NottCurious (Main Developer)
+2. Artifex (API Developer)
+3. Calcium the Penguin (Contributor)
 
-Thank you to Trackmania.io Developer Miss and node-Trackmania.io Developer Greep for their NPM Package!
+## Copyright License
+Licensed under [MIT License](https://www.opensource.org/licenses/mit-license.php)
 
-##### Update (26th October, 2021)
+## Thanks
+- Trackmania.io and Openplanet Developer Miss
+- node-trackmania.io developer Greep
 
-* We now do not need to run a seperate command terminal just for the api.
-* The bot will no longer work unless you have access to the private api repo. Please contact the developers if you want
-  access to clone it
-* If you have access, please clone the repo into util/node/
-
-##### Update (12th December, 2021)
-
-* The API is now Open Source, you can find
-  it [here](https://github.com/artifexdevstuff/TMIndiaBotApi "TMIndiaBotApi Github Link")
-* API bugs out when a new COTD is released (roughly 11:30pm IST), a fix is being worked on by tmio devs
-* You can also opt to clone the API seperately and run it from there, the bot has a confirmation prompt for running the
-  api
-
-##### Update (16th December, 2021)
-
-* Above bug has been fixed
-* Leaderboards will be moved into their own public repository
-  found [here](https://github.com/NottCurious/TrackmaniaLeaderboards)
-    * If you have access, clone into `./data` and rename the folder to `leaderboard`
+## Statistics
+![Lines](https://img.shields.io/tokei/lines/github/TrackmaniaIndia/TMIndiaBot?color=orange&style=for-the-badge)
+![Size](https://img.shields.io/github/repo-size/TrackmaniaIndia/TMIndiaBot?color=orange&style=for-the-badge)
+![Commit Activity](https://img.shields.io/github/commit-activity/w/TrackmaniaIndia/TMIndiaBot?color=orange&style=for-the-badge)
+![Language Count](https://img.shields.io/github/languages/count/TrackmaniaIndia/TMIndiaBot?color=orange&style=for-the-badge)
+![Top Language](https://img.shields.io/github/languages/top/TrackmaniaIndia/TMIndiaBot?color=orange&style=for-the-badge)
