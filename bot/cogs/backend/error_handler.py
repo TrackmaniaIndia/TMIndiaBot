@@ -114,6 +114,8 @@ class ErrorHandler(Cog):
         if isinstance(e, errors.CommandOnCooldown):
             log.debug(debug_message)
             await ctx.respond(e)
+        else:
+            log.error(e)
 
     async def handle_user_input_error(
         self, ctx: Context, e: errors.UserInputError
