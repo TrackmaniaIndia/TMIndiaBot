@@ -70,6 +70,15 @@ class Commons:
         return int(datetime.datetime(year=year, month=month, day=day).timestamp())
 
     @staticmethod
+    def time_since(timestamp: int) -> str:
+        minutes, seconds = divmod(Commons.timestamp() - timestamp, 60)
+        hours, minutes = divmod(minutes, 60)
+        days, hours = divmod(hours, 24)
+        years, days = divmod(days, 365)
+
+        return f"{years} years, {days} days, {hours} hours, {minutes} minutes, {seconds} seconds"
+
+    @staticmethod
     def get_times_run() -> int:
         with open("./bot/resources/times_run.txt", "r", encoding="UTF-8") as file:
             return int(file.read())
