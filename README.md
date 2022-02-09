@@ -18,7 +18,7 @@ Release Notes are often listed alongside the release on the [releases page](http
 ## Developer Updates
 Developer Updates can be found [here](UPDATES.md)
 
-## Development Environment Setup 
+## Development Environment Setup
 
 > Skip this section if you're not developer.
 
