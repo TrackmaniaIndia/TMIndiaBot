@@ -25,7 +25,7 @@ channels:
   bot_updates: 880628511512096778
   tmi_bot_channel: 880771916099641364
   testing_general: 876042400731123724
-  
+
   commands_allowed: [ 842626465421852692, 880628511512096778, 876042400731123724 ]
   announcement_channels: [ 880628511512096778, 876335103146623016 ]
   error_channel: 876069587140087800
@@ -38,15 +38,15 @@ guild:
 roles:
   # Main Server Moderators
   moderator_roles: [ 876045429693902868, 805318382441988096, 858620171334057994 ]
-  
+
   # Main Server
   cotd_reminder_one: 924146405642219520
   cotd_reminder_three: 924146521405026375
-  
+
   # Testing
   cotd_reminder_one_testing: 924150185020522577
   cotd_reminder_three_testing: 924150185020522577
-  
+
   bypass_roles: [ 805318382441988096, 858620171334057994 ]
 
 style:
@@ -107,7 +107,7 @@ style:
     twitter: <:twitter:895250587157946388>
     youtube: <:youtube:895250572599513138>
     tmio: <:tmio:895664664057356378>
-    
+
     # Medals
     author_medal: <:author:894268580902883379>
     gold_medal: <:gold:894268580970004510>

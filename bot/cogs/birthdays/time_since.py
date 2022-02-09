@@ -1,14 +1,10 @@
-import os
-
-import discord
-from discord.commands import Option, permissions
+from discord.commands import Option
 from discord.ext import commands
 
 from bot import constants
 from bot.bot import Bot
-from bot.log import get_logger, log_command
+from bot.log import get_logger
 from bot.utils.commons import Commons
-from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
 
