@@ -184,6 +184,22 @@ class Birthday:
             return None
 
     @staticmethod
+    def remove_birthday(id: int) -> bool:
+        log.debug('Getting birthday list')
+        with open('./bot/resources/json/birthdays.json', 'r', encoding='UTF-8') as file:
+            birthday_list: list = json.load(file)["birthdays"]
+            
+        log.debug('Looping through birthday list')
+        for i, birthday in enumerate(birthday_list):
+            if int(birthday["ID"]) == id:
+                birthday_list.pop(i)
+                log.debug('Birthday popped')
+                return True
+            
+        log.debug('Birthday is not saved')
+        return False
+    
+    @staticmethod
     def _sort_birthdays(birthdays: list) -> list:
         return Birthday.__append_birthdays(Birthday.__split_birthdays(birthdays))
 
