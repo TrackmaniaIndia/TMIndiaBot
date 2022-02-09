@@ -68,6 +68,12 @@ class AddBirthday(commands.Cog):
             log.error("31 days in a month that does not have 31 days")
             await ctx.respond(f"{month} does not have 31 Days", ephemeral=True)
             return
+        if month.capitalize() not in constants.Consts.months:
+            log.error("Invalid Month Given")
+            await ctx.respond(
+                f"Thats not even a valid month ({month}) dumbo", ephemeral=True
+            )
+            return
 
         log.debug("All date checks passed, Saving")
         Birthday(
