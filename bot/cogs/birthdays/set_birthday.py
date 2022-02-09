@@ -52,25 +52,35 @@ class SetBirthday(commands.Cog):
 
         # Checks
         if day <= 0 or day >= 32:
-            await ctx.respond("Invalid Date Given", ephemeral=True)
+            await ctx.respond(
+                "Invalid Date Given. I wasn't born yesterday... well I was... you know what I mean.",
+                ephemeral=True,
+            )
             return
         if month.lower() == "february" and day >= 30:
             log.error("30+ Days in February")
             await ctx.respond(
-                "February does not have more than 30 days", ephemeral=True
+                "February does not have more than 30 days\nYou think I am stupid?",
+                ephemeral=True,
             )
             return
         if year % 4 != 0 and day == 29:
             log.error("Not a Leap Year")
-            await ctx.respond(f"{year} is not a leap year", ephemeral=True)
+            await ctx.respond(f"{year} is not a leap year... dumbass", ephemeral=True)
             return
         if year > 2022 or year < 1970:
             log.error("Invalid Year (>2022, <1970)")
             await ctx.respond("When the fuck were you born", ephemeral=True)
             return
-        if constants.Consts.months.index(month) % 2 == 1 and day == 31:
+        if (constants.Consts.months.index(month) + 1) % 2 == 1 and day == 31:
             log.error("31 days in a month that does not have 31 days")
             await ctx.respond(f"{month} does not have 31 Days", ephemeral=True)
+            return
+        if month.capitalize() not in constants.Consts.months:
+            log.error("Invalid Month Given")
+            await ctx.respond(
+                f"Thats not even a valid month ({month}) dumbo", ephemeral=True
+            )
             return
 
         log.debug("All date checks passed, Saving")
