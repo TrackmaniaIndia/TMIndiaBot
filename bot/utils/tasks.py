@@ -40,7 +40,7 @@ async def keep_alive(bot: Bot):
         sys.exit(-1)
 
     log.debug("Sending a Message to the Designated Channel")
-    channel = bot.get_channel(881732050451849216)
+    channel = bot.get_channel(constants.Channels.tmi_bot_channel)
     await channel.send(f"Bot is still alive at {datetime.datetime.utcnow()} UTC")
 
 

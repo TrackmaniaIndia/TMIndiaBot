@@ -86,16 +86,8 @@ class OnReady(
         today_totd.start(self.bot)
         log.info("Started TOTD Info")
 
-        # Getting the Announcement Channels for where the bot should send that it is ready
-        # Channels taken from ./bot/resources/json/announcement_channels.json
-        log.info("Getting Announcement Channels")
-        with open(
-            "./bot/resources/json/announcement_channels.json", "r", encoding="UTF-8"
-        ) as file:
-            channels = json.load(file)
-
         # Looping Through Announcement Channels
-        for announcement_channel in channels["announcement_channels"]:
+        for announcement_channel in constants.Channels.announcement_channels:
             log.info(f"Sending Message in {announcement_channel}")
 
             # Sending Message to the Channel
