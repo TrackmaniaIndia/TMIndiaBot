@@ -12,9 +12,9 @@ from bot.log import get_logger
 from bot.utils.tasks import (
     change_status,
     keep_alive,
-    totd_image_deleter,
-    todays_birthday,
     today_totd,
+    todays_birthday,
+    totd_image_deleter,
 )
 
 log = get_logger(__name__)

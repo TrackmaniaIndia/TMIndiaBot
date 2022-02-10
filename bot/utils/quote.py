@@ -1,9 +1,9 @@
 import datetime
 import json
 
+import discord
 import numpy as np
 
-import discord
 from bot.log import get_logger
 from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed

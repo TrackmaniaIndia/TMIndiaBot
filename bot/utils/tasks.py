@@ -2,10 +2,10 @@ import datetime
 import os
 import sys
 
+import discord
 import requests
 from discord.ext import tasks
 
-import discord
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger

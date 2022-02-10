@@ -1,13 +1,13 @@
 import json
 import os
 import shutil
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 
 import cv2
+import discord
 import requests
 from matplotlib import pyplot as plt
 
-import discord
 from bot.api import APIClient
 from bot.log import get_logger
 from bot.utils.commons import Commons

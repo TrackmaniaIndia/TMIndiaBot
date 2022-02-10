@@ -5,8 +5,7 @@ from discord.ext import commands
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import Confirmer
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import Confirmer, EZEmbed
 from bot.utils.leaderboard import Leaderboards
 
 log = get_logger(__name__)

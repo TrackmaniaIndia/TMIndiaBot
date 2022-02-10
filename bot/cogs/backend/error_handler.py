@@ -1,9 +1,5 @@
 from discord import Embed
-from discord.ext.commands import (
-    Cog,
-    Context,
-    errors,
-)
+from discord.ext.commands import Cog, Context, errors
 
 from bot.api import ResponseCodeError
 from bot.bot import Bot

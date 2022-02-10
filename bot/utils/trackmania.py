@@ -2,9 +2,9 @@ import json
 import typing
 
 import country_converter as coco
+import discord
 import flag
 
-import discord
 from bot.api import APIClient
 from bot.log import get_logger
 from bot.utils.commons import Commons
