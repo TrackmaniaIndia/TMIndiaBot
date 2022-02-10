@@ -5,7 +5,7 @@ import os
 import sys
 from logging import Logger, handlers
 from pathlib import Path
-from typing import Optional, TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Optional, cast
 
 import coloredlogs
 from discord.ext.commands import Context

@@ -4,12 +4,7 @@ import re
 import typing as t
 from datetime import datetime, timezone
 
-from discord.ext.commands import (
-    BadArgument,
-    Context,
-    Converter,
-    IDConverter,
-)
+from discord.ext.commands import BadArgument, Context, Converter, IDConverter
 from discord.utils import snowflake_time
 
 from bot import cogs

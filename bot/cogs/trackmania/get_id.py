@@ -3,8 +3,7 @@ from discord.ext import commands
 
 from bot import constants
 from bot.bot import Bot
-from bot.log import get_logger
-from bot.log import log_command
+from bot.log import get_logger, log_command
 from bot.utils.discord import EZEmbed
 from bot.utils.trackmania import TrackmaniaUtils
 
