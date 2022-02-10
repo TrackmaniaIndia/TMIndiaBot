@@ -31,7 +31,7 @@ async def change_status(bot: Bot, statuses: dict):
 @tasks.loop(minutes=15)
 async def keep_alive(bot: Bot):
     """Keeps bot alive by sending a message to a designated channel and pings the API."""
-    log.debug("Keeping Bot Alive")
+    log.info("Starting KeepAlive Task")
 
     try:
         await _ping_api(bot)
@@ -48,6 +48,7 @@ async def keep_alive(bot: Bot):
     time=datetime.time(hour=16, minute=58, second=50, tzinfo=datetime.timezone.utc)
 )
 async def totd_image_deleter(bot: Bot):
+    log.info("Starting TOTD Image Deleter Task")
     if os.path.exists("./bot/resources/temp/totd.png"):
         os.remove("./bot/resources/temp/totd.png")
         log.debug("Removed the TOTD Image")
@@ -65,7 +66,7 @@ async def totd_image_deleter(bot: Bot):
     time=datetime.time(hour=8, minute=56, second=30, tzinfo=datetime.timezone.utc)
 )
 async def todays_birthday(bot: Bot):
-    log.debug("Checking if it is anyone's birthday today")
+    log.info("Starting Todays Birthday Task")
     birthdays_list = Birthday.today_birthday()
 
     if birthdays_list is not None:
@@ -113,7 +114,7 @@ async def todays_birthday(bot: Bot):
     time=datetime.time(hour=17, minute=0, second=0, tzinfo=datetime.timezone.utc)
 )
 async def today_totd(bot: Bot):
-    log.info("Getting TOTD Info")
+    log.info("Getting Today's TOTD Info")
     log.info("Getting TOTD Information")
     (
         totd_embed,
@@ -238,6 +239,7 @@ async def cotd_three_reminder(bot: Bot):
 
 
 async def _ping_api(bot: Bot):
+    log.info("Starting Ping API")
     try:
         await bot.wait_until_ready()
         # await api_client.get("http://localhost:3000/")
