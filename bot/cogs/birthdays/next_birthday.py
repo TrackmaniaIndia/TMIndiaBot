@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.ext import commands
 
 from bot import constants
@@ -17,7 +18,7 @@ class NextBirthday(commands.Cog):
         name="nextbirthday",
         description="Gets the person who's birthday is the closest",
     )
-    async def _next_birthday_slash(self, ctx: commands.Context):
+    async def _next_birthday_slash(self, ctx: ApplicationContext):
         log_command(ctx, "next_birthday_slash")
         await ctx.respond(embed=Birthday.next_birthday())
 

@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.ext import commands
 
 from bot import constants
@@ -15,7 +16,7 @@ class Latency(commands.Cog):
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds, name="ping", description="Gets Latency"
     )
-    async def _ping(self, ctx: commands.Context) -> None:
+    async def _ping(self, ctx: ApplicationContext) -> None:
         discord_ping = f"{self.bot.latency * 1000:.{ROUND_LATENCY}f} ms"
 
         embed = EZEmbed.create_embed(title="Pong!")

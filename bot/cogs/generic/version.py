@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.ext import commands
 
 from bot import constants
@@ -15,7 +16,7 @@ class BotVersion(commands.Cog):
         name="version",
         description="Get the Bot Version",
     )
-    async def _version_slash(self, ctx: commands.Context):
+    async def _version_slash(self, ctx: ApplicationContext):
         log_command(ctx, "version_slash")
         await ctx.respond(f"Bot version is {self._version}", ephemeral=True)
 

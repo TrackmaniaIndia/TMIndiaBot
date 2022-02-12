@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.ext import commands
 
 from bot import constants
@@ -24,7 +25,7 @@ class GetHallOfFame(commands.Cog):
         name="halloffame",
         description="Gives a link for the TMI Hall of Fame",
     )
-    async def _hall_of_fame_slash(self, ctx: commands.Context):
+    async def _hall_of_fame_slash(self, ctx: ApplicationContext):
         log_command(ctx, "hall_of_fame_slash")
         await ctx.respond(
             content=self._msg,

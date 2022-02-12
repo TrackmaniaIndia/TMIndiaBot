@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.commands import Option, permissions
 from discord.ext import commands
 
@@ -18,7 +19,7 @@ class StalkPlayer(commands.Cog):
     @permissions.has_any_role("TSCC", "Moderator", "Admin", "Bot Testing")
     async def _stalk_player_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         username: Option(str, "The username of the player", required=True),
     ):
         log_command(ctx, "stalk_player_slash")

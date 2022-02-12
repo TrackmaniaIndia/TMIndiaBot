@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 
@@ -22,7 +23,7 @@ class CampaignUpdate(commands.Cog):
     )
     async def _update_campaign_leaderboards_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         year: Option(str, "Choose the year", choices=["2020", "2021", "2022"]),
         season: Option(
             str, "Choose the season", choices=["Winter", "Spring", "Summer", "Fall"]

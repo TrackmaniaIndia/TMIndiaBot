@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 
@@ -22,7 +23,7 @@ class COTDDetails(commands.Cog):
     @discord.ext.commands.cooldown(1, 30, commands.BucketType.user)
     async def _cotd_details_slash(
         self,
-        ctx: commands.Cog,
+        ctx: ApplicationContext,
         username: Option(str, "Username of the player", required=True),
     ):
         log_command(ctx, "cotd_details_slash")

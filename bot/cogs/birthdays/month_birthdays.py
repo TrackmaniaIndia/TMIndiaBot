@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
@@ -21,7 +22,7 @@ class MonthBirthdays(commands.Cog):
     )
     async def _month_birthdays_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         month: Option(str, "The month", choices=constants.Consts.months, required=True),
     ):
         log_command(ctx, "month_birthdays_slash")

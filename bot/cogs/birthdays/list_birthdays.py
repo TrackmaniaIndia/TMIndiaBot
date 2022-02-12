@@ -1,6 +1,7 @@
 import json
 import os
 
+from discord import ApplicationContext
 from discord.ext import commands
 from discord.ext.pages import Paginator
 
@@ -30,7 +31,7 @@ class ListBirthdays(commands.Cog):
     )
     async def _list_birthdays_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
     ):
         log_command(ctx, "list_birthdays_slash")
 

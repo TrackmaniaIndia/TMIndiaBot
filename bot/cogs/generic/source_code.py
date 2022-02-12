@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.ext import commands
 
 from bot import constants
@@ -24,7 +25,7 @@ class GetSourceCode(commands.Cog):
         name="sourcecode",
         description="Gives a link for the github source code",
     )
-    async def _source_code_slash(self, ctx: commands.Context):
+    async def _source_code_slash(self, ctx: ApplicationContext):
         log_command(ctx, "source_code_slash")
         await ctx.respond(
             content=self._msg,

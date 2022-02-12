@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.commands import Option, permissions
 from discord.ext import commands
 
@@ -20,7 +21,7 @@ class RemoveBirthday(commands.Cog):
     )
     @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Bot Testing")
     async def _remove_username(
-        self, ctx: commands.Context, id: Option(int, "The user's id", required=True)
+        self, ctx: ApplicationContext, id: Option(int, "The user's id", required=True)
     ):
         log.info(f"{ctx.author.name} is requesting removal of {id}")
 

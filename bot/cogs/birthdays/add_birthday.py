@@ -1,6 +1,7 @@
 import json
 import os
 
+from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 
@@ -30,7 +31,7 @@ class AddBirthday(commands.Cog):
     )
     async def _add_birthday_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         year: Option(int, "The year you were born!", required=True),
         month: Option(
             str,

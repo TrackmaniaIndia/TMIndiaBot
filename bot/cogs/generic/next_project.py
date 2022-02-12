@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.ext import commands
 
 from bot import constants
@@ -24,7 +25,7 @@ class GetNextProject(commands.Cog):
         name="nextproject",
         description="Gives a link for the next TMIBot Project",
     )
-    async def _next_project_slash(self, ctx: commands.Context):
+    async def _next_project_slash(self, ctx: ApplicationContext):
         log_command(ctx, "next_project_slash")
         await ctx.respond(
             content=self._msg,
