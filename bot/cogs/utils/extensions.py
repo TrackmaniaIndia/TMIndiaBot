@@ -79,7 +79,7 @@ class Extensions(commands.Cog):
         blacklisted = "\n".join(UNLOAD_BLACKLIST & set(extensions))
 
         if blacklisted:
-            log.debug(f"{extension} is blacklisted")
+            log.debug(f"{extensions} is blacklisted")
             msg = f":x: The following extension(s) may not be unloaded:```\n{blacklisted}```"
         else:
             log.debug("Checking if all extensions should be unloaded")
