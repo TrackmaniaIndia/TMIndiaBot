@@ -29,7 +29,7 @@ class AddBirthday(commands.Cog):
         name="addbirthday",
         description="Adds your birthday to the server list!",
     )
-    async def _add_birthday_slash(
+    async def _add_birthday(
         self,
         ctx: ApplicationContext,
         year: Option(int, "The year you were born!", required=True),
@@ -41,7 +41,7 @@ class AddBirthday(commands.Cog):
         ),
         day: Option(int, "The day you were born on", required=True),
     ):
-        log_command(ctx, "add_birthday_slash")
+        log_command(ctx, "add_birthday")
 
         # Checks
         if day <= 0 or day >= 32:

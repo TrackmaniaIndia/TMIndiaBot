@@ -21,7 +21,7 @@ class CampaignUpdate(commands.Cog):
         name="update_campaign_leaderboards",
         description="Updates the leaderboards for campaigns",
     )
-    async def _update_campaign_leaderboards_slash(
+    async def _update_campaign_leaderboards(
         self,
         ctx: ApplicationContext,
         year: Option(str, "Choose the year", choices=["2020", "2021", "2022"]),
@@ -33,7 +33,7 @@ class CampaignUpdate(commands.Cog):
         ),
     ):
         await ctx.defer()
-        log_command(ctx, "update_campaign_leaderboards_slash")
+        log_command(ctx, "update_campaign_leaderboards")
 
         firstfive = bool(firstfive)
         log.info("Creating Confirmation Prompt")

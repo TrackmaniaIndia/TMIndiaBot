@@ -32,7 +32,7 @@ class SetBirthday(commands.Cog):
         description="Adds your birthday to the server list!",
     )
     @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Bot Testing")
-    async def _set_birthday_slash(
+    async def _set_birthday(
         self,
         ctx: ApplicationContext,
         user: Option(
@@ -49,7 +49,7 @@ class SetBirthday(commands.Cog):
         ),
         day: Option(int, "The day you were born on", required=True),
     ):
-        log_command(ctx, "set_birthday_slash")
+        log_command(ctx, "set_birthday")
 
         # Checks
         if day <= 0 or day >= 32:

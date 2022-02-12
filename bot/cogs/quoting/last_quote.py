@@ -20,21 +20,13 @@ class LastQuote(commands.Cog):
         description="Gets the last quote saved",
     )
     @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)
-    async def _last_quote_slash(self, ctx: ApplicationContext):
-        log_command(ctx, "last_quote_slash")
+    async def _last_quote(self, ctx: ApplicationContext):
+        log_command(ctx, "last_quote")
 
         log.debug("Getting the last quote saved")
         quote_embed = quote_functions.get_last_quote(ctx.guild.id)
 
         await ctx.respond(embed=quote_embed)
-
-    @commands.command(name="lastquote", description="Gets the last quote saved")
-    @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)
-    async def _last_quote(self, ctx: commands.Context):
-        log_command(ctx, "last_quote")
-
-        log.debug("Getting the last quote saved")
-        await ctx.send(embed=quote_functions.get_last_quote(ctx.guild.id))
 
 
 def setup(bot: Bot):

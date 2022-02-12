@@ -26,18 +26,6 @@ class Latency(commands.Cog):
 
         await ctx.respond(embed=embed)
 
-    @commands.command()
-    # @in_whitelist(channels=(Channels.commands_allowed,))
-    async def ping(self, ctx: commands.Context) -> None:
-        discord_ping = f"{self.bot.latency * 1000:.{ROUND_LATENCY}f} ms"
-
-        embed = EZEmbed.create_embed(title="Pong!")
-
-        for desc, latency in zip(DESCRIPTIONS, [discord_ping]):
-            embed.add_field(name=desc, value=latency, inline=False)
-
-        await ctx.send(embed=embed)
-
 
 def setup(bot: Bot) -> None:
     """Load the Latency cog."""

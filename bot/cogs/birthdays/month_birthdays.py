@@ -20,12 +20,12 @@ class MonthBirthdays(commands.Cog):
         name="birthdaysofmonth",
         description="Lists all the birthdays of a specific month saved with the bot!",
     )
-    async def _month_birthdays_slash(
+    async def _month_birthdays(
         self,
         ctx: ApplicationContext,
         month: Option(str, "The month", choices=constants.Consts.months, required=True),
     ):
-        log_command(ctx, "month_birthdays_slash")
+        log_command(ctx, "month_birthdays")
 
         birthdays_embeds = Birthday.month_birthdays(
             month=constants.Consts.months.index(month)
@@ -43,35 +43,6 @@ class MonthBirthdays(commands.Cog):
 
             log.debug("Responding with birthdays paginator")
             await birthdays_paginator.respond(ctx.interaction, ephemeral=True)
-            log.debug("Birthdays paginator finished")
-
-    @commands.command(
-        name="birthdaysofmonth",
-        description="Lists all the birthdays of a specific month saved with the bot!",
-    )
-    async def _month_birthdays(self, ctx: commands.Context, month: str):
-        log_command(ctx, "month_birthdays")
-
-        try:
-            birthdays_embeds = Birthday.month_birthdays(
-                month=constants.Consts.months.index(month)
-            )
-        except ValueError as invalid_month:
-            raise commands.BadArgument("Invalid Month") from invalid_month
-
-        if birthdays_embeds is None:
-            await ctx.send(
-                f"That month does not have any birthdays -> {month}\nIf this message is wrong please use the `addbirthday` slash command to add your birthday"
-            )
-
-        elif len(birthdays_embeds) == 1:
-            await ctx.send(embed=birthdays_embeds[0])
-        else:
-            log.debug("Creating birthdays paginator")
-            birthdays_paginator = Paginator(pages=birthdays_embeds)
-
-            log.debug("Sending birthdays paginator")
-            await birthdays_paginator.send(ctx)
             log.debug("Birthdays paginator finished")
 
 

@@ -16,14 +16,9 @@ class BotVersion(commands.Cog):
         name="version",
         description="Get the Bot Version",
     )
-    async def _version_slash(self, ctx: ApplicationContext):
-        log_command(ctx, "version_slash")
-        await ctx.respond(f"Bot version is {self._version}", ephemeral=True)
-
-    @commands.command(name="version", help="Gets the bot version")
-    async def _version(self, ctx: commands.Context):
+    async def _version(self, ctx: ApplicationContext):
         log_command(ctx, "version")
-        await ctx.send(f"Bot version is {self._version}")
+        await ctx.respond(f"Bot version is {self._version}", ephemeral=True)
 
 
 def setup(bot: Bot) -> None:

@@ -25,23 +25,12 @@ class GetNextProject(commands.Cog):
         name="nextproject",
         description="Gives a link for the next TMIBot Project",
     )
-    async def _next_project_slash(self, ctx: ApplicationContext):
-        log_command(ctx, "next_project_slash")
+    async def _next_project(self, ctx: ApplicationContext):
+        log_command(ctx, "next_project")
         await ctx.respond(
             content=self._msg,
             view=ViewAdder([self._next_project_button]),
             ephemeral=True,
-        )
-
-    @commands.command(
-        name="nextproject",
-        description="Gives a link for the next TMIBot Project",
-    )
-    async def _next_project(self, ctx: commands.Context):
-        log_command(ctx, "next_project")
-        await ctx.send(
-            content=self._msg,
-            view=ViewAdder([self._next_project_button]),
         )
 
 
