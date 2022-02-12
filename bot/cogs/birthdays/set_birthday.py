@@ -31,7 +31,7 @@ class SetBirthday(commands.Cog):
         name="setbirthday",
         description="Adds your birthday to the server list!",
     )
-    @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Developer")
+    @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Bot Testing")
     async def _set_birthday_slash(
         self,
         ctx: ApplicationContext,

@@ -22,7 +22,7 @@ class SaveQuote(commands.Cog):
         description="Saves a Quote, Only Usable by Mods",
         default_permissions=False,
     )
-    @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Developer")
+    @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Bot Testing")
     async def _save_quote_slash(
         self,
         ctx: ApplicationContext,
