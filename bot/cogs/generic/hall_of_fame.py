@@ -25,23 +25,12 @@ class GetHallOfFame(commands.Cog):
         name="halloffame",
         description="Gives a link for the TMI Hall of Fame",
     )
-    async def _hall_of_fame_slash(self, ctx: ApplicationContext):
-        log_command(ctx, "hall_of_fame_slash")
+    async def _hall_of_fame(self, ctx: ApplicationContext):
+        log_command(ctx, "hall_of_fame")
         await ctx.respond(
             content=self._msg,
             view=ViewAdder([self._hall_of_fame_button]),
             ephemeral=True,
-        )
-
-    @commands.command(
-        name="halloffame",
-        description="Gives a link for the TMI Hall of Fame",
-    )
-    async def _hall_of_fame(self, ctx: commands.Context):
-        log_command(ctx, "hall_of_fame")
-        await ctx.send(
-            content=self._msg,
-            view=ViewAdder([self._hall_of_fame_button]),
         )
 
 

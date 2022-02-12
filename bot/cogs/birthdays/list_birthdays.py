@@ -29,11 +29,11 @@ class ListBirthdays(commands.Cog):
         name="listbirthdays",
         description="Lists all the birthdays saved with the bot!",
     )
-    async def _list_birthdays_slash(
+    async def _list_birthdays(
         self,
         ctx: ApplicationContext,
     ):
-        log_command(ctx, "list_birthdays_slash")
+        log_command(ctx, "list_birthdays")
 
         log.debug("Getting Birthdays Embeds")
         birthdays_embeds = Birthday.list_birthdays()
@@ -47,25 +47,6 @@ class ListBirthdays(commands.Cog):
             birthdays_paginator = Paginator(pages=birthdays_embeds)
 
             await birthdays_paginator.respond(ctx.interaction, ephemeral=True)
-
-    @commands.command(
-        name="listbirthdays", description="Lists all the birthdays saved with the bot!"
-    )
-    async def _list_birthdays(self, ctx: commands.Context):
-        log_command(ctx, "list_birthdays")
-
-        log.debug("Getting Birthdays Embeds")
-        birthdays_embeds = Birthday.list_birthdays()
-        log.debug("Got Birthdays Embeds")
-
-        if len(birthdays_embeds) == 1:
-            log.debug("There is only 1 Page")
-            await ctx.send(embed=birthdays_embeds[0])
-        else:
-            log.debug("There are multiple pages, creating Paginator")
-            birthdays_paginator = Paginator(pages=birthdays_embeds)
-
-            await birthdays_paginator.send(ctx)
 
 
 def setup(bot: Bot):

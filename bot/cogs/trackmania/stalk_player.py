@@ -17,12 +17,12 @@ class StalkPlayer(commands.Cog):
 
     @commands.slash_command(guild_ids=constants.Bot.default_guilds, name="stalkplayer")
     @permissions.has_any_role("TSCC", "Moderator", "Admin", "Bot Testing")
-    async def _stalk_player_slash(
+    async def _stalk_player(
         self,
         ctx: ApplicationContext,
         username: Option(str, "The username of the player", required=True),
     ):
-        log_command(ctx, "stalk_player_slash")
+        log_command(ctx, "stalk_player")
 
         # Check if the Username is in the top 500 for any maps in the TSCC Map
         # Pool

@@ -19,7 +19,7 @@ class TimeSince(commands.Cog):
         name="timesince",
         description="time since a specific date",
     )
-    async def _time_since_slash(
+    async def _time_since(
         self,
         ctx: ApplicationContext,
         year: Option(int, "The year", required=True),

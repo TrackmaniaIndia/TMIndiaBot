@@ -25,23 +25,12 @@ class GetCommandList(commands.Cog):
         name="commandlist",
         description="Gives a link for the TMIBot Command List",
     )
-    async def _command_list_slash(self, ctx: ApplicationContext):
-        log_command(ctx, "command_list_slash")
+    async def _command_list(self, ctx: ApplicationContext):
+        log_command(ctx, "command_list")
         await ctx.respond(
             content=self._msg,
             view=ViewAdder([self._command_list_button]),
             ephemeral=True,
-        )
-
-    @commands.command(
-        name="commandlist",
-        description="Gives a link for the TMIBot Command List",
-    )
-    async def _command_list(self, ctx: commands.Context):
-        log_command(ctx, "command_list")
-        await ctx.send(
-            content=self._msg,
-            view=ViewAdder([self._command_list_button]),
         )
 
 

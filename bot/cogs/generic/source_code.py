@@ -25,24 +25,12 @@ class GetSourceCode(commands.Cog):
         name="sourcecode",
         description="Gives a link for the github source code",
     )
-    async def _source_code_slash(self, ctx: ApplicationContext):
-        log_command(ctx, "source_code_slash")
+    async def _source_code(self, ctx: ApplicationContext):
+        log_command(ctx, "source_code")
         await ctx.respond(
             content=self._msg,
             view=ViewAdder([self._source_code_button]),
             ephemeral=True,
-        )
-
-    @commands.command(
-        name="sourcecode",
-        description="Gives a link for the github source code",
-    )
-    async def _source_code(self, ctx: commands.Context):
-        log_command(ctx, "source_code")
-
-        await ctx.send(
-            content=self._msg,
-            view=ViewAdder([self._source_code_button]),
         )
 
 

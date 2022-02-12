@@ -20,7 +20,7 @@ class CampaignWRs(commands.Cog):
         name="worldrecords",
         description="Gets the world records for campaign maps",
     )
-    async def _world_records_slash(
+    async def _world_records(
         self,
         ctx: ApplicationContext,
         year: Option(
@@ -30,7 +30,7 @@ class CampaignWRs(commands.Cog):
             str, "The season", choices=["Winter", "Spring", "Summer", "Fall"]
         ),
     ):
-        log_command(ctx, "world_records_slash")
+        log_command(ctx, "world_records")
         illegal_combinations = [
             ("2020", "Winter"),
             ("2020", "Spring"),
@@ -46,39 +46,6 @@ class CampaignWRs(commands.Cog):
         maps = Leaderboards.get_world_records(year, season)
         maps_pag = Paginator(pages=maps)
         await maps_pag.respond(ctx.interaction)
-
-    @commands.command(
-        name="worldrecords",
-        description="Gets the world records for campaign maps",
-    )
-    async def _world_records(
-        self,
-        ctx: commands.Context,
-        year: str,
-        season: str,
-    ):
-        log_command(ctx, "world_records")
-        if str(year) not in ("2020", "2021", "2022"):
-            raise commands.BadArgument("Invalid year")
-
-        if season.capitalize() not in ("Winter", "Spring", "Summer", "Fall"):
-            raise commands.BadArgument("Invalid season")
-
-        illegal_combinations = [
-            ("2020", "Winter"),
-            ("2020", "Spring"),
-            ("2022", "Spring"),
-            ("2022", "Summer"),
-            ("2022", "Fall"),
-        ]
-
-        if (year, season.capitalize()) in illegal_combinations:
-            await ctx.send(f"Illegal Combination\nCombination Given: {year} {season}")
-            return
-
-        maps = Leaderboards.get_world_records(year, season)
-        maps_pag = Paginator(pages=maps)
-        await maps_pag.send(ctx)
 
 
 def setup(bot: Bot):

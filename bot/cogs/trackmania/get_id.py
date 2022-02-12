@@ -20,12 +20,12 @@ class GetID(commands.Cog):
         name="getid",
         description="Gets an ID for a specific username",
     )
-    async def _get_id_slash(
+    async def _get_id(
         self,
         ctx: ApplicationContext,
         username: Option(str, "The username of the player", required=True),
     ):
-        log_command(ctx, "get_id_slash")
+        log_command(ctx, "get_id")
 
         await ctx.defer()
 
@@ -45,27 +45,6 @@ class GetID(commands.Cog):
                 description=id if id is not None else "Invalid Username.",
             ),
             ephemeral=True,
-        )
-
-    @commands.command(name="getid", description="Gets an ID for a specific username")
-    async def _get_id(self, ctx: commands.Context, username: str):
-        log_command(ctx, "get_id")
-
-        log.debug(f"Creating TrackmaniaUtil object for {username}")
-        username_obj = TrackmaniaUtils(username)
-        log.debug(f"Created TrackmaniaUtil object for {username}")
-
-        log.info(f"Getting ID for {username}")
-        id = await username_obj.get_id()
-
-        await username_obj.close()
-        del username_obj
-
-        await ctx.send(
-            embed=EZEmbed.create_embed(
-                title=f"Here is the ID for {username}",
-                description=id if id is not None else "Invalid Username Given.",
-            ),
         )
 
 

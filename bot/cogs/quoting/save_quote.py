@@ -23,7 +23,7 @@ class SaveQuote(commands.Cog):
         default_permissions=False,
     )
     @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Bot Testing")
-    async def _save_quote_slash(
+    async def _save_quote(
         self,
         ctx: ApplicationContext,
         *,
@@ -33,7 +33,7 @@ class SaveQuote(commands.Cog):
             str, "The Link to the Message you want to quote", required=True
         ),
     ):
-        log_command(ctx, "save_quote_slash")
+        log_command(ctx, "save_quote")
 
         log.info(f"Saving {message} by {author} from guild {ctx.guild.name}")
 
