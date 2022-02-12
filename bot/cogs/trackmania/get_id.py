@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 
@@ -21,7 +22,7 @@ class GetID(commands.Cog):
     )
     async def _get_id_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         username: Option(str, "The username of the player", required=True),
     ):
         log_command(ctx, "get_id_slash")

@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 
@@ -20,7 +21,7 @@ class TimeSince(commands.Cog):
     )
     async def _time_since_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         year: Option(int, "The year", required=True),
         month: Option(str, "The month", choices=constants.Consts.months, required=True),
         day: Option(int, "The day", required=True),

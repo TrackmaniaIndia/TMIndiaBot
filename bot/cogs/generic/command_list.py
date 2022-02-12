@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.ext import commands
 
 from bot import constants
@@ -24,7 +25,7 @@ class GetCommandList(commands.Cog):
         name="commandlist",
         description="Gives a link for the TMIBot Command List",
     )
-    async def _command_list_slash(self, ctx: commands.Context):
+    async def _command_list_slash(self, ctx: ApplicationContext):
         log_command(ctx, "command_list_slash")
         await ctx.respond(
             content=self._msg,

@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.ext import commands
 
 from bot import constants
@@ -18,7 +19,7 @@ class TOTD(commands.Cog):
         guild_ids=constants.Bot.default_guilds, name="totd", description="Latest TOTD"
     )
     @discord.ext.commands.cooldown(1, 30, commands.BucketType.guild)
-    async def _totd_slash(self, ctx: commands.Context):
+    async def _totd_slash(self, ctx: ApplicationContext):
         log_command(ctx, "totd_slash")
 
         log.debug("Deferring Response")

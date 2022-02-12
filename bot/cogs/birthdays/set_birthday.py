@@ -2,6 +2,7 @@ import json
 import os
 
 import discord
+from discord import ApplicationContext
 from discord.commands import Option, permissions
 from discord.ext import commands
 
@@ -33,7 +34,7 @@ class SetBirthday(commands.Cog):
     @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Developer")
     async def _set_birthday_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         user: Option(
             discord.User,
             description="The user you want to set the birthday for",

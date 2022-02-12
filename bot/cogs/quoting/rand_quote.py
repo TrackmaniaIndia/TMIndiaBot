@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.ext import commands
 
 import bot.utils.quote as quote_functions
@@ -19,7 +20,7 @@ class RandomQuote(commands.Cog):
         description="Gets a random saved quote",
     )
     @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)
-    async def _rand_quote_slash(self, ctx: commands.Context):
+    async def _rand_quote_slash(self, ctx: ApplicationContext):
         log_command(ctx, "rand_quote_slash")
 
         log.debug("Getting a random quote")

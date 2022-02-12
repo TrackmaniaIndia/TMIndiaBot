@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
@@ -21,7 +22,7 @@ class CampaignWRs(commands.Cog):
     )
     async def _world_records_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         year: Option(
             str, description="Year of Season", choices=["2020", "2021", "2022"]
         ),

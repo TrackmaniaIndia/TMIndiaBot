@@ -1,3 +1,4 @@
+from discord import ApplicationContext
 from discord.commands import Option, permissions
 from discord.ext import commands
 
@@ -24,7 +25,7 @@ class SaveQuote(commands.Cog):
     @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Developer")
     async def _save_quote_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         *,
         message: Option(str, "Message to Quote", required=True),
         author: Option(str, "The author of the message", required=True),

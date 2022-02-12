@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.ext import commands
 
 import bot.utils.quote as quote_functions
@@ -19,7 +20,7 @@ class LastQuote(commands.Cog):
         description="Gets the last quote saved",
     )
     @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)
-    async def _last_quote_slash(self, ctx: commands.Context):
+    async def _last_quote_slash(self, ctx: ApplicationContext):
         log_command(ctx, "last_quote_slash")
 
         log.debug("Getting the last quote saved")

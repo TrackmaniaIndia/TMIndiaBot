@@ -1,4 +1,5 @@
 import discord
+from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
@@ -25,7 +26,7 @@ class PlayerDetails(commands.Cog):
     @discord.ext.commands.cooldown(1, 15, commands.BucketType.guild)
     async def _player_details_slash(
         self,
-        ctx: commands.Context,
+        ctx: ApplicationContext,
         username: Option(str, "The username of the player", required=True),
     ):
         log_command(ctx, "player_details_slash")
