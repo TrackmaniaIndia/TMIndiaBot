@@ -15,7 +15,7 @@ class StalkPlayer(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(guild_ids=constants.Bot.default_guilds, name="stalkplayer")
-    @permissions.has_any_role("TSCC", "Moderator", "Admin", "Developer")
+    @permissions.has_any_role("TSCC", "Moderator", "Admin", "Bot Testing")
     async def _stalk_player_slash(
         self,
         ctx: commands.Context,
