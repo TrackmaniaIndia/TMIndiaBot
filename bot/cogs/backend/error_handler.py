@@ -115,7 +115,7 @@ class ErrorHandler(Cog):
 
         log.debug("Sending Error Message to the Channel")
         error_channel = self.bot.get_channel(Channels.error_channel)
-        await error_channel.sened(debug_message)
+        await error_channel.send(debug_message)
         await error_channel.send(e)
 
     async def handle_user_input_error(
