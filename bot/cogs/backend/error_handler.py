@@ -116,7 +116,7 @@ class ErrorHandler(Cog):
         log.debug("Sending Error Message to the Channel")
         error_channel = self.bot.get_channel(Channels.error_channel)
 
-        error_embed = EZEmbed.create(description=debug_message)
+        error_embed = EZEmbed.create_embed(description=debug_message)
         error_embed.add_field(name="Requestor", value=ctx.author.name, inline=False)
         error_embed.add_field(name="Guild", value=ctx.guild.name, inline=False)
         error_embed.add_field(name="Channel", value=ctx.channel.name, inline=False)
