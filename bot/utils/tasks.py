@@ -122,7 +122,7 @@ async def today_totd(bot: Bot):
         download_link,
         tmio_link,
         tmx_link,
-    ) = await TOTDUtils.today()
+    ) = await TOTDUtils.today(task_call=True)
     log.info("Got Information, Sending Response")
 
     log.info("Creating Buttons to Add")
