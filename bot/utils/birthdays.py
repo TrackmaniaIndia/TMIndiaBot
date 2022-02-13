@@ -201,6 +201,23 @@ class Birthday:
         return False
 
     @staticmethod
+    def user_birthday(id: int) -> discord.Embed | str:
+        log.debug("Getting Birthday list")
+        with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+            birthday_list: list = json.load(file)["birthdays"]
+
+            log.debug("Looping through birthday list")
+            for _, birthday in enumerate(birthday_list):
+                if int(birthday["ID"]) == id:
+                    log.debug("This user has a birthday saved")
+                    return EZEmbed.create_embed(
+                        description=Birthday.__format_birthday(birthday)
+                    )
+
+            log.debug("This user does not have a birthday saved")
+            return "This user does not have a birthday saved!\nAsk him to save the birthday by using the `/addbirthday` command"
+
+    @staticmethod
     def _sort_birthdays(birthdays: list) -> list:
         return Birthday.__append_birthdays(Birthday.__split_birthdays(birthdays))
 
@@ -316,3 +333,29 @@ class Birthday:
             birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` **TODAY!!**\n\n"
 
         return birthdays_str
+
+    @staticmethod
+    def __format_birthday(birthday: dict) -> str:
+        MONTHS: list = constants.Consts.months
+
+        birthday_str = ""
+        log.debug(f"Adding {birthday['Name']} to the string")
+        year = int(datetime.now().date().strftime("%Y"))
+
+        t1 = Commons.timestamp()
+        t2 = Commons.timestamp_date(
+            year=year, month=MONTHS.index(birthday["month"]) + 1, day=birthday["Day"]
+        )
+
+        age = year - int(birthday["Year"])
+
+        if t2 - t1 <= 0:
+            log.debug("Birthday has passed, adding one year to t2 timestamp")
+            t2 += 31536000
+            age += 1
+
+        # Removing +530 IST Offset
+        t2 -= 19800
+
+        birthday_str += f"**Name:** {birthday['Name']}#{birthday['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(birthday['Day'])} {birthday['Month']}\nTurning `{age}` **TODAY!!**\n\n"
+        return birthday_str
