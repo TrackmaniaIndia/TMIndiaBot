@@ -18,7 +18,7 @@ log = get_logger(__name__)
 
 class TOTDUtils:
     @staticmethod
-    async def today():
+    async def today(task_call: bool = False):
         log.debug("Checking if TOTD Data has already been saved for today")
         todays_day = datetime.now(timezone(timedelta(hours=5, minutes=30))).strftime(
             "%d"
@@ -71,6 +71,9 @@ class TOTDUtils:
         )
 
         log.debug("Parsing TOTD Data")
+
+        if task_call:
+            todays_day += 1
         totd_data = {
             "Map Name": map_name,
             "Author": author_name,
