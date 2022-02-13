@@ -3,7 +3,7 @@ from discord.ext.commands import Cog, Context, errors
 
 from bot.api import ResponseCodeError
 from bot.bot import Bot
-from bot.constants import Colours
+from bot.constants import Channels, Colours
 from bot.log import get_logger
 from bot.utils.checks import ContextCheckFailure
 from bot.utils.discord import EZEmbed
@@ -112,6 +112,11 @@ class ErrorHandler(Cog):
             await ctx.respond(e)
         else:
             log.error(e)
+
+        log.debug("Sending Error Message to the Channel")
+        error_channel = self.bot.get_channel(Channels.error_channel)
+        await error_channel.sened(debug_message)
+        await error_channel.send(e)
 
     async def handle_user_input_error(
         self, ctx: Context, e: errors.UserInputError
