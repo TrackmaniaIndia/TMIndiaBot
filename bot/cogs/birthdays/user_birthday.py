@@ -21,7 +21,12 @@ class UserBirthday(commands.Cog):
     @user_command(guild_ids=constants.Bot.default_guilds, name="User Birthday")
     async def _user_birthday(self, ctx: ApplicationContext, user: User):
         log.debug(f"Getting the birthday of {ctx.author.name}")
-        await ctx.respond(Birthday.user_birthday(user.id), ephemeral=True)
+        birthday_data = Birthday.user_birthday(user.id)
+        await ctx.respond(embed=birthday_data, ephemeral=True)
+        # if isinstance(type(birthday_data), str):
+        #     await ctx.respond(content=birthday_data, ephemeral=True)
+        # else:
+        #     await ctx.respond(embed=birthday_data, ephemeral=True)
 
 
 def setup(bot: Bot):

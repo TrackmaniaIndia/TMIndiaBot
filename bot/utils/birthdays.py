@@ -215,7 +215,9 @@ class Birthday:
                     )
 
             log.debug("This user does not have a birthday saved")
-            return "This user does not have a birthday saved!\nAsk him to save the birthday by using the `/addbirthday` command"
+            return EZEmbed.create_embed(
+                description="This user does not have a birthday saved!\nAsk him to save the birthday by using the `/addbirthday` command"
+            )
 
     @staticmethod
     def _sort_birthdays(birthdays: list) -> list:
@@ -344,7 +346,7 @@ class Birthday:
 
         t1 = Commons.timestamp()
         t2 = Commons.timestamp_date(
-            year=year, month=MONTHS.index(birthday["month"]) + 1, day=birthday["Day"]
+            year=year, month=MONTHS.index(birthday["Month"]) + 1, day=birthday["Day"]
         )
 
         age = year - int(birthday["Year"])
@@ -357,5 +359,5 @@ class Birthday:
         # Removing +530 IST Offset
         t2 -= 19800
 
-        birthday_str += f"**Name:** {birthday['Name']}#{birthday['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(birthday['Day'])} {birthday['Month']}\nTurning `{age}` **TODAY!!**\n\n"
+        birthday_str += f"**Name:** {birthday['Name']}#{birthday['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(birthday['Day'])} {birthday['Month']}\nTurning `{age}` **<t:{t2}:R>**\n\n"
         return birthday_str
