@@ -115,8 +115,13 @@ class ErrorHandler(Cog):
 
         log.debug("Sending Error Message to the Channel")
         error_channel = self.bot.get_channel(Channels.error_channel)
-        await error_channel.send(debug_message)
-        await error_channel.send(e)
+
+        error_embed = EZEmbed.create(description=debug_message)
+        error_embed.add_field(name="Requestor", value=ctx.author.name, inline=False)
+        error_embed.add_field(name="Guild", value=ctx.guild.name, inline=False)
+        error_embed.add_field(name="Channel", value=ctx.channel.name, inline=False)
+        error_embed.add_field(name="Error", value=f"```{e}```", inline=False)
+        await error_channel.send(embed=error_embed)
 
     async def handle_user_input_error(
         self, ctx: Context, e: errors.UserInputError
