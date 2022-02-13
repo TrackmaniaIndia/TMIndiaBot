@@ -5,6 +5,7 @@ import country_converter as coco
 import discord
 import flag
 
+from bot import constants
 from bot.api import APIClient
 from bot.log import get_logger
 from bot.utils.commons import Commons
@@ -472,7 +473,7 @@ class TrackmaniaUtils:
             log.debug("Checking if Player has Twitch")
             twitch_name = meta_data["twitch"]
             player_page.add_field(
-                name="[<:twitch:895250576751853598>] Twitch",
+                name=f"{constants.Emojis.twitch} Twitch",
                 value=f"[{twitch_name}](https://twitch.tv/{twitch_name})",
                 inline=True,
             )
@@ -484,7 +485,7 @@ class TrackmaniaUtils:
             log.debug("Checking if Player has Twitter")
             twitter_name = meta_data["twitter"]
             player_page.add_field(
-                name="[<:twitter:895250587157946388>] Twitter",
+                name=f"{constants.Emojis.twitter} Twitter",
                 value=f"    [{twitter_name}](https://twitter.com/{twitter_name})",
                 inline=True,
             )
@@ -496,7 +497,7 @@ class TrackmaniaUtils:
             log.debug("Checking if Player has YouTube")
             youtube_link = meta_data["youtube"]
             player_page.add_field(
-                name="[<:youtube:895250572599513138>] YouTube",
+                name=f"{constants.Emojis.youtube} YouTube",
                 value=f"[YouTube](https://youtube.com/channel/{youtube_link})",
                 inline=True,
             )
@@ -508,7 +509,7 @@ class TrackmaniaUtils:
         display_name = raw_player_data["displayname"]
         player_id = raw_player_data["accountid"]
         player_page.add_field(
-            name="TMIO",
+            name=f"{constants.Emojis.tmio} TMIO",
             value=f"[{display_name}](https://trackmania.io/#/player/{player_id})",
         )
 
