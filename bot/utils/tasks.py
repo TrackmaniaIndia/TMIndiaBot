@@ -63,7 +63,7 @@ async def totd_image_deleter(bot: Bot):
 
 
 @tasks.loop(
-    time=datetime.time(hour=8, minute=56, second=30, tzinfo=datetime.timezone.utc)
+    time=datetime.time(hour=1, minute=30, second=0, tzinfo=datetime.timezone.utc)
 )
 async def todays_birthday(bot: Bot):
     log.info("Starting Todays Birthday Task")
