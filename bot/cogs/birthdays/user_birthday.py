@@ -1,10 +1,6 @@
-import json
-import os
-
-from discord import ApplicationContext, User
-from discord.commands import user_command
+from discord import ApplicationContext, User, slash_command
+from discord.commands import slash_command, user_command
 from discord.ext import commands
-from discord.ext.pages import Paginator
 
 from bot import constants
 from bot.bot import Bot
@@ -20,6 +16,7 @@ class UserBirthday(commands.Cog):
 
     @user_command(guild_ids=constants.Bot.default_guilds, name="User Birthday")
     async def _user_birthday(self, ctx: ApplicationContext, user: User):
+        log_command(ctx, "user_birthday")
         log.debug(f"Getting the birthday of {ctx.author.name}")
         birthday_data = Birthday.user_birthday(user.id)
         await ctx.respond(embed=birthday_data, ephemeral=True)
@@ -27,6 +24,13 @@ class UserBirthday(commands.Cog):
         #     await ctx.respond(content=birthday_data, ephemeral=True)
         # else:
         #     await ctx.respond(embed=birthday_data, ephemeral=True)
+
+    @slash_command(guild_ids=constants.Bot.default_guilds, name="user_birthday")
+    async def _user_birthday_slash(self, ctx: ApplicationContext, user: User):
+        log_command(ctx, "user_birthday_slash")
+        log.debug(f"Getting the birthday of {ctx.author.name}")
+        birthday_data = Birthday.user_birthday(user.id)
+        await ctx.respond(embed=birthday_data, ephemeral=True)
 
 
 def setup(bot: Bot):
