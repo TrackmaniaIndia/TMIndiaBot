@@ -1,10 +1,6 @@
-import json
-import os
-
 from discord import ApplicationContext, User, slash_command
 from discord.commands import slash_command, user_command
 from discord.ext import commands
-from discord.ext.pages import Paginator
 
 from bot import constants
 from bot.bot import Bot
