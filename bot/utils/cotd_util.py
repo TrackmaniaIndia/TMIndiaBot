@@ -73,7 +73,7 @@ class TOTDUtils:
         log.debug("Parsing TOTD Data")
 
         if task_call:
-            todays_day += 1
+            todays_day = int(todays_day) + 1
         totd_data = {
             "Map Name": map_name,
             "Author": author_name,
