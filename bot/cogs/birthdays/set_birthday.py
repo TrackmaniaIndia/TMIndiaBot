@@ -73,7 +73,7 @@ class SetBirthday(commands.Cog):
             log.error("Invalid Year (>2022, <1970)")
             await ctx.respond("When the fuck were you born", ephemeral=True)
             return
-        if (constants.Consts.months.index(month) + 1) % 2 == 1 and day == 31:
+        if (constants.Consts.months.index(month)) % 2 == 1 and day == 31:
             log.error("31 days in a month that does not have 31 days")
             await ctx.respond(f"{month} does not have 31 Days", ephemeral=True)
             return
