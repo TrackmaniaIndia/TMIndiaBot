@@ -42,7 +42,7 @@ class Scheduler:
         If a task with `task_id` already exists, close `coroutine` instead of scheduling it. This
         prevents unawaited coroutine warnings. Don't pass a coroutine that'll be re-used elsewhere.
         """
-        self._log.trace(f"Scheduling task #{task_id}...")
+        self._log.debug(f"Scheduling task #{task_id}...")
 
         msg = f"Cannot schedule an already started coroutine for #{task_id}"
         assert inspect.getcoroutinestate(coroutine) == "CORO_CREATED", msg
@@ -94,7 +94,7 @@ class Scheduler:
 
     def cancel(self, task_id: t.Hashable) -> None:
         """Unschedule the task identified by `task_id`. Log a warning if the task doesn't exist."""
-        self._log.trace(f"Cancelling task #{task_id}...")
+        self._log.debug(f"Cancelling task #{task_id}...")
 
         try:
             task = self._scheduled_tasks.pop(task_id)
@@ -117,14 +117,14 @@ class Scheduler:
     ) -> None:
         """Await `coroutine` after the given `delay` number of seconds."""
         try:
-            self._log.trace(
+            self._log.debug(
                 f"Waiting {delay} seconds before awaiting coroutine for #{task_id}."
             )
             await asyncio.sleep(delay)
 
             # Use asyncio.shield to prevent the coroutine from cancelling
             # itself.
-            self._log.trace(f"Done waiting for #{task_id}; now awaiting the coroutine.")
+            self._log.debug(f"Done waiting for #{task_id}; now awaiting the coroutine.")
             await asyncio.shield(coroutine)
         finally:
             # Close it to prevent unawaited coroutine warnings,
@@ -146,7 +146,7 @@ class Scheduler:
         If `done_task` and the task associated with `task_id` are different, then the latter
         will not be deleted. In this case, a new task was likely rescheduled with the same ID.
         """
-        self._log.trace(
+        self._log.debug(
             f"Performing done callback for task #{task_id} {id(done_task)}."
         )
 
@@ -156,7 +156,7 @@ class Scheduler:
             # A task for the ID exists and is the same as the done task.
             # Since this is the done callback, the task is already done so no
             # need to cancel it.
-            self._log.trace(f"Deleting task #{task_id} {id(done_task)}.")
+            self._log.debug(f"Deleting task #{task_id} {id(done_task)}.")
             del self._scheduled_tasks[task_id]
         elif scheduled_task:
             # A new task was likely rescheduled with the same ID.
