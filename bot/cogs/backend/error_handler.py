@@ -110,6 +110,7 @@ class ErrorHandler(Cog):
         if isinstance(e, errors.CommandOnCooldown):
             log.debug(debug_message)
             await ctx.respond(e)
+            return
         else:
             log.error(e)
 
