@@ -142,17 +142,17 @@ class TrackmaniaUtils:
             f"http://localhost:3000/tm2020/player/{user_id}/cotd"
         )
 
-        # try:
-        if cotd_data["error"] == "Player has never played COTD":
-            log.critical(f"{self.username} has never played a cotd")
-            return (
-                EZEmbed.create_embed(
-                    title="This player has never played a COTD", color=0xFF0000
-                ),
-                None,
-            )
-        # except BaseException:
-        #     pass
+        try:
+            if cotd_data["error"] == "Player has never played COTD":
+                log.critical(f"{self.username} has never played a cotd")
+                return (
+                    EZEmbed.create_embed(
+                        title="This player has never played a COTD", color=0xFF0000
+                    ),
+                    None,
+                )
+        except Exception:
+            pass
 
         log.debug("Parsing Best Rank Overall Data")
         best_rank_overall = COTDUtil.get_best_rank_overall(cotd_data)
