@@ -73,7 +73,9 @@ def setup() -> None:
 
     root_log.setLevel(logging.DEBUG if constants.DEBUG_MODE else logging.INFO)
     get_logger("discord").setLevel(logging.WARNING)
-
+    get_logger("trackmania").setLevel(
+        logging.DEBUG if constants.DEBUG_MODE else logging.INFO
+    )
     get_logger("asyncio").setLevel(logging.INFO)
 
 
