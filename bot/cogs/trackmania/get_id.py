@@ -1,6 +1,7 @@
 from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
+from trackmania import Player
 
 from bot import constants
 from bot.bot import Bot
@@ -29,15 +30,8 @@ class GetID(commands.Cog):
 
         await ctx.defer()
 
-        log.debug(f"Creating TrackmaniaUtil object for {username}")
-        username_obj = TrackmaniaUtils(username)
-        log.debug(f"Created TrackmaniaUtil object for {username}")
-
         log.info(f"Getting ID for {username}")
-        id = await username_obj.get_id()
-
-        await username_obj.close()
-        del username_obj
+        id = await Player.get_id(username)
 
         await ctx.respond(
             embed=EZEmbed.create_embed(

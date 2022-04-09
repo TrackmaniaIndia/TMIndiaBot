@@ -4,6 +4,7 @@ import typing
 import country_converter as coco
 import discord
 import flag
+from trackmania import Player
 
 from bot import constants
 from bot.api import APIClient
@@ -37,28 +38,7 @@ class TrackmaniaUtils:
         Returns:
                 str: The ID of the player
         """
-        log.debug("Checking if the ID is in the file")
-        id = Database.retrieve_id(self.username)
-
-        if id is None:
-            log.debug("Getting the data from the TMIndiaBotAPI")
-            id_data = await self.api_client.get(
-                f"http://localhost:3000/tm2020/player/{self.username}/id",
-                raise_for_status=False,
-            )
-
-            try:
-                id = id_data["id"]
-            except KeyError:
-                id = None
-
-            log.debug("Storing the Username and ID to the file")
-            Database.store_id(self.username, id)
-
-        else:
-            log.debug("Username exists in file")
-
-        return id
+        return await Player.get_id(self.username)
 
     async def get_player_data(
         self, player_id: str

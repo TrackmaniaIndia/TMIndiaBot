@@ -28,8 +28,9 @@ def get_logger(name: Optional[str] = None) -> Logger:
 def setup() -> None:
     """Setup Loggers."""
     root_log = get_logger()
+    pytmio_log = logging.getLogger("trackmania")
 
-    format_string = "%(asctime)s [%(levelname)s] - [%(filename)s > %(funcName)s() > %(lineno)s] - %(message)s"
+    format_string = "%(asctime)s [%(levelname)s] - [%(name)s > %(filename)s > %(funcName)s() > %(lineno)s] - %(message)s"
     datefmt = "%H:%M:%S"
     log_format = logging.Formatter(format_string)
 
@@ -71,12 +72,19 @@ def setup() -> None:
         field_styles=FIELD_STYLE,
     )
 
-    root_log.setLevel(logging.DEBUG if constants.DEBUG_MODE else logging.INFO)
-    get_logger("discord").setLevel(logging.WARNING)
-    get_logger("trackmania").setLevel(
-        logging.DEBUG if constants.DEBUG_MODE else logging.INFO
+    coloredlogs.install(
+        level=logging.DEBUG if constants.DEBUG_MODE else logging.INFO,
+        logger=pytmio_log,
+        stream=sys.stdout,
+        fmt=format_string,
+        datefmt=datefmt,
+        field_styles=FIELD_STYLE,
     )
+
+    root_log.setLevel(logging.DEBUG if constants.DEBUG_MODE else logging.INFO)
+    get_logger("discord").setLevel(logging.INFO)
     get_logger("asyncio").setLevel(logging.INFO)
+    get_logger("matplotlib").setLevel(logging.INFO)
 
 
 def log_command(ctx: Context, command: str):
