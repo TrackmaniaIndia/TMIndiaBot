@@ -16,8 +16,11 @@ touch config.yaml
 echo "creating bot/utils/node"
 mkdir -p bot/utils/node
 
-echo "cloning TMIndiaBotApi"
-git clone git@github.com:TrackmaniaIndia/TMIndiaBotApi.git bot/utils/node/TMIndiaBotApi
+echo "creating bot/resources/temp"
+mkdir -p bot/resources/temp
+
+echo "creating times_run.txt"
+echo 0 > bot/resources/times_run.txt
 
 echo "cloning TrackmaniaLeaderboard"
 git clone git@github.com:NottCurious/TrackmaniaLeaderboards.git bot/resources/leaderboard
