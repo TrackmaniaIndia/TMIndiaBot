@@ -331,5 +331,6 @@ fabric.properties
 config.yaml
 bot/utils/node/TMIndiaBotApi
 bot/resources/leaderboard
+bot/resources/temp
 
 .python-version

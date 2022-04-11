@@ -4,6 +4,7 @@ import os
 from functools import partial, partialmethod
 
 from discord.ext import commands
+from trackmania import Client
 
 from bot import log, monkey_typing
 
@@ -26,3 +27,5 @@ commands.command = partial(commands.command, cls=monkey_typing.Command)
 commands.GroupMixin.command = partialmethod(
     commands.GroupMixin.command, cls=monkey_typing.Command
 )
+
+Client.USER_AGENT = "TMIndiaBot | NottCurious#4351"
