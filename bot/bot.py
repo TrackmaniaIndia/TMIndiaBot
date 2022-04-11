@@ -58,6 +58,7 @@ class Bot(commands.Bot):
         )
         loop = asyncio.get_event_loop()
         intents = discord.Intents.default()
+        intents.message_content = True
 
         return cls(
             loop=loop,
@@ -79,6 +80,9 @@ class Bot(commands.Bot):
         for extension in extensions:
             log.info("Loading %s", extension)
             self.load_extension(extension)
+
+        # Add Jishaku
+        self.load_extension("jishaku")
 
     def add_cog(self, cog: commands.Cog) -> None:
         """Adds a "cog" to the bot and logs the operation."""
