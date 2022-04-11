@@ -49,6 +49,7 @@ class COTDDetails(commands.Cog):
                     color=discord.Colour.red(),
                 )
             )
+            return
 
         log.debug("Getting COTD Stats")
         cotd_stats = await PlayerCOTD.get_page(player_id, page)

@@ -46,6 +46,7 @@ class PlayerDetails(commands.Cog):
                     color=discord.Colour.red(),
                 )
             )
+            return
 
         log.debug("Getting PlayerData")
         player_data: Player = await Player.get(player_id)
