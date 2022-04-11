@@ -39,6 +39,7 @@ class COTDDetails(commands.Cog):
 
         player_id = await Player.get_id(username)
         page = 0
+        pop_flag = True
 
         if player_id is None:
             log.error(f"Invalid Username was given -> {username} by {ctx.author.name}")
@@ -61,7 +62,7 @@ class COTDDetails(commands.Cog):
         log.debug("Popping COTDs")
         popped, original = COTDDetails.__pop_reruns(cotd_stats.recent_results)
 
-        while len(popped) < 25 and page < 5:
+        while (len(popped) <= 25 and page < 5) or pop_flag:
             page += 1
             cotd_stats_new = await PlayerCOTD.get_page(player_id, page)
 
@@ -70,6 +71,8 @@ class COTDDetails(commands.Cog):
             )
             popped.extend(_new_popped)
             original.extend(_new_original)
+
+            pop_flag = False
 
         if len(popped) > 25:
             popped = popped[:25]
@@ -83,8 +86,8 @@ class COTDDetails(commands.Cog):
         channel = self.bot.get_channel(962961137924726834)
         image_message = await channel.send(
             files=[
-                discord.File("./bot/resources/temp/primary.png"),
                 discord.File("./bot/resources/temp/overall.png"),
+                discord.File("./bot/resources/temp/primary.png"),
             ]
         )
 
@@ -131,12 +134,13 @@ class COTDDetails(commands.Cog):
     @staticmethod
     def __pop_reruns(cotds: List[PlayerCOTDResults]) -> Tuple[List[PlayerCOTDResults]]:
         popped = cotds
+        temp = []
 
         for cotd in popped:
-            if "#1" not in cotd.name:
-                popped.pop(popped.index(cotd))
+            if cotd.name.endswith("#1"):
+                temp.append(popped[popped.index(cotd)])
 
-        return (popped, cotds)
+        return (temp, cotds)
 
     @staticmethod
     def __create_graphs(
