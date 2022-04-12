@@ -1,3 +1,4 @@
+import discord
 from discord import ApplicationContext
 from discord.commands import Option, permissions
 from discord.ext import commands
@@ -47,6 +48,34 @@ class SaveQuote(commands.Cog):
             title=":white_check_mark: Saved",
             description=f'Saved "{message}" by {author} with [Jump!]({message_link})',
             color=Commons.get_random_color(),
+        )
+
+        await ctx.send_followup(embed=embed)
+
+    @commands.message_command(
+        guild_ids=constants.Bot.default_guilds, name="Quote Message"
+    )
+    async def _save_quote_message_cmd(
+        self,
+        ctx: ApplicationContext,
+        message: discord.Message,
+    ):
+        log_command(ctx, "save_quote_message")
+
+        message = message
+        author = message.author
+        message_link = message.jump_url
+        guild_id = ctx.guild.id
+
+        log.debug("Deferring Response")
+        await ctx.defer()
+        log.debug("Deferred Response")
+
+        quote_functions.save(message.content, f"{author.name}", message_link, guild_id)
+
+        embed = EZEmbed.create_embed(
+            title=":white_check_mark: Saved",
+            description=f'Saved "{message.content}" by {author.name} with [Jump!]({message_link})',
         )
 
         await ctx.send_followup(embed=embed)
