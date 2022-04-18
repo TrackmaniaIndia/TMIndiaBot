@@ -131,7 +131,10 @@ class UpdateTrophies(commands.Cog):
                 name="Trophies", value=f"```{tstr}```", inline=False
             )
 
-        channel = self.bot.get_channel(constants.Channels.testing_general)
+        try:
+            channel = self.bot.get_channel(constants.Channels.tm2020)
+        except:
+            channel = self.bot.get_channel(constants.Channels.testing_general)
 
         log.debug("Sending Embed")
         await channel.send(embed=embed_list[0])
