@@ -25,8 +25,9 @@ class UpdateTrophies(commands.Cog):
         log.info("Starting TrophyLeaderboardUpdates loop")
         self._update_trophy_leaderboards.start()
 
-    # @tasks.loop(time=datetime.time(hour=6, minute=13, second=40, tzinfo=datetime.timezone.utc))
-    @tasks.loop(minutes=30)
+    @tasks.loop(
+        time=datetime.time(hour=18, minute=30, second=0, tzinfo=datetime.timezone.utc)
+    )
     async def _update_trophy_leaderboards(self):
         log.info("Updating Trophy Leaderboards")
 
@@ -39,7 +40,7 @@ class UpdateTrophies(commands.Cog):
         for player in trophy_tracking.get("tracking"):
             player_ids.append(player.get("player_id"))
 
-        if len(player_ids) > 15:
+        if len(player_ids) > 10:
             sleep_time = 7.5
         else:
             sleep_time = 0
