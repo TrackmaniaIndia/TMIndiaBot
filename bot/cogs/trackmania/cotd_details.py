@@ -1,4 +1,3 @@
-from importlib.resources import files
 from typing import List, Tuple
 
 import discord
@@ -12,7 +11,6 @@ from trackmania import BestCOTDStats, Player, PlayerCOTD, PlayerCOTDResults
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
@@ -113,6 +111,10 @@ class COTDDetails(commands.Cog):
         page_one.add_field(name="Total Played", value=cotd_stats.total, inline=False)
         page_two.add_field(name="Total Played", value=cotd_stats.total, inline=False)
 
+        average_data = COTDDetails.__create_avg_data_str(cotd_stats)
+        page_one.add_field(name="Average Stats", value=average_data, inline=False)
+        page_two.add_field(name="Average Stats", value=average_data, inline=False)
+
         log.debug("Adding Best Stats")
         page_one = COTDDetails.__parse_best_stats(
             page_one, cotd_stats.stats.best_overall
@@ -192,6 +194,14 @@ class COTDDetails(commands.Cog):
 
             log.debug(f"{loop_tuple[i][2]} -> saving the Plot")
             plt.savefig(f"./bot/resources/temp/" + loop_tuple[i][3])
+
+    @staticmethod
+    def __create_avg_data_str(data: PlayerCOTD) -> str:
+        average_rank = round(data.stats.average_rank, 4) * 100
+        average_div = round(data.stats.average_div, 2)
+        average_div_rank = round(data.stats.average_div_rank, 4) * 100
+
+        return f"```Average Rank -> {average_rank}\nAverage Division -> {average_div}\nAverage Division Rank -> {average_div_rank}```"
 
 
 def setup(bot: Bot):
