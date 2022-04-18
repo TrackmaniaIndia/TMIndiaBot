@@ -5,12 +5,11 @@ from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
-from trackmania import Player, PlayerMatchmaking, PlayerMetaInfo
+from trackmania import Player, PlayerMetaInfo, PlayerZone
 
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
@@ -49,7 +48,7 @@ class PlayerDetails(commands.Cog):
             return
 
         log.debug("Getting PlayerData")
-        player_data: Player = await Player.get(player_id)
+        player_data: Player = await Player.get_player(player_id)
 
         log.debug("Creating Pages")
         pages = PlayerDetails.__create_pages(player_data)
@@ -69,34 +68,13 @@ class PlayerDetails(commands.Cog):
         display_name = player_data.name
 
         log.debug("Creating Strings to Use in the Pages.")
-        zone_str = ""
+        zone_str = PlayerZone.to_string(player_data.zone)
 
-        try:
-            for zone in player_data.zone:
-                zone_str = zone_str + zone.zone + " - " + zone.rank + "\n"
-        except TypeError:
-            return "This player has never played Trackmania 2020 Before."
+        log.debug("Getting Trophies String")
+        trophy_str = str(player_data.trophies)
 
-        trophy_str = ""
-        for i, trophyd in enumerate(player_data.trophies.trophies):
-            trophy_str = (
-                trophy_str + f"T{i + 1} - " + Commons.add_commas(trophyd) + "\n"
-            )
-
-        trophy_str = (
-            trophy_str + f"\n{Commons.add_commas(player_data.trophies.score())}"
-        )
-
-        matchmaking_str = (
-            "No 3v3 Data Available"
-            if player_data.m3v3_data is None
-            else PlayerDetails.__parse_mm(player_data.m3v3_data)
-        )
-        royal_str = (
-            "No Royal Data Available"
-            if player_data.royal_data is None
-            else PlayerDetails.__parse_mm(player_data.royal_data)
-        )
+        matchmaking_str = str(player_data.m3v3_data)
+        royal_str = str(player_data.royal_data)
 
         log.debug("Creating Embed Pages")
         page_one = EZEmbed.create_embed(f"Player Data for {display_name} - Page 1")
@@ -147,20 +125,6 @@ class PlayerDetails(commands.Cog):
             )
 
         return page
-
-    @staticmethod
-    def __parse_mm(mm_data: PlayerMatchmaking) -> str:
-        log.debug("Parsing Matchmaking Data")
-
-        progression = mm_data.progression
-        progress = mm_data.progress
-        rank = mm_data.rank
-        score = mm_data.score
-        division = mm_data.division
-        division_str = mm_data.division_str
-        max_points = mm_data.max_points
-
-        return f"Progression: {progression}\nProgress: {progress}\nRank: {rank}\nScore: {score}\nDivision: {division_str} - {division}\n\nPoints to Next Division: {max_points + 1}"
 
 
 def setup(bot: Bot):
