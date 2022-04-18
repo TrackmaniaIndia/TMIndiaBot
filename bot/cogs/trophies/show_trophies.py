@@ -39,11 +39,6 @@ class ShowTrophies(commands.Cog):
         with open("./bot/resources/json/trophy_tracking.json", "r") as file:
             trophy_leaderboards = json.load(file)
 
-        log.debug("Creating Embed")
-        embed = EZEmbed.create_embed(
-            title="Trophy Leaderboard for TMI", color=discord.Color.orange()
-        )
-
         split_list = list(
             zip_longest(*(iter(trophy_leaderboards.get("tracking")),) * 10)
         )
@@ -52,13 +47,17 @@ class ShowTrophies(commands.Cog):
             EZEmbed.create_embed(f"Trophy Leaderboard for TMI - Page {i + 1}")
             for i in range(pages_needed)
         ]
-        player_str = ""
+        count = 0
         for j, plist in enumerate(split_list):
-            for i, player in enumerate(plist):
+            player_str = ""
+            for player in plist:
+                if player is None:
+                    break
                 player_str = (
                     player_str
-                    + f"\n{i + 1}. {player.get('username')} - {Commons.add_commas(player.get('score'))}"
+                    + f"\n{count + 1}. {player.get('username')} - {Commons.add_commas(player.get('score'))}"
                 )
+                count += 1
 
             embeds[j].add_field(
                 name="Trophies", value=f"```{player_str}```", inline=False
@@ -66,10 +65,10 @@ class ShowTrophies(commands.Cog):
 
         log.debug("Sending Embed")
         if len(embeds) == 1:
-            await ctx.respond(embed=embed)
+            await ctx.respond(embed=embeds[0])
         else:
             paginator = Paginator(embeds)
-            await paginator.respond(ctx)
+            await paginator.respond(ctx.interaction)
 
 
 def setup(bot: Bot):
