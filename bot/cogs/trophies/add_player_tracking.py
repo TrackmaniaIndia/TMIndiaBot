@@ -62,7 +62,7 @@ class AddPlayerTracking(commands.Cog):
         tracking_data["tracking"].extend(
             [
                 {
-                    "username": username,
+                    "username": player_data.name,
                     "player_id": player_data.player_id,
                     "score": trophy_count,
                 },
