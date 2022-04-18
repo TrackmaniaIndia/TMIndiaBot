@@ -62,6 +62,7 @@ class AddPlayerTracking(commands.Cog):
             [
                 {
                     "username": username,
+                    "player_id": player_data.player_id,
                     "score": trophy_count,
                 },
             ],
