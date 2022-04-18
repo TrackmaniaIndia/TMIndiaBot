@@ -1,6 +1,7 @@
 import json
 from typing import Dict
 
+import discord as discord
 from discord import ApplicationContext, Bot
 from discord.commands import Option, permissions
 from discord.ext import commands
@@ -21,13 +22,16 @@ class RemovePlayerTracking(commands.Cog):
         name="removeplayertracking",
         description="Adds a player to the trophy tracking list",
     )
-    @permissions.has_any_role(
-        "Moderator", "Admin", "Bot Developer", "Bot Testing", "Manager"
+    @discord.has_any_role(
+        805318382441988096, 858620171334057994, guild_id=constants.Guild.tmi_server
+    )
+    @discord.has_any_role(
+        940194181731725373, 941215148222341181, guild_id=constants.Guild.testing_server
     )
     async def _remove_player_tracking(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player to add.", required=True),
+        username: Option(str, "The username of the player to remove.", required=True),
     ):
         log_command(ctx, "remove_player_tracking")
 

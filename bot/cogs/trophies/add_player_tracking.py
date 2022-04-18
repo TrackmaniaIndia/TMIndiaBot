@@ -1,6 +1,7 @@
 import json
 from typing import Dict
 
+import discord
 from discord import ApplicationContext, Bot
 from discord.commands import Option, permissions
 from discord.ext import commands
@@ -21,7 +22,12 @@ class AddPlayerTracking(commands.Cog):
         name="addplayertracking",
         description="Adds a player to the trophy tracking list",
     )
-    @permissions.has_any_role("Moderator", "Admin", "Bot Developer", "Bot Testing")
+    @discord.has_any_role(
+        805318382441988096, 858620171334057994, guild_id=constants.Guild.tmi_server
+    )
+    @discord.has_any_role(
+        940194181731725373, 941215148222341181, guild_id=constants.Guild.testing_server
+    )
     async def _add_player_tracking(
         self,
         ctx: ApplicationContext,
