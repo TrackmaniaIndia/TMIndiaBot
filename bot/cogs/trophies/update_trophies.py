@@ -3,10 +3,7 @@ import datetime
 import json
 from itertools import zip_longest
 
-import discord
-from discord import ApplicationContext, Bot
 from discord.ext import commands, tasks
-from discord.ext.pages import Paginator
 from trackmania import Player
 
 from bot import constants

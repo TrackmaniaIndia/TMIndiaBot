@@ -1,9 +1,8 @@
 import json
-from typing import Dict
 
 import discord
 from discord import ApplicationContext
-from discord.commands import Option, permissions
+from discord.commands import Option
 from discord.ext import commands
 from trackmania import Player
 
@@ -44,6 +43,13 @@ class AddPlayerTracking(commands.Cog):
         if search_result is None:
             await ctx.respond("This player does not exist.")
             return
+
+        log.debug("Sending Message to Mod Logs")
+        mod_logs_channel = self.bot.get_channel(constants.Channels.mod_logs)
+        if mod_logs_channel is not None:
+            await mod_logs_channel.send(
+                content=f"Requestor: {ctx.author} is adding {username} to trophy player tracking."
+            )
 
         player_id = search_result[0].player_id
 

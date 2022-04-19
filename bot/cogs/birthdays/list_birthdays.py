@@ -37,7 +37,6 @@ class ListBirthdays(commands.Cog):
 
         log.debug("Getting Birthdays Embeds")
         birthdays_embeds = Birthday.list_birthdays()
-        log.debug("Got Birthdays Embeds")
 
         if len(birthdays_embeds) == 1:
             log.debug("There is only 1 Page")

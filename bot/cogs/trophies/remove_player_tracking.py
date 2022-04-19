@@ -1,11 +1,9 @@
 import json
-from typing import Dict
 
 import discord as discord
 from discord import ApplicationContext
-from discord.commands import Option, permissions
+from discord.commands import Option
 from discord.ext import commands
-from trackmania import Player
 
 from bot import constants
 from bot.bot import Bot
@@ -37,6 +35,13 @@ class RemovePlayerTracking(commands.Cog):
         log_command(ctx, "remove_player_tracking")
 
         await ctx.defer()
+
+        log.debug("Sending Message to Mod Logs")
+        mod_logs_channel = self.bot.get_channel(constants.Channels.mod_logs)
+        if mod_logs_channel is not None:
+            await mod_logs_channel.send(
+                content=f"Requestor: {ctx.author} is removing {username} from trophy player tracking."
+            )
 
         log.debug("Opening JSON File")
         with open("./bot/resources/json/trophy_tracking.json", "r") as file:
