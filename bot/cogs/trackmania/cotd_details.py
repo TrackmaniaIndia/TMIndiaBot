@@ -52,7 +52,6 @@ class COTDDetails(commands.Cog):
 
         log.debug("Getting COTD Stats")
         cotd_stats = await PlayerCOTD.get_page(player_id, page)
-        log.debug("Got COTD Stats")
 
         log.debug("Creating Pages")
         pages = COTDDetails.__parse_pages(cotd_stats, username)
@@ -96,8 +95,10 @@ class COTDDetails(commands.Cog):
         pages[0].set_image(url=url_one)
         pages[1].set_image(url=url_two)
 
+        log.debug("Sending Paginator")
         paginator = Paginator(pages=pages)
         await paginator.respond(ctx.interaction)
+        log.debug("Paginator Finished")
 
     @staticmethod
     def __parse_pages(cotd_stats: PlayerCOTD, username: str):
@@ -111,6 +112,7 @@ class COTDDetails(commands.Cog):
         page_one.add_field(name="Total Played", value=cotd_stats.total, inline=False)
         page_two.add_field(name="Total Played", value=cotd_stats.total, inline=False)
 
+        log.debug("Adding Average Data")
         average_data = COTDDetails.__create_avg_data_str(cotd_stats)
         page_one.add_field(name="Average Stats", value=average_data, inline=False)
         page_two.add_field(name="Average Stats", value=average_data, inline=False)
@@ -123,10 +125,12 @@ class COTDDetails(commands.Cog):
             page_two, cotd_stats.stats.best_primary
         )
 
+        log.debug("Returning Embed Pages")
         return (page_one, page_two)
 
     @staticmethod
     def __parse_best_stats(page: discord.Embed, stats: BestCOTDStats):
+        log.debug("Parsing Best Stats")
         temp_str = f"Best Division - {stats.best_div}\nBest Division Time Achieved -> {stats.best_div_time}\n\nBest Rank -> {stats.best_rank}\nRank Achieved in Division of Best Rank -> {stats.best_rank_div_rank}\nBest Rank - Time Achieved -> {stats.best_rank_time}\n\nBest Rank in Division -> {stats.best_rank_in_div}\nBest Rank in Division - Division Achived -> {stats.best_rank_in_div_div}\nBest Rank in Division - Time Achieved -> {stats.best_rank_in_div_time}"
 
         page.add_field(name="Best Stats", value=f"```\n{temp_str}\n```")
@@ -140,6 +144,7 @@ class COTDDetails(commands.Cog):
 
         for cotd in popped:
             if cotd.name.endswith("#1"):
+                log.debug("Popping %s", cotd.name)
                 temp.append(popped[popped.index(cotd)])
 
         return (temp, cotds)
@@ -197,6 +202,7 @@ class COTDDetails(commands.Cog):
 
     @staticmethod
     def __create_avg_data_str(data: PlayerCOTD) -> str:
+        log.debug("Creating Average Data String")
         average_rank = round(data.stats.average_rank, 4) * 100
         average_div = round(data.stats.average_div, 2)
         average_div_rank = round(data.stats.average_div_rank, 4) * 100

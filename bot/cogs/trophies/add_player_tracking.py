@@ -45,6 +45,13 @@ class AddPlayerTracking(commands.Cog):
             await ctx.respond("This player does not exist.")
             return
 
+        log.debug("Sending Message to Mod Logs")
+        mod_logs_channel = self.bot.get_channel(constants.Channels.mod_logs)
+        if mod_logs_channel is not None:
+            await mod_logs_channel.send(
+                content=f"Requestor: {ctx.author} is adding {username} to trophy player tracking."
+            )
+
         player_id = search_result[0].player_id
 
         log.debug("Getting Trophy Count of Player")

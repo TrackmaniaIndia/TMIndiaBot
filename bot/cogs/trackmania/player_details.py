@@ -34,6 +34,7 @@ class PlayerDetails(commands.Cog):
 
         await ctx.defer()
 
+        log.debug("Getting Player ID")
         player_id = await Player.get_id(username)
 
         if player_id is None:
@@ -52,15 +53,15 @@ class PlayerDetails(commands.Cog):
 
         log.debug("Creating Pages")
         pages = PlayerDetails.__create_pages(player_data)
-        log.debug("Pages Created")
 
         if isinstance(pages, str):
             await ctx.respond(pages)
             return
 
-        log.debug("Creating Paginator")
+        log.debug("Running Paginator")
         paginator = Paginator(pages)
         await paginator.respond(ctx.interaction)
+        log.debug("Paginator Finished")
 
     @staticmethod
     def __create_pages(player_data: Player) -> List[discord.Embed]:

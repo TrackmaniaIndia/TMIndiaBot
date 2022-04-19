@@ -39,6 +39,7 @@ class OnReady(
         # Changes Precense to the Default Status
         # Default Status is:
         #   Version: VERSION! Online and Ready!
+        log.debug("Changing Presence")
         await self.bot.change_presence(
             status=discord.Status.online,
             activity=discord.Game(
@@ -57,12 +58,10 @@ class OnReady(
         # Starting KeepAlive task
         log.info("Starting KeepAlive")
         keep_alive.start(self.bot)
-        log.info("Started KeepAlive")
 
         # Starting ChangeStatus task
         log.info("Starting ChangeStatus")
         change_status.start(self.bot, self.statuses)
-        log.info("Started ChangeStatus")
 
         # Deleting the TOTD Image if it exists
         if os.path.exists("./bot/resources/temp/totd.png"):
@@ -74,17 +73,14 @@ class OnReady(
         # Starting TOTDImageDeleter
         log.info("Starting TOTDImageDeleter")
         totd_image_deleter.start(self.bot)
-        log.info("Started TOTDImageDeleter")
 
         # Starting BirthdayReminder
         log.info("Starting BirthdayReminder")
         todays_birthday.start(self.bot)
-        log.info("Started BirthdayReminder")
 
         # Starting TOTD Info task
         log.info("Starting TOTD Info")
         today_totd.start(self.bot)
-        log.info("Started TOTD Info")
 
         # Looping Through Announcement Channels
         for announcement_channel in constants.Channels.announcement_channels:

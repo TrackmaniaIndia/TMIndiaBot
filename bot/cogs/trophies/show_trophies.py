@@ -39,6 +39,7 @@ class ShowTrophies(commands.Cog):
         with open("./bot/resources/json/trophy_tracking.json", "r") as file:
             trophy_leaderboards = json.load(file)
 
+        log.debug("Splitting List")
         split_list = list(
             zip_longest(*(iter(trophy_leaderboards.get("tracking")),) * 10)
         )
@@ -48,11 +49,14 @@ class ShowTrophies(commands.Cog):
             for i in range(pages_needed)
         ]
         count = 0
+
+        log.debug("Creating Strings for Embeds")
         for j, plist in enumerate(split_list):
             player_str = ""
             for player in plist:
                 if player is None:
                     break
+                log.debug(player)
                 player_str = (
                     player_str
                     + f"\n{count + 1}. {player.get('username')} - {Commons.add_commas(player.get('score'))}"
