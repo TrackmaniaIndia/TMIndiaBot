@@ -1,13 +1,10 @@
 from contextlib import suppress
-from typing import Optional
 
-from discord import Embed, Forbidden, TextChannel, Thread
+from discord import Forbidden, Thread
 from discord.ext import commands
 
 from bot.bot import Bot
-from bot.constants import Guild
 from bot.log import get_logger
-from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
 

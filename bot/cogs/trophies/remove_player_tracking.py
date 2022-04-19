@@ -1,11 +1,9 @@
 import json
-from typing import Dict
 
 import discord as discord
 from discord import ApplicationContext
-from discord.commands import Option, permissions
+from discord.commands import Option
 from discord.ext import commands
-from trackmania import Player
 
 from bot import constants
 from bot.bot import Bot

@@ -1,13 +1,9 @@
 import json
 from itertools import zip_longest
-from typing import Dict
 
-import discord
 from discord import ApplicationContext
-from discord.commands import Option, permissions
 from discord.ext import commands
 from discord.ext.pages import Paginator
-from trackmania import Player
 
 from bot import constants
 from bot.bot import Bot
