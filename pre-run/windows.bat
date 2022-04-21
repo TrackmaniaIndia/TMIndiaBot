@@ -1,7 +1,5 @@
 @echo off
 
-cd ..
-
 echo creating logs
 mkdir logs
 
