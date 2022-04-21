@@ -3,6 +3,8 @@ import datetime
 import json
 from itertools import zip_longest
 
+import discord
+from discord import ApplicationContext
 from discord.ext import commands, tasks
 from trackmania import Player
 
@@ -26,6 +28,24 @@ class UpdateTrophies(commands.Cog):
         time=datetime.time(hour=18, minute=30, second=0, tzinfo=datetime.timezone.utc)
     )
     async def _update_trophy_leaderboards(self):
+        await self.__update_leaderboards()
+
+    @commands.slash_command(
+        guild_ids=constants.Bot.default_guilds,
+        name="updateandshowleaderboards",
+        description="Updates and shows the trophy leaderboards",
+    )
+    @discord.has_any_role(
+        805318382441988096, 858620171334057994, guild_id=constants.Guild.tmi_server
+    )
+    @discord.has_any_role(
+        940194181731725373, 941215148222341181, guild_id=constants.Guild.testing_server
+    )
+    async def _update_and_show_lbs(self, ctx: ApplicationContext):
+        await ctx.defer()
+        await self.__update_leaderboards(ctx=ctx)
+
+    async def __update_leaderboards(self, ctx: ApplicationContext = None):
         log.info("Updating Trophy Leaderboards")
 
         player_ids = []
@@ -42,10 +62,10 @@ class UpdateTrophies(commands.Cog):
         else:
             sleep_time = 0
 
-        log.debug("Getting all Trophy Data")
+        log.info("Getting all Trophy Data")
         new_player_data = []
         for player_id in player_ids:
-            log.debug(f"Getting Data for {player_id}")
+            log.info(f"Getting Data for {player_id}")
 
             player_data = await Player.get_player(player_id)
             player_name = player_data.name
@@ -73,6 +93,7 @@ class UpdateTrophies(commands.Cog):
         log.debug("Looping through new data and finding displacements")
         for i, old_data in enumerate(trophy_tracking.get("tracking")):
             player_name = old_data.get("username")
+            log.debug("Checking %s", player_name)
 
             for j, new_data in enumerate(new_player_data):
                 if new_data.get("username").lower() == player_name.lower():
@@ -87,7 +108,7 @@ class UpdateTrophies(commands.Cog):
                         }
                     )
 
-        log.warn(displacements)
+        log.debug(displacements)
 
         log.debug("Got Displacements and Ranks")
         split_list = list(zip_longest(*(iter(new_player_data),) * 10))
@@ -127,14 +148,21 @@ class UpdateTrophies(commands.Cog):
             embed_list[j].add_field(
                 name="Trophies", value=f"```{tstr}```", inline=False
             )
+        log.warn(embed_list)
 
         try:
-            channel = self.bot.get_channel(constants.Channels.tm2020)
-        except:
-            channel = self.bot.get_channel(constants.Channels.testing_general)
+            channel = await self.bot.fetch_channel(constants.Channels.tm2020)
+        except discord.errors.Forbidden:
+            channel = await self.bot.fetch_channel(constants.Channels.testing_general)
 
         log.debug("Sending Embed")
-        await channel.send(embed=embed_list[0])
+        if ctx is not None:
+            await ctx.respond(embed=embed_list[0])
+        else:
+            try:
+                await channel.send(embed=embed_list[0])
+            except discord.errors.Forbidden:
+                return
 
         log.debug("Dumping new data to file")
         trophy_tracking["tracking"] = new_player_data
