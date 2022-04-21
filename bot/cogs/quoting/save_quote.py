@@ -47,6 +47,18 @@ class SaveQuote(commands.Cog):
         await ctx.defer()
         log.debug("Deferred Response")
 
+        if ctx.author.id == 901407301175484447:
+            log.info(
+                "%s tried to quote a message by t901407301175484447he bot",
+                ctx.author.name,
+            )
+            await ctx.respond("Cannot quote a message by the Bot")
+            return
+        if ctx.message.content == "":
+            log.info("%s tried to quote an empty message", ctx.author.name)
+            await ctx.respond("Cannot quote an empty string")
+            return
+
         quote_functions.save(message, author, message_link, ctx.guild.id)
 
         embed = EZEmbed.create_embed(
@@ -75,6 +87,18 @@ class SaveQuote(commands.Cog):
         log.debug("Deferring Response")
         await ctx.defer()
         log.debug("Deferred Response")
+
+        if ctx.author.id == 901407301175484447:
+            log.info(
+                "%s tried to quote a message by t901407301175484447he bot",
+                ctx.author.name,
+            )
+            await ctx.respond("Cannot quote a message by the Bot")
+            return
+        if message.content == "":
+            log.info("%s tried to quote an empty message", ctx.author.name)
+            await ctx.respond("Cannot quote an empty string")
+            return
 
         quote_functions.save(message.content, f"{author.name}", message_link, guild_id)
 
