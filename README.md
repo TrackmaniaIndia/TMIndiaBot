@@ -39,7 +39,7 @@ cd TMIndiaBot
 .\pre-run\windows.bat
 
 python -m virtualenv venv
-.\venv\bin\activate
+.\venv\Scripts\activate.bat
 
 pip install -r requirements.txt
 ```
