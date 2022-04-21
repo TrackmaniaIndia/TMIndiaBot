@@ -44,7 +44,7 @@ Pillow==9.1.0
 platformdirs==2.4.1
 pre-commit==2.18.1
 py-cord==2.0.0b7
-py-tmio==0.4.1
+py-tmio==0.4.4
 pycares==4.1.2
 pycln==1.2.5
 pycparser==2.21
