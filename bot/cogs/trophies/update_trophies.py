@@ -148,7 +148,6 @@ class UpdateTrophies(commands.Cog):
             embed_list[j].add_field(
                 name="Trophies", value=f"```{tstr}```", inline=False
             )
-        log.warn(embed_list)
 
         try:
             channel = await self.bot.fetch_channel(constants.Channels.tm2020)
