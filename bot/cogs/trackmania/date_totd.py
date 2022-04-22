@@ -1,11 +1,11 @@
 from datetime import datetime
-from typing import List
+from typing import List, Tuple
 
 import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
-from trackmania import TOTD, TMXMap
+from trackmania import TOTD, InvalidTOTDDate, TMXMap
 
 from bot import constants
 from bot.bot import Bot
@@ -83,7 +83,53 @@ class LatestTOTD(commands.Cog):
         log.debug("Sending Embed")
         await ctx.respond(embed=page, view=ViewAdder(buttons))
 
-    async def __parse_pages(self, totd_data: TOTD) -> List[discord.Embed]:
+    @commands.slash_command(
+        guild_ids=constants.Bot.default_guilds,
+        name="totd",
+        description="Gets the TOTD Data of a certain date.",
+    )
+    async def _totd(
+        self,
+        ctx: ApplicationContext,
+        year: Option(int, description="The year of the TOTD", required=True),
+        month: Option(int, description="The month of the TOTD (1-12)", required=True),
+        day: Option(int, description="The day of the TOTD", required=True),
+    ):
+        log_command(ctx, "totd")
+
+        await ctx.defer()
+
+        log.debug("Doing Initial Basic Checks")
+        if month < 1 or month > 12:
+            await ctx.respond("Invalid Month")
+            return
+        if day < 1 or day > 31:
+            await ctx.respond("Invalid Date")
+            return
+        if year < 2020:
+            await ctx.respond("Invalid year")
+            return
+        log.debug("Passed Initial Basic Checks")
+
+        thedate = datetime(year, month, day)
+        log.debug("Getting TOTD Data for %s", str(thedate))
+
+        try:
+            totd_data = await TOTD.get_totd(thedate)
+        except InvalidTOTDDate:
+            log.error("Invalid Date was given")
+            await ctx.respond("TOTD Not found. Date given %s %s %s", day, month, year)
+            return
+
+        log.debug("Parsing Data")
+        page, buttons = await self.__parse_pages(totd_data)
+
+        log.debug("Sending Embed")
+        await ctx.respond(embed=page, view=ViewAdder(buttons))
+
+    async def __parse_pages(
+        self, totd_data: TOTD
+    ) -> Tuple[discord.Embed, List[discord.ui.Button]]:
         log.debug("Parsing Values")
         map_name = totd_data.map.name
         author_name = totd_data.map.author_name
