@@ -26,7 +26,7 @@ class AddBirthday(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="addbirthday",
+        name="add-birthday",
         description="Adds your birthday to the server list!",
     )
     async def _add_birthday(

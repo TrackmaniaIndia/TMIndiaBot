@@ -25,7 +25,11 @@ class UserBirthday(commands.Cog):
         # else:
         #     await ctx.respond(embed=birthday_data, ephemeral=True)
 
-    @slash_command(guild_ids=constants.Bot.default_guilds, name="user_birthday")
+    @slash_command(
+        guild_ids=constants.Bot.default_guilds,
+        name="user-birthday",
+        description="Gets a player's birthday if it was stored with the bot.",
+    )
     async def _user_birthday_slash(self, ctx: ApplicationContext, user: User):
         log_command(ctx, "user_birthday_slash")
         log.debug(f"Getting the birthday of {ctx.author.name}")

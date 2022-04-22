@@ -16,7 +16,7 @@ class TimeSince(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="timesince",
+        name="time-since",
         description="time since a specific date",
     )
     async def _time_since(

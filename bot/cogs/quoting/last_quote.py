@@ -16,7 +16,7 @@ class LastQuote(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="lastquote",
+        name="last-quote",
         description="Gets the last quote saved",
     )
     @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)

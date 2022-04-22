@@ -28,7 +28,7 @@ class SetBirthday(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="setbirthday",
+        name="set-birthday",
         description="Adds your birthday to the server list!",
     )
     @discord.has_any_role(

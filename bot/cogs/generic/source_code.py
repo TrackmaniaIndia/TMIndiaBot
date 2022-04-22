@@ -22,7 +22,7 @@ class GetSourceCode(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="sourcecode",
+        name="source-code",
         description="Gives a link for the github source code",
     )
     async def _source_code(self, ctx: ApplicationContext):

@@ -20,7 +20,7 @@ class ShowTrophies(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="showtrophies",
+        name="show-trophies",
         description="Shows the current TMI Trophy Leaderboards",
     )
     async def _show_trophy_leaderboards(

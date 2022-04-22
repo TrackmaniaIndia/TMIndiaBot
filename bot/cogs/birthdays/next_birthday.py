@@ -15,7 +15,7 @@ class NextBirthday(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="nextbirthday",
+        name="next-birthday",
         description="Gets the person who's birthday is the closest",
     )
     async def _next_birthday(self, ctx: ApplicationContext):
@@ -23,7 +23,8 @@ class NextBirthday(commands.Cog):
         await ctx.respond(embed=Birthday.next_birthday())
 
     @commands.command(
-        name="nextbirthday", description="Gets the person who's birthday is the closest"
+        name="next-birthday",
+        description="Gets the person who's birthday is the closest",
     )
     async def _next_birthday(self, ctx: commands.Context):
         log_command(ctx, "next_birthday")

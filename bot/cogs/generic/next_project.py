@@ -22,7 +22,7 @@ class GetNextProject(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="nextproject",
+        name="next-project",
         description="Gives a link for the next TMIBot Project",
     )
     async def _next_project(self, ctx: ApplicationContext):

@@ -67,7 +67,7 @@ class LatestTOTD(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="latesttotd",
+        name="latest-totd",
         description="Gets the data about the latest totd",
     )
     async def _latest_totd(self, ctx: ApplicationContext):

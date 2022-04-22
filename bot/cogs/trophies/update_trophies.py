@@ -32,7 +32,7 @@ class UpdateTrophies(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="updateandshowleaderboards",
+        name="update-and-show-leaderboards",
         description="Updates and shows the trophy leaderboards",
     )
     @discord.has_any_role(

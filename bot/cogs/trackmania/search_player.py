@@ -23,7 +23,7 @@ class SearchPlayer(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="searchplayer",
+        name="search-player",
         description="Searches for Players With a Certain username",
     )
     async def _search_player(

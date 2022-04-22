@@ -17,7 +17,7 @@ class GetID(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="getid",
+        name="get-id",
         description="Gets an ID for a specific username",
     )
     async def _get_id(

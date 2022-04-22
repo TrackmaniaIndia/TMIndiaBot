@@ -22,7 +22,7 @@ class COTDDetails(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="cotddetails",
+        name="cotd-details",
         description="Gets the COTD Details of a player along with a graph of the last 25 COTDs",
     )
     @discord.ext.commands.cooldown(1, 15, commands.BucketType.guild)

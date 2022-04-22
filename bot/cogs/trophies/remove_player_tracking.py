@@ -18,7 +18,7 @@ class RemovePlayerTracking(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="removeplayertracking",
+        name="remove-player-tracking",
         description="Adds a player to the trophy tracking list",
     )
     @discord.has_any_role(

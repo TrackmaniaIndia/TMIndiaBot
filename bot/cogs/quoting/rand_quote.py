@@ -16,7 +16,7 @@ class RandomQuote(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="randquote",
+        name="rand-quote",
         description="Gets a random saved quote",
     )
     @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)

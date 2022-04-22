@@ -22,7 +22,7 @@ class GetCommandList(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="commandlist",
+        name="command-list",
         description="Gives a link for the TMIBot Command List",
     )
     async def _command_list(self, ctx: ApplicationContext):

@@ -21,7 +21,7 @@ class PlayerDetails(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="playerdetails",
+        name="player-details",
         description="Gets the player details of a sepcific username",
     )
     @discord.ext.commands.cooldown(1, 15, commands.BucketType.guild)

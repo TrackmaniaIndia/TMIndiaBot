@@ -17,7 +17,7 @@ class RemoveBirthday(commands.Cog):
 
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
-        name="remove_username",
+        name="remove-username",
         description="Remove a user's birthday with their discord id",
     )
     @discord.has_any_role(
