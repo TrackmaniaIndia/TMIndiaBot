@@ -12,7 +12,6 @@ from bot.log import get_logger
 from bot.utils.tasks import (
     change_status,
     keep_alive,
-    today_totd,
     todays_birthday,
     totd_image_deleter,
 )
@@ -28,9 +27,7 @@ class OnReady(
         self.bot = bot
 
         # Adding Statuses
-        log.info("Adding Statuses")
         self.statuses = []
-        log.info("Received Statuses")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -77,10 +74,6 @@ class OnReady(
         # Starting BirthdayReminder
         log.info("Starting BirthdayReminder")
         todays_birthday.start(self.bot)
-
-        # Starting TOTD Info task
-        log.info("Starting TOTD Info")
-        today_totd.start(self.bot)
 
         # Looping Through Announcement Channels
         for announcement_channel in constants.Channels.announcement_channels:

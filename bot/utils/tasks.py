@@ -10,7 +10,6 @@ import bot.utils.birthdays as birthday
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.cotd_util import TOTDUtils
 from bot.utils.discord import ViewAdder
 
 log = get_logger(__name__)
@@ -107,58 +106,6 @@ async def todays_birthday(bot: Bot):
             return
     else:
         log.debug("No birthdays today")
-        return
-
-
-@tasks.loop(
-    time=datetime.time(hour=17, minute=0, second=0, tzinfo=datetime.timezone.utc)
-)
-async def today_totd(bot: Bot):
-    log.info("Getting Today's TOTD Info")
-    log.info("Getting TOTD Information")
-    (
-        totd_embed,
-        image,
-        download_link,
-        tmio_link,
-        tmx_link,
-    ) = await TOTDUtils.today(task_call=True)
-    log.info("Got Information, Sending Response")
-
-    log.info("Creating Buttons to Add")
-    download_map = discord.ui.Button(
-        label="Download Map!", style=discord.ButtonStyle.primary, url=download_link
-    )
-    tmio_button = discord.ui.Button(
-        label="TMIO", style=discord.ButtonStyle.url, url=tmio_link
-    )
-
-    log.debug("Getting the TM2020 Channel")
-    tm2020_channel = bot.get_channel(constants.Channels.tm2020)
-    if tm2020_channel is None:
-        tm2020_channel = bot.get_channel(constants.Channels.testing_general)
-
-    if constants.Bot.totd_info:
-        log.info("Sending the TOTD Embed")
-
-        if tmx_link is not None:
-            tmx_button = discord.ui.Button(
-                label="TMX", style=discord.ButtonStyle.url, url=tmx_link
-            )
-
-            await tm2020_channel.send(
-                file=image,
-                embed=totd_embed,
-                view=ViewAdder([download_map, tmio_button, tmx_button]),
-            )
-        else:
-            await tm2020_channel.send(
-                file=image,
-                embed=totd_embed,
-                view=ViewAdder([download_map, tmio_button]),
-            )
-    else:
-        log.info("TOTD Flag set to false, returning")
         return
 
 
