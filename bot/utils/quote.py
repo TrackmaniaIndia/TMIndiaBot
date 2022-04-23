@@ -4,8 +4,8 @@ import json
 import discord
 import numpy as np
 
+import bot.utils.commons as commons
 from bot.log import get_logger
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
@@ -66,7 +66,7 @@ def _quote_dict_to_embed(quote: dict) -> discord.Embed:
 
     title = f"***Quote #{quote['Number']}***"
     description = f"```\"{quote['Message']}\" - {quote['Author']}```"
-    color = Commons.get_random_color()
+    color = commons.get_random_color()
 
     embed = EZEmbed.create_embed(title=title, description=description, color=color)
     embed.add_field(

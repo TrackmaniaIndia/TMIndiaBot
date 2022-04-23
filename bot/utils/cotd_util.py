@@ -8,9 +8,9 @@ import discord
 import requests
 from matplotlib import pyplot as plt
 
+import bot.utils.commons as commons
 from bot.api import APIClient
 from bot.log import get_logger
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
@@ -125,7 +125,7 @@ class TOTDUtils:
 
         embed = EZEmbed.create_embed(
             title=f"Here is the {totd_data['Day']}{day_suffix} {totd_data['Month']} TOTD",
-            color=Commons.get_random_color(),
+            color=commons.get_random_color(),
         )
 
         log.debug("Creating Image File")
@@ -187,13 +187,13 @@ class TOTDUtils:
         thumbnail_url = raw_totd_data["thumbnailUrl"]
         map_uid = raw_totd_data["mapUid"]
 
-        author_time = Commons.format_seconds(int(raw_totd_data["authorScore"]))
-        gold_time = Commons.format_seconds(int(raw_totd_data["goldScore"]))
-        silver_time = Commons.format_seconds(int(raw_totd_data["silverScore"]))
-        bronze_time = Commons.format_seconds(int(raw_totd_data["bronzeScore"]))
+        author_time = commons.format_seconds(int(raw_totd_data["authorScore"]))
+        gold_time = commons.format_seconds(int(raw_totd_data["goldScore"]))
+        silver_time = commons.format_seconds(int(raw_totd_data["silverScore"]))
+        bronze_time = commons.format_seconds(int(raw_totd_data["bronzeScore"]))
 
         wr_holder = raw_totd_data["leaderboard"]["tops"][0]["player"]["name"]
-        wr_time = Commons.format_seconds(
+        wr_time = commons.format_seconds(
             int(raw_totd_data["leaderboard"]["tops"][0]["time"])
         )
 

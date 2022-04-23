@@ -1,11 +1,11 @@
 from discord import Embed
 from discord.ext.commands import Cog
 
+import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 from bot.utils import scheduling
-from bot.utils.commons import Commons
 
 log = get_logger(__name__)
 
@@ -15,7 +15,7 @@ class Logging(Cog):
 
     def __init__(self, bot: Bot):
         self.bot = bot
-        self.bot.times_run = Commons.get_times_run()
+        self.bot.times_run = commons.get_times_run()
 
         scheduling.create_task(self.startup_greeting(), event_loop=self.bot.loop)
 

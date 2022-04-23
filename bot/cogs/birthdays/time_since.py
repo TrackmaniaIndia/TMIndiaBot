@@ -2,10 +2,10 @@ from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 
+import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.commons import Commons
 
 log = get_logger(__name__)
 
@@ -53,12 +53,12 @@ class TimeSince(commands.Cog):
             await ctx.respond(f"{month} does not have 31 Days", ephemeral=True)
             return
 
-        timestamp = Commons.timestamp_date(
+        timestamp = commons.timestamp_date(
             year, constants.Consts.months.index(month) + 1, day
         )
 
         log.debug(f"Sending Time Since {year} {month} {day}")
-        await ctx.respond(content=Commons.time_since(timestamp), ephemeral=True)
+        await ctx.respond(content=commons.time_since(timestamp), ephemeral=True)
 
 
 def setup(bot: Bot):

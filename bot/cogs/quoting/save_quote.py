@@ -3,11 +3,11 @@ from discord import ApplicationContext
 from discord.commands import Option, permissions
 from discord.ext import commands
 
+import bot.utils.commons as commons
 import bot.utils.quote as quote_functions
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
@@ -64,7 +64,7 @@ class SaveQuote(commands.Cog):
         embed = EZEmbed.create_embed(
             title=":white_check_mark: Saved",
             description=f'Saved "{message}" by {author} with [Jump!]({message_link})',
-            color=Commons.get_random_color(),
+            color=commons.get_random_color(),
         )
 
         await ctx.send_followup(embed=embed)

@@ -7,10 +7,10 @@ from discord.ext import commands
 from discord.ext.pages import Paginator
 from trackmania import TOTD, InvalidTOTDDate, TMXMap
 
+import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed, ViewAdder
 
 log = get_logger(__name__)
@@ -134,7 +134,7 @@ class LatestTOTD(commands.Cog):
         map_name = totd_data.map.name
         author_name = totd_data.map.author_name
         _todays_date = datetime.now()
-        title_string = f"Track of the Day of {Commons.get_ordinal_number(totd_data.month_day)} {constants.Consts.months[_todays_date.month - 1]}"
+        title_string = f"Track of the Day of {commons.get_ordinal_number(totd_data.month_day)} {constants.Consts.months[_todays_date.month - 1]}"
         nadeo_uploaded = f"<t:{int(totd_data.map.uploaded.timestamp())}:R>"
         map_download = totd_data.map.url
         tmio_url = f"https://trackmania.io/#/leaderboard/{totd_data.map.uid}"

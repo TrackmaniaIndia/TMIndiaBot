@@ -4,8 +4,8 @@ from typing import List
 
 import discord
 
+import bot.utils.commons as commons
 from bot.log import get_logger
-from bot.utils.commons import Commons
 
 log = get_logger(__name__)
 
@@ -89,7 +89,7 @@ class EZEmbed:
 
         if color is None:
             log.debug("Colour is None, Assigning Random Colour")
-            color = Commons.get_random_color()
+            color = commons.get_random_color()
 
         # Creates an Embed with the Given Title, Description and Color
         log.debug(

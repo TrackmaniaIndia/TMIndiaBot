@@ -3,9 +3,9 @@ import json
 
 import discord
 
+import bot.utils.commons as commons
 from bot.api import APIClient
 from bot.log import get_logger
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
@@ -102,7 +102,7 @@ class Leaderboards:
 
         player_embed = EZEmbed.create_embed(
             title=f"{player_name} is good at the following maps",
-            color=Commons.get_random_color(),
+            color=commons.get_random_color(),
         )
 
         t100_str, t200_str, t300_str, t400_str, t500_str = "", "", "", "", ""
@@ -241,7 +241,7 @@ class Leaderboards:
                     wr_holder = leaderboard_data[0]
 
                     username = f'{wr_holder["player"]["name"]}'
-                    value = f'Map No: {(i * 5) + j + 1}\nTime: {Commons.format_seconds(wr_holder["time"])}'
+                    value = f'Map No: {(i * 5) + j + 1}\nTime: {commons.format_seconds(wr_holder["time"])}'
                     maps[i].add_field(name=username, value=value, inline=False)
 
         log.debug("Returning Maps")

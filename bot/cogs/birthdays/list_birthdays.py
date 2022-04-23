@@ -56,7 +56,7 @@ class ListBirthdays(commands.Cog):
             birthdays = self.__sort_birtdays(json.load(file)["birthdays"])
 
         if len(birthdays) > 10:
-            birthdays = Commons.split_list_of_lists(birthdays)
+            birthdays = commons.split_list_of_lists(birthdays)
 
 
 def setup(bot: Bot):

@@ -8,10 +8,10 @@ from discord import ApplicationContext
 from discord.ext import commands, tasks
 from trackmania import Player
 
+import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
@@ -103,7 +103,7 @@ class UpdateTrophies(commands.Cog):
                         {
                             player_name: {
                                 "rank": rank_displacement,
-                                "trophy": Commons.add_commas(trophy_change),
+                                "trophy": commons.add_commas(trophy_change),
                             }
                         }
                     )
@@ -131,7 +131,7 @@ class UpdateTrophies(commands.Cog):
                     break
 
                 username = person.get("username")
-                score = Commons.add_commas(person.get("score"))
+                score = commons.add_commas(person.get("score"))
                 rank_displacement = displacements.get(username).get("rank")
                 if rank_displacement > 0:
                     rank_displacement = f"+{rank_displacement} "

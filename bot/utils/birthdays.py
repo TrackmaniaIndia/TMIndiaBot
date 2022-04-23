@@ -5,9 +5,9 @@ from typing import List
 
 import discord
 
+import bot.utils.commons as commons
 from bot import constants
 from bot.log import get_logger
-from bot.utils.commons import Commons
 from bot.utils.discord import EZEmbed
 
 log = get_logger(__name__)
@@ -21,7 +21,7 @@ def list_birthdays() -> list[discord.Embed]:
         birthdays = _sort_birthdays(json.load(file)["birthdays"])
 
     if len(birthdays) > 10:
-        birthdays = Commons.split_list_of_lists(birthdays)
+        birthdays = commons.split_list_of_lists(birthdays)
         embed_list = []
         for birthday_lst in birthdays:
             embed_list.append(
@@ -47,31 +47,31 @@ def next_birthday() -> discord.Embed:
     for person in birthdays:
         if (
             int(
-                Commons.timestamp_date(
+                commons.timestamp_date(
                     year=year,
                     month=MONTHS.index(person["Month"]) + 1,
                     day=person["Day"],
                 )
-                - Commons.timestamp()
+                - commons.timestamp()
             )
             < timestamp_diff
             and int(
-                Commons.timestamp_date(
+                commons.timestamp_date(
                     year=year,
                     month=MONTHS.index(person["Month"]) + 1,
                     day=person["Day"],
                 )
-                - Commons.timestamp()
+                - commons.timestamp()
             )
             > 0
         ):
             timestamp_diff = int(
-                Commons.timestamp_date(
+                commons.timestamp_date(
                     year=year,
                     month=MONTHS.index(person["Month"]) + 1,
                     day=person["Day"],
                 )
-                - Commons.timestamp()
+                - commons.timestamp()
             )
             smallest_diff = person
 
@@ -88,7 +88,7 @@ def month_birthdays(month: int) -> list[discord.Embed]:
     if len(birthdays) == 0:
         return None
     elif len(birthdays) > 10:
-        birthdays = Commons.split_list_of_lists(_sort_birthdays(birthdays))
+        birthdays = commons.split_list_of_lists(_sort_birthdays(birthdays))
         embed_list = []
         for birthday_lst in birthdays:
             embed_list.append(
@@ -221,8 +221,8 @@ def __format_lst(birthdays: list) -> str:
         log.debug(f"Adding {person['Name']} to the string")
         year = int(datetime.now().date().strftime("%Y"))
 
-        t1 = Commons.timestamp()
-        t2 = Commons.timestamp_date(
+        t1 = commons.timestamp()
+        t2 = commons.timestamp_date(
             year=year, month=MONTHS.index(person["Month"]) + 1, day=person["Day"]
         )
 
@@ -236,7 +236,7 @@ def __format_lst(birthdays: list) -> str:
         # Removing the +530 IST Offset
         t2 -= 19800
 
-        birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` in <t:{t2}:R>\n\n"
+        birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` in <t:{t2}:R>\n\n"
 
     return birthdays_str
 
@@ -260,8 +260,8 @@ def __format_lst_today(birthdays: list) -> str:
         log.debug(f"Adding {person['Name']} to the string")
         year = int(datetime.now().date().strftime("%Y"))
 
-        t1 = Commons.timestamp()
-        t2 = Commons.timestamp_date(
+        t1 = commons.timestamp()
+        t2 = commons.timestamp_date(
             year=year, month=MONTHS.index(person["Month"]) + 1, day=person["Day"]
         )
 
@@ -275,7 +275,7 @@ def __format_lst_today(birthdays: list) -> str:
         # Removing the +530 IST Offset
         t2 -= 19800
 
-        birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` **TODAY!!**\n\n"
+        birthdays_str += f"**Name:** {person['Name']}#{person['Discriminator']}\n**Birthday:** {commons.get_ordinal_number(person['Day'])} {person['Month']}\nTurning `{age}` **TODAY!!**\n\n"
 
     return birthdays_str
 
@@ -287,8 +287,8 @@ def __format_birthday(birthday: dict) -> str:
     log.debug(f"Adding {birthday['Name']} to the string")
     year = int(datetime.now().date().strftime("%Y"))
 
-    t1 = Commons.timestamp()
-    t2 = Commons.timestamp_date(
+    t1 = commons.timestamp()
+    t2 = commons.timestamp_date(
         year=year, month=MONTHS.index(birthday["Month"]) + 1, day=birthday["Day"]
     )
 
@@ -302,5 +302,5 @@ def __format_birthday(birthday: dict) -> str:
     # Removing +530 IST Offset
     t2 -= 19800
 
-    birthday_str += f"**Name:** {birthday['Name']}#{birthday['Discriminator']}\n**Birthday:** {Commons.get_ordinal_number(birthday['Day'])} {birthday['Month']}\nTurning `{age}` **<t:{t2}:R>**\n\n"
+    birthday_str += f"**Name:** {birthday['Name']}#{birthday['Discriminator']}\n**Birthday:** {commons.get_ordinal_number(birthday['Day'])} {birthday['Month']}\nTurning `{age}` **<t:{t2}:R>**\n\n"
     return birthday_str
