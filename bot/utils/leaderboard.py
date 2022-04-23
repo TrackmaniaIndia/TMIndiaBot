@@ -6,7 +6,7 @@ import discord
 import bot.utils.commons as commons
 from bot.api import APIClient
 from bot.log import get_logger
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -100,7 +100,7 @@ class Leaderboards:
     ) -> discord.Embed:
         log.debug(f"Getting Player Details for Player name -> {player_name}")
 
-        player_embed = EZEmbed.create_embed(
+        player_embed = create_embed(
             title=f"{player_name} is good at the following maps",
             color=commons.get_random_color(),
         )
@@ -209,21 +209,11 @@ class Leaderboards:
         log.debug(f"Getting World Records for {season} {year}")
 
         log.debug("Creating Embeds")
-        white_maps = EZEmbed.create_embed(
-            title="World Records for White Maps", color=0xFFFFFF
-        )
-        green_maps = EZEmbed.create_embed(
-            title="World Records for Green Maps", color=0x00FF00
-        )
-        blue_maps = EZEmbed.create_embed(
-            title="World Records for Blue Maps", color=0x0000FF
-        )
-        red_maps = EZEmbed.create_embed(
-            title="World Records for Red Maps", color=0xFF0000
-        )
-        black_maps = EZEmbed.create_embed(
-            title="World Records for Black Maps", color=0x000000
-        )
+        white_maps = create_embed(title="World Records for White Maps", color=0xFFFFFF)
+        green_maps = create_embed(title="World Records for Green Maps", color=0x00FF00)
+        blue_maps = create_embed(title="World Records for Blue Maps", color=0x0000FF)
+        red_maps = create_embed(title="World Records for Red Maps", color=0xFF0000)
+        black_maps = create_embed(title="World Records for Black Maps", color=0x000000)
 
         maps = (white_maps, green_maps, blue_maps, red_maps, black_maps)
         map_colors = ("white", "green", "blue", "red", "black")

@@ -8,7 +8,7 @@ import bot.utils.quote as quote_functions
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -61,7 +61,7 @@ class SaveQuote(commands.Cog):
 
         quote_functions.save(message, author, message_link, ctx.guild.id)
 
-        embed = EZEmbed.create_embed(
+        embed = create_embed(
             title=":white_check_mark: Saved",
             description=f'Saved "{message}" by {author} with [Jump!]({message_link})',
             color=commons.get_random_color(),
@@ -102,7 +102,7 @@ class SaveQuote(commands.Cog):
 
         quote_functions.save(message.content, f"{author.name}", message_link, guild_id)
 
-        embed = EZEmbed.create_embed(
+        embed = create_embed(
             title=":white_check_mark: Saved",
             description=f'Saved "{message.content}" by {author.name} with [Jump!]({message_link})',
         )

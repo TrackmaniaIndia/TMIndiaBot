@@ -10,7 +10,7 @@ from discord.ext import commands
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -109,7 +109,7 @@ class AddBirthday(commands.Cog):
             log.debug("Creating embed")
             description = f"Requestor: {ctx.author.name}#{ctx.author.discriminator} set birthday of `{user.name}#{user.discriminator}` to `{day} {month}, {year}`"
 
-            await channel.send(embed=EZEmbed.create_embed(description=description))
+            await channel.send(embed=create_embed(description=description))
         except:
             log.debug("Testing Bot is being run, sending message")
             pass

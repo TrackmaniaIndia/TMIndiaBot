@@ -8,7 +8,7 @@ import discord
 import bot.utils.commons as commons
 from bot import constants
 from bot.log import get_logger
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -24,13 +24,11 @@ def list_birthdays() -> list[discord.Embed]:
         birthdays = commons.split_list_of_lists(birthdays)
         embed_list = []
         for birthday_lst in birthdays:
-            embed_list.append(
-                EZEmbed.create_embed(description=__format_lst(birthday_lst))
-            )
+            embed_list.append(create_embed(description=__format_lst(birthday_lst)))
 
         return embed_list
     else:
-        return [EZEmbed.create_embed(description=__format_lst(birthdays))]
+        return [create_embed(description=__format_lst(birthdays))]
 
 
 def next_birthday() -> discord.Embed:
@@ -75,7 +73,7 @@ def next_birthday() -> discord.Embed:
             )
             smallest_diff = person
 
-    return EZEmbed.create_embed(description=__format_lst([smallest_diff]))
+    return create_embed(description=__format_lst([smallest_diff]))
 
 
 def month_birthdays(month: int) -> list[discord.Embed]:
@@ -91,13 +89,11 @@ def month_birthdays(month: int) -> list[discord.Embed]:
         birthdays = commons.split_list_of_lists(_sort_birthdays(birthdays))
         embed_list = []
         for birthday_lst in birthdays:
-            embed_list.append(
-                EZEmbed.create_embed(description=__format_lst(birthday_lst))
-            )
+            embed_list.append(create_embed(description=__format_lst(birthday_lst)))
 
         return embed_list
     else:
-        return [EZEmbed.create_embed(description=__format_lst(birthdays))]
+        return [create_embed(description=__format_lst(birthdays))]
 
 
 def today_birthday() -> typing.Union[None, List[discord.Embed]]:
@@ -119,9 +115,7 @@ def today_birthday() -> typing.Union[None, List[discord.Embed]]:
             and person["Month"].lower() == todays_month.lower()
         ):
             log.info(f"It is {person['Name']}'s birthday today")
-            birthday_list.append(
-                EZEmbed.create_embed(description=__format_lst_today([person]))
-            )
+            birthday_list.append(create_embed(description=__format_lst_today([person])))
 
     if len(birthday_list) > 0:
         return birthday_list
@@ -155,10 +149,10 @@ def user_birthday(id: int) -> discord.Embed | str:
         for _, birthday in enumerate(birthday_list):
             if int(birthday["ID"]) == id:
                 log.debug("This user has a birthday saved")
-                return EZEmbed.create_embed(description=__format_birthday(birthday))
+                return create_embed(description=__format_birthday(birthday))
 
         log.debug("This user does not have a birthday saved")
-        return EZEmbed.create_embed(
+        return create_embed(
             description="This user does not have a birthday saved!\nAsk him to save the birthday by using the `/addbirthday` command"
         )
 

@@ -69,44 +69,42 @@ class Confirmer(discord.ui.View):
         self.cancel_button.style = getattr(discord.ButtonStyle, color.lower())
 
 
-class EZEmbed:
-    @staticmethod
-    def create_embed(
-        title: str = None,
-        description: str = "",
-        color: typing.Union[int, discord.Colour] = None,
-        url: str = None,
-    ) -> discord.Embed:
-        """Creates an Embed with Basic Data Fields Filled Out
-        Args:
-            title (str): Title of the Embed
-            description (str, optional): Description of the Embed. Defaults to None.
-            color (str, optional): Color of the Embed. Defaults to None.
-            url (str, url): Url to be added to the embed
-        Returns:
-            discord.Embed: Final Embed Returned with Data Fields Inside
-        """
+def create_embed(
+    title: str = None,
+    description: str = "",
+    color: typing.Union[int, discord.Colour] = None,
+    url: str = None,
+) -> discord.Embed:
+    """Creates an Embed with Basic Data Fields Filled Out
+    Args:
+        title (str): Title of the Embed
+        description (str, optional): Description of the Embed. Defaults to None.
+        color (str, optional): Color of the Embed. Defaults to None.
+        url (str, url): Url to be added to the embed
+    Returns:
+        discord.Embed: Final Embed Returned with Data Fields Inside
+    """
 
-        if color is None:
-            log.debug("Colour is None, Assigning Random Colour")
-            color = commons.get_random_color()
+    if color is None:
+        log.debug("Colour is None, Assigning Random Colour")
+        color = commons.get_random_color()
 
-        # Creates an Embed with the Given Title, Description and Color
-        log.debug(
-            f"Creating Embed with Title - {title}, description - {description} and colour - {color}"
-        )
-        embed = discord.Embed(
-            title=title,
-            description=description,
-            color=color,
-            url=discord.Embed.Empty if url is None else url,
-        )
+    # Creates an Embed with the Given Title, Description and Color
+    log.debug(
+        f"Creating Embed with Title - {title}, description - {description} and colour - {color}"
+    )
+    embed = discord.Embed(
+        title=title,
+        description=description,
+        color=color,
+        url=discord.Embed.Empty if url is None else url,
+    )
 
-        # Adds the timestamp the embed was created on
-        embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+    # Adds the timestamp the embed was created on
+    embed.timestamp = datetime.now(timezone(timedelta(hours=5, minutes=30)))
 
-        log.debug(f"Returning {embed}")
-        return embed
+    log.debug(f"Returning {embed}")
+    return embed
 
 
 class ViewAdder(discord.ui.View):

@@ -6,7 +6,7 @@ import numpy as np
 
 import bot.utils.commons as commons
 from bot.log import get_logger
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -68,7 +68,7 @@ def _quote_dict_to_embed(quote: dict) -> discord.Embed:
     description = f"```\"{quote['Message']}\" - {quote['Author']}```"
     color = commons.get_random_color()
 
-    embed = EZEmbed.create_embed(title=title, description=description, color=color)
+    embed = create_embed(title=title, description=description, color=color)
     embed.add_field(
         name="***Message***", value=f"[Jump!]({message_link})", inline=False
     )

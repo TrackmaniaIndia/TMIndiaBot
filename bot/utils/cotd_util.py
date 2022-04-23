@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 import bot.utils.commons as commons
 from bot.api import APIClient
 from bot.log import get_logger
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -123,7 +123,7 @@ class TOTDUtils:
         else:
             day_suffix = "th"
 
-        embed = EZEmbed.create_embed(
+        embed = create_embed(
             title=f"Here is the {totd_data['Day']}{day_suffix} {totd_data['Month']} TOTD",
             color=commons.get_random_color(),
         )

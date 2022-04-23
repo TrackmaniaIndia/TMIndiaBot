@@ -11,7 +11,7 @@ import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import EZEmbed, ViewAdder
+from bot.utils.discord import ViewAdder, create_embed
 
 log = get_logger(__name__)
 
@@ -140,7 +140,7 @@ class LatestTOTD(commands.Cog):
         tmio_url = f"https://trackmania.io/#/leaderboard/{totd_data.map.uid}"
 
         log.debug("Creating Embed")
-        page_one = EZEmbed.create_embed(title=title_string)
+        page_one = create_embed(title=title_string)
 
         medal_str = (
             f"{constants.Emojis.author_medal} {totd_data.map.medal_time.author_string}\n"

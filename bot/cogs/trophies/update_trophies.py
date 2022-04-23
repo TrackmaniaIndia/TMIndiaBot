@@ -12,7 +12,7 @@ import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -114,7 +114,7 @@ class UpdateTrophies(commands.Cog):
         split_list = list(zip_longest(*(iter(new_player_data),) * 10))
         pages_needed = len(split_list)
         embed_list = [
-            EZEmbed.create_embed(
+            create_embed(
                 f"Trophy Leaderboard - Page {i + 1}",
                 description=f"Updated {datetime.datetime.now()}",
             )
