@@ -14,8 +14,6 @@ log = get_logger(__name__)
 
 
 def list_birthdays() -> list[discord.Embed]:
-    MONTHS = constants.Consts.months
-
     log.debug("Opening the birthdays.json file")
     with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
         birthdays = _sort_birthdays(json.load(file)["birthdays"])
@@ -77,8 +75,6 @@ def next_birthday() -> discord.Embed:
 
 
 def month_birthdays(month: int) -> list[discord.Embed]:
-    MONTHS = constants.Consts.months
-
     log.debug("Opening the birthdays.json file")
     with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
         birthdays = __split_birthdays(json.load(file)["birthdays"])[month]
