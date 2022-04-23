@@ -32,49 +32,50 @@ def list_birthdays() -> list[discord.Embed]:
     else:
         return [EZEmbed.create_embed(description=__format_lst(birthdays))]
 
-    def next_birthday() -> discord.Embed:
-        MONTHS = constants.Consts.months
 
-        log.debug("Opening the birthdays.json file")
-        with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
-            birthdays = _sort_birthdays(json.load(file)["birthdays"])
+def next_birthday() -> discord.Embed:
+    MONTHS = constants.Consts.months
 
-        log.debug("Looping through birthday list to find next birthday")
-        year = int(datetime.now().date().strftime("%Y"))
-        smallest_diff = birthdays[0]
-        timestamp_diff = 100000000
-        for person in birthdays:
-            if (
-                int(
-                    Commons.timestamp_date(
-                        year=year,
-                        month=MONTHS.index(person["Month"]) + 1,
-                        day=person["Day"],
-                    )
-                    - Commons.timestamp()
-                )
-                < timestamp_diff
-                and int(
-                    Commons.timestamp_date(
-                        year=year,
-                        month=MONTHS.index(person["Month"]) + 1,
-                        day=person["Day"],
-                    )
-                    - Commons.timestamp()
-                )
-                > 0
-            ):
-                timestamp_diff = int(
-                    Commons.timestamp_date(
-                        year=year,
-                        month=MONTHS.index(person["Month"]) + 1,
-                        day=person["Day"],
-                    )
-                    - Commons.timestamp()
-                )
-                smallest_diff = person
+    log.debug("Opening the birthdays.json file")
+    with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+        birthdays = _sort_birthdays(json.load(file)["birthdays"])
 
-        return EZEmbed.create_embed(description=__format_lst([smallest_diff]))
+    log.debug("Looping through birthday list to find next birthday")
+    year = int(datetime.now().date().strftime("%Y"))
+    smallest_diff = birthdays[0]
+    timestamp_diff = 100000000
+    for person in birthdays:
+        if (
+            int(
+                Commons.timestamp_date(
+                    year=year,
+                    month=MONTHS.index(person["Month"]) + 1,
+                    day=person["Day"],
+                )
+                - Commons.timestamp()
+            )
+            < timestamp_diff
+            and int(
+                Commons.timestamp_date(
+                    year=year,
+                    month=MONTHS.index(person["Month"]) + 1,
+                    day=person["Day"],
+                )
+                - Commons.timestamp()
+            )
+            > 0
+        ):
+            timestamp_diff = int(
+                Commons.timestamp_date(
+                    year=year,
+                    month=MONTHS.index(person["Month"]) + 1,
+                    day=person["Day"],
+                )
+                - Commons.timestamp()
+            )
+            smallest_diff = person
+
+    return EZEmbed.create_embed(description=__format_lst([smallest_diff]))
 
 
 def month_birthdays(month: int) -> list[discord.Embed]:
@@ -91,7 +92,7 @@ def month_birthdays(month: int) -> list[discord.Embed]:
         embed_list = []
         for birthday_lst in birthdays:
             embed_list.append(
-                EZEmbed.create_embed(description=__format_string(birthday_lst))
+                EZEmbed.create_embed(description=__format_lst(birthday_lst))
             )
 
         return embed_list
