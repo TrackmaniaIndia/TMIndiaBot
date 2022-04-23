@@ -49,7 +49,7 @@ class OnReady(
 
         # Starting ChangeStatus task
         log.info("Starting ChangeStatus")
-        self.change_status.start(self.bot, self.statuses)
+        self.change_status.start()
 
         # Deleting the TOTD Image if it exists
         if os.path.exists("./bot/resources/temp/totd.png"):
@@ -61,7 +61,7 @@ class OnReady(
 
         # Starting BirthdayReminder
         log.info("Starting BirthdayReminder")
-        self.todays_birthday.start(self.bot)
+        self.todays_birthday.start()
 
         # Looping Through Announcement Channels
         for announcement_channel in constants.Channels.announcement_channels:
