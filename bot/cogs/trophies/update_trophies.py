@@ -25,9 +25,18 @@ class UpdateTrophies(commands.Cog):
         self._update_trophy_leaderboards.start()
 
     @tasks.loop(
-        time=datetime.time(hour=18, minute=30, second=0, tzinfo=datetime.timezone.utc)
+        time=datetime.time(hour=19, minute=0, second=0, tzinfo=datetime.timezone.utc)
     )
     async def _update_trophy_leaderboards(self):
+        await self.bot.wait_until_ready()
+        await self.__update_leaderboards()
+
+    @commands.slash_command(
+        guild_ids=constants.Bot.default_guilds,
+        name="run-it",
+    )
+    @discord.is_owner()
+    async def _run_it(self, ctx: ApplicationContext):
         await self.__update_leaderboards()
 
     @commands.slash_command(
@@ -64,8 +73,9 @@ class UpdateTrophies(commands.Cog):
 
         log.info("Getting all Trophy Data")
         new_player_data = []
-        for player_id in player_ids:
-            log.info(f"Getting Data for {player_id}")
+        no_players = len(player_ids)
+        for i, player_id in enumerate(player_ids):
+            log.info(f"Getting Data for {player_id} - Remaining: {no_players - i - 1}")
 
             player_data = await Player.get_player(player_id)
             player_name = player_data.name
@@ -149,17 +159,19 @@ class UpdateTrophies(commands.Cog):
                 name="Trophies", value=f"```{tstr}```", inline=False
             )
 
-        try:
-            channel = await self.bot.fetch_channel(constants.Channels.tm2020)
-        except discord.errors.Forbidden:
-            channel = await self.bot.fetch_channel(constants.Channels.testing_general)
+        # try:
+        #     channel = await self.bot.fetch_channel(constants.Channels.tm2020)
+        # except discord.errors.Forbidden:
+        #     channel = await self.bot.fetch_channel(constants.Channels.testing_general)
+
+        channel = self.bot.get_channel(constants.Channels.tm2020)
 
         log.debug("Sending Embed")
         if ctx is not None:
             await ctx.respond(embed=embed_list[0])
         else:
             try:
-                await channel.send(embed=embed_list[0])
+                await channel.send(embed=embed_list[0], delete_after=3)
             except discord.errors.Forbidden:
                 return
 
