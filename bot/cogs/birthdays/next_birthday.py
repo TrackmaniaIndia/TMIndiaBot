@@ -1,10 +1,10 @@
 from discord import ApplicationContext
 from discord.ext import commands
 
+import bot.utils.birthdays as birthday
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.birthdays import Birthday
 
 log = get_logger(__name__)
 
@@ -20,7 +20,7 @@ class NextBirthday(commands.Cog):
     )
     async def _next_birthday(self, ctx: ApplicationContext):
         log_command(ctx, "next_birthday")
-        await ctx.respond(embed=Birthday.next_birthday())
+        await ctx.respond(embed=birthday.next_birthday())
 
     @commands.command(
         name="next-birthday",
@@ -28,7 +28,7 @@ class NextBirthday(commands.Cog):
     )
     async def _next_birthday(self, ctx: commands.Context):
         log_command(ctx, "next_birthday")
-        await ctx.send(embed=Birthday.next_birthday())
+        await ctx.send(embed=birthday.next_birthday())
 
 
 def setup(bot: Bot):

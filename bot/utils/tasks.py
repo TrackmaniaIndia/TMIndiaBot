@@ -6,10 +6,10 @@ import discord
 import requests
 from discord.ext import tasks
 
+import bot.utils.birthdays as birthday
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.birthdays import Birthday
 from bot.utils.cotd_util import TOTDUtils
 from bot.utils.discord import ViewAdder
 
@@ -67,7 +67,7 @@ async def totd_image_deleter(bot: Bot):
 )
 async def todays_birthday(bot: Bot):
     log.info("Starting Todays Birthday Task")
-    birthdays_list = Birthday.today_birthday()
+    birthdays_list = birthday.today_birthday()
 
     if birthdays_list is not None:
         log.info("There is a birthday today")
