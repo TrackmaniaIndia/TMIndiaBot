@@ -136,7 +136,7 @@ class AddBirthday(commands.Cog):
             return False, f"{month} does not have 31 days"
         if month.capitalize() not in constants.Consts.months:
             log.error("Invalid Month Given")
-            return False, f"That's not a valid month"
+            return False, "That's not a valid month"
 
         return True, ""
 
