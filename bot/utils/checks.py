@@ -49,9 +49,9 @@ def in_whitelist_check(
     """
 
     if redirect and redirect not in channels:
-        channels = tuple(channels) + (redirect,)
+        channel = tuple(channels) + (redirect,)
 
-    if channels and ctx.channel.id in channel:
+    if channel and ctx.channel.id in channels:
         log.debug(
             f"{ctx.author} may use the `{ctx.command.name}` command as they are in a whitelisted channel."
         )
