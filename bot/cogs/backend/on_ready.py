@@ -4,18 +4,12 @@ import os
 from itertools import cycle
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
+import bot.utils.birthdays as birthday
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.tasks import (
-    change_status,
-    keep_alive,
-    today_totd,
-    todays_birthday,
-    totd_image_deleter,
-)
 
 log = get_logger(__name__)
 
@@ -28,9 +22,7 @@ class OnReady(
         self.bot = bot
 
         # Adding Statuses
-        log.info("Adding Statuses")
         self.statuses = []
-        log.info("Received Statuses")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -55,13 +47,9 @@ class OnReady(
 
         times_run += 1
 
-        # Starting KeepAlive task
-        log.info("Starting KeepAlive")
-        keep_alive.start(self.bot)
-
         # Starting ChangeStatus task
         log.info("Starting ChangeStatus")
-        change_status.start(self.bot, self.statuses)
+        self.change_status.start()
 
         # Deleting the TOTD Image if it exists
         if os.path.exists("./bot/resources/temp/totd.png"):
@@ -70,17 +58,10 @@ class OnReady(
                 os.remove("./bot/resources/temp/totd.png")
             else:
                 log.critical("Time is not after 11pm, not deleting TOTD Image")
-        # Starting TOTDImageDeleter
-        log.info("Starting TOTDImageDeleter")
-        totd_image_deleter.start(self.bot)
 
         # Starting BirthdayReminder
         log.info("Starting BirthdayReminder")
-        todays_birthday.start(self.bot)
-
-        # Starting TOTD Info task
-        log.info("Starting TOTD Info")
-        today_totd.start(self.bot)
+        self.todays_birthday.start()
 
         # Looping Through Announcement Channels
         for announcement_channel in constants.Channels.announcement_channels:
@@ -112,13 +93,68 @@ class OnReady(
 
         log.critical("Bot now Usable")
 
-    @staticmethod
-    def _get_statuses(self) -> list:
-        with open("./bot/resources/json/statuses.json", "r", encoding="UTF-8") as file:
-            return json.load(file)["statuses"]
+    @tasks.loop(minutes=10)
+    async def change_status(self):
+        """Changes Bot Status Every 10 Minutes"""
+        log.debug("Changing Status")
+        await self.bot.change_presence(activity=discord.Game(next(self.statuses)))
+
+    @tasks.loop(
+        time=datetime.time(hour=1, minute=30, second=0, tzinfo=datetime.timezone.utc)
+    )
+    async def todays_birthday(self):
+        log.info("Starting Todays Birthday Task")
+        birthdays_list = birthday.today_birthday()
+
+        if birthdays_list is not None:
+            log.info("There is a birthday today")
+
+            if len(birthdays_list) > 1:
+                log.debug("There are multiple birthdays today")
+
+                log.debug("Getting channel")
+                general_channel = self.bot.get_channel(constants.Channels.general)
+
+                if general_channel is None:
+                    log.debug("Testing Bot")
+                    general_channel = self.bot.get_channel(
+                        constants.Channels.testing_general
+                    )
+
+                for birthday_embed in birthdays_list:
+                    log.debug(f"Sending {birthday_embed}")
+
+                    await general_channel.send(
+                        content="Hey Everyone! We have a birthday today!",
+                        embed=birthday_embed,
+                    )
+                return
+            else:
+                log.debug("Only one birthday today")
+
+                log.debug("Getting channel")
+                general_channel = self.bot.get_channel(constants.Channels.general)
+
+                if general_channel is None:
+                    log.debug("Testing Bot")
+                    general_channel = self.bot.get_channel(
+                        constants.Channels.testing_general
+                    )
+
+                log.debug(f"Sending {birthdays_list[0]}")
+                await general_channel.send(
+                    content="Hey Everyone! Today we have a birthday",
+                    embed=birthdays_list[0],
+                )
+                return
+        else:
+            log.debug("No birthdays today")
+            return
 
     def _set_statuses(self):
-        self.statuses = cycle(self._get_statuses(self))
+        with open("./bot/resources/json/statuses.json", "r", encoding="UTF-8") as file:
+            statuses = json.load(file).get("statuses", ["Default Status"])
+        self.statuses = cycle(statuses)
 
 
 def setup(bot: Bot):

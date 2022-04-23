@@ -6,7 +6,7 @@ from trackmania import Player
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -33,7 +33,7 @@ class GetID(commands.Cog):
         id = await Player.get_id(username)
 
         await ctx.respond(
-            embed=EZEmbed.create_embed(
+            embed=create_embed(
                 title=f"Here is the ID for {username}",
                 description=id if id is not None else "Invalid Username.",
             ),

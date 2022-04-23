@@ -11,7 +11,7 @@ from trackmania import BestCOTDStats, Player, PlayerCOTD, PlayerCOTDResults
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -42,7 +42,7 @@ class COTDDetails(commands.Cog):
         if player_id is None:
             log.error(f"Invalid Username was given -> {username} by {ctx.author.name}")
             await ctx.respond(
-                embed=EZEmbed.create_embed(
+                embed=create_embed(
                     "Invalid Username",
                     f"Username Given: {username}",
                     color=discord.Colour.red(),
@@ -105,8 +105,8 @@ class COTDDetails(commands.Cog):
         log.info(f"Parsing Pages for {cotd_stats.player_id}")
 
         log.debug("Creating 2 Embeds")
-        page_one = EZEmbed.create_embed(title=f"Overall Data for {username}")
-        page_two = EZEmbed.create_embed(title=f"Primary Data for {username}")
+        page_one = create_embed(title=f"Overall Data for {username}")
+        page_two = create_embed(title=f"Primary Data for {username}")
 
         log.debug("Adding Total COTDs Played")
         page_one.add_field(name="Total Played", value=cotd_stats.total, inline=False)

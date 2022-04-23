@@ -1,14 +1,15 @@
 import json
 import os
 
+import discord
 from discord import ApplicationContext
 from discord.ext import commands
 from discord.ext.pages import Paginator
 
+import bot.utils.birthdays as birthday
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.birthdays import Birthday
 
 log = get_logger(__name__)
 
@@ -36,7 +37,7 @@ class ListBirthdays(commands.Cog):
         log_command(ctx, "list_birthdays")
 
         log.debug("Getting Birthdays Embeds")
-        birthdays_embeds = Birthday.list_birthdays()
+        birthdays_embeds = birthday.list_birthdays()
 
         if len(birthdays_embeds) == 1:
             log.debug("There is only 1 Page")
@@ -46,6 +47,16 @@ class ListBirthdays(commands.Cog):
             birthdays_paginator = Paginator(pages=birthdays_embeds)
 
             await birthdays_paginator.respond(ctx.interaction, ephemeral=True)
+
+    def __list_birthdays_from_file(self) -> list[discord.Embed]:
+        MONTHS = constants.Consts.months
+
+        log.debug("Opening the birthdays.json file")
+        with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+            birthdays = self.__sort_birtdays(json.load(file)["birthdays"])
+
+        if len(birthdays) > 10:
+            birthdays = commons.split_list_of_lists(birthdays)
 
 
 def setup(bot: Bot):

@@ -3,10 +3,10 @@ from discord import ApplicationContext
 from discord.commands import Option
 from discord.ext import commands
 
+import bot.utils.birthdays as birthday
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.birthdays import Birthday
 
 log = get_logger(__name__)
 
@@ -40,7 +40,7 @@ class RemoveBirthday(commands.Cog):
             )
 
         log.debug("Removing Birthday")
-        success_flag = Birthday.remove_birthday(id)
+        success_flag = birthday.remove_birthday(id)
 
         if success_flag:
             log.debug(f"{id}'s birthday was removed successfully")

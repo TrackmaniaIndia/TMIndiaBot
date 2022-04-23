@@ -8,11 +8,11 @@ from discord.ext.pages import Paginator
 from trackmania import Player, PlayerZone
 from trackmania.player import PlayerSearchResult
 
+import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import Commons
-from bot.utils.discord import EZEmbed, ViewAdder
+from bot.utils.discord import ViewAdder, create_embed
 
 log = get_logger(__name__)
 
@@ -40,7 +40,7 @@ class SearchPlayer(commands.Cog):
 
         if player_search_results is None:
             log.error("No Players found with username %s", username)
-            error_embed = EZEmbed.create_embed(
+            error_embed = create_embed(
                 title=f"Search Results for Username: {username}",
                 description="There are no players with this username",
                 color=discord.Colour.red(),
@@ -49,7 +49,7 @@ class SearchPlayer(commands.Cog):
 
         log.debug("Creating Embed List")
         embed_list = [
-            EZEmbed.create_embed(title=f"Search Results for Username: {username}")
+            create_embed(title=f"Search Results for Username: {username}")
             for _ in range(len(player_search_results))
         ]
 
