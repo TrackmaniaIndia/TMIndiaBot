@@ -40,6 +40,27 @@ class GetID(commands.Cog):
             ephemeral=True,
         )
 
+    @commands.slash_command(
+        guild_ids=constants.Bot.default_guilds,
+        name="getchannel",
+    )
+    async def _get_channel(self, ctx: ApplicationContext):
+        await ctx.defer()
+
+        channel = self.bot.get_channel(constants.Channels.tm2020)
+        print(channel.name)
+
+        embed = EZEmbed.create_embed(
+            title="Hi, This is just a test. Please ignore if you can see this",
+            color=0xFF00FF,
+        )
+
+        log.warn("Sending Message")
+        await channel.send(embed=embed, delete_after=3)
+        log.warn("Sent Message")
+
+        await ctx.respond("hi")
+
 
 def setup(bot: Bot):
     """Add the GetID Cog"""
