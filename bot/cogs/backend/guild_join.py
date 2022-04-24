@@ -46,7 +46,6 @@ class GuildJoinStuff(commands.Cog):
             config_dict = {
                 "prefix": ">>",
                 "announcement_channel": 0,
-                "trophy_update_channel": 0,
                 "cotd_one_reminder": False,
                 "cotd_two_reminder": False,
                 "cotd_three_reminder": False,
@@ -57,7 +56,7 @@ class GuildJoinStuff(commands.Cog):
                 "totd_data": False,
                 "totd_channel": 0,
                 "trophy_tracking": False,
-                "trophy_announcement_channel": 0,
+                "trophy_update_channel": 0,
                 "mod_logs_channel": 0,
             }
 
