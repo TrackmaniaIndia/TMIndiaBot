@@ -1,0 +1,70 @@
+import json
+
+import discord
+from discord import ApplicationContext
+from discord.ext import commands
+
+from bot import constants
+from bot.bot import Bot
+from bot.log import get_logger, log_command
+from bot.utils.discord import Confirmer
+
+log = get_logger(__name__)
+
+
+class SetupTracking(commands.Cog):
+    def __init__(self, bot: Bot):
+        self.bot = bot
+
+    # Check if user has manage-server permission
+    @commands.slash_command(
+        guild_ids=constants.Bot.default_guilds,
+        name="setup-tracking",
+        description="Start the setup process for tracking.",
+    )
+    async def _setup_tracking(self, ctx: ApplicationContext):
+        log_command(ctx, "setup_tracking")
+
+        log.info("Starting Setup Process for %s", ctx.guild.name)
+        await ctx.defer()
+        confirmer = Confirmer()
+        confirmer.change_confirm_button(label="Yes!")
+        confirmer.change_cancel_button(label="No!")
+
+        message = await ctx.respond(
+            "Is this the channel where you want your server's trophy leaderboard updates to be sent?",
+            view=confirmer,
+        )
+        await confirmer.wait()
+        await message.delete()
+
+        if confirmer.value is None:
+            log.info("Confirmation Timed Out")
+            await ctx.send("Timed Out...")
+            return
+        elif not confirmer.value:
+            log.info("Setup Declined")
+            return
+        elif confirmer.value:
+            log.info("Accepted")
+            self.__save_settings(True, ctx.guild.id, ctx.channel.id)
+            await ctx.send("Settings Saved!", mention_author=True)
+            return
+
+    def __save_settings(self, flag: bool, guild_id: int, channel_id: int):
+        with open(
+            f"./bot/resources/guild_data/{guild_id}/config.json", "r", encoding="UTF-8"
+        ) as file:
+            config_data = json.load(file)
+
+        config_data["trophy_tracking"] = flag
+        config_data["trophy_update_channel"] = channel_id
+
+        with open(
+            f"./bot/resources/guild_data/{guild_id}/config.json", "w", encoding="UTF-8"
+        ) as file:
+            json.dump(config_data, file, indent=4)
+
+
+def setup(bot: Bot):
+    bot.add_cog(SetupTracking(bot))

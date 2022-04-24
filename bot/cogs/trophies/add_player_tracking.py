@@ -17,16 +17,11 @@ class AddPlayerTracking(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
+    # TODO: Add permissions. ManageServer
     @commands.slash_command(
         guild_ids=constants.Bot.default_guilds,
         name="add-player-tracking",
         description="Adds a player to the trophy tracking list",
-    )
-    @discord.has_any_role(
-        805318382441988096, 858620171334057994, guild_id=constants.Guild.tmi_server
-    )
-    @discord.has_any_role(
-        940194181731725373, 941215148222341181, guild_id=constants.Guild.testing_server
     )
     async def _add_player_tracking(
         self,
@@ -44,12 +39,26 @@ class AddPlayerTracking(commands.Cog):
             await ctx.respond("This player does not exist.")
             return
 
-        log.debug("Sending Message to Mod Logs")
-        mod_logs_channel = self.bot.get_channel(constants.Channels.mod_logs)
-        if mod_logs_channel is not None:
-            await mod_logs_channel.send(
-                content=f"Requestor: {ctx.author} is adding {username} to trophy player tracking."
-            )
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/config.json", "r"
+        ) as file:
+            config_data = json.load(file)
+
+            if not config_data.get("trophy_tracking", False):
+                await ctx.respond(
+                    "Trophy Tracking is not set up for this server. Please use the `/start-tracking` command to start your setup process."
+                )
+                return
+
+            mod_logs_channel_id = config_data.get("mod_logs_channel")
+
+            if mod_logs_channel_id != 0:
+                log.debug("Sending Message to Mod Logs")
+                mod_logs_channel = self.bot.get_channel(mod_logs_channel_id)
+                if mod_logs_channel is not None:
+                    await mod_logs_channel.send(
+                        content=f"Requestor: {ctx.author} is adding {username} to trophy player tracking."
+                    )
 
         player_id = search_result[0].player_id
 
@@ -61,7 +70,9 @@ class AddPlayerTracking(commands.Cog):
         log.debug(f"Trophy Count of {username} is {trophy_count}")
 
         log.debug("Opening File")
-        with open("./bot/resources/json/trophy_tracking.json", "r") as file:
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/trophy_tracking.json", "r"
+        ) as file:
             tracking_data = json.load(file)
 
         log.debug("Adding Player to List")
@@ -82,7 +93,9 @@ class AddPlayerTracking(commands.Cog):
         )
 
         log.debug("Dumping to File")
-        with open("bot/resources/json/trophy_tracking.json", "w") as file:
+        with open(
+            f"bot/resources/guild_data/{ctx.guild.id}/trophy_tracking.json", "w"
+        ) as file:
             json.dump(tracking_data, file, indent=4)
 
         await ctx.respond(f"{username} has been added to the trophy tracking list.")
