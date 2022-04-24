@@ -19,16 +19,16 @@ class NextBirthday(commands.Cog):
         description="Gets the person who's birthday is the closest",
     )
     async def _next_birthday(self, ctx: ApplicationContext):
-        log_command(ctx, "next_birthday")
+        log_command(ctx, "next_birthday_slash")
         await ctx.respond(embed=birthday.next_birthday())
 
     @commands.command(
         name="next-birthday",
         description="Gets the person who's birthday is the closest",
     )
-    async def _next_birthday(self, ctx: commands.Context):
+    async def _next_birthday_normal(self, ctx: commands.Context):
         log_command(ctx, "next_birthday")
-        await ctx.send(embed=birthday.next_birthday())
+        await ctx.reply(embed=birthday.next_birthday(), mention_author=False)
 
 
 def setup(bot: Bot):
