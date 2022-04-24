@@ -4,6 +4,7 @@ import json
 import os
 from ast import keyword
 from curses import killchar
+from errno import EMSGSIZE
 from itertools import zip_longest
 
 import discord
@@ -81,8 +82,8 @@ class UpdateTrophies(commands.Cog):
             guild_ids = [ctx.guild.id]
             channel_ids = [ctx.channel.id]
         else:
-            guild_ids = channel_ids = []
-            for folder in os.path("./bot/resources/guild_data/"):
+            guild_ids, channel_ids = [], []
+            for folder in os.listdir("./bot/resources/guild_data/"):
                 with open(
                     f"./bot/resources/guild_data/{folder}/config.json",
                     "r",
@@ -91,6 +92,7 @@ class UpdateTrophies(commands.Cog):
                     config_data = json.load(file)
 
                 if config_data.get("trophy_tracking", False):
+                    log.debug(folder)
                     guild_ids.extend([folder])
                     channel_ids.extend(
                         [config_data.get("trophy_update_channel", 962961137924726834)]
@@ -118,9 +120,18 @@ class UpdateTrophies(commands.Cog):
             new_player_data = []
             no_of_players = len(player_ids)
 
-            if no_of_players == 0 and ctx is not None:
-                channel = self.bot.get_channel(channel_ids[i])
-                await channel.send("No Users Stored")
+            if no_of_players == 0 and ctx is None:
+                try:
+                    log.info(f"No Users stored for {guild_id}")
+                    guild = await self.bot.fetch_guild(guild_id)
+                    embed = create_embed(
+                        title=f"Trophy Leaderboard for {guild.name}",
+                        description="No Users are Stored.\nUse the `/add-player-tracking` command to add players to tracking.\nRerun `/setup-tracking` and click `No` if you want to unsubscribe.",
+                        color=discord.Colour.red(),
+                    )
+                    await self.bot.get_channel(channel_ids[i]).send(embed=embed)
+                except discord.errors.Forbidden:
+                    log.error("%s is forbidden", str(guild_id))
                 continue
 
             for j, player_id in enumerate(player_ids):
@@ -229,6 +240,8 @@ class UpdateTrophies(commands.Cog):
                 f"./bot/resources/guild_data/{guild_id}/trophy_tracking.json", "w"
             ) as file:
                 json.dump(tracking_data, file, indent=4)
+
+        log.info("Leaderboards Updated.")
 
 
 def setup(bot: Bot):

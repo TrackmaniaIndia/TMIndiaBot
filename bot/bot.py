@@ -57,7 +57,7 @@ class Bot(commands.Bot):
             constants.Bot.debug_guild,
         )
         loop = asyncio.get_event_loop()
-        intents = discord.Intents.default()
+        intents = discord.Intents.all()
         intents.message_content = True
 
         return cls(

@@ -52,7 +52,7 @@ class SetupTracking(commands.Cog):
             log.info("Setup Accepted")
             self.__save_settings(True, ctx.guild.id, ctx.channel.id)
             await ctx.send(
-                f"Settings Saved!\nYou have subscribed from Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}"
+                f"Settings Saved!\nYou have subscribed to Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}"
             )
 
     def __save_settings(self, flag: bool, guild_id: int, channel_id: int):
