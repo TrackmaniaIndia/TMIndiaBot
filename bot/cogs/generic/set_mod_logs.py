@@ -52,6 +52,36 @@ class SetModLog(commands.Cog):
             f"Stored ModLogs channel for {ctx.guild.name} as {channel.name}"
         )
 
+    @commands.slash_command(
+        guild_ids=constants.Bot.default_guilds,
+        name="remove-mod-logs",
+        description="Remove the mod logs channel set for this guild",
+    )
+    async def _remove_mod_logs(self, ctx: ApplicationContext):
+        log_command(ctx, "remove_mod_logs")
+
+        await ctx.defer()
+
+        log.info("Removed mod-logs channel for guild %s", ctx.guild.name)
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/config.json",
+            "r",
+            encoding="UTF-8",
+        ) as file:
+            config_data = json.load(file)
+
+        config_data["mod_logs_channel"] = 0
+
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/config.json",
+            "w",
+            encoding="UTF-8",
+        ) as file:
+            json.dump(config_data, file, indent=4)
+
+        log.info("Removed ModLogs channel for %s", ctx.guild.name)
+        await ctx.respond(f"Removed ModLogs channel for {ctx.guild.name}")
+
 
 def setup(bot: Bot):
     bot.add_cog(SetModLog(bot))
