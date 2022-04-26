@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 from itertools import cycle
+from pathlib import Path
 
 import discord
 from discord.ext import commands, tasks
@@ -66,7 +67,7 @@ class OnReady(
 
         # Starting File Checker
         log.info("Starting FileChecker")
-        self.check_files.start()
+        self.create_files.start()
 
         # Looping Through Announcement Channels
         for announcement_channel in constants.Channels.announcement_channels:
@@ -107,10 +108,11 @@ class OnReady(
     @tasks.loop(minutes=15)
     async def create_files(self):
         async for guild in self.bot.fetch_guilds():
-            if not os.path.exists(f"./bot/resources/guild_data/{guild.id}/"):
-                os.mkdir(f"./bot/resources/guild_data/{guild.id}/")
+            if not os.path.exists(f"./bot/resources/guild_data/{guild.id}"):
+                log.info("Creating folder for %s", guild.name)
+                os.mkdir(f"./bot/resources/guild_data/{guild.id}")
 
-            log.debug("Checking for %s", guild.name)
+            log.info("Checking for %s", guild.name)
             checks.create_config(guild.id)
             checks.create_quotes(guild.id)
             checks.create_trophy_tracking(guild.id)
@@ -167,15 +169,6 @@ class OnReady(
         else:
             log.debug("No birthdays today")
             return
-
-    @tasks.loop(minutes=15)
-    async def check_files(self):
-        async for guild in self.bot.fetch_guilds():
-            log.info("Checking files for %s", guild.name)
-            checks.create_config(guild.id)
-            checks.create_quotes(guild.id)
-            checks.create_trophy_tracking(guild.id)
-            checks.create_birthdays(guild.id)
 
     def _set_statuses(self):
         with open("./bot/resources/json/statuses.json", "r", encoding="UTF-8") as file:
