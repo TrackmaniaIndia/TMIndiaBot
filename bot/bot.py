@@ -65,7 +65,7 @@ class Bot(commands.Bot):
             command_prefix=commands.when_mentioned_or(constants.Bot.prefix),
             help_command=None,
             intents=intents,
-            debug_guild=constants.Bot.debug_guild,
+            debug_guild=constants.Bot.default_guilds,
         )
 
     def load_extensions(self) -> None:

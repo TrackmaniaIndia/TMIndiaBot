@@ -16,7 +16,6 @@ class MonthBirthdays(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="birthdays-of-month",
         description="Lists all the birthdays of a specific month saved with the bot!",
     )

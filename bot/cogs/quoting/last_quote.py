@@ -15,7 +15,6 @@ class LastQuote(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="last-quote",
         description="Gets the last quote saved",
     )

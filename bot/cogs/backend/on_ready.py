@@ -168,7 +168,7 @@ class OnReady(
     @tasks.loop(minutes=15)
     async def check_files(self):
         async for guild in self.bot.fetch_guilds():
-            log.debug("Checking files for %s", guild.name)
+            log.info("Checking files for %s", guild.name)
             checks.create_config(guild.id)
             checks.create_quotes(guild.id)
             checks.create_trophy_tracking(guild.id)

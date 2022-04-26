@@ -1,20 +1,3 @@
 {
-    "birthdays": [
-        {
-            "Name": "NottABot",
-            "Discriminator": "4043",
-            "ID": 784962794960584755,
-            "Year": 2020,
-            "Month": "January",
-            "Day": 2
-        },
-        {
-            "Name": "NottCurious",
-            "Discriminator": "4351",
-            "ID": 250257390643970059,
-            "Year": 2004,
-            "Month": "September",
-            "Day": 24
-        }
-    ]
+    "birthdays": []
 }

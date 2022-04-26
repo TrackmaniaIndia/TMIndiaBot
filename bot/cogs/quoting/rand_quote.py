@@ -16,7 +16,6 @@ class RandomQuote(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="rand-quote",
         description="Gets a random saved quote",
     )

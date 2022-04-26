@@ -18,7 +18,6 @@ class SetupTracking(commands.Cog):
 
     # Check if user has manage-server permission
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="setup-tracking",
         description="Start the setup process for tracking.",
     )

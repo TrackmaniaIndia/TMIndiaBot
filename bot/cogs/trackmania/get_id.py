@@ -16,7 +16,6 @@ class GetID(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="get-id",
         description="Gets an ID for a specific username",
     )
@@ -41,7 +40,6 @@ class GetID(commands.Cog):
         )
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="getchannel",
     )
     async def _get_channel(self, ctx: ApplicationContext):

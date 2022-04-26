@@ -36,7 +36,6 @@ class UpdateTrophies(commands.Cog):
         await self.__update_leaderboards()
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="run-it",
     )
     @discord.is_owner()
@@ -44,7 +43,6 @@ class UpdateTrophies(commands.Cog):
         await self.__update_leaderboards()
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="run-it-for-me",
     )
     @discord.is_owner()
@@ -54,7 +52,6 @@ class UpdateTrophies(commands.Cog):
 
     # TODO: Add permissions
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="update-and-show-leaderboards",
         description="Updates and shows the trophy leaderboards",
     )

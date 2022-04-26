@@ -21,7 +21,6 @@ class GetHallOfFame(commands.Cog):
         )
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="hall-of-fame",
         description="Gives a link for the TMI Hall of Fame",
     )

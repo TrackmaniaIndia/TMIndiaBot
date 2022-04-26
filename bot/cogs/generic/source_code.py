@@ -21,7 +21,6 @@ class GetSourceCode(commands.Cog):
         )
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="source-code",
         description="Gives a link for the github source code",
     )

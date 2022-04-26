@@ -18,7 +18,6 @@ class RemovePlayerTracking(commands.Cog):
 
     # TODO: Add permissions. ManageServer
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="remove-player-tracking",
         description="Adds a player to the trophy tracking list",
     )

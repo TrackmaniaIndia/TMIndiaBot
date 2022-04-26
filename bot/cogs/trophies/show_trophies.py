@@ -19,7 +19,6 @@ class ShowTrophies(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="show-trophies",
         description="Shows the current TMI Trophy Leaderboards",
     )

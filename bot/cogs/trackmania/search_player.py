@@ -22,7 +22,6 @@ class SearchPlayer(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="search-player",
         description="Searches for Players With a Certain username",
     )

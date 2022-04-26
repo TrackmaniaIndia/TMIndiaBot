@@ -14,7 +14,6 @@ class NextBirthday(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="next-birthday",
         description="Gets the person who's birthday is the closest",
     )

@@ -20,7 +20,6 @@ class ListBirthdays(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="list-birthdays",
         description="Lists all the birthdays saved with the bot!",
     )

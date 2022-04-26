@@ -28,7 +28,6 @@ class AddBirthday(commands.Cog):
                 json.dump({"birthdays": []}, file, indent=4)
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="add-birthday",
         description="Adds your birthday to the server list!",
     )
@@ -67,7 +66,6 @@ class AddBirthday(commands.Cog):
         )
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="set-birthday",
         description="Adds your birthday to the server list!",
     )

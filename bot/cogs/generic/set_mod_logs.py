@@ -17,7 +17,6 @@ class SetModLog(commands.Cog):
 
     # TODO: Set permissions. ManageServer
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="set-mod-logs",
         description="Set a mod logs channel",
     )
@@ -53,7 +52,6 @@ class SetModLog(commands.Cog):
         )
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="remove-mod-logs",
         description="Remove the mod logs channel set for this guild",
     )

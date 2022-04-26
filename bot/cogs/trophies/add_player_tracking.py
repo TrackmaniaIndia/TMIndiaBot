@@ -19,7 +19,6 @@ class AddPlayerTracking(commands.Cog):
 
     # TODO: Add permissions. ManageServer
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="add-player-tracking",
         description="Adds a player to the trophy tracking list",
     )

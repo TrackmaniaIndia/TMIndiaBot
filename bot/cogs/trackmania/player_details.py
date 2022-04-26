@@ -20,7 +20,6 @@ class PlayerDetails(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="player-details",
         description="Gets the player details of a sepcific username",
     )
