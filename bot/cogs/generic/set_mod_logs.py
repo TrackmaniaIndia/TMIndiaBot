@@ -20,6 +20,7 @@ class SetModLog(commands.Cog):
         name="set-mod-logs",
         description="Set a mod logs channel",
     )
+    @commands.has_permissions(manage_guild=True)
     async def _set_mod_logs(
         self, ctx: ApplicationContext, channel: discord.TextChannel
     ):

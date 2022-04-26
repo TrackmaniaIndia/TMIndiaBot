@@ -69,6 +69,7 @@ class AddBirthday(commands.Cog):
         name="set-birthday",
         description="Adds your birthday to the server list!",
     )
+    @commands.has_permissions(manage_guild=True)
     async def _set_birthday(
         self,
         ctx: ApplicationContext,

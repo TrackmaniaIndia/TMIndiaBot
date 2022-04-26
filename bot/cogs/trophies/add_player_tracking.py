@@ -17,11 +17,11 @@ class AddPlayerTracking(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-    # TODO: Add permissions. ManageServer
     @commands.slash_command(
         name="add-player-tracking",
         description="Adds a player to the trophy tracking list",
     )
+    @commands.has_permissions(manage_guild=True)
     async def _add_player_tracking(
         self,
         ctx: ApplicationContext,

@@ -108,7 +108,11 @@ class ErrorHandler(Cog):
 
         if isinstance(e, errors.CommandOnCooldown):
             log.debug(debug_message)
-            await ctx.respond(e)
+            await ctx.respond(e, ephemeral=True)
+            return
+        elif isinstance(e, errors.MissingPermissions):
+            log.debug(debug_message)
+            await ctx.respond(e, ephemeral=True)
             return
         else:
             log.error(e)

@@ -21,6 +21,7 @@ class RemoveBirthday(commands.Cog):
         name="remove-username",
         description="Remove a user's birthday with their discord id",
     )
+    @commands.has_permissions(manage_guild=True)
     async def _remove_username(
         self, ctx: ApplicationContext, id: Option(int, "The user's id", required=True)
     ):

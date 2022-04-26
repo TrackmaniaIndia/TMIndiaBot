@@ -21,6 +21,7 @@ class SetupTracking(commands.Cog):
         name="setup-tracking",
         description="Start the setup process for tracking.",
     )
+    @commands.has_permissions(manage_guild=True)
     async def _setup_tracking(self, ctx: ApplicationContext):
         log_command(ctx, "setup_tracking")
 
