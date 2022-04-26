@@ -18,7 +18,7 @@ class UserBirthday(commands.Cog):
     async def _user_birthday(self, ctx: ApplicationContext, user: User):
         log_command(ctx, "user_birthday")
         log.debug(f"Getting the birthday of {ctx.author.name}")
-        birthday_data = birthday.user_birthday(user.id)
+        birthday_data = birthday.user_birthday(user.id, ctx.guild.id)
         await ctx.respond(embed=birthday_data, ephemeral=True)
         # if isinstance(type(birthday_data), str):
         #     await ctx.respond(content=birthday_data, ephemeral=True)
@@ -33,7 +33,7 @@ class UserBirthday(commands.Cog):
     async def _user_birthday_slash(self, ctx: ApplicationContext, user: User):
         log_command(ctx, "user_birthday_slash")
         log.debug(f"Getting the birthday of {ctx.author.name}")
-        birthday_data = birthday.user_birthday(user.id)
+        birthday_data = birthday.user_birthday(user.id, ctx.guild.id)
         await ctx.respond(embed=birthday_data, ephemeral=True)
 
 
