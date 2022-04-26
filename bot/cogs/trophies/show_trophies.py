@@ -19,7 +19,6 @@ class ShowTrophies(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="show-trophies",
         description="Shows the current TMI Trophy Leaderboards",
     )
@@ -32,7 +31,9 @@ class ShowTrophies(commands.Cog):
         await ctx.defer()
 
         log.debug("Opening Trophy File")
-        with open("./bot/resources/json/trophy_tracking.json", "r") as file:
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/trophy_tracking.json", "r"
+        ) as file:
             trophy_leaderboards = json.load(file)
 
         log.debug("Splitting List")
@@ -64,7 +65,9 @@ class ShowTrophies(commands.Cog):
             )
 
         log.debug("Sending Embed")
-        if len(embeds) == 1:
+        if len(embeds) == 0:
+            await ctx.respond("No player is set up for trophy tracking in this server")
+        elif len(embeds) == 1:
             await ctx.respond(embed=embeds[0])
         else:
             paginator = Paginator(embeds)

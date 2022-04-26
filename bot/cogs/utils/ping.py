@@ -13,9 +13,7 @@ class Latency(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
-    @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds, name="ping", description="Gets Latency"
-    )
+    @commands.slash_command(name="ping", description="Gets Latency")
     async def _ping(self, ctx: ApplicationContext) -> None:
         discord_ping = f"{self.bot.latency * 1000:.{ROUND_LATENCY}f} ms"
 

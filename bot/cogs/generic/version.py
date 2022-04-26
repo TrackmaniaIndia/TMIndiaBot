@@ -12,7 +12,6 @@ class BotVersion(commands.Cog):
         self._version = constants.Bot.version
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="version",
         description="Get the Bot Version",
     )

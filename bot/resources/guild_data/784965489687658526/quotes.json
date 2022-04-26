@@ -1,3 +1,12 @@
 {
-  "quotes": []
+    "quotes": [
+        {
+            "Message": "testing",
+            "Author": "Renderizer",
+            "Message Link": "https://discord.com/channels/784965489687658526/784965489687658530/968382091790254130",
+            "Date Created": "Tue Apr 26 10:54:45 2022",
+            "Timestamp": 1650950685,
+            "Number": 1
+        }
+    ]
 }

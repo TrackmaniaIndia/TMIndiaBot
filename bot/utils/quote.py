@@ -97,9 +97,11 @@ def _get_random_quote_dict(guild_id: str) -> dict:
     log.debug(
         f"Generating Random number Between 0 and {_get_number_of_quotes(guild_id)}"
     )
-    number = np.random.randint(low=0, high=_get_number_of_quotes(guild_id) - 1)
+    if _get_number_of_quotes(guild_id) == 1:
+        number = 0
+    else:
+        number = np.random.randint(low=0, high=_get_number_of_quotes(guild_id))
 
-    log.debug("Opening File")
     with open(
         f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
     ) as file:

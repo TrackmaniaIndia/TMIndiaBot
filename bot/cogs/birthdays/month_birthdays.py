@@ -16,7 +16,6 @@ class MonthBirthdays(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="birthdays-of-month",
         description="Lists all the birthdays of a specific month saved with the bot!",
     )
@@ -28,12 +27,14 @@ class MonthBirthdays(commands.Cog):
         log_command(ctx, "month_birthdays")
 
         birthdays_embeds = birthday.month_birthdays(
-            month=constants.Consts.months.index(month)
+            month=constants.Consts.months.index(month),
+            guild_id=ctx.guild.id,
         )
 
         if birthdays_embeds is None:
             await ctx.respond(
-                f"That month does not have any birthdays -> {month}\nIf this message is wrong please use the `addbirthday` command to add your birthday"
+                f"That month does not have any birthdays -> {month}\nIf this message is wrong please use the `addbirthday` command to add your birthday",
+                ephemeral=True,
             )
         elif len(birthdays_embeds) == 1:
             await ctx.respond(embed=birthdays_embeds[0], ephemeral=True)

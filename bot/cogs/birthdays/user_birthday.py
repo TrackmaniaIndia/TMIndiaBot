@@ -14,11 +14,11 @@ class UserBirthday(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-    @user_command(guild_ids=constants.Bot.default_guilds, name="User Birthday")
+    @user_command(name="User Birthday")
     async def _user_birthday(self, ctx: ApplicationContext, user: User):
         log_command(ctx, "user_birthday")
         log.debug(f"Getting the birthday of {ctx.author.name}")
-        birthday_data = birthday.user_birthday(user.id)
+        birthday_data = birthday.user_birthday(user.id, ctx.guild.id)
         await ctx.respond(embed=birthday_data, ephemeral=True)
         # if isinstance(type(birthday_data), str):
         #     await ctx.respond(content=birthday_data, ephemeral=True)
@@ -26,14 +26,13 @@ class UserBirthday(commands.Cog):
         #     await ctx.respond(embed=birthday_data, ephemeral=True)
 
     @slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="user-birthday",
         description="Gets a player's birthday if it was stored with the bot.",
     )
     async def _user_birthday_slash(self, ctx: ApplicationContext, user: User):
         log_command(ctx, "user_birthday_slash")
         log.debug(f"Getting the birthday of {ctx.author.name}")
-        birthday_data = birthday.user_birthday(user.id)
+        birthday_data = birthday.user_birthday(user.id, ctx.guild.id)
         await ctx.respond(embed=birthday_data, ephemeral=True)
 
 

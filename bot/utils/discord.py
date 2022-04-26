@@ -1,10 +1,13 @@
+import json
 import typing
 from datetime import datetime, timedelta, timezone
 from typing import List
 
 import discord
+from discord import ButtonStyle, TextChannel
 
 import bot.utils.commons as commons
+from bot.bot import Bot
 from bot.log import get_logger
 
 log = get_logger(__name__)
@@ -20,7 +23,7 @@ class Confirmer(discord.ui.View):
         self.cancel_button = self.children[1]
         log.debug("Created Confirmation Menu")
 
-    @discord.ui.button(label="Confirm", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Confirm", style=ButtonStyle.green)
     async def confirm(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
@@ -35,7 +38,7 @@ class Confirmer(discord.ui.View):
         self.value = True
         self.stop()
 
-    @discord.ui.button(label="Cancel", style=discord.ButtonStyle.grey)
+    @discord.ui.button(label="Cancel", style=ButtonStyle.grey)
     async def cancel(self, button: discord.ui.Button, interaction: discord.Interaction):
         """If this button is clicked, prompt returns a False value
         Args:
@@ -56,7 +59,7 @@ class Confirmer(discord.ui.View):
         """
         log.debug(f"Changing Confirm Button to Label: {label} and Color: {color}")
         self.confirm_button.label = label
-        self.confirm_button.style = getattr(discord.ButtonStyle, color.lower())
+        self.confirm_button.style = getattr(ButtonStyle, color.lower())
 
     def change_cancel_button(self, label: str, color: str = "red"):
         """Changes the label and color of the cancel button to help with customizability
@@ -66,7 +69,7 @@ class Confirmer(discord.ui.View):
         """
         log.debug(f"Changing Cancel Button to Label: {label} and color: {color}")
         self.cancel_button.label = label
-        self.cancel_button.style = getattr(discord.ButtonStyle, color.lower())
+        self.cancel_button.style = getattr(ButtonStyle, color.lower())
 
 
 def create_embed(
@@ -113,3 +116,30 @@ class ViewAdder(discord.ui.View):
 
         for button in buttons:
             self.add_item(button)
+
+
+def get_mod_logs_channel(bot: Bot, guild_id: int) -> TextChannel | None:
+    """Returns mod-logs channel of the given guild_id
+
+    Args:
+        bot (Bot): The bot object.
+        guild_id (int): The guild id
+
+    Returns:
+        TextChannel | None: TextChannel is returned if the mod-logs channel is set and is not Forbidden. None is sent if mod-logs channel
+                            is not set or if `discord.errors.Forbidden` is raised.
+    """
+    log.debug("Getting mod-logs channel for %s", guild_id)
+
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/config.json", "r", encoding="UTF-8"
+    ) as file:
+        config_data = json.load(file)
+
+    if config_data.get("mod_logs_channel", 0) == 0:
+        return None
+    else:
+        try:
+            return bot.get_channel(config_data.get("mod_logs_channel"))
+        except discord.errors.Forbidden:
+            return None

@@ -17,16 +17,10 @@ class RemovePlayerTracking(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="remove-player-tracking",
         description="Adds a player to the trophy tracking list",
     )
-    @discord.has_any_role(
-        805318382441988096, 858620171334057994, guild_id=constants.Guild.tmi_server
-    )
-    @discord.has_any_role(
-        940194181731725373, 941215148222341181, guild_id=constants.Guild.testing_server
-    )
+    @commands.has_permissions(manage_guild=True)
     async def _remove_player_tracking(
         self,
         ctx: ApplicationContext,
@@ -44,18 +38,22 @@ class RemovePlayerTracking(commands.Cog):
             )
 
         log.debug("Opening JSON File")
-        with open("./bot/resources/json/trophy_tracking.json", "r") as file:
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/trophy_tracking.json", "r"
+        ) as file:
             tracking_data = json.load(file)
 
         log.debug("Looping through list to remove the player")
-        for player in tracking_data["tracking"]:
+        for player in tracking_data.get("tracking", []):
             if player.get("username").lower() == username.lower():
                 log.debug("Found Player")
                 tracking_data["tracking"].pop(tracking_data["tracking"].index(player))
                 break
 
         log.debug("Writing JSON File")
-        with open("./bot/resources/json/trophy_tracking.json", "w") as file:
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/trophy_tracking.json", "w"
+        ) as file:
             json.dump(tracking_data, file, indent=4)
 
         await ctx.respond(f"{username} has been removed from the trophy tracking list.")

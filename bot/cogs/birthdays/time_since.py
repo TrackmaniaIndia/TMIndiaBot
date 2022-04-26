@@ -15,7 +15,6 @@ class TimeSince(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="time-since",
         description="time since a specific date",
     )

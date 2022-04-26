@@ -1,3 +1,5 @@
+import traceback
+
 from discord import Embed
 from discord.ext.commands import Cog, Context, errors
 
@@ -5,7 +7,6 @@ from bot.api import ResponseCodeError
 from bot.bot import Bot
 from bot.constants import Channels, Colours
 from bot.log import get_logger
-from bot.utils.checks import ContextCheckFailure
 from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
@@ -107,7 +108,11 @@ class ErrorHandler(Cog):
 
         if isinstance(e, errors.CommandOnCooldown):
             log.debug(debug_message)
-            await ctx.respond(e)
+            await ctx.respond(e, ephemeral=True)
+            return
+        elif isinstance(e, errors.MissingPermissions):
+            log.debug(debug_message)
+            await ctx.respond(e, ephemeral=True)
             return
         else:
             log.error(e)
@@ -188,9 +193,6 @@ class ErrorHandler(Cog):
             await ctx.send(
                 "Sorry, it looks like I don't have the permissions or roles I need to do that."
             )
-        elif isinstance(e, (ContextCheckFailure, errors.NoPrivateMessage)):
-            log.debug("errors.wrong_channel_or_dm_error")
-            await ctx.send(e)
 
     @staticmethod
     async def handle_api_error(ctx: Context, e: ResponseCodeError) -> None:

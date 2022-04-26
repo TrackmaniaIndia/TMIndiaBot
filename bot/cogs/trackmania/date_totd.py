@@ -66,7 +66,6 @@ class LatestTOTD(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="latest-totd",
         description="Gets the data about the latest totd",
     )
@@ -84,7 +83,6 @@ class LatestTOTD(commands.Cog):
         await ctx.respond(embed=page, view=ViewAdder(buttons))
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="totd",
         description="Gets the TOTD Data of a certain date.",
     )

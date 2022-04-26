@@ -13,9 +13,11 @@ from bot.utils.discord import create_embed
 log = get_logger(__name__)
 
 
-def list_birthdays() -> list[discord.Embed]:
+def list_birthdays(guild_id: int) -> list[discord.Embed]:
     log.debug("Opening the birthdays.json file")
-    with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/birthdays.json", "r", encoding="UTF-8"
+    ) as file:
         birthdays = _sort_birthdays(json.load(file)["birthdays"])
 
     if len(birthdays) > 10:
@@ -23,60 +25,65 @@ def list_birthdays() -> list[discord.Embed]:
         embed_list = []
         for birthday_lst in birthdays:
             embed_list.append(create_embed(description=__format_lst(birthday_lst)))
-
         return embed_list
     else:
         return [create_embed(description=__format_lst(birthdays))]
 
 
-def next_birthday() -> discord.Embed:
+def next_birthday(guild_id: int) -> discord.Embed:
     MONTHS = constants.Consts.months
 
     log.debug("Opening the birthdays.json file")
-    with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/birthdays.json", "r", encoding="UTF-8"
+    ) as file:
         birthdays = _sort_birthdays(json.load(file)["birthdays"])
 
-    log.debug("Looping through birthday list to find next birthday")
-    year = int(datetime.now().date().strftime("%Y"))
-    smallest_diff = birthdays[0]
-    timestamp_diff = 100000000
-    for person in birthdays:
-        if (
-            int(
-                commons.timestamp_date(
-                    year=year,
-                    month=MONTHS.index(person["Month"]) + 1,
-                    day=person["Day"],
+    try:
+        log.debug("Looping through birthday list to find next birthday")
+        year = int(datetime.now().date().strftime("%Y"))
+        smallest_diff = birthdays[0]
+        timestamp_diff = 100000000
+        for person in birthdays:
+            if (
+                int(
+                    commons.timestamp_date(
+                        year=year,
+                        month=MONTHS.index(person["Month"]) + 1,
+                        day=person["Day"],
+                    )
+                    - commons.timestamp()
                 )
-                - commons.timestamp()
-            )
-            < timestamp_diff
-            and int(
-                commons.timestamp_date(
-                    year=year,
-                    month=MONTHS.index(person["Month"]) + 1,
-                    day=person["Day"],
+                < timestamp_diff
+                and int(
+                    commons.timestamp_date(
+                        year=year,
+                        month=MONTHS.index(person["Month"]) + 1,
+                        day=person["Day"],
+                    )
+                    - commons.timestamp()
                 )
-                - commons.timestamp()
-            )
-            > 0
-        ):
-            timestamp_diff = int(
-                commons.timestamp_date(
-                    year=year,
-                    month=MONTHS.index(person["Month"]) + 1,
-                    day=person["Day"],
+                > 0
+            ):
+                timestamp_diff = int(
+                    commons.timestamp_date(
+                        year=year,
+                        month=MONTHS.index(person["Month"]) + 1,
+                        day=person["Day"],
+                    )
+                    - commons.timestamp()
                 )
-                - commons.timestamp()
-            )
-            smallest_diff = person
-
+                smallest_diff = person
+    except IndexError:
+        return create_embed("No users birthdays are stored", color=discord.Colour.red())
     return create_embed(description=__format_lst([smallest_diff]))
 
 
-def month_birthdays(month: int) -> list[discord.Embed]:
+def month_birthdays(month: int, guild_id: int) -> list[discord.Embed]:
     log.debug("Opening the birthdays.json file")
-    with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/birthdays.json", "r", encoding="UTF-8"
+    ) as file:
         birthdays = __split_birthdays(json.load(file)["birthdays"])[month]
 
     if len(birthdays) == 0:
@@ -92,11 +99,13 @@ def month_birthdays(month: int) -> list[discord.Embed]:
         return [create_embed(description=__format_lst(birthdays))]
 
 
-def today_birthday() -> typing.Union[None, List[discord.Embed]]:
+def today_birthday(guild_id: int) -> typing.Union[None, List[discord.Embed]]:
     MONTHS = constants.Consts.months
 
     log.debug("Opening the birthdays.json file")
-    with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/birthdays.json", "r", encoding="UTF-8"
+    ) as file:
         birthdays = _sort_birthdays(json.load(file)["birthdays"])
 
     todays_day = int(datetime.now().date().strftime("%d"))
@@ -120,9 +129,11 @@ def today_birthday() -> typing.Union[None, List[discord.Embed]]:
         return None
 
 
-def remove_birthday(id: int) -> bool:
+def remove_birthday(id: int, guild_id: int) -> bool:
     log.debug("Getting birthday list")
-    with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/birthdays.json", "r", encoding="UTF-8"
+    ) as file:
         birthday_list: list = json.load(file)["birthdays"]
 
     log.debug("Looping through birthday list")
@@ -136,9 +147,11 @@ def remove_birthday(id: int) -> bool:
     return False
 
 
-def user_birthday(id: int) -> discord.Embed | str:
+def user_birthday(id: int, guild_id: int) -> discord.Embed | str:
     log.debug("Getting Birthday list")
-    with open("./bot/resources/json/birthdays.json", "r", encoding="UTF-8") as file:
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/birthdays.json", "r", encoding="UTF-8"
+    ) as file:
         birthday_list: list = json.load(file)["birthdays"]
 
         log.debug("Looping through birthday list")

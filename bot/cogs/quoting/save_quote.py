@@ -18,17 +18,11 @@ class SaveQuote(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="quote",
         description="Saves a Quote, Only Usable by Mods",
         default_permissions=False,
     )
-    @discord.has_any_role(
-        805318382441988096, 858620171334057994, guild_id=constants.Guild.tmi_server
-    )
-    @discord.has_any_role(
-        940194181731725373, 941215148222341181, guild_id=constants.Guild.testing_server
-    )
+    @commands.has_permissions(manage_messages=True)
     async def _save_quote(
         self,
         ctx: ApplicationContext,
@@ -69,9 +63,8 @@ class SaveQuote(commands.Cog):
 
         await ctx.send_followup(embed=embed)
 
-    @commands.message_command(
-        guild_ids=constants.Bot.default_guilds, name="Quote Message"
-    )
+    @commands.message_command(name="Quote Message")
+    @commands.has_permissions(manage_messages=True)
     async def _save_quote_message_cmd(
         self,
         ctx: ApplicationContext,

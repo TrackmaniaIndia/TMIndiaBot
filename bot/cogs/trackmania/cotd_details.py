@@ -21,7 +21,6 @@ class COTDDetails(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="cotd-details",
         description="Gets the COTD Details of a player along with a graph of the last 25 COTDs",
     )

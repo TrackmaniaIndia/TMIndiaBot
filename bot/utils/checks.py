@@ -1,68 +1,70 @@
-from typing import Container, Optional
+import json
+import os
 
-from discord.ext.commands import CheckFailure, Context
-
-from bot import constants
 from bot.log import get_logger
 
 log = get_logger(__name__)
 
 
-class ContextCheckFailure(CheckFailure):
-    """Raised when a context-specific check fails"""
+def create_config(guild_id: int):
+    config_path = f"./bot/resources/guild_data/{guild_id}/config.json"
+    if not os.path.exists(config_path):
+        log.debug("Creating Config")
 
-    def __init__(self, redirect_channel=Optional[int]) -> None:
-        log.debug("Initializing ContextCheckFailure")
-        self.redirect_channel = redirect_channel
+        config_dict = {
+            "prefix": ">>",
+            "announcement_channel": 0,
+            "cotd_one_reminder": False,
+            "cotd_two_reminder": False,
+            "cotd_three_reminder": False,
+            "royal_one_reminder": False,
+            "royal_two_reminder": False,
+            "royal_three_reminder": False,
+            "reminder_channel": 0,
+            "totd_data": False,
+            "totd_channel": 0,
+            "trophy_tracking": False,
+            "trophy_update_channel": 0,
+            "mod_logs_channel": 0,
+        }
 
-        if redirect_channel:
-            redirect_message = (
-                f" here. Please use the <#{redirect_channel}> channel instead"
-            )
-        else:
-            redirect_message = ""
-
-        error_message = f"You are not allowed to use that command{redirect_message}."
-
-        super().__init__(error_message)
+        with open(config_path, "w", encoding="UTF-8") as file:
+            json.dump(config_dict, file, indent=4)
+    else:
+        log.debug("Config file already exists")
 
 
-class InWhitelistCheckFailure(ContextCheckFailure):
-    """Raised when the `in_whitelist` check fails"""
+def create_quotes(guild_id: int):
+    quotes_path = f"./bot/resources/guild_data/{guild_id}/quotes.json"
+
+    if not os.path.exists(quotes_path):
+        log.debug("Creating quotes")
+        quotes_dict = {"quotes": []}
+        with open(quotes_path, "w", encoding="UTF-8") as file:
+            json.dump(quotes_dict, file, indent=4)
+    else:
+        log.debug("Quotes file already exists")
 
 
-def in_whitelist_check(
-    ctx: Context,
-    channels: Container[int] = (),
-    roles: Container[int] = (),
-    redirect: Optional[int] = constants.Channels.commands_allowed,
-    fail_silently: bool = False,
-):
-    """
-    Check if a command was issued in a whitelisted context.
-    The whitelists that can be provided are:
-    - `channels`: a container with channel ids for whitelisted channels
-    - `roles`: a container with with role ids for whitelisted roles
-    If the command was invoked in a context that was not whitelisted, the member is either
-    redirected to the `redirect` channel that was passed (default: #bot-commands) or simply
-    told that they're not allowed to use this particular command (if `None` was passed).
-    """
+def create_trophy_tracking(guild_id: int):
+    tracking_path = f"./bot/resources/guild_data/{guild_id}/trophy_tracking.json"
 
-    if redirect and redirect not in channels:
-        channel = tuple(channels) + (redirect,)
+    if not os.path.exists(tracking_path):
+        log.debug("Creating Trophy Tracking")
+        tracking_dict = {"tracking": []}
+        with open(tracking_path, "w", encoding="UTF-8") as file:
+            json.dump(tracking_dict, file, indent=4)
+    else:
+        log.debug("Trophy Tracking file already exists")
 
-    if channel and ctx.channel.id in channels:
-        log.debug(
-            f"{ctx.author} may use the `{ctx.command.name}` command as they are in a whitelisted channel."
-        )
-        return True
 
-    if roles and any(r.id in roles for r in getattr(ctx.author, "roles", ())):
-        log.debug(
-            f"{ctx.author} may use the `{ctx.command.name}` command as they have a whitelisted role."
-        )
-        return True
+def create_birthdays(guild_id: int):
+    birthdays_path = f"./bot/resources/guild_data/{guild_id}/birthdays.json"
 
-    if not fail_silently:
-        raise InWhitelistCheckFailure(redirect)
-    return False
+    if not os.path.exists(birthdays_path):
+        log.debug("Creating Birthdays")
+        birthday_dict = {"birthdays": []}
+        with open(birthdays_path, "w", encoding="UTF-8") as file:
+            json.dump(birthday_dict, file, indent=4)
+    else:
+        log.debug("Birthdays file already exists")

@@ -7,6 +7,7 @@ import discord
 from discord.ext import commands, tasks
 
 import bot.utils.birthdays as birthday
+import bot.utils.checks as checks
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
@@ -63,6 +64,10 @@ class OnReady(
         log.info("Starting BirthdayReminder")
         self.todays_birthday.start()
 
+        # Starting File Checker
+        log.info("Starting FileChecker")
+        self.check_files.start()
+
         # Looping Through Announcement Channels
         for announcement_channel in constants.Channels.announcement_channels:
             log.info(f"Sending Message in {announcement_channel}")
@@ -98,6 +103,15 @@ class OnReady(
         """Changes Bot Status Every 10 Minutes"""
         log.debug("Changing Status")
         await self.bot.change_presence(activity=discord.Game(next(self.statuses)))
+
+    @tasks.loop(minutes=15)
+    async def create_files(self):
+        async for guild in self.bot.fetch_guilds():
+            log.debug("Checking for %s", guild.name)
+            checks.create_config(guild.id)
+            checks.create_quotes(guild.id)
+            checks.create_trophy_tracking(guild.id)
+            checks.create_birthdays(guild.id)
 
     @tasks.loop(
         time=datetime.time(hour=1, minute=30, second=0, tzinfo=datetime.timezone.utc)
@@ -150,6 +164,15 @@ class OnReady(
         else:
             log.debug("No birthdays today")
             return
+
+    @tasks.loop(minutes=15)
+    async def check_files(self):
+        async for guild in self.bot.fetch_guilds():
+            log.info("Checking files for %s", guild.name)
+            checks.create_config(guild.id)
+            checks.create_quotes(guild.id)
+            checks.create_trophy_tracking(guild.id)
+            checks.create_birthdays(guild.id)
 
     def _set_statuses(self):
         with open("./bot/resources/json/statuses.json", "r", encoding="UTF-8") as file:
