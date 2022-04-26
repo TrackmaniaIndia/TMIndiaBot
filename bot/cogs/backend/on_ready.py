@@ -107,6 +107,9 @@ class OnReady(
     @tasks.loop(minutes=15)
     async def create_files(self):
         async for guild in self.bot.fetch_guilds():
+            if not os.path.exists(f"./bot/resources/guild_data/{guild.id}/"):
+                os.mkdir(f"./bot/resources/guild_data/{guild.id}/")
+
             log.debug("Checking for %s", guild.name)
             checks.create_config(guild.id)
             checks.create_quotes(guild.id)
