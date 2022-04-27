@@ -1,8 +1,5 @@
-import json
-import os
-
 import discord
-from discord import ApplicationContext, SlashCommandOptionType
+from discord import ApplicationContext
 from discord.ext import commands
 from discord.ext.pages import Paginator
 

@@ -4,7 +4,6 @@ from typing import List, Tuple
 import discord
 from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
-from discord.ext.pages import Paginator
 from trackmania import TOTD, InvalidTOTDDate, TMXMap
 
 import bot.utils.commons as commons

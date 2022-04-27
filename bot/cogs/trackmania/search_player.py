@@ -8,11 +8,9 @@ from discord.ext.pages import Paginator
 from trackmania import Player, PlayerZone
 from trackmania.player import PlayerSearchResult
 
-import bot.utils.commons as commons
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import ViewAdder, create_embed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 

@@ -1,7 +1,5 @@
 import json
 import os
-from textwrap import indent
-from typing import TYPE_CHECKING
 
 import discord
 from discord import ApplicationContext, SlashCommandOptionType

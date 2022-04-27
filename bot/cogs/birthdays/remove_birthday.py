@@ -1,10 +1,8 @@
-import discord
 from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 
 import bot.utils.birthdays as birthday
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 from bot.utils.discord import get_mod_logs_channel

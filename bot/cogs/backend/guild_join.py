@@ -1,8 +1,6 @@
-import json
 import os
 
-import discord
-from discord import ApplicationContext, Guild
+from discord import Guild
 from discord.ext import commands
 
 import bot.utils.checks as checks
