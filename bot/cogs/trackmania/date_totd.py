@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List, Tuple
 
 import discord
 from discord import ApplicationContext, Option, SlashCommandOptionType
@@ -138,7 +137,7 @@ class LatestTOTD(commands.Cog):
 
     async def __parse_pages(
         self, totd_data: TOTD
-    ) -> Tuple[discord.Embed, List[discord.ui.Button]]:
+    ) -> tuple[discord.Embed, list[discord.ui.Button]]:
         log.debug("Parsing Values")
         map_name = totd_data.map.name
         author_name = totd_data.map.author_name

@@ -99,7 +99,7 @@ def month_birthdays(month: int, guild_id: int) -> list[discord.Embed]:
         return [create_embed(description=__format_lst(birthdays))]
 
 
-def today_birthday(guild_id: int) -> typing.Union[None, List[discord.Embed]]:
+def today_birthday(guild_id: int) -> None | list[discord.Embed]:
     MONTHS = constants.Consts.months
 
     log.debug("Opening the birthdays.json file")

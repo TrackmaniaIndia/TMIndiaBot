@@ -1,5 +1,3 @@
-from typing import List
-
 import discord
 from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
@@ -65,7 +63,7 @@ class PlayerDetails(commands.Cog):
         log.debug("Paginator Finished")
 
     @staticmethod
-    def __create_pages(player_data: Player) -> List[discord.Embed]:
+    def __create_pages(player_data: Player) -> list[discord.Embed]:
         log.info(f"Creating PlayerDetail pages for {player_data.name}")
         display_name = player_data.name
 

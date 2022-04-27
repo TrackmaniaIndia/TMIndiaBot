@@ -1,5 +1,3 @@
-from typing import List, Tuple
-
 import discord
 import matplotlib.pyplot as plt
 from discord import ApplicationContext, SlashCommandOptionType
@@ -138,7 +136,7 @@ class COTDDetails(commands.Cog):
         return page
 
     @staticmethod
-    def __pop_reruns(cotds: List[PlayerCOTDResults]) -> Tuple[List[PlayerCOTDResults]]:
+    def __pop_reruns(cotds: list[PlayerCOTDResults]) -> tuple[list[PlayerCOTDResults]]:
         popped = cotds
         temp = []
 
@@ -151,7 +149,7 @@ class COTDDetails(commands.Cog):
 
     @staticmethod
     def __create_graphs(
-        popped: List[PlayerCOTDResults], original: List[PlayerCOTDResults]
+        popped: list[PlayerCOTDResults], original: list[PlayerCOTDResults]
     ):
         popped_name_list, popped_rank_list = [], []
         original_name_list, original_rank_list = [], []
