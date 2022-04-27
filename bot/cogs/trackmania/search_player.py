@@ -2,17 +2,15 @@ from re import L
 from typing import List
 
 import discord
-from discord import ApplicationContext, Option
+from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
 from discord.ext.pages import Paginator
 from trackmania import Player, PlayerZone
 from trackmania.player import PlayerSearchResult
 
-import bot.utils.commons as commons
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import ViewAdder, create_embed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -28,7 +26,11 @@ class SearchPlayer(commands.Cog):
     async def _search_player(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player to search", required=True),
+        username: Option(
+            SlashCommandOptionType.string,
+            "The username of the player to search",
+            required=True,
+        ),
     ):
         log_command(ctx, "search_player")
 

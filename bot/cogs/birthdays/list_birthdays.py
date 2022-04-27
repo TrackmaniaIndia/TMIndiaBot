@@ -1,6 +1,3 @@
-import json
-import os
-
 import discord
 from discord import ApplicationContext
 from discord.ext import commands

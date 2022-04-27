@@ -1,7 +1,7 @@
 import json
 
 import discord as discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 
@@ -24,7 +24,11 @@ class RemovePlayerTracking(commands.Cog):
     async def _remove_player_tracking(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player to remove.", required=True),
+        username: Option(
+            SlashCommandOptionType.string,
+            "The username of the player to remove.",
+            required=True,
+        ),
     ):
         log_command(ctx, "remove_player_tracking")
 

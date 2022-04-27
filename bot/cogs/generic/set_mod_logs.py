@@ -1,10 +1,9 @@
 import json
 
-import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
+from discord.commands import Option
 from discord.ext import commands
 
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 
@@ -22,7 +21,13 @@ class SetModLog(commands.Cog):
     )
     @commands.has_permissions(manage_guild=True)
     async def _set_mod_logs(
-        self, ctx: ApplicationContext, channel: discord.TextChannel
+        self,
+        ctx: ApplicationContext,
+        channel: Option(
+            SlashCommandOptionType.channel,
+            "The channel to send moderator logs",
+            required=True,
+        ),
     ):
         log_command(ctx, "set_mod_logs")
 
@@ -56,6 +61,7 @@ class SetModLog(commands.Cog):
         name="remove-mod-logs",
         description="Remove the mod logs channel set for this guild",
     )
+    @commands.has_permissions(manage_guild=True)
     async def _remove_mod_logs(self, ctx: ApplicationContext):
         log_command(ctx, "remove_mod_logs")
 

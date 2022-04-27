@@ -1,9 +1,8 @@
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 from trackmania import Player
 
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import create_embed
@@ -22,7 +21,9 @@ class GetID(commands.Cog):
     async def _get_id(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player", required=True),
+        username: Option(
+            SlashCommandOptionType.string, "The username of the player", required=True
+        ),
     ):
         log_command(ctx, "get_id")
 
@@ -38,26 +39,6 @@ class GetID(commands.Cog):
             ),
             ephemeral=True,
         )
-
-    @commands.slash_command(
-        name="getchannel",
-    )
-    async def _get_channel(self, ctx: ApplicationContext):
-        await ctx.defer()
-
-        channel = self.bot.get_channel(constants.Channels.tm2020)
-        print(channel.name)
-
-        embed = EZEmbed.create_embed(
-            title="Hi, This is just a test. Please ignore if you can see this",
-            color=0xFF00FF,
-        )
-
-        log.warn("Sending Message")
-        await channel.send(embed=embed, delete_after=3)
-        log.warn("Sent Message")
-
-        await ctx.respond("hi")
 
 
 def setup(bot: Bot):

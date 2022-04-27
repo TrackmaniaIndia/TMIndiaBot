@@ -8,7 +8,7 @@ from errno import EMSGSIZE
 from itertools import zip_longest
 
 import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.ext import commands, tasks
 from trackmania import Player
 

@@ -1,14 +1,11 @@
-from typing import List, Tuple
-
 import discord
 import matplotlib.pyplot as plt
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
 from trackmania import BestCOTDStats, Player, PlayerCOTD, PlayerCOTDResults
 
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import create_embed
@@ -28,7 +25,9 @@ class COTDDetails(commands.Cog):
     async def _cotd_details(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player", required=True),
+        username: Option(
+            SlashCommandOptionType.string, "The username of the player", required=True
+        ),
     ):
         log_command(ctx, "cotd_details")
 
@@ -137,7 +136,7 @@ class COTDDetails(commands.Cog):
         return page
 
     @staticmethod
-    def __pop_reruns(cotds: List[PlayerCOTDResults]) -> Tuple[List[PlayerCOTDResults]]:
+    def __pop_reruns(cotds: list[PlayerCOTDResults]) -> tuple[list[PlayerCOTDResults]]:
         popped = cotds
         temp = []
 
@@ -150,7 +149,7 @@ class COTDDetails(commands.Cog):
 
     @staticmethod
     def __create_graphs(
-        popped: List[PlayerCOTDResults], original: List[PlayerCOTDResults]
+        popped: list[PlayerCOTDResults], original: list[PlayerCOTDResults]
     ):
         popped_name_list, popped_rank_list = [], []
         original_name_list, original_rank_list = [], []

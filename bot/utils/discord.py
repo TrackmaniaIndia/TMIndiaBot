@@ -1,5 +1,4 @@
 import json
-import typing
 from datetime import datetime, timedelta, timezone
 from typing import List
 
@@ -75,7 +74,7 @@ class Confirmer(discord.ui.View):
 def create_embed(
     title: str = None,
     description: str = "",
-    color: typing.Union[int, discord.Colour] = None,
+    color: int | discord.Colour = None,
     url: str = None,
 ) -> discord.Embed:
     """Creates an Embed with Basic Data Fields Filled Out
@@ -111,7 +110,7 @@ def create_embed(
 
 
 class ViewAdder(discord.ui.View):
-    def __init__(self, buttons: List[discord.ui.Button]):
+    def __init__(self, buttons: list[discord.ui.Button]):
         super().__init__()
 
         for button in buttons:
