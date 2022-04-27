@@ -2,7 +2,7 @@ from re import L
 from typing import List
 
 import discord
-from discord import ApplicationContext, Option
+from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
 from discord.ext.pages import Paginator
 from trackmania import Player, PlayerZone
@@ -28,7 +28,11 @@ class SearchPlayer(commands.Cog):
     async def _search_player(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player to search", required=True),
+        username: Option(
+            SlashCommandOptionType.string,
+            "The username of the player to search",
+            required=True,
+        ),
     ):
         log_command(ctx, "search_player")
 

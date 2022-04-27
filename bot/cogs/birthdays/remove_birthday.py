@@ -1,5 +1,5 @@
 import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 
@@ -23,7 +23,9 @@ class RemoveBirthday(commands.Cog):
     )
     @commands.has_permissions(manage_guild=True)
     async def _remove_username(
-        self, ctx: ApplicationContext, id: Option(int, "The user's id", required=True)
+        self,
+        ctx: ApplicationContext,
+        id: Option(SlashCommandOptionType.integer, "The user's id", required=True),
     ):
         log.info(f"{ctx.author.name} is requesting removal of {id}")
 

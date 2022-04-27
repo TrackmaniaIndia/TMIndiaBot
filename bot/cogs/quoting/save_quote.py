@@ -1,5 +1,5 @@
 import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option, permissions
 from discord.ext import commands
 
@@ -27,19 +27,23 @@ class SaveQuote(commands.Cog):
         self,
         ctx: ApplicationContext,
         *,
-        message: Option(str, "Message to Quote", required=True),
-        author: Option(str, "The author of the message", required=True),
+        message: Option(
+            SlashCommandOptionType.string, "Message to Quote", required=True
+        ),
+        author: Option(
+            SlashCommandOptionType.string, "The author of the message", required=True
+        ),
         message_link: Option(
-            str, "The Link to the Message you want to quote", required=True
+            SlashCommandOptionType.string,
+            "The Link to the Message you want to quote",
+            required=True,
         ),
     ):
         log_command(ctx, "save_quote")
 
         log.info(f"Saving {message} by {author} from guild {ctx.guild.name}")
 
-        log.debug("Deferring Response")
         await ctx.defer()
-        log.debug("Deferred Response")
 
         if ctx.author.id == 901407301175484447:
             log.info(

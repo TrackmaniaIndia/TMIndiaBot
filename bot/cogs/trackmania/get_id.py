@@ -1,4 +1,4 @@
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 from trackmania import Player
@@ -22,7 +22,9 @@ class GetID(commands.Cog):
     async def _get_id(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player", required=True),
+        username: Option(
+            SlashCommandOptionType.string, "The username of the player", required=True
+        ),
     ):
         log_command(ctx, "get_id")
 

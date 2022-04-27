@@ -1,7 +1,7 @@
 import json
 from itertools import zip_longest
 
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.ext import commands
 from discord.ext.pages import Paginator
 

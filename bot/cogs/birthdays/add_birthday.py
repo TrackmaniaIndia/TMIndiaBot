@@ -4,7 +4,7 @@ from textwrap import indent
 from typing import TYPE_CHECKING
 
 import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 
@@ -34,14 +34,18 @@ class AddBirthday(commands.Cog):
     async def _add_birthday(
         self,
         ctx: ApplicationContext,
-        year: Option(int, "The year you were born!", required=True),
+        year: Option(
+            SlashCommandOptionType.integer, "The year you were born!", required=True
+        ),
         month: Option(
-            str,
+            SlashCommandOptionType.string,
             "The month you were born in!",
             choices=constants.Consts.months,
             required=True,
         ),
-        day: Option(int, "The day you were born on", required=True),
+        day: Option(
+            SlashCommandOptionType.integer, "The day you were born on", required=True
+        ),
     ):
         log_command(ctx, "add_birthday")
 
@@ -74,18 +78,22 @@ class AddBirthday(commands.Cog):
         self,
         ctx: ApplicationContext,
         user: Option(
-            discord.User,
+            SlashCommandOptionType.user,
             description="The user you want to set the birthday for",
             required=True,
         ),
-        year: Option(int, "The year you were born!", required=True),
+        year: Option(
+            SlashCommandOptionType.integer, "The year you were born!", required=True
+        ),
         month: Option(
-            str,
+            SlashCommandOptionType.string,
             "The month you were born in!",
             choices=constants.Consts.months,
             required=True,
         ),
-        day: Option(int, "The day you were born on", required=True),
+        day: Option(
+            SlashCommandOptionType.integer, "The day you were born on", required=True
+        ),
     ):
         log_command(ctx, "set_birthday")
 

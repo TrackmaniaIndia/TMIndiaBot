@@ -1,7 +1,7 @@
 import json
 
 import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 from trackmania import Player
@@ -25,7 +25,11 @@ class AddPlayerTracking(commands.Cog):
     async def _add_player_tracking(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player to add.", required=True),
+        username: Option(
+            SlashCommandOptionType.string,
+            "The username of the player to add.",
+            required=True,
+        ),
     ):
         log_command(ctx, "add_player_tracking")
 

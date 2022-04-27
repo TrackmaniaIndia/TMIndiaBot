@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Tuple
 
 import discord
-from discord import ApplicationContext, Option
+from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
 from discord.ext.pages import Paginator
 from trackmania import TOTD, InvalidTOTDDate, TMXMap
@@ -89,9 +89,21 @@ class LatestTOTD(commands.Cog):
     async def _totd(
         self,
         ctx: ApplicationContext,
-        year: Option(int, description="The year of the TOTD", required=True),
-        month: Option(int, description="The month of the TOTD (1-12)", required=True),
-        day: Option(int, description="The day of the TOTD", required=True),
+        year: Option(
+            SlashCommandOptionType.integer,
+            description="The year of the TOTD",
+            required=True,
+        ),
+        month: Option(
+            SlashCommandOptionType.integer,
+            description="The month of the TOTD (1-12)",
+            required=True,
+        ),
+        day: Option(
+            SlashCommandOptionType.integer,
+            description="The day of the TOTD",
+            required=True,
+        ),
     ):
         log_command(ctx, "totd")
 

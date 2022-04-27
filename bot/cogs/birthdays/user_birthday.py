@@ -1,4 +1,4 @@
-from discord import ApplicationContext, User, slash_command
+from discord import ApplicationContext, SlashCommandOptionType, User, slash_command
 from discord.commands import slash_command, user_command
 from discord.ext import commands
 
@@ -20,10 +20,6 @@ class UserBirthday(commands.Cog):
         log.debug(f"Getting the birthday of {ctx.author.name}")
         birthday_data = birthday.user_birthday(user.id, ctx.guild.id)
         await ctx.respond(embed=birthday_data, ephemeral=True)
-        # if isinstance(type(birthday_data), str):
-        #     await ctx.respond(content=birthday_data, ephemeral=True)
-        # else:
-        #     await ctx.respond(embed=birthday_data, ephemeral=True)
 
     @slash_command(
         name="user-birthday",

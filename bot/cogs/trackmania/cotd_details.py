@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 import discord
 import matplotlib.pyplot as plt
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
@@ -28,7 +28,9 @@ class COTDDetails(commands.Cog):
     async def _cotd_details(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player", required=True),
+        username: Option(
+            SlashCommandOptionType.string, "The username of the player", required=True
+        ),
     ):
         log_command(ctx, "cotd_details")
 
