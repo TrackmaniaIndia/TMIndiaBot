@@ -69,6 +69,10 @@ class OnReady(
         log.info("Starting FileChecker")
         self.create_files.start()
 
+        # Starting QuoteNumbers task
+        log.info("Starting QuoteNumbers")
+        self.quote_numbers.start()
+
         # Looping Through Announcement Channels
         for announcement_channel in constants.Channels.announcement_channels:
             log.info(f"Sending Message in {announcement_channel}")
@@ -117,6 +121,27 @@ class OnReady(
             checks.create_quotes(guild.id)
             checks.create_trophy_tracking(guild.id)
             checks.create_birthdays(guild.id)
+
+    @tasks.loop(hours=3, seconds=12)
+    async def quote_numbers(self):
+        async for guild in self.bot.fetch_guilds():
+            log.debug("Checking %s (%s)", guild.name, guild.id)
+            with open(
+                f"./bot/resources/guild_data/{guild.id}/quotes.json",
+                "r",
+                encoding="UTF-8",
+            ) as file:
+                quotes = json.load(file)
+
+            for i, _ in enumerate(quotes["quotes"]):
+                quotes["quotes"][i]["Number"] = i + 1
+
+            with open(
+                f"./bot/resources/guild_data/{guild.id}/quotes.json",
+                "w",
+                encoding="UTF-8",
+            ) as file:
+                json.dump(quotes, file, indent=4)
 
     @tasks.loop(
         time=datetime.time(hour=1, minute=30, second=0, tzinfo=datetime.timezone.utc)
