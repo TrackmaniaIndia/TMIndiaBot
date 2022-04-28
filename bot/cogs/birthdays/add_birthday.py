@@ -18,13 +18,6 @@ class AddBirthday(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-        if not os.path.exists("./bot/resources/json/birthdays.json"):
-            log.critical("birthdays.json file does not exist, creating")
-            with open(
-                "./bot/resources/json/birthdays.json", "w", encoding="UTF-8"
-            ) as file:
-                json.dump({"birthdays": []}, file, indent=4)
-
     @commands.slash_command(
         name="add-birthday",
         description="Adds your birthday to the server list!",
@@ -51,6 +44,19 @@ class AddBirthday(commands.Cog):
         if not check_flag:
             await ctx.respond(content=msg)
             return
+
+        log.debug("Checking if birthday channel was set")
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/config.json",
+            "r",
+            encoding="UTF-8",
+        ) as file:
+            config_data = json.load(file)
+
+            if config_data["birthdays_channel"] == 0:
+                await ctx.send(
+                    "WARNING: A birthday channel is not set to send birthday reminders. You can ask a person with the `manage_guild` permission to set one with the `/set-birthday-channel` command."
+                )
 
         log.debug("All date checks passed, Saving")
         self.__save_birthday(
@@ -112,6 +118,19 @@ class AddBirthday(commands.Cog):
 
         log.debug("Sending the message to the #mod-logs channel")
         channel = get_mod_logs_channel(self.bot, ctx.guild.id)
+
+        log.debug("Checking if birthday channel was set")
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/config.json",
+            "r",
+            encoding="UTF-8",
+        ) as file:
+            config_data = json.load(file)
+
+            if config_data["birthdays_channel"] == 0:
+                await ctx.send(
+                    "WARNING: A birthday channel is not set to send birthday reminders. You can ask a person with the `manage_guild` permission to set one with the `/set-birthday-channel` command."
+                )
 
         log.debug("Creating embed")
         description = f"Requestor: {ctx.author.name}#{ctx.author.discriminator} set birthday of `{user.name}#{user.discriminator}` to `{day} {month}, {year}`"
