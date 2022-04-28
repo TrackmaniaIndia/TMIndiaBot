@@ -110,7 +110,7 @@ def _quote_dict_to_embed(quote: dict) -> discord.Embed:
     return embed
 
 
-def _get_random_quote_dict(guild_id: str) -> dict:
+def get_random_quote(guild_id: str) -> discord.Embed:
     """Gets a random quote from a guild_id in a `dict` format.
 
     Args:
@@ -119,20 +119,11 @@ def _get_random_quote_dict(guild_id: str) -> dict:
     Returns:
         dict: The quote in `dict` format.
     """
-    log.debug(
-        f"Generating Random number Between 0 and {_get_number_of_quotes(guild_id)}"
-    )
-    if _get_number_of_quotes(guild_id) == 1:
-        number = 0
-    else:
-        number = np.random.randint(low=0, high=_get_number_of_quotes(guild_id))
+    log.debug("Getting a random quote for %s", guild_id)
+    num_quotes = _get_number_of_quotes(guild_id)
+    number = np.random.randint(low=0, high=num_quotes) if num_quotes != 1 else 0
 
-    with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
-    ) as file:
-        quotes = json.load(file)["quotes"]
-        log.debug(f"Returning #{number}")
-        return quotes[number]
+    return get_quote(guild_id, number)
 
 
 def get_last_quote(guild_id: str) -> discord.Embed:
@@ -144,15 +135,8 @@ def get_last_quote(guild_id: str) -> discord.Embed:
     Returns:
         discord.Embed: The quote in `discord.Embed` format.
     """
-    log.debug("Opening JSON File")
-    with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
-    ) as file:
-        log.debug("Loading JSON file")
-        quotes = json.load(file)
-        log.debug("Read JSON file, returning last quote")
-
-        return _quote_dict_to_embed(quotes["quotes"][-1])
+    log.debug("Getting a random quote for %s", guild_id)
+    return get_quote(guild_id, -1)
 
 
 def _get_number_of_quotes(guild_id: str):
