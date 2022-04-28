@@ -124,65 +124,52 @@ class OnReady(
     async def todays_birthday(self):
         log.info("Starting Today's Birthday Task.")
 
-        for folder in os.listdir("./bot/resources/guild_data/"):
-            log.debug("Checking birthdays for %s", folder)
-            birthdays_list = birthday.today_birthday(folder)
+        async for guild in self.bot.fetch_guilds():
+            guild_id = guild.id
+            log.debug("Getting birthday channel for %s", guild_id)
+            with open(
+                f"./bot/resources/guild_data/{guild_id}/config.json",
+                "r",
+                encoding="UTF-8",
+            ) as file:
+                config_data = json.load(file)
+
+                birthdays_channel_id = config_data.get("birthdays_channel", 0)
+
+                if birthdays_channel_id == 0:
+                    continue
+
+            log.debug("Checking birthdays for %s", guild_id)
+            birthdays_list = birthday.today_birthday(guild_id)
 
             if birthdays_list is not None:
-                log.info("There is a birthday for %s today", folder)
+                log.info("There is a birthday for %s today", guild_id)
+
+                birthdays_channel = self.bot.get_channel(birthdays_channel_id)
+
+                if birthdays_channel is None:
+                    log.warn("Cannot get channel for %s", guild_id)
+                    continue
 
                 if len(birthdays_list) > 1:
-                    log.debug("There is multiple birthdays for %s today", folder)
+                    log.debug("There is multiple birthdays for %s today", guild_id)
 
-                    log.debug("Getting birthday channel for %s", folder)
+                    for birthday_embed in birthdays_list:
+                        log.debug(f"Sending {birthday_embed}")
 
-        log.info("Starting Todays Birthday Task")
-        birthdays_list = birthday.today_birthday()
+                        await birthdays_channel.send(
+                            content="Hey Everyone! We have a birthday today!",
+                            embed=birthday_embed,
+                        )
+                else:
+                    log.debug("Only one birthday today %s", guild_id)
 
-        if birthdays_list is not None:
-            log.info("There is a birthday today")
-
-            if len(birthdays_list) > 1:
-                log.debug("There are multiple birthdays today")
-
-                log.debug("Getting channel")
-                general_channel = self.bot.get_channel(constants.Channels.general)
-
-                if general_channel is None:
-                    log.debug("Testing Bot")
-                    general_channel = self.bot.get_channel(
-                        constants.Channels.testing_general
-                    )
-
-                for birthday_embed in birthdays_list:
-                    log.debug(f"Sending {birthday_embed}")
-
-                    await general_channel.send(
+                    await birthdays_channel.send(
                         content="Hey Everyone! We have a birthday today!",
-                        embed=birthday_embed,
+                        embed=birthdays_list[0],
                     )
-                return
             else:
-                log.debug("Only one birthday today")
-
-                log.debug("Getting channel")
-                general_channel = self.bot.get_channel(constants.Channels.general)
-
-                if general_channel is None:
-                    log.debug("Testing Bot")
-                    general_channel = self.bot.get_channel(
-                        constants.Channels.testing_general
-                    )
-
-                log.debug(f"Sending {birthdays_list[0]}")
-                await general_channel.send(
-                    content="Hey Everyone! Today we have a birthday",
-                    embed=birthdays_list[0],
-                )
-                return
-        else:
-            log.debug("No birthdays today")
-            return
+                log.debug("No birthday today for %s.", guild_id)
 
     def _set_statuses(self):
         with open("./bot/resources/json/statuses.json", "r", encoding="UTF-8") as file:
