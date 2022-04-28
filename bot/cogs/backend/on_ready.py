@@ -122,6 +122,20 @@ class OnReady(
         time=datetime.time(hour=1, minute=30, second=0, tzinfo=datetime.timezone.utc)
     )
     async def todays_birthday(self):
+        log.info("Starting Today's Birthday Task.")
+
+        for folder in os.listdir("./bot/resources/guild_data/"):
+            log.debug("Checking birthdays for %s", folder)
+            birthdays_list = birthday.today_birthday(folder)
+
+            if birthdays_list is not None:
+                log.info("There is a birthday for %s today", folder)
+
+                if len(birthdays_list) > 1:
+                    log.debug("There is multiple birthdays for %s today", folder)
+
+                    log.debug("Getting birthday channel for %s", folder)
+
         log.info("Starting Todays Birthday Task")
         birthdays_list = birthday.today_birthday()
 

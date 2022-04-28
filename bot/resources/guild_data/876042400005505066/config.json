@@ -18,5 +18,6 @@
     "trophy_tracking": false,
     "trophy_update_channel": 0,
 
-    "mod_logs_channel": 0
+    "mod_logs_channel": 0,
+    "birthdays_channel": 0
 }
