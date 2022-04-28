@@ -11,7 +11,7 @@ from bot.utils.discord import create_embed
 log = get_logger(__name__)
 
 
-def get_quote(guild_id: int, num: int) -> discord.Embed | None:
+def get_quote_util(guild_id: int, num: int) -> discord.Embed | None:
     """Gets the quote of a specific number of a specific guild. Returns None if the number does not exist.
     If the `num` is -1, it returns the latest quote.
 
@@ -123,7 +123,7 @@ def get_random_quote(guild_id: str) -> discord.Embed:
     num_quotes = _get_number_of_quotes(guild_id)
     number = np.random.randint(low=0, high=num_quotes) if num_quotes != 1 else 0
 
-    return get_quote(guild_id, number)
+    return get_quote_util(guild_id, number)
 
 
 def get_last_quote(guild_id: str) -> discord.Embed:
@@ -136,7 +136,7 @@ def get_last_quote(guild_id: str) -> discord.Embed:
         discord.Embed: The quote in `discord.Embed` format.
     """
     log.debug("Getting a random quote for %s", guild_id)
-    return get_quote(guild_id, -1)
+    return get_quote_util(guild_id, -1)
 
 
 def _get_number_of_quotes(guild_id: str):
