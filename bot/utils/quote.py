@@ -26,7 +26,7 @@ def get_quote(guild_id: int, num: int) -> discord.Embed | None:
     with open(
         f"./bot/resources/guild_data/{guild_id}/quotes.json", "r", encoding="UTF-8"
     ) as file:
-        all_quotes = json.load(file)
+        all_quotes = json.load(file)["quotes"]
 
     try:
         if num == -1:
