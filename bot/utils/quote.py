@@ -11,6 +11,31 @@ from bot.utils.discord import create_embed
 log = get_logger(__name__)
 
 
+def get_quote(guild_id: int, num: int) -> discord.Embed | None:
+    """Gets the quote of a specific number of a specific guild. Returns None if the number does not exist.
+    If the `num` is -1, it returns the latest quote.
+
+    Args:
+        guild_id (int): The guild's id of the quote.
+        num (int): The quote number.
+
+    Returns:
+        discord.Embed | None: discord.Embed if the quote of that number exists, else return None.
+    """
+    log.debug("Getting quote %s for guild %s", num, guild_id)
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/quotes.json", "r", encoding="UTF-8"
+    ) as file:
+        all_quotes = json.load(file)
+
+    try:
+        if num == -1:
+            return _quote_dict_to_embed(all_quotes[-1])
+        return _quote_dict_to_embed(all_quotes[num - 1])
+    except IndexError:
+        return None
+
+
 def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
     """Save a Quote to the JSON File
     Args:
