@@ -1,6 +1,6 @@
 import json
 
-from discord import ApplicationContext, Option, SlashCommandOptionType, TextChannel
+from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
 
 from bot.bot import Bot
@@ -9,7 +9,7 @@ from bot.log import get_logger, log_command
 log = get_logger(__name__)
 
 
-class SetupBirthdayChannel(commands.Cog):
+class SetupBirthday(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
@@ -56,4 +56,4 @@ class SetupBirthdayChannel(commands.Cog):
 
 
 def setup(bot: Bot):
-    bot.add_cog(SetupBirthdayChannel(bot))
+    bot.add_cog(SetupBirthday(bot))
