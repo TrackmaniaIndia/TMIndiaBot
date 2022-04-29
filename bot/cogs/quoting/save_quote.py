@@ -80,9 +80,7 @@ class SaveQuote(commands.Cog):
         message_link = message.jump_url
         guild_id = ctx.guild.id
 
-        log.debug("Deferring Response")
         await ctx.defer()
-        log.debug("Deferred Response")
 
         if ctx.author.id == 901407301175484447:
             log.info(

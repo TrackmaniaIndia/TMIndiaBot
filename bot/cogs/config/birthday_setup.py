@@ -1,15 +1,16 @@
 import json
 
-from discord import ApplicationContext, Option, SlashCommandOptionType, TextChannel
+from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
 
 from bot.bot import Bot
 from bot.log import get_logger, log_command
+from bot.utils.moderation import send_in_mod_logs
 
 log = get_logger(__name__)
 
 
-class SetupBirthdayChannel(commands.Cog):
+class SetupBirthday(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
@@ -52,8 +53,15 @@ class SetupBirthdayChannel(commands.Cog):
         ) as file:
             json.dump(config, file, indent=4)
 
-        await ctx.respond(f"Birthday channel has been set to #{birthday_channel.name}")
+        await send_in_mod_logs(
+            self.bot,
+            ctx.guild.id,
+            msg=f"Birthdays channel set to {birthday_channel.mention}",
+        )
+        await ctx.respond(
+            f"Birthday channel has been set to {birthday_channel.mention}"
+        )
 
 
 def setup(bot: Bot):
-    bot.add_cog(SetupBirthdayChannel(bot))
+    bot.add_cog(SetupBirthday(bot))

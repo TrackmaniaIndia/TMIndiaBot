@@ -73,29 +73,6 @@ class OnReady(
         log.info("Starting QuoteNumbers")
         self.quote_numbers.start()
 
-        # Looping Through Announcement Channels
-        for announcement_channel in constants.Channels.announcement_channels:
-            log.info(f"Sending Message in {announcement_channel}")
-
-            # Sending Message to the Channel
-            channel = self.bot.get_channel(int(announcement_channel))
-            try:
-                # Inside a TryExcept to prevent the bot from crashing if the
-                # channel is deleted or permissions to send messages are
-                # removed
-                await channel.send(
-                    f"Bot is Ready, Version: {constants.Bot.version} - Times Run: {times_run} - Time of Start: {datetime.now()}"
-                )
-                log.info(f"Sent Message to {announcement_channel}")
-                if (
-                    int(announcement_channel) == 880771916099641364
-                    or int(announcement_channel) == 880628511512096778
-                ):
-                    continue
-            except BaseException:
-                log.info(f"Can't Send Message to {announcement_channel}")
-                continue
-
         # Printing out the new timesrun value to the file
         log.info("Writing TimesRun to File")
         with open("./bot/resources/times_run.txt", "w", encoding="UTF-8") as file:

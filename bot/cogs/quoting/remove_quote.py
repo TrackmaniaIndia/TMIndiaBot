@@ -10,6 +10,7 @@ import bot.utils.quote as quote_functions
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import create_embed
+from bot.utils.moderation import send_in_mod_logs
 
 log = get_logger(__name__)
 
@@ -61,6 +62,12 @@ class RemoveQuote(commands.Cog):
             encoding="UTF-8",
         ) as file:
             json.dump(aquotes, file, indent=4)
+
+        await send_in_mod_logs(
+            self.bot,
+            ctx.guild.id,
+            msg=f"Quote #{number} has been removed by {ctx.author.mention}.",
+        )
 
         await ctx.respond("Successfully Removed!", ephemeral=True)
 
