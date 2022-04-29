@@ -2,7 +2,6 @@ import datetime
 import json
 import os
 from itertools import cycle
-from pathlib import Path
 
 import discord
 from discord.ext import commands, tasks

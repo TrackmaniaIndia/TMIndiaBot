@@ -1,5 +1,4 @@
 import json
-import os
 
 import discord
 from discord import ApplicationContext, SlashCommandOptionType

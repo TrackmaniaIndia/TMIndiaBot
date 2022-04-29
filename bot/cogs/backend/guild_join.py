@@ -4,7 +4,6 @@ from discord import Guild
 from discord.ext import commands
 
 import bot.utils.checks as checks
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 

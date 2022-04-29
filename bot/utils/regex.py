@@ -1,4 +1,4 @@
-import re
+import regex as re
 
 INVITE_RE = re.compile(
     r"(discord([\.,]|dot)gg|"  # Could be discord.gg/

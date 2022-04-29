@@ -1,15 +1,12 @@
 import json
 
-import discord
 from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 from trackmania import Player
 
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.moderation import send_in_mod_logs
 
 log = get_logger(__name__)
 

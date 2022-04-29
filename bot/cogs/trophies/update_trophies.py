@@ -2,18 +2,14 @@ import asyncio
 import datetime
 import json
 import os
-from ast import keyword
-from curses import killchar
-from errno import EMSGSIZE
 from itertools import zip_longest
 
 import discord
-from discord import ApplicationContext, SlashCommandOptionType
+from discord import ApplicationContext
 from discord.ext import commands, tasks
 from trackmania import Player
 
 import bot.utils.commons as commons
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 from bot.utils.discord import create_embed

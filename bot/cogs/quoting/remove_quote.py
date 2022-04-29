@@ -1,12 +1,9 @@
 import json
 
-import discord
 from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 
-import bot.utils.commons as commons
-import bot.utils.quote as quote_functions
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import create_embed

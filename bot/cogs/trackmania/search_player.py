@@ -1,6 +1,3 @@
-from re import L
-from typing import List
-
 import discord
 from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands

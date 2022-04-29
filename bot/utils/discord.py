@@ -1,6 +1,5 @@
 import json
 from datetime import datetime, timedelta, timezone
-from typing import List
 
 import discord
 from discord import ButtonStyle, TextChannel
