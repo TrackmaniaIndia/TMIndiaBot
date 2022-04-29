@@ -10,7 +10,7 @@ from bot.log import get_logger, log_command
 log = get_logger(__name__)
 
 
-class SetModLog(commands.Cog):
+class SetupModLogs(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
@@ -89,4 +89,4 @@ class SetModLog(commands.Cog):
 
 
 def setup(bot: Bot):
-    bot.add_cog(SetModLog(bot))
+    bot.add_cog(SetupModLogs(bot))
