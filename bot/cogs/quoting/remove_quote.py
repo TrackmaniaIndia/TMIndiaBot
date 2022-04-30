@@ -32,7 +32,7 @@ class RemoveQuote(commands.Cog):
     ):
         log_command(ctx, "remove-quote")
 
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         log.info("Removing Quote #%s from %s", number, ctx.guild.name)
         with open(

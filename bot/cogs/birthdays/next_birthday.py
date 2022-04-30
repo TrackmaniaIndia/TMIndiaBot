@@ -18,7 +18,7 @@ class NextBirthday(commands.Cog):
     )
     async def _next_birthday(self, ctx: ApplicationContext):
         log_command(ctx, "next_birthday_slash")
-        await ctx.respond(embed=birthday.next_birthday(ctx.guild.id))
+        await ctx.respond(embed=birthday.next_birthday(ctx.guild.id), ephemeral=True)
 
     @commands.command(
         name="next-birthday",
@@ -27,7 +27,9 @@ class NextBirthday(commands.Cog):
     async def _next_birthday_normal(self, ctx: commands.Context):
         log_command(ctx, "next_birthday")
         await ctx.reply(
-            embed=birthday.next_birthday(ctx.guild.id), mention_author=False
+            embed=birthday.next_birthday(ctx.guild.id),
+            mention_author=False,
+            delete_after=30,
         )
 
 

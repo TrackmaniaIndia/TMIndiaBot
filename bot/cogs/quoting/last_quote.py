@@ -25,7 +25,9 @@ class LastQuote(commands.Cog):
         try:
             quote_embed = quote_functions.get_last_quote(ctx.guild.id)
         except KeyError:
-            await ctx.respond("There are no quotes saved for this server.")
+            await ctx.respond(
+                "There are no quotes saved for this server.", ephemeral=True
+            )
             return
 
         await ctx.respond(embed=quote_embed)

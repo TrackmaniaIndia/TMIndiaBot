@@ -80,18 +80,18 @@ class SaveQuote(commands.Cog):
         message_link = message.jump_url
         guild_id = ctx.guild.id
 
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         if ctx.author.id == 901407301175484447:
             log.info(
                 "%s tried to quote a message by t901407301175484447he bot",
                 ctx.author.name,
             )
-            await ctx.respond("Cannot quote a message by the Bot")
+            await ctx.respond("Cannot quote a message by the Bot", ephemeral=True)
             return
         if message.content == "":
             log.info("%s tried to quote an empty message", ctx.author.name)
-            await ctx.respond("Cannot quote an empty string")
+            await ctx.respond("Cannot quote an empty string", ephemeral=True)
             return
 
         quote_functions.save(message.content, f"{author.name}", message_link, guild_id)
@@ -101,7 +101,7 @@ class SaveQuote(commands.Cog):
             description=f'Saved "{message.content}" by {author.name} with [Jump!]({message_link})',
         )
 
-        await ctx.send_followup(embed=embed)
+        await ctx.send_followup(embed=embed, ephemeral=True)
 
 
 def setup(bot: Bot):
