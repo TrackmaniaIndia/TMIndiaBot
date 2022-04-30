@@ -59,7 +59,8 @@ class SetupBirthday(commands.Cog):
             msg=f"Birthdays channel set to {birthday_channel.mention}",
         )
         await ctx.respond(
-            f"Birthday channel has been set to {birthday_channel.mention}"
+            f"Birthday channel has been set to {birthday_channel.mention}",
+            delete_after=10,
         )
 
 

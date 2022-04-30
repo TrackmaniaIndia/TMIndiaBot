@@ -38,19 +38,20 @@ class SetupTracking(commands.Cog):
 
         if confirmer.value is None:
             log.info("Confirmation Timed Out")
-            await ctx.send("Timed Out...")
-            return
+            await ctx.send("Timed Out...", delete_after=10)
         elif not confirmer.value:
             log.info("Setup Declined")
             self.__save_settings(False, ctx.guild.id, 0)
             await ctx.send(
-                f"Settings Saved!\nYou have unsubscribed from Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}"
+                f"Settings Saved!\nYou have unsubscribed from Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
+                delete_after=10,
             )
         elif confirmer.value:
             log.info("Setup Accepted")
             self.__save_settings(True, ctx.guild.id, ctx.channel.id)
             await ctx.send(
-                f"Settings Saved!\nYou have subscribed to Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}"
+                f"Settings Saved!\nYou have subscribed to Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
+                delete_after=10,
             )
 
     def __save_settings(self, flag: bool, guild_id: int, channel_id: int):

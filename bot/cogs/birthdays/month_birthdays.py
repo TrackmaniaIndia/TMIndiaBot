@@ -45,7 +45,7 @@ class MonthBirthdays(commands.Cog):
             await ctx.respond(embed=birthdays_embeds[0], ephemeral=True)
         else:
             log.debug("Creating birthdays paginator")
-            birthdays_paginator = Paginator(pages=birthdays_embeds)
+            birthdays_paginator = Paginator(pages=birthdays_embeds, timeout=60)
 
             log.debug("Responding with birthdays paginator")
             await birthdays_paginator.respond(ctx.interaction, ephemeral=True)

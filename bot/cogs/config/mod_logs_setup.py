@@ -54,7 +54,8 @@ class SetupModLogs(commands.Cog):
 
         log.info("Stored ModLogs channel for %s", ctx.guild.name)
         await ctx.respond(
-            f"Stored ModLogs channel for {ctx.guild.name} as {channel.name}"
+            f"Stored ModLogs channel for {ctx.guild.name} as {channel.name}",
+            delete_after=10,
         )
 
     @commands.slash_command(
@@ -85,7 +86,9 @@ class SetupModLogs(commands.Cog):
             json.dump(config_data, file, indent=4)
 
         log.info("Removed ModLogs channel for %s", ctx.guild.name)
-        await ctx.respond(f"Removed ModLogs channel for {ctx.guild.name}")
+        await ctx.respond(
+            f"Removed ModLogs channel for {ctx.guild.name}", delete_after=10
+        )
 
 
 def setup(bot: Bot):

@@ -47,7 +47,8 @@ class AddPlayerTracking(commands.Cog):
 
             if not config_data.get("trophy_tracking", False):
                 await ctx.respond(
-                    "Trophy Tracking is not set up for this server. Please use the `/start-tracking` command to start your setup process."
+                    "Trophy Tracking is not set up for this server. Please use the `/start-tracking` command to start your setup process.",
+                    delete_after=60,
                 )
                 return
 
@@ -99,7 +100,9 @@ class AddPlayerTracking(commands.Cog):
         ) as file:
             json.dump(tracking_data, file, indent=4)
 
-        await ctx.respond(f"{username} has been added to the trophy tracking list.")
+        await ctx.respond(
+            f"{username} has been added to the trophy tracking list.", ephemeral=True
+        )
 
 
 def setup(bot: Bot):

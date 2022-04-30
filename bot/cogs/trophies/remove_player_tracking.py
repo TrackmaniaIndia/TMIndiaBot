@@ -31,7 +31,7 @@ class RemovePlayerTracking(commands.Cog):
     ):
         log_command(ctx, "remove_player_tracking")
 
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         log.debug("Sending Message to Mod Logs")
         await send_in_mod_logs(
@@ -59,7 +59,10 @@ class RemovePlayerTracking(commands.Cog):
         ) as file:
             json.dump(tracking_data, file, indent=4)
 
-        await ctx.respond(f"{username} has been removed from the trophy tracking list.")
+        await ctx.respond(
+            f"{username} has been removed from the trophy tracking list.",
+            ephemeral=True,
+        )
 
 
 def setup(bot: Bot):

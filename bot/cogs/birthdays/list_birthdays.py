@@ -37,11 +37,12 @@ class ListBirthdays(commands.Cog):
                     embed=create_embed(
                         title="No users are stored with the bot",
                         color=discord.Colour.red(),
-                    )
+                    ),
+                    ephemeral=True,
                 )
         else:
             log.debug("There are multiple pages, creating Paginator")
-            birthdays_paginator = Paginator(pages=birthdays_embeds)
+            birthdays_paginator = Paginator(pages=birthdays_embeds, timeout=60)
 
             await birthdays_paginator.respond(ctx.interaction, ephemeral=True)
 

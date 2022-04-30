@@ -38,10 +38,11 @@ class AddBirthday(commands.Cog):
         ),
     ):
         log_command(ctx, "add_birthday")
+        await ctx.defer(ephemeral=True)
 
         check_flag, msg = self.__check_date(year, month, day)
         if not check_flag:
-            await ctx.respond(content=msg)
+            await ctx.respond(content=msg, ephemeral=True)
             return
 
         log.debug("Checking if birthday channel was set")
@@ -54,7 +55,8 @@ class AddBirthday(commands.Cog):
 
             if config_data["birthdays_channel"] == 0:
                 await ctx.send(
-                    "WARNING: A birthday channel is not set to send birthday reminders. You can ask a person with the `manage_guild` permission to set one with the `/set-birthday-channel` command."
+                    f"{ctx.author.mention}\nWARNING: A birthday channel is not set to send birthday reminders. You can ask a person with the `manage_guild` permission to set one with the `/set-birthday-channel` command.",
+                    delete_after=20,
                 )
 
         log.debug("All date checks passed, Saving")
@@ -99,6 +101,7 @@ class AddBirthday(commands.Cog):
         ),
     ):
         log_command(ctx, "set_birthday")
+        await ctx.defer(ephemeral=True)
 
         user: discord.User = user
 
@@ -128,7 +131,8 @@ class AddBirthday(commands.Cog):
 
             if config_data["birthdays_channel"] == 0:
                 await ctx.send(
-                    "WARNING: A birthday channel is not set to send birthday reminders. You can ask a person with the `manage_guild` permission to set one with the `/set-birthday-channel` command."
+                    f"{ctx.author.mention}\nWARNING: A birthday channel is not set to send birthday reminders. You can ask a person with the `manage_guild` permission to set one with the `/set-birthday-channel` command.",
+                    delete_after=20,
                 )
 
         log.debug("Creating embed")

@@ -25,7 +25,9 @@ class RandomQuote(commands.Cog):
             log.debug("Getting a random quote")
             quote_embed = quote_functions.get_random_quote(ctx.guild.id)
         except ValueError:
-            await ctx.respond("There are no quotes saved for this server")
+            await ctx.respond(
+                "There are no quotes saved for this server", ephemeral=True
+            )
             return
 
         await ctx.respond(embed=quote_embed)
