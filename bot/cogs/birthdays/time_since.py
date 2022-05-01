@@ -1,11 +1,11 @@
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 
+import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.commons import Commons
 
 log = get_logger(__name__)
 
@@ -15,16 +15,20 @@ class TimeSince(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
-        name="timesince",
+        name="time-since",
         description="time since a specific date",
     )
     async def _time_since(
         self,
         ctx: ApplicationContext,
-        year: Option(int, "The year", required=True),
-        month: Option(str, "The month", choices=constants.Consts.months, required=True),
-        day: Option(int, "The day", required=True),
+        year: Option(SlashCommandOptionType.integer, "The year", required=True),
+        month: Option(
+            SlashCommandOptionType.string,
+            "The month",
+            choices=constants.Consts.months,
+            required=True,
+        ),
+        day: Option(SlashCommandOptionType.integer, "The day", required=True),
     ):
         # Checks
         if day <= 0 or day >= 32:
@@ -53,12 +57,12 @@ class TimeSince(commands.Cog):
             await ctx.respond(f"{month} does not have 31 Days", ephemeral=True)
             return
 
-        timestamp = Commons.timestamp_date(
+        timestamp = commons.timestamp_date(
             year, constants.Consts.months.index(month) + 1, day
         )
 
         log.debug(f"Sending Time Since {year} {month} {day}")
-        await ctx.respond(content=Commons.time_since(timestamp), ephemeral=True)
+        await ctx.respond(content=commons.time_since(timestamp), ephemeral=True)
 
 
 def setup(bot: Bot):

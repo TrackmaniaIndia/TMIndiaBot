@@ -1,17 +1,14 @@
-from typing import List, Tuple
-
 import discord
 import matplotlib.pyplot as plt
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
 from trackmania import BestCOTDStats, Player, PlayerCOTD, PlayerCOTDResults
 
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -21,15 +18,16 @@ class COTDDetails(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
-        name="cotddetails",
+        name="cotd-details",
         description="Gets the COTD Details of a player along with a graph of the last 25 COTDs",
     )
     @discord.ext.commands.cooldown(1, 15, commands.BucketType.guild)
     async def _cotd_details(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player", required=True),
+        username: Option(
+            SlashCommandOptionType.string, "The username of the player", required=True
+        ),
     ):
         log_command(ctx, "cotd_details")
 
@@ -42,7 +40,7 @@ class COTDDetails(commands.Cog):
         if player_id is None:
             log.error(f"Invalid Username was given -> {username} by {ctx.author.name}")
             await ctx.respond(
-                embed=EZEmbed.create_embed(
+                embed=create_embed(
                     "Invalid Username",
                     f"Username Given: {username}",
                     color=discord.Colour.red(),
@@ -105,8 +103,8 @@ class COTDDetails(commands.Cog):
         log.info(f"Parsing Pages for {cotd_stats.player_id}")
 
         log.debug("Creating 2 Embeds")
-        page_one = EZEmbed.create_embed(title=f"Overall Data for {username}")
-        page_two = EZEmbed.create_embed(title=f"Primary Data for {username}")
+        page_one = create_embed(title=f"Overall Data for {username}")
+        page_two = create_embed(title=f"Primary Data for {username}")
 
         log.debug("Adding Total COTDs Played")
         page_one.add_field(name="Total Played", value=cotd_stats.total, inline=False)
@@ -138,7 +136,7 @@ class COTDDetails(commands.Cog):
         return page
 
     @staticmethod
-    def __pop_reruns(cotds: List[PlayerCOTDResults]) -> Tuple[List[PlayerCOTDResults]]:
+    def __pop_reruns(cotds: list[PlayerCOTDResults]) -> tuple[list[PlayerCOTDResults]]:
         popped = cotds
         temp = []
 
@@ -151,7 +149,7 @@ class COTDDetails(commands.Cog):
 
     @staticmethod
     def __create_graphs(
-        popped: List[PlayerCOTDResults], original: List[PlayerCOTDResults]
+        popped: list[PlayerCOTDResults], original: list[PlayerCOTDResults]
     ):
         popped_name_list, popped_rank_list = [], []
         original_name_list, original_rank_list = [], []

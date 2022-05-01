@@ -2,7 +2,6 @@ import discord
 from discord import ApplicationContext
 from discord.ext import commands
 
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import ViewAdder
@@ -21,8 +20,7 @@ class GetSourceCode(commands.Cog):
         )
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
-        name="sourcecode",
+        name="source-code",
         description="Gives a link for the github source code",
     )
     async def _source_code(self, ctx: ApplicationContext):

@@ -82,7 +82,7 @@ class Scheduler:
         self.schedule(task_id, coroutine)
 
     def schedule_later(
-        self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
+        self, delay: int | float, task_id: t.Hashable, coroutine: t.Coroutine
     ) -> None:
         """
         Schedule `coroutine` to be executed after the given `delay` number of seconds.
@@ -113,7 +113,7 @@ class Scheduler:
             self.cancel(task_id)
 
     async def _await_later(
-        self, delay: t.Union[int, float], task_id: t.Hashable, coroutine: t.Coroutine
+        self, delay: int | float, task_id: t.Hashable, coroutine: t.Coroutine
     ) -> None:
         """Await `coroutine` after the given `delay` number of seconds."""
         try:
@@ -202,7 +202,7 @@ def create_task(
 
 
 def _log_task_exception(
-    task: asyncio.Task, *, suppressed_exceptions: t.Tuple[t.Type[Exception]]
+    task: asyncio.Task, *, suppressed_exceptions: tuple[t.Type[Exception]]
 ) -> None:
     """Retrieve and log the exception raised in `task` if one exists."""
     with contextlib.suppress(asyncio.CancelledError):

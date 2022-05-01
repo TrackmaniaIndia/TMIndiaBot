@@ -332,5 +332,6 @@ config.yaml
 bot/utils/node/TMIndiaBotApi
 bot/resources/leaderboard
 bot/resources/temp
+bot/resources/guild_data
 
 .python-version

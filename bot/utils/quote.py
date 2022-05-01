@@ -4,11 +4,36 @@ import json
 import discord
 import numpy as np
 
+import bot.utils.commons as commons
 from bot.log import get_logger
-from bot.utils.commons import Commons
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
+
+
+def get_quote(guild_id: int, num: int) -> discord.Embed | None:
+    """Gets the quote of a specific number of a specific guild. Returns None if the number does not exist.
+    If the `num` is -1, it returns the latest quote.
+
+    Args:
+        guild_id (int): The guild's id of the quote.
+        num (int): The quote number.
+
+    Returns:
+        discord.Embed | None: discord.Embed if the quote of that number exists, else return None.
+    """
+    log.debug("Getting quote %s for guild %s", num, guild_id)
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/quotes.json", "r", encoding="UTF-8"
+    ) as file:
+        all_quotes = json.load(file)["quotes"]
+
+    try:
+        if num == -1:
+            return _quote_dict_to_embed(all_quotes[-1])
+        return _quote_dict_to_embed(all_quotes[num - 1])
+    except IndexError:
+        return None
 
 
 def save(msg: str, author: str, message_link: str, guild_id: str) -> None:
@@ -66,9 +91,9 @@ def _quote_dict_to_embed(quote: dict) -> discord.Embed:
 
     title = f"***Quote #{quote['Number']}***"
     description = f"```\"{quote['Message']}\" - {quote['Author']}```"
-    color = Commons.get_random_color()
+    color = commons.get_random_color()
 
-    embed = EZEmbed.create_embed(title=title, description=description, color=color)
+    embed = create_embed(title=title, description=description, color=color)
     embed.add_field(
         name="***Message***", value=f"[Jump!]({message_link})", inline=False
     )
@@ -85,7 +110,7 @@ def _quote_dict_to_embed(quote: dict) -> discord.Embed:
     return embed
 
 
-def _get_random_quote_dict(guild_id: str) -> dict:
+def get_random_quote(guild_id: str) -> discord.Embed:
     """Gets a random quote from a guild_id in a `dict` format.
 
     Args:
@@ -94,18 +119,11 @@ def _get_random_quote_dict(guild_id: str) -> dict:
     Returns:
         dict: The quote in `dict` format.
     """
-    log.debug(
-        f"Generating Random number Between 0 and {_get_number_of_quotes(guild_id)}"
-    )
-    number = np.random.randint(low=0, high=_get_number_of_quotes(guild_id) - 1)
+    log.debug("Getting a random quote for %s", guild_id)
+    num_quotes = _get_number_of_quotes(guild_id)
+    number = np.random.randint(low=0, high=num_quotes) if num_quotes != 1 else 0
 
-    log.debug("Opening File")
-    with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
-    ) as file:
-        quotes = json.load(file)["quotes"]
-        log.debug(f"Returning #{number}")
-        return quotes[number]
+    return get_quote(guild_id, number)
 
 
 def get_last_quote(guild_id: str) -> discord.Embed:
@@ -117,15 +135,8 @@ def get_last_quote(guild_id: str) -> discord.Embed:
     Returns:
         discord.Embed: The quote in `discord.Embed` format.
     """
-    log.debug("Opening JSON File")
-    with open(
-        f"./bot/resources/guild_data/{str(guild_id)}/quotes.json", "r", encoding="UTF-8"
-    ) as file:
-        log.debug("Loading JSON file")
-        quotes = json.load(file)
-        log.debug("Read JSON file, returning last quote")
-
-        return _quote_dict_to_embed(quotes["quotes"][-1])
+    log.debug("Getting a random quote for %s", guild_id)
+    return get_quote(guild_id, -1)
 
 
 def _get_number_of_quotes(guild_id: str):

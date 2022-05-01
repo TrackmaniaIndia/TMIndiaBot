@@ -1,7 +1,5 @@
-from typing import List
-
 import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
@@ -10,7 +8,7 @@ from trackmania import Player, PlayerMetaInfo, PlayerZone
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -20,15 +18,16 @@ class PlayerDetails(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
-        name="playerdetails",
+        name="player-details",
         description="Gets the player details of a sepcific username",
     )
     @discord.ext.commands.cooldown(1, 15, commands.BucketType.guild)
     async def _player_details(
         self,
         ctx: ApplicationContext,
-        username: Option(str, "The username of the player", required=True),
+        username: Option(
+            SlashCommandOptionType.string, "The username of the player", required=True
+        ),
     ):
         log_command(ctx, "player_details")
 
@@ -40,7 +39,7 @@ class PlayerDetails(commands.Cog):
         if player_id is None:
             log.error(f"Invalid Username was given -> {username} by {ctx.author.name}")
             await ctx.respond(
-                embed=EZEmbed.create_embed(
+                embed=create_embed(
                     "Invalid Username",
                     f"Username Given: {username}",
                     color=discord.Colour.red(),
@@ -64,7 +63,7 @@ class PlayerDetails(commands.Cog):
         log.debug("Paginator Finished")
 
     @staticmethod
-    def __create_pages(player_data: Player) -> List[discord.Embed]:
+    def __create_pages(player_data: Player) -> list[discord.Embed]:
         log.info(f"Creating PlayerDetail pages for {player_data.name}")
         display_name = player_data.name
 
@@ -78,9 +77,9 @@ class PlayerDetails(commands.Cog):
         royal_str = str(player_data.royal_data)
 
         log.debug("Creating Embed Pages")
-        page_one = EZEmbed.create_embed(f"Player Data for {display_name} - Page 1")
-        page_two = EZEmbed.create_embed(f"Player Data for {display_name} - Page 2")
-        page_three = EZEmbed.create_embed(f"Player Data for {display_name} - Page 3")
+        page_one = create_embed(f"Player Data for {display_name} - Page 1")
+        page_two = create_embed(f"Player Data for {display_name} - Page 2")
+        page_three = create_embed(f"Player Data for {display_name} - Page 3")
 
         log.debug("Adding Fields to Embed Pages")
         page_one.add_field(name="Zone Data", value=f"```{zone_str}```", inline=False)

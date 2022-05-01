@@ -5,8 +5,7 @@ from bot.api import ResponseCodeError
 from bot.bot import Bot
 from bot.constants import Channels, Colours
 from bot.log import get_logger
-from bot.utils.checks import ContextCheckFailure
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -20,9 +19,7 @@ class ErrorHandler(Cog):
     def _get_error_embed(self, title: str, body: str) -> Embed:
         """Return an Embed that Contains the exception."""
 
-        return EZEmbed.create_embed(
-            title=title, color=Colours.soft_red, description=body
-        )
+        return create_embed(title=title, color=Colours.soft_red, description=body)
 
     @Cog.listener()
     async def on_command_error(self, ctx: Context, e: errors.CommandError) -> None:
@@ -109,7 +106,11 @@ class ErrorHandler(Cog):
 
         if isinstance(e, errors.CommandOnCooldown):
             log.debug(debug_message)
-            await ctx.respond(e)
+            await ctx.respond(e, ephemeral=True)
+            return
+        elif isinstance(e, errors.MissingPermissions):
+            log.debug(debug_message)
+            await ctx.respond(e, ephemeral=True)
             return
         else:
             log.error(e)
@@ -117,7 +118,7 @@ class ErrorHandler(Cog):
         log.debug("Sending Error Message to the Channel")
         error_channel = self.bot.get_channel(Channels.error_channel)
 
-        error_embed = EZEmbed.create_embed(description=debug_message)
+        error_embed = create_embed(description=debug_message)
         error_embed.add_field(name="Command", value=ctx.command.name, inline=False)
         error_embed.add_field(name="Requestor", value=ctx.author.name, inline=False)
         error_embed.add_field(name="Guild", value=ctx.guild.name, inline=False)
@@ -190,9 +191,6 @@ class ErrorHandler(Cog):
             await ctx.send(
                 "Sorry, it looks like I don't have the permissions or roles I need to do that."
             )
-        elif isinstance(e, (ContextCheckFailure, errors.NoPrivateMessage)):
-            log.debug("errors.wrong_channel_or_dm_error")
-            await ctx.send(e)
 
     @staticmethod
     async def handle_api_error(ctx: Context, e: ResponseCodeError) -> None:

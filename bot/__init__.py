@@ -10,10 +10,6 @@ from bot import log, monkey_typing
 
 log.setup()
 
-# On Windows, the selector event loop is required for aiodns.
-if os.name == "nt":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
 monkey_typing.patch_typing()
 
 # This patches any convertors that use PartialMessage, but not the PartialMessageConverter itself

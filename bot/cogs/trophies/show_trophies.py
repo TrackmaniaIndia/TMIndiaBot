@@ -5,11 +5,10 @@ from discord import ApplicationContext
 from discord.ext import commands
 from discord.ext.pages import Paginator
 
-from bot import constants
+import bot.utils.commons as commons
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import Commons
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -19,8 +18,7 @@ class ShowTrophies(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
-        name="showtrophies",
+        name="show-trophies",
         description="Shows the current TMI Trophy Leaderboards",
     )
     async def _show_trophy_leaderboards(
@@ -32,7 +30,9 @@ class ShowTrophies(commands.Cog):
         await ctx.defer()
 
         log.debug("Opening Trophy File")
-        with open("./bot/resources/json/trophy_tracking.json", "r") as file:
+        with open(
+            f"./bot/resources/guild_data/{ctx.guild.id}/trophy_tracking.json", "r"
+        ) as file:
             trophy_leaderboards = json.load(file)
 
         log.debug("Splitting List")
@@ -41,7 +41,7 @@ class ShowTrophies(commands.Cog):
         )
         pages_needed = len(split_list)
         embeds = [
-            EZEmbed.create_embed(f"Trophy Leaderboard for TMI - Page {i + 1}")
+            create_embed(f"Trophy Leaderboard for TMI - Page {i + 1}")
             for i in range(pages_needed)
         ]
         count = 0
@@ -55,7 +55,7 @@ class ShowTrophies(commands.Cog):
                 log.debug(player)
                 player_str = (
                     player_str
-                    + f"\n{count + 1}. {player.get('username')} - {Commons.add_commas(player.get('score'))}"
+                    + f"\n{count + 1}. {player.get('username')} - {commons.add_commas(player.get('score'))}"
                 )
                 count += 1
 
@@ -64,7 +64,9 @@ class ShowTrophies(commands.Cog):
             )
 
         log.debug("Sending Embed")
-        if len(embeds) == 1:
+        if len(embeds) == 0:
+            await ctx.respond("No player is set up for trophy tracking in this server")
+        elif len(embeds) == 1:
             await ctx.respond(embed=embeds[0])
         else:
             paginator = Paginator(embeds)

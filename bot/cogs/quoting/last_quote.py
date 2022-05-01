@@ -3,7 +3,6 @@ from discord import ApplicationContext
 from discord.ext import commands
 
 import bot.utils.quote as quote_functions
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 
@@ -15,8 +14,7 @@ class LastQuote(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
-        name="lastquote",
+        name="last-quote",
         description="Gets the last quote saved",
     )
     @discord.ext.commands.cooldown(1, 5, commands.BucketType.user)
@@ -24,7 +22,13 @@ class LastQuote(commands.Cog):
         log_command(ctx, "last_quote")
 
         log.debug("Getting the last quote saved")
-        quote_embed = quote_functions.get_last_quote(ctx.guild.id)
+        try:
+            quote_embed = quote_functions.get_last_quote(ctx.guild.id)
+        except KeyError:
+            await ctx.respond(
+                "There are no quotes saved for this server.", ephemeral=True
+            )
+            return
 
         await ctx.respond(embed=quote_embed)
 

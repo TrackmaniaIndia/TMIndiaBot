@@ -1,12 +1,11 @@
-import discord
-from discord import ApplicationContext
+from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
 
-from bot import constants
+import bot.utils.birthdays as birthday
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.birthdays import Birthday
+from bot.utils.discord import get_mod_logs_channel
 
 log = get_logger(__name__)
 
@@ -15,24 +14,21 @@ class RemoveBirthday(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
+    # TODO: Permissions. ManageServer.
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
-        name="remove_username",
+        name="remove-username",
         description="Remove a user's birthday with their discord id",
     )
-    @discord.has_any_role(
-        805318382441988096, 858620171334057994, guild_id=constants.Guild.tmi_server
-    )
-    @discord.has_any_role(
-        940194181731725373, 941215148222341181, guild_id=constants.Guild.testing_server
-    )
+    @commands.has_permissions(manage_guild=True)
     async def _remove_username(
-        self, ctx: ApplicationContext, id: Option(int, "The user's id", required=True)
+        self,
+        ctx: ApplicationContext,
+        id: Option(SlashCommandOptionType.integer, "The user's id", required=True),
     ):
         log.info(f"{ctx.author.name} is requesting removal of {id}")
 
         log.debug("Sending message to #mod-logs")
-        mod_log_channel = self.bot.get_channel(constants.Channels.mod_logs)
+        mod_log_channel = get_mod_logs_channel(self.bot, ctx.guild.id)
 
         if mod_log_channel is not None:
             await mod_log_channel.send(
@@ -40,7 +36,7 @@ class RemoveBirthday(commands.Cog):
             )
 
         log.debug("Removing Birthday")
-        success_flag = Birthday.remove_birthday(id)
+        success_flag = birthday.remove_birthday(id, ctx.guild.id)
 
         if success_flag:
             log.debug(f"{id}'s birthday was removed successfully")

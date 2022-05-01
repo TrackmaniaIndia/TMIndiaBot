@@ -4,18 +4,13 @@ import os
 from itertools import cycle
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
+import bot.utils.birthdays as birthday
+import bot.utils.checks as checks
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils.tasks import (
-    change_status,
-    keep_alive,
-    today_totd,
-    todays_birthday,
-    totd_image_deleter,
-)
 
 log = get_logger(__name__)
 
@@ -28,9 +23,7 @@ class OnReady(
         self.bot = bot
 
         # Adding Statuses
-        log.info("Adding Statuses")
         self.statuses = []
-        log.info("Received Statuses")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -55,13 +48,9 @@ class OnReady(
 
         times_run += 1
 
-        # Starting KeepAlive task
-        log.info("Starting KeepAlive")
-        keep_alive.start(self.bot)
-
         # Starting ChangeStatus task
         log.info("Starting ChangeStatus")
-        change_status.start(self.bot, self.statuses)
+        self.change_status.start()
 
         # Deleting the TOTD Image if it exists
         if os.path.exists("./bot/resources/temp/totd.png"):
@@ -70,40 +59,18 @@ class OnReady(
                 os.remove("./bot/resources/temp/totd.png")
             else:
                 log.critical("Time is not after 11pm, not deleting TOTD Image")
-        # Starting TOTDImageDeleter
-        log.info("Starting TOTDImageDeleter")
-        totd_image_deleter.start(self.bot)
 
         # Starting BirthdayReminder
         log.info("Starting BirthdayReminder")
-        todays_birthday.start(self.bot)
+        self.todays_birthday.start()
 
-        # Starting TOTD Info task
-        log.info("Starting TOTD Info")
-        today_totd.start(self.bot)
+        # Starting File Checker
+        log.info("Starting FileChecker")
+        self.create_files.start()
 
-        # Looping Through Announcement Channels
-        for announcement_channel in constants.Channels.announcement_channels:
-            log.info(f"Sending Message in {announcement_channel}")
-
-            # Sending Message to the Channel
-            channel = self.bot.get_channel(int(announcement_channel))
-            try:
-                # Inside a TryExcept to prevent the bot from crashing if the
-                # channel is deleted or permissions to send messages are
-                # removed
-                await channel.send(
-                    f"Bot is Ready, Version: {constants.Bot.version} - Times Run: {times_run} - Time of Start: {datetime.now()}"
-                )
-                log.info(f"Sent Message to {announcement_channel}")
-                if (
-                    int(announcement_channel) == 880771916099641364
-                    or int(announcement_channel) == 880628511512096778
-                ):
-                    continue
-            except BaseException:
-                log.info(f"Can't Send Message to {announcement_channel}")
-                continue
+        # Starting QuoteNumbers task
+        log.info("Starting QuoteNumbers")
+        self.quote_numbers.start()
 
         # Printing out the new timesrun value to the file
         log.info("Writing TimesRun to File")
@@ -112,13 +79,103 @@ class OnReady(
 
         log.critical("Bot now Usable")
 
-    @staticmethod
-    def _get_statuses(self) -> list:
-        with open("./bot/resources/json/statuses.json", "r", encoding="UTF-8") as file:
-            return json.load(file)["statuses"]
+    @tasks.loop(minutes=10)
+    async def change_status(self):
+        """Changes Bot Status Every 10 Minutes"""
+        log.debug("Changing Status")
+        await self.bot.change_presence(activity=discord.Game(next(self.statuses)))
+
+    @tasks.loop(minutes=15)
+    async def create_files(self):
+        async for guild in self.bot.fetch_guilds():
+            if not os.path.exists(f"./bot/resources/guild_data/{guild.id}"):
+                log.info("Creating folder for %s", guild.name)
+                os.mkdir(f"./bot/resources/guild_data/{guild.id}")
+
+            log.info("Checking for %s", guild.name)
+            checks.create_config(guild.id)
+            checks.create_quotes(guild.id)
+            checks.create_trophy_tracking(guild.id)
+            checks.create_birthdays(guild.id)
+
+    @tasks.loop(hours=3, seconds=12)
+    async def quote_numbers(self):
+        async for guild in self.bot.fetch_guilds():
+            log.debug("Checking %s (%s)", guild.name, guild.id)
+            with open(
+                f"./bot/resources/guild_data/{guild.id}/quotes.json",
+                "r",
+                encoding="UTF-8",
+            ) as file:
+                quotes = json.load(file)
+
+            for i, _ in enumerate(quotes["quotes"]):
+                quotes["quotes"][i]["Number"] = i + 1
+
+            with open(
+                f"./bot/resources/guild_data/{guild.id}/quotes.json",
+                "w",
+                encoding="UTF-8",
+            ) as file:
+                json.dump(quotes, file, indent=4)
+
+    @tasks.loop(
+        time=datetime.time(hour=1, minute=30, second=0, tzinfo=datetime.timezone.utc)
+    )
+    async def todays_birthday(self):
+        log.info("Starting Today's Birthday Task.")
+
+        async for guild in self.bot.fetch_guilds():
+            guild_id = guild.id
+            log.debug("Getting birthday channel for %s", guild_id)
+            with open(
+                f"./bot/resources/guild_data/{guild_id}/config.json",
+                "r",
+                encoding="UTF-8",
+            ) as file:
+                config_data = json.load(file)
+
+                birthdays_channel_id = config_data.get("birthdays_channel", 0)
+
+                if birthdays_channel_id == 0:
+                    continue
+
+            log.debug("Checking birthdays for %s", guild_id)
+            birthdays_list = birthday.today_birthday(guild_id)
+
+            if birthdays_list is not None:
+                log.info("There is a birthday for %s today", guild_id)
+
+                birthdays_channel = self.bot.get_channel(birthdays_channel_id)
+
+                if birthdays_channel is None:
+                    log.warn("Cannot get channel for %s", guild_id)
+                    continue
+
+                if len(birthdays_list) > 1:
+                    log.debug("There is multiple birthdays for %s today", guild_id)
+
+                    for birthday_embed in birthdays_list:
+                        log.debug(f"Sending {birthday_embed}")
+
+                        await birthdays_channel.send(
+                            content="Hey Everyone! We have a birthday today!",
+                            embed=birthday_embed,
+                        )
+                else:
+                    log.debug("Only one birthday today %s", guild_id)
+
+                    await birthdays_channel.send(
+                        content="Hey Everyone! We have a birthday today!",
+                        embed=birthdays_list[0],
+                    )
+            else:
+                log.debug("No birthday today for %s.", guild_id)
 
     def _set_statuses(self):
-        self.statuses = cycle(self._get_statuses(self))
+        with open("./bot/resources/json/statuses.json", "r", encoding="UTF-8") as file:
+            statuses = json.load(file).get("statuses", ["Default Status"])
+        self.statuses = cycle(statuses)
 
 
 def setup(bot: Bot):

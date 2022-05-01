@@ -1,14 +1,13 @@
 import discord
-from discord import ApplicationContext
-from discord.commands import Option, permissions
+from discord import ApplicationContext, SlashCommandOptionType
+from discord.commands import Option
 from discord.ext import commands
 
+import bot.utils.commons as commons
 import bot.utils.quote as quote_functions
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import Commons
-from bot.utils.discord import EZEmbed
+from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
 
@@ -18,48 +17,57 @@ class SaveQuote(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
         name="quote",
         description="Saves a Quote, Only Usable by Mods",
         default_permissions=False,
     )
-    @discord.has_any_role(
-        805318382441988096, 858620171334057994, guild_id=constants.Guild.tmi_server
-    )
-    @discord.has_any_role(
-        940194181731725373, 941215148222341181, guild_id=constants.Guild.testing_server
-    )
+    @commands.has_permissions(manage_messages=True)
     async def _save_quote(
         self,
         ctx: ApplicationContext,
         *,
-        message: Option(str, "Message to Quote", required=True),
-        author: Option(str, "The author of the message", required=True),
+        message: Option(
+            SlashCommandOptionType.string, "Message to Quote", required=True
+        ),
+        author: Option(
+            SlashCommandOptionType.string, "The author of the message", required=True
+        ),
         message_link: Option(
-            str, "The Link to the Message you want to quote", required=True
+            SlashCommandOptionType.string,
+            "The Link to the Message you want to quote",
+            required=True,
         ),
     ):
         log_command(ctx, "save_quote")
 
         log.info(f"Saving {message} by {author} from guild {ctx.guild.name}")
 
-        log.debug("Deferring Response")
         await ctx.defer()
-        log.debug("Deferred Response")
+
+        if ctx.author.id == 901407301175484447:
+            log.info(
+                "%s tried to quote a message by t901407301175484447he bot",
+                ctx.author.name,
+            )
+            await ctx.respond("Cannot quote a message by the Bot")
+            return
+        if ctx.message.content == "":
+            log.info("%s tried to quote an empty message", ctx.author.name)
+            await ctx.respond("Cannot quote an empty string")
+            return
 
         quote_functions.save(message, author, message_link, ctx.guild.id)
 
-        embed = EZEmbed.create_embed(
+        embed = create_embed(
             title=":white_check_mark: Saved",
             description=f'Saved "{message}" by {author} with [Jump!]({message_link})',
-            color=Commons.get_random_color(),
+            color=commons.get_random_color(),
         )
 
         await ctx.send_followup(embed=embed)
 
-    @commands.message_command(
-        guild_ids=constants.Bot.default_guilds, name="Quote Message"
-    )
+    @commands.message_command(name="Quote Message")
+    @commands.has_permissions(manage_messages=True)
     async def _save_quote_message_cmd(
         self,
         ctx: ApplicationContext,
@@ -72,18 +80,28 @@ class SaveQuote(commands.Cog):
         message_link = message.jump_url
         guild_id = ctx.guild.id
 
-        log.debug("Deferring Response")
-        await ctx.defer()
-        log.debug("Deferred Response")
+        await ctx.defer(ephemeral=True)
+
+        if ctx.author.id == 901407301175484447:
+            log.info(
+                "%s tried to quote a message by t901407301175484447he bot",
+                ctx.author.name,
+            )
+            await ctx.respond("Cannot quote a message by the Bot", ephemeral=True)
+            return
+        if message.content == "":
+            log.info("%s tried to quote an empty message", ctx.author.name)
+            await ctx.respond("Cannot quote an empty string", ephemeral=True)
+            return
 
         quote_functions.save(message.content, f"{author.name}", message_link, guild_id)
 
-        embed = EZEmbed.create_embed(
+        embed = create_embed(
             title=":white_check_mark: Saved",
             description=f'Saved "{message.content}" by {author.name} with [Jump!]({message_link})',
         )
 
-        await ctx.send_followup(embed=embed)
+        await ctx.send_followup(embed=embed, ephemeral=True)
 
 
 def setup(bot: Bot):
