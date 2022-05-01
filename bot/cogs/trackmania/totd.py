@@ -1,31 +1,27 @@
 from trackmania import TOTD, totd
 
-from discord import ApplicationContext
+from datetime import datetime
+
+from discord import Option, ApplicationContext
 from discord.ext import commands
-from discord.commands import Option
 from discord.ext.pages import Paginator
+from prettytable import PrettyTable
 
 from bot import constants
 from bot.bot import Bot
-from bot.log import log_command, get_logger
-from bot.utils.commons import split_list_of_lists, format_seconds
+from bot.log import get_logger, log_command
+from bot.utils.commons import format_seconds, split_list_of_lists
 from bot.utils.discord import create_embed
-
-from prettytable import PrettyTable
-
-from datetime import datetime
 
 log = get_logger(__name__)
 
-class TotdLB(commands.Cog):
+class TOTDLeaderboards(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
-        self._version = constants.Bot.version
 
     @commands.slash_command(
-        guild_ids=constants.Bot.default_guilds,
-        name="totd",
-        description="Get a TOTD by date",
+        name="totd-leaderboards",
+        description="Get a certain TOTD's leaderboard",
     )
     async def _totd_lb(self, 
         ctx: ApplicationContext,
@@ -45,10 +41,10 @@ class TotdLB(commands.Cog):
             return
         log.debug("Passed Initial Basic Checks")
 
-        monthint = constants.Consts.months.index(month) + 1
-        thedate = datetime(year, monthint, day)
+        month_int = constants.Consts.months.index(month) + 1
+        the_date = datetime(year, month_int, day)
         
-        totd_data: TOTD = await TOTD.get_totd(thedate)
+        totd_data: TOTD = await TOTD.get_totd(the_date)
         leaderboards = await totd_data.map.get_leaderboard(length=100)
         map_name = totd_data.map.name
 
@@ -67,13 +63,13 @@ class TotdLB(commands.Cog):
 
                 times.append(time_data)
 
-            lbtable = PrettyTable(["Position", "Username", "Time"])
+            lb_table  = PrettyTable(["Position", "Username", "Time"])
             for time in times:
-                lbtable.add_row([time['position'], time['pl_name'], time['time']])
+                lb_table .add_row([time['position'], time['pl_name'], time['time']])
 
             embed = create_embed(
                 title=f"Top 100 Leaderboards for {map_name}",
-                description=f"**Date**\n{day} {month} {year}\n```{lbtable}```"
+                description=f"**Date**\n{day} {month} {year}\n```{lb_table }```"
             )
             embeds.append(embed)
 
@@ -81,5 +77,5 @@ class TotdLB(commands.Cog):
         await totd_paginator.respond(ctx.interaction)
 
 def setup(bot: Bot) -> None:
-    """Load the TotdLB cog."""
-    bot.add_cog(TotdLB(bot))
+    """Load the TOTDLeaderboards cog."""
+    bot.add_cog(TOTDLeaderboards(bot))
