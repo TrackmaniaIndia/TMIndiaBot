@@ -80,3 +80,22 @@ def time_since(timestamp: int) -> str:
 def get_times_run() -> int:
     with open("./bot/resources/times_run.txt", "r", encoding="UTF-8") as file:
         return int(file.read())
+        
+def format_time_split(split: str) -> str:
+    split_str = str(split)
+    
+    ms_split = split_str.split('.')
+    
+    ms_seconds = ms_split[0]
+    ms = ms_split[1]
+    
+    ms_format = ""
+
+    if len(ms) == 3:
+        ms_format = ms
+    elif len(ms) == 2:
+        ms_format = f"{ms}0"
+    elif len(ms) == 1:
+        ms_format = f"{ms}00"
+
+    return f"{ms_seconds}.{ms_format}"
