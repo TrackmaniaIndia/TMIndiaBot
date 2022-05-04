@@ -10,10 +10,16 @@ from prettytable import PrettyTable
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import format_seconds, split_list_of_lists
+from bot.utils.commons import format_seconds, split_list_of_lists, format_time_split
 from bot.utils.discord import create_embed
 
 log = get_logger(__name__)
+
+def remove_unnecessary_minutes(time: str) -> str:
+    if time.startswith('0'):
+        return time.split(':')[1]
+    else:
+        return time
 
 class TOTDLeaderboards(commands.Cog):
     def __init__(self, bot: Bot) -> None:
@@ -47,10 +53,12 @@ class TOTDLeaderboards(commands.Cog):
         totd_data: TOTD = await TOTD.get_totd(the_date)
         leaderboards = await totd_data.map.get_leaderboard(length=100)
         map_name = totd_data.map.name
+        first_time = leaderboards[0].time
 
         split_list = split_list_of_lists(leaderboards, 20)
 
         embeds = []
+        time_format = '%M:%S.%f'
         for group in split_list:
             times = []
             for lb in group:
@@ -59,13 +67,22 @@ class TOTDLeaderboards(commands.Cog):
 
                 time_data['pl_name'] = lb.player_name
                 time_data['position'] = lb.position
-                time_data['time'] = format_seconds(lb.time)
+
+                time_formated = format_seconds(lb.time)
+                time_formated_wihtout_zero = remove_unnecessary_minutes(time_formated)
+
+                time_data['time'] = time_formated_wihtout_zero
+
+                tdelta = datetime.strptime(time_formated, time_format) - datetime.strptime(format_seconds(first_time), time_format)
+                
+                split = format_time_split(tdelta.total_seconds())
+                time_data['split'] = f"+{split}"
 
                 times.append(time_data)
 
-            lb_table  = PrettyTable(["Position", "Username", "Time"])
+            lb_table  = PrettyTable(["Position", "Username", "Time", "Split"])
             for time in times:
-                lb_table .add_row([time['position'], time['pl_name'], time['time']])
+                lb_table .add_row([time['position'], time['pl_name'], time['time'], time['split']])
 
             embed = create_embed(
                 title=f"Top 100 Leaderboards for {map_name}",
