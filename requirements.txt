@@ -36,8 +36,9 @@ pathspec==0.9.0
 Pillow==9.1.0
 platformdirs==2.5.2
 pre-commit==2.18.1
+prettytable==3.2.0
 py-cord==2.0.0b5
-py-tmio==0.4.5
+py-tmio==0.4.6
 pycares==4.1.2
 pycparser==2.21
 pyparsing==3.0.8
@@ -51,6 +52,6 @@ toml==0.10.2
 tomli==2.0.1
 typing_extensions==4.2.0
 virtualenv==20.14.1
+wcwidth==0.2.5
 wrapt==1.14.0
 yarl==1.7.2
-prettytable==3.2.0
