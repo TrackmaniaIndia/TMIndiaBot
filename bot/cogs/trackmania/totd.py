@@ -4,7 +4,7 @@ from discord import ApplicationContext, Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
 from prettytable import PrettyTable
-from trackmania import TOTD, InvalidTOTDDate
+from trackmania import TOTD, InvalidTOTDDate, TMIOException
 from trackmania.config import cache_flush_key
 
 from bot import constants
@@ -61,7 +61,7 @@ class TOTDLeaderboards(commands.Cog):
 
             leaderboards = await totd_data.map.get_leaderboard(length=100)
             map_name = totd_data.map.name
-        except InvalidTOTDDate:
+        except (InvalidTOTDDate, TMIOException):
             await ctx.respond("Invalid Date was given.")
 
         split_list = split_list_of_lists(leaderboards, 20)
