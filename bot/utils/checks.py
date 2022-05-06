@@ -23,6 +23,7 @@ def create_config(guild_id: int):
             "reminder_channel": 0,
             "totd_data": False,
             "totd_channel": 0,
+            "birthdays_channel": 0,
             "trophy_tracking": False,
             "trophy_update_channel": 0,
             "mod_logs_channel": 0,

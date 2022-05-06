@@ -1,3 +1,4 @@
+
 from trackmania import TOTD, totd
 
 from datetime import datetime
@@ -20,7 +21,7 @@ def remove_unnecessary_minutes(time: str) -> str:
         return time.split(':')[1]
     else:
         return time
-
+      
 class TOTDLeaderboards(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
@@ -29,7 +30,9 @@ class TOTDLeaderboards(commands.Cog):
         name="totd-leaderboards",
         description="Get a certain TOTD's leaderboard",
     )
-    async def _totd_lb(self, 
+
+    async def _totd_lb(
+        self,
         ctx: ApplicationContext,
         year: Option(int, "The year", required=True),
         month: Option(str, "The month", choices=constants.Consts.months, required=True),
@@ -49,16 +52,35 @@ class TOTDLeaderboards(commands.Cog):
 
         month_int = constants.Consts.months.index(month) + 1
         the_date = datetime(year, month_int, day)
-        
+
         totd_data: TOTD = await TOTD.get_totd(the_date)
         leaderboards = await totd_data.map.get_leaderboard(length=100)
         map_name = totd_data.map.name
         first_time = leaderboards[0].time
+        
+        try:
+            totd_data: TOTD = await TOTD.get_totd(the_date)
+
+            # Remove after py-tmio v0.5
+            try:
+                uid = totd_data.map.leaderboard
+                offset = 0
+                length = 100
+
+                cache_flush_key(f"leaderboard:{uid}:{offset}:{length}")
+            except:
+                pass
+
+            leaderboards = await totd_data.map.get_leaderboard(length=100)
+            map_name = totd_data.map.name
+        except (InvalidTOTDDate, TMIOException):
+            await ctx.respond("Invalid Date was given.")
 
         split_list = split_list_of_lists(leaderboards, 20)
 
         embeds = []
         time_format = '%M:%S.%f'
+        
         for group in split_list:
             times = []
             for lb in group:
