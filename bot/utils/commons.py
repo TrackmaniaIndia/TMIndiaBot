@@ -1,6 +1,7 @@
 import datetime
 import random
 import time
+import json
 
 from bot.log import get_logger
 
@@ -100,3 +101,23 @@ def format_time_split(split: str) -> str:
         ms_format = f"{ms}00"
 
     return f"{ms_seconds}.{ms_format}"
+
+def get_player_flag(zones) -> str:
+    with open(f"./bot/resources/json/countries.json", "r", encoding="UTF-8") as f:
+        countries_data = json.load(f)
+
+    country_map = {}
+    for country in countries_data:
+        name = country['name']
+        emoji = country['emoji']
+
+        country_map[name] = emoji
+
+    for zone in zones:
+        try:
+            emoji = country_map[zone.zone]
+        except KeyError:
+            continue
+
+        print(emoji)
+        return emoji

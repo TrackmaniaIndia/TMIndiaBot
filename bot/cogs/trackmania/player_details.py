@@ -9,6 +9,7 @@ from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import create_embed
+from bot.utils.commons import get_player_flag
 
 log = get_logger(__name__)
 
@@ -66,6 +67,7 @@ class PlayerDetails(commands.Cog):
     def __create_pages(player_data: Player) -> list[discord.Embed]:
         log.info(f"Creating PlayerDetail pages for {player_data.name}")
         display_name = player_data.name
+        flag = get_player_flag(player_data.zone)
 
         log.debug("Creating Strings to Use in the Pages.")
         zone_str = PlayerZone.to_string(player_data.zone)
@@ -77,9 +79,9 @@ class PlayerDetails(commands.Cog):
         royal_str = str(player_data.royal_data)
 
         log.debug("Creating Embed Pages")
-        page_one = create_embed(f"Player Data for {display_name} - Page 1")
-        page_two = create_embed(f"Player Data for {display_name} - Page 2")
-        page_three = create_embed(f"Player Data for {display_name} - Page 3")
+        page_one = create_embed(f"Player Data for {display_name} {flag} - Page 1")
+        page_two = create_embed(f"Player Data for {display_name} {flag}  - Page 2")
+        page_three = create_embed(f"Player Data for {display_name} {flag} - Page 3")
 
         log.debug("Adding Fields to Embed Pages")
         page_one.add_field(name="Zone Data", value=f"```{zone_str}```", inline=False)
