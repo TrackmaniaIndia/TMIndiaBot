@@ -4,7 +4,7 @@ from discord import ApplicationContext, Option
 from discord.ext import commands
 from discord.ext.pages import Paginator
 from prettytable import PrettyTable
-from trackmania import TOTD, InvalidTOTDDate, TMIOException, totd
+from trackmania import TOTD, InvalidTOTDDate, TMIOException
 from trackmania.config import cache_flush_key
 
 from bot import constants
