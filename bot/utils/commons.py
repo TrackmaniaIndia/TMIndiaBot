@@ -88,7 +88,7 @@ def format_time_split(split: str) -> str:
     
     ms_seconds = ms_split[0]
     ms = ms_split[1]
-    
+
     ms_format = ""
 
     if len(ms) == 3:
@@ -97,5 +97,5 @@ def format_time_split(split: str) -> str:
         ms_format = f"{ms}0"
     elif len(ms) == 1:
         ms_format = f"{ms}00"
-
+        
     return f"{ms_seconds}.{ms_format}"
