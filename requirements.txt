@@ -23,7 +23,6 @@ identify==2.4.12
 idna==3.3
 import-expression==1.1.4
 isort==5.10.1
-jishaku==2.5.0
 kiwisolver==1.4.2
 matplotlib==3.5.2
 multidict==6.0.2
@@ -55,4 +54,3 @@ virtualenv==20.14.1
 wcwidth==0.2.5
 wrapt==1.14.0
 yarl==1.7.2
-prettytable==3.2.0
