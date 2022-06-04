@@ -1,9 +1,18 @@
 import discord
-from discord import ApplicationContext, SlashCommandOptionType
+import matplotlib.pyplot as plt
+from discord import ApplicationContext, Embed, SlashCommandOptionType
 from discord.commands import Option
 from discord.ext import commands
-from discord.ext.pages import Paginator
-from trackmania import Player, PlayerMetaInfo, PlayerZone
+from discord.ext.pages import PageGroup, Paginator
+from trackmania import (
+    BestCOTDStats,
+    Player,
+    PlayerCOTD,
+    PlayerCOTDResults,
+    PlayerMetaInfo,
+    PlayerZone,
+    TMIOException,
+)
 
 from bot import constants
 from bot.bot import Bot
@@ -35,6 +44,9 @@ class PlayerDetails(commands.Cog):
 
         log.debug("Getting Player ID")
         player_id = await Player.get_id(username)
+        page = 0
+        pop_flag = True
+        cotd_success = True
 
         if player_id is None:
             log.error(f"Invalid Username was given -> {username} by {ctx.author.name}")
@@ -50,15 +62,88 @@ class PlayerDetails(commands.Cog):
         log.debug("Getting PlayerData")
         player_data: Player = await Player.get_player(player_id)
 
-        log.debug("Creating Pages")
+        log.debug("Creating Player Details Pages")
         pages = PlayerDetails.__create_pages(player_data)
 
         if isinstance(pages, str):
             await ctx.respond(pages)
             return
 
+        try:
+            log.debug("Getting COTD Data")
+            cotd_stats = await PlayerCOTD.get_page(player_id, page)
+        except TMIOException as e:
+            log.error(f"Failed to get COTD Data: %s", e)
+            cotd_success = False
+            msg = f"TMIOException: {e}"
+
+        if cotd_success:
+            log.debug("Creating COTD Details Pages")
+            cotd_pages = PlayerDetails.__parse_pages(cotd_stats, username)
+
+            log.debug("Popping COTDs")
+            popped, original = PlayerDetails.__pop_reruns(cotd_stats.recent_results)
+
+            while (len(popped) <= 25 and page < 5) or pop_flag:
+                page += 1
+                cotd_stats_new = await PlayerCOTD.get_page(player_id, page)
+
+                _new_popped, _new_original = PlayerDetails.__pop_reruns(
+                    cotd_stats_new.recent_results
+                )
+                popped.extend(_new_popped)
+                original.extend(_new_original)
+
+                pop_flag = False
+
+            if len(popped) > 25:
+                popped = popped[:25]
+            if len(original) > 25:
+                original = original[:25]
+
+            log.debug("Creating COTD Graphs")
+            PlayerDetails.__create_graphs(popped, original)
+
+            log.debug("Sending Images to Channel")
+            channel = self.bot.get_channel(962961137924726834)
+            image_message = await channel.send(
+                files=[
+                    discord.File("./bot/resources/temp/overall.png"),
+                    discord.File("./bot/resources/temp/primary.png"),
+                ]
+            )
+
+            log.debug("Getting Image URLs")
+            url_one = image_message.attachments[0].url
+            url_two = image_message.attachments[1].url
+
+            cotd_pages[0].set_image(url=url_one)
+            cotd_pages[1].set_image(url=url_two)
+        else:
+            cotd_pages = [
+                Embed(
+                    title="An Error Occured with the API",
+                    description=f"An Unexpected Error Occured.\n{msg}.\nPlease Try Again Later. (And ping NottCurious).",
+                )
+            ]
+
+        log.debug("Creating Page Group List")
+        page_groups = [
+            PageGroup(
+                pages=pages,
+                label="Player Details",
+                description=f"Player Details of {username}",
+            ),
+            PageGroup(
+                pages=cotd_pages,
+                label="COTD Details",
+                description=f"COTD Details of {username}",
+            ),
+        ]
+
+        # Show Menu parameter creates the drop down menu needed to switch between the groups.
         log.debug("Running Paginator")
-        paginator = Paginator(pages)
+        paginator = Paginator(pages=page_groups, show_menu=True)
         await paginator.respond(ctx.interaction)
         log.debug("Paginator Finished")
 
@@ -94,7 +179,7 @@ class PlayerDetails(commands.Cog):
             name="Trophy Count", value=f"```{trophy_str}```", inline=False
         )
 
-        return (page_one, page_two, page_three)
+        return [page_one, page_two, page_three]
 
     @staticmethod
     def __parse_meta(
@@ -125,6 +210,115 @@ class PlayerDetails(commands.Cog):
             )
 
         return page
+
+    @staticmethod
+    def __parse_pages(cotd_stats: PlayerCOTD, username: str) -> list[Embed]:
+        log.info(f"Parsing Pages for {cotd_stats.player_id}")
+
+        log.debug("Creating 2 Embeds")
+        page_one = create_embed(title=f"Overall Data for {username}")
+        page_two = create_embed(title=f"Primary Data for {username}")
+
+        log.debug("Adding Total COTDs Played")
+        page_one.add_field(name="Total Played", value=cotd_stats.total, inline=False)
+        page_two.add_field(name="Total Played", value=cotd_stats.total, inline=False)
+
+        log.debug("Adding Average Data")
+        average_data = PlayerDetails.__create_avg_data_str(cotd_stats)
+        page_one.add_field(name="Average Stats", value=average_data, inline=False)
+        page_two.add_field(name="Average Stats", value=average_data, inline=False)
+
+        log.debug("Adding Best Stats")
+        page_one = PlayerDetails.__parse_best_stats(
+            page_one, cotd_stats.stats.best_overall
+        )
+        page_two = PlayerDetails.__parse_best_stats(
+            page_two, cotd_stats.stats.best_primary
+        )
+
+        log.debug("Returning Embed Pages")
+        return [page_one, page_two]
+
+    @staticmethod
+    def __parse_best_stats(page: discord.Embed, stats: BestCOTDStats):
+        log.debug("Parsing Best Stats")
+        temp_str = f"Best Division - {stats.best_div}\nBest Division Time Achieved -> {stats.best_div_time}\n\nBest Rank -> {stats.best_rank}\nRank Achieved in Division of Best Rank -> {stats.best_rank_div_rank}\nBest Rank - Time Achieved -> {stats.best_rank_time}\n\nBest Rank in Division -> {stats.best_rank_in_div}\nBest Rank in Division - Division Achived -> {stats.best_rank_in_div_div}\nBest Rank in Division - Time Achieved -> {stats.best_rank_in_div_time}"
+
+        page.add_field(name="Best Stats", value=f"```\n{temp_str}\n```")
+
+        return page
+
+    @staticmethod
+    def __pop_reruns(cotds: list[PlayerCOTDResults]) -> tuple[list[PlayerCOTDResults]]:
+        popped = cotds
+        temp = []
+
+        for cotd in popped:
+            if cotd.name.endswith("#1"):
+                log.debug("Popping %s", cotd.name)
+                temp.append(popped[popped.index(cotd)])
+
+        return (temp, cotds)
+
+    @staticmethod
+    def __create_graphs(
+        popped: list[PlayerCOTDResults], original: list[PlayerCOTDResults]
+    ):
+        popped_name_list, popped_rank_list = [], []
+        original_name_list, original_rank_list = [], []
+
+        log.debug("Adding Names and Ranks for Primary Data")
+        for i, cotd in enumerate(popped):
+            popped_name_list.append(cotd.name)
+            popped_rank_list.append(cotd.rank)
+        log.debug("Adding Names and Ranks for Original Data")
+        for cotd in original:
+            original_name_list.append(cotd.name)
+            original_rank_list.append(cotd.rank)
+
+        log.debug("Creating Loop Tuple")
+        loop_tuple = (
+            (popped_name_list, popped_rank_list, "Primary Rank Graph", "primary.png"),
+            (
+                original_name_list,
+                original_rank_list,
+                "Overall Rank Graph",
+                "overall.png",
+            ),
+        )
+
+        log.info("Creating the Graphs for COTD Details")
+        for i in range(2):
+            log.debug(f"{loop_tuple[i][2]} -> Clearing Graph")
+            plt.clf()
+
+            log.debug(f"{loop_tuple[i][2]} -> Plotting Graph")
+            plt.plot(loop_tuple[i][0], loop_tuple[i][1], label=loop_tuple[i][2])
+            plt.xlabel("COTD Names")
+
+            log.debug(f"{loop_tuple[i][2]} -> Setting Plot Rotation to 90Deg")
+            plt.xticks(rotation=90)
+
+            log.debug(f"{loop_tuple[i][2]} -> Setting YLabel to Ranks")
+            plt.ylabel("Ranks")
+
+            log.debug(f"{loop_tuple[i][2]} -> Setting title to {loop_tuple[i][2]}")
+            plt.title(f"{loop_tuple[i][2]}")
+
+            log.debug(f"{loop_tuple[i][2]} -> Setting Tight Layout")
+            plt.tight_layout()
+
+            log.debug(f"{loop_tuple[i][2]} -> saving the Plot")
+            plt.savefig(f"./bot/resources/temp/" + loop_tuple[i][3])
+
+    @staticmethod
+    def __create_avg_data_str(data: PlayerCOTD) -> str:
+        log.debug("Creating Average Data String")
+        average_rank = round(data.stats.average_rank, 4) * 100
+        average_div = round(data.stats.average_div, 2)
+        average_div_rank = round(data.stats.average_div_rank, 4) * 100
+
+        return f"```Average Rank -> {average_rank}\nAverage Division -> {average_div}\nAverage Division Rank -> {average_div_rank}```"
 
 
 def setup(bot: Bot):
