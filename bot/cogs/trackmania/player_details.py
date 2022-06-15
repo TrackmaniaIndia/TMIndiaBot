@@ -8,6 +8,7 @@ from discord.ext import commands
 from discord.ext.pages import PageGroup, Paginator
 from trackmania import (
     BestCOTDStats,
+    InvalidIDError,
     Player,
     PlayerCOTD,
     PlayerCOTDResults,
@@ -45,7 +46,11 @@ class PlayerDetails(commands.Cog):
         await ctx.defer()
 
         log.debug("Getting Player ID")
-        player_id = await Player.get_id(username)
+        if username.lower() == "iridium_":
+            # Temporary jank solution.
+            player_id = "20acef53-a982-4bc3-989f-399e03c70f4d"
+        else:
+            player_id = await Player.get_id(username)
         page = 0
         pop_flag = True
         cotd_success = True
@@ -78,6 +83,10 @@ class PlayerDetails(commands.Cog):
             log.error(f"Failed to get COTD Data: %s", e)
             cotd_success = False
             msg = f"TMIOException: {e}"
+        except InvalidIDError as e:
+            log.error(f"Failed to get COTD Data: %s", e)
+            cotd_success = False
+            msg = f"This player has never played Trackmania COTD."
 
         if cotd_success:
             log.debug("Creating COTD Details Pages")
@@ -127,7 +136,7 @@ class PlayerDetails(commands.Cog):
             cotd_pages = [
                 Embed(
                     title="An Error Occured with the API",
-                    description=f"An Unexpected Error Occured.\n{msg}.\nPlease Try Again Later. (And ping NottCurious).",
+                    description=f"An Unexpected Error Occured.\n{msg}.\nPlease Try Again Later. (And ping NottCurious#4351 if you think this is wrong).",
                 )
             ]
 
@@ -187,7 +196,10 @@ class PlayerDetails(commands.Cog):
             page_three = create_embed(f"Player Data for {display_name} - Page 3")
 
         log.debug("Adding Fields to Embed Pages")
-        page_one.add_field(name="Zone Data", value=f"```{zone_str}```", inline=False)
+        if zone_str != "":
+            page_one.add_field(
+                name="Zone Data", value=f"```{zone_str}```", inline=False
+            )
         page_one = PlayerDetails.__parse_meta(
             page_one, player_data.meta, player_data.player_id
         )

@@ -1,4 +1,6 @@
-from discord import Embed
+import traceback
+
+from discord import ApplicationContext, Embed
 from discord.ext.commands import Cog, Context, errors
 
 from bot.api import ResponseCodeError
@@ -85,7 +87,7 @@ class ErrorHandler(Cog):
 
     @Cog.listener()
     async def on_application_command_error(
-        self, ctx: Context, e: errors.CommandError
+        self, ctx: ApplicationContext, e: errors.CommandError
     ) -> None:
         if hasattr(e, "handled"):
             log.debug(
@@ -124,7 +126,16 @@ class ErrorHandler(Cog):
         error_embed.add_field(name="Guild", value=ctx.guild.name, inline=False)
         error_embed.add_field(name="Channel", value=ctx.channel.name, inline=False)
         error_embed.add_field(name="Error", value=f"```{e}```", inline=False)
+        error_embed.add_field(
+            name="Traceback",
+            value=f'```{"".join(traceback.format_tb(e.__traceback__, limit=None))}```',
+            inline=False,
+        )
         await error_channel.send(embed=error_embed)
+        try:
+            await ctx.respond(e, ephemeral=True)
+        except:
+            await ctx.send(content=e)
 
     async def handle_user_input_error(
         self, ctx: Context, e: errors.UserInputError
