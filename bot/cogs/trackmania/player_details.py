@@ -1,4 +1,6 @@
+import country_converter as coco
 import discord
+import flag
 import matplotlib.pyplot as plt
 from discord import ApplicationContext, Embed, SlashCommandOptionType
 from discord.commands import Option
@@ -6,6 +8,7 @@ from discord.ext import commands
 from discord.ext.pages import PageGroup, Paginator
 from trackmania import (
     BestCOTDStats,
+    InvalidIDError,
     Player,
     PlayerCOTD,
     PlayerCOTDResults,
@@ -28,7 +31,7 @@ class PlayerDetails(commands.Cog):
 
     @commands.slash_command(
         name="player-details",
-        description="Gets the player details of a sepcific username",
+        description="Gets the player details of a specific username",
     )
     @discord.ext.commands.cooldown(1, 15, commands.BucketType.guild)
     async def _player_details(
@@ -43,7 +46,11 @@ class PlayerDetails(commands.Cog):
         await ctx.defer()
 
         log.debug("Getting Player ID")
-        player_id = await Player.get_id(username)
+        if username.lower() == "iridium_":
+            # Temporary jank solution.
+            player_id = "20acef53-a982-4bc3-989f-399e03c70f4d"
+        else:
+            player_id = await Player.get_id(username)
         page = 0
         pop_flag = True
         cotd_success = True
@@ -76,10 +83,16 @@ class PlayerDetails(commands.Cog):
             log.error(f"Failed to get COTD Data: %s", e)
             cotd_success = False
             msg = f"TMIOException: {e}"
+        except InvalidIDError as e:
+            log.error(f"Failed to get COTD Data: %s", e)
+            cotd_success = False
+            msg = f"This player has never played Trackmania COTD."
 
         if cotd_success:
             log.debug("Creating COTD Details Pages")
-            cotd_pages = PlayerDetails.__parse_pages(cotd_stats, username)
+            cotd_pages = PlayerDetails.__parse_pages(
+                cotd_stats, username, PlayerDetails.__get_flag(player_data.zone)
+            )
 
             log.debug("Popping COTDs")
             popped, original = PlayerDetails.__pop_reruns(cotd_stats.recent_results)
@@ -123,7 +136,7 @@ class PlayerDetails(commands.Cog):
             cotd_pages = [
                 Embed(
                     title="An Error Occured with the API",
-                    description=f"An Unexpected Error Occured.\n{msg}.\nPlease Try Again Later. (And ping NottCurious).",
+                    description=f"An Unexpected Error Occured.\n{msg}.\nPlease Try Again Later. (And ping NottCurious#4351 if you think this is wrong).",
                 )
             ]
 
@@ -151,9 +164,13 @@ class PlayerDetails(commands.Cog):
     def __create_pages(player_data: Player) -> list[discord.Embed]:
         log.info(f"Creating PlayerDetail pages for {player_data.name}")
         display_name = player_data.name
+        player_flag = PlayerDetails.__get_flag(player_data.zone)
 
-        log.debug("Creating Strings to Use in the Pages.")
-        zone_str = PlayerZone.to_string(player_data.zone)
+        try:
+            log.debug("Creating Strings to Use in the Pages.")
+            zone_str = PlayerZone.to_string(player_data.zone)
+        except TypeError:
+            zone_str = ""
 
         log.debug("Getting Trophies String")
         trophy_str = str(player_data.trophies)
@@ -162,12 +179,27 @@ class PlayerDetails(commands.Cog):
         royal_str = str(player_data.royal_data)
 
         log.debug("Creating Embed Pages")
-        page_one = create_embed(f"Player Data for {display_name} - Page 1")
-        page_two = create_embed(f"Player Data for {display_name} - Page 2")
-        page_three = create_embed(f"Player Data for {display_name} - Page 3")
+
+        if player_flag is not None:
+            page_one = create_embed(
+                f"Player Data for {player_flag} {display_name} - Page 1"
+            )
+            page_two = create_embed(
+                f"Player Data for {player_flag} {display_name} - Page 2"
+            )
+            page_three = create_embed(
+                f"Player Data for {player_flag} {display_name} - Page 3"
+            )
+        else:
+            page_one = create_embed(f"Player Data for {display_name} - Page 1")
+            page_two = create_embed(f"Player Data for {display_name} - Page 2")
+            page_three = create_embed(f"Player Data for {display_name} - Page 3")
 
         log.debug("Adding Fields to Embed Pages")
-        page_one.add_field(name="Zone Data", value=f"```{zone_str}```", inline=False)
+        if zone_str != "":
+            page_one.add_field(
+                name="Zone Data", value=f"```{zone_str}```", inline=False
+            )
         page_one = PlayerDetails.__parse_meta(
             page_one, player_data.meta, player_data.player_id
         )
@@ -212,12 +244,18 @@ class PlayerDetails(commands.Cog):
         return page
 
     @staticmethod
-    def __parse_pages(cotd_stats: PlayerCOTD, username: str) -> list[Embed]:
+    def __parse_pages(
+        cotd_stats: PlayerCOTD, username: str, player_flag: str | None = None
+    ) -> list[Embed]:
         log.info(f"Parsing Pages for {cotd_stats.player_id}")
 
         log.debug("Creating 2 Embeds")
-        page_one = create_embed(title=f"Overall Data for {username}")
-        page_two = create_embed(title=f"Primary Data for {username}")
+        if player_flag is not None:
+            page_one = create_embed(title=f"Overall Data for {player_flag} {username}")
+            page_two = create_embed(title=f"Primary Data for {player_flag} {username}")
+        else:
+            page_one = create_embed(title=f"Overall Data for {username}")
+            page_two = create_embed(title=f"Primary Data for {username}")
 
         log.debug("Adding Total COTDs Played")
         page_one.add_field(name="Total Played", value=cotd_stats.total, inline=False)
@@ -319,6 +357,26 @@ class PlayerDetails(commands.Cog):
         average_div_rank = round(data.stats.average_div_rank, 4) * 100
 
         return f"```Average Rank -> {average_rank}\nAverage Division -> {average_div}\nAverage Division Rank -> {average_div_rank}```"
+
+    @staticmethod
+    def __get_flag(zones: list[PlayerZone] | None) -> str | None:
+        try:
+            if zones is None or zones is False:
+                return None
+
+            log.debug("Getting Flag")
+            flags = [z.flag for z in zones]
+            converted_flags = coco.convert(names=flags, to="ISO2")
+
+            for the_flag in converted_flags:
+                if the_flag.lower() != "not found":
+                    return flag.flag(the_flag)
+
+            return None
+        except:
+            # Catch unexpected errors
+            log.error("Unexpected error finding the flag.")
+            return None
 
 
 def setup(bot: Bot):
