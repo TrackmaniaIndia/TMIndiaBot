@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import random
 from itertools import cycle
 
 import discord
@@ -173,8 +174,18 @@ class OnReady(
                 log.debug("No birthday today for %s.", guild_id)
 
     def _set_statuses(self):
+        # Read Static Statuses
         with open("./bot/resources/json/statuses.json", "r", encoding="UTF-8") as file:
             statuses = json.load(file).get("statuses", ["Default Status"])
+
+        # Add Dynamically Generated Statuses
+        statuses.append(f"Currently in {len(self.bot.guilds)} servers!")
+        statuses.append(f"Currently Serving {len(self.bot.users)} users!")
+        statuses.append(f"Version: {constants.Bot.version}")
+
+        # Randomize statuses
+        random.shuffle(statuses)
+
         self.statuses = cycle(statuses)
 
 
