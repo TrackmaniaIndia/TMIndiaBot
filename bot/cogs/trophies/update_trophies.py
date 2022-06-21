@@ -7,6 +7,8 @@ from itertools import zip_longest
 import discord
 from discord import ApplicationContext
 from discord.ext import commands, tasks
+from discord.ext.commands import is_owner
+from prettytable import PrettyTable
 from trackmania import Player
 
 import bot.utils.commons as commons
@@ -34,14 +36,14 @@ class UpdateTrophies(commands.Cog):
     @commands.slash_command(
         name="run-it",
     )
-    @discord.is_owner()
+    @is_owner()
     async def _run_it(self, ctx: ApplicationContext):
         await self.__update_leaderboards()
 
     @commands.slash_command(
         name="run-it-for-me",
     )
-    @discord.is_owner()
+    @is_owner()
     async def _run_it_for_me(self, ctx: ApplicationContext):
         await ctx.defer()
         await self.__update_leaderboards(ctx)
@@ -58,6 +60,7 @@ class UpdateTrophies(commands.Cog):
     async def __update_leaderboards(self, ctx: ApplicationContext = None):
         log.info("Updating Trophy Leaderboards")
 
+        # If the guild is given through the "run-it-for-me" command, we only get the players in that specific guild.
         if ctx is not None:
             with open(
                 f"./bot/resources/guild_data/{ctx.guild.id}/config.json",
@@ -75,6 +78,7 @@ class UpdateTrophies(commands.Cog):
             guild_ids = [ctx.guild.id]
             channel_ids = [ctx.channel.id]
         else:
+            # Guild is not given so we get them from the config files.
             guild_ids, channel_ids = [], []
             for folder in os.listdir("./bot/resources/guild_data/"):
                 with open(
@@ -114,6 +118,7 @@ class UpdateTrophies(commands.Cog):
             no_of_players = len(player_ids)
 
             if no_of_players == 0 and ctx is None:
+                # No users are stored for this specific guild. So we send them a message telling them so.
                 try:
                     log.info(f"No Users stored for {guild_id}")
                     guild = await self.bot.fetch_guild(guild_id)
@@ -186,33 +191,49 @@ class UpdateTrophies(commands.Cog):
                 for h in range(pages_needed)
             ]
 
-            log.debug("Creating string for embed")
+            # Updating Table
+            log.debug("Updating table.")
             for j, plist in enumerate(split_list):
                 log.debug(plist)
-                tstr = ""
+
+                plist: tuple[dict] = plist
+
+                if plist is None:
+                    break
+
+                trophy_update_table = PrettyTable(["Change", "Name", "Score", "Diff"])
+
                 for k, person in enumerate(plist):
                     log.debug(person)
+
                     if person is None:
+                        # No more players in this list.
                         break
 
-                    username = person.get("username")
-                    score = commons.add_commas(person.get("score"))
-                    rank_displacement = displacements.get(username).get("rank")
+                    log.debug(type(person))
+                    log.error(1)
+
+                    username = person.get("username", "Unknown/Invalid")
+                    log.error("2 %s", username)
+                    score = commons.add_commas(person.get("score", -1))
+                    log.error(3)
+                    rank_displacement = displacements.get(username).get("rank", 99999)
+                    log.error(4)
+
                     if rank_displacement > 0:
-                        rank_displacement = f"+{rank_displacement} "
+                        rank_displacement = f"+{rank_displacement}"
                     elif rank_displacement == 0:
-                        rank_displacement = " = "
+                        rank_displacement = "="
                     else:
-                        rank_displacement = f"{rank_displacement} "
+                        rank_displacement = f"{rank_displacement}"
 
                     trophy_change = displacements.get(username).get("trophy")
-                    tstr = (
-                        tstr
-                        + f"({rank_displacement}) {k + 1}. {username} - {score}. Trophy Change -> {trophy_change}\n"
+
+                    trophy_update_table.add_row(
+                        [rank_displacement, username, score, trophy_change]
                     )
-                embed_list[j].add_field(
-                    name="Trophies", value=f"```{tstr}```", inline=False
-                )
+
+                embed_list[j].description = f"```{trophy_update_table}```"
 
             # Sending Message
             if ctx is not None:
