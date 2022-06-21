@@ -4,6 +4,7 @@ from itertools import zip_longest
 from discord import ApplicationContext
 from discord.ext import commands
 from discord.ext.pages import Paginator
+from prettytable import PrettyTable
 
 import bot.utils.commons as commons
 from bot.bot import Bot
@@ -46,22 +47,30 @@ class ShowTrophies(commands.Cog):
         ]
         count = 0
 
-        log.debug("Creating Strings for Embeds")
+        log.debug("Creating Tables for Embeds")
         for j, plist in enumerate(split_list):
-            player_str = ""
+            trophy_table = PrettyTable(["Rank", "Name", "Score"])
+
             for player in plist:
                 if player is None:
+                    # List has run out of players
                     break
+
                 log.debug(player)
-                player_str = (
-                    player_str
-                    + f"\n{count + 1}. {player.get('username')} - {commons.add_commas(player.get('score'))}"
+
+                # Updating table
+                trophy_table.add_row(
+                    [
+                        count + 1,
+                        player.get("username"),
+                        commons.add_commas(player.get("score")),
+                    ]
                 )
+
+                # Update player count
                 count += 1
 
-            embeds[j].add_field(
-                name="Trophies", value=f"```{player_str}```", inline=False
-            )
+            embeds[j].description = f"```{trophy_table}```"
 
         log.debug("Sending Embed")
         if len(embeds) == 0:
