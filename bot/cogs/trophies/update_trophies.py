@@ -211,14 +211,10 @@ class UpdateTrophies(commands.Cog):
                         break
 
                     log.debug(type(person))
-                    log.error(1)
 
                     username = person.get("username", "Unknown/Invalid")
-                    log.error("2 %s", username)
                     score = commons.add_commas(person.get("score", -1))
-                    log.error(3)
                     rank_displacement = displacements.get(username).get("rank", 99999)
-                    log.error(4)
 
                     if rank_displacement > 0:
                         rank_displacement = f"+{rank_displacement}"
