@@ -1,0 +1,16 @@
+prefix
+announcement_channel
+cotd_one_reminder
+cotd_two_reminder
+cotd_three_reminder
+royal_one_reminder
+royal_two_reminder
+royal_three_reminder
+cotd_reminder_channel
+royal_reminder_channel
+totd_data
+totd_channel
+birthdays_channel
+trophy_tracking
+trophy_update_channel
+mod_logs_channel
