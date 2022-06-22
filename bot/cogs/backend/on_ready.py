@@ -78,6 +78,44 @@ class OnReady(
         with open("./bot/resources/times_run.txt", "w", encoding="UTF-8") as file:
             print(times_run, file=file)
 
+        # Checking configs to ensure all required fields are there.
+        log.info("Verifying all Config Files for required fields")
+        guilds = os.listdir("./bot/resources/guild_data/")
+
+        # Getting all required fields
+        with open("./bot/resources/config_fields.txt", "r", encoding="UTF-8") as file:
+            fields = file.readlines()
+
+        for guild in guilds:
+            with open(
+                f"./bot/resources/guild_data/{guild}/config.json", "r", encoding="UTF-8"
+            ) as file:
+                config_data = json.load(file)
+
+            for field in fields:
+                field = field[:-1]
+                if config_data.get(field, None) is None:
+                    log.error(f"{field} is missing from {guild}")
+                    if field.lower() == "prefix":
+                        config_data[field] = ">>"
+                    elif "channel" in field.lower():
+                        config_data[field] = 0
+                    elif (
+                        "reminder" in field.lower()
+                        or field.lower() == "totd_data"
+                        or field.lower() == "trophy_tracking"
+                    ):
+                        config_data[field] = False
+                    else:
+                        config_data[field] = 0
+
+            with open(
+                f"./bot/resources/guild_data/{guild}/config.json", "w", encoding="UTF-8"
+            ) as file:
+                json.dump(config_data, file, indent=4)
+
+        log.info("Config Verification Finished.")
+
         log.critical("Bot now Usable")
 
     @tasks.loop(minutes=10)
