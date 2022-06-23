@@ -188,7 +188,7 @@ class SetupReminders(commands.Cog):
             await send_in_mod_logs(
                 self.bot,
                 ctx.guild.id,
-                msg=f"{ctx.guild.name} has been subscribed from Royal reminders by {ctx.author.mention} Reminders will be sent in {ctx.channel.mention}.\nMain COTD: {main_royal}\nFirst Rerun: {first_rerun}\nSecond Rerun: {second_rerun}",
+                msg=f"{ctx.guild.name} has been subscribed from Royal reminders by {ctx.author.mention} Reminders will be sent in {ctx.channel.mention}.\nMain Royal: {main_royal}\nFirst Rerun: {first_rerun}\nSecond Rerun: {second_rerun}",
             )
             await ctx.send(
                 f"Settings Saved!\nYou have subscribed to Royal Reminders.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
