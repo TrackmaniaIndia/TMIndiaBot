@@ -58,9 +58,13 @@ class AddPlayerTracking(commands.Cog):
                 log.debug("Sending Message to Mod Logs")
                 mod_logs_channel = self.bot.get_channel(mod_logs_channel_id)
                 if mod_logs_channel is not None:
-                    await mod_logs_channel.send(
-                        content=f"Requestor: {ctx.author} is adding {username} to trophy player tracking."
-                    )
+
+                    try:
+                        await mod_logs_channel.send(
+                            content=f"Requestor: {ctx.author} is adding {username} to trophy player tracking."
+                        )
+                    except Exception as e:
+                        log.error("Failed to send message to mod logs channel: %s", e)
 
         player_id = search_result[0].player_id
 

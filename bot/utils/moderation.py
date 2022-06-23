@@ -34,7 +34,10 @@ async def send_in_mod_logs(
 
     mod_logs_channel = await bot.fetch_channel(mod_logs_id)
 
-    if isinstance(msg, Embed):
-        await mod_logs_channel.send(embed=msg)
-    else:
-        await mod_logs_channel.send(content=msg)
+    try:
+        if isinstance(msg, Embed):
+            await mod_logs_channel.send(embed=msg)
+        else:
+            await mod_logs_channel.send(content=msg)
+    except Exception as e:
+        log.error("Failed to send a message to mod-logs channel")

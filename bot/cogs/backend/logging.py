@@ -49,6 +49,8 @@ class Logging(Cog):
                             await self.bot.get_channel(achannel_id).send(embed=embed)
                         except discord.errors.Forbidden:
                             log.error("Can't send messages to %s", achannel_id)
+                        except Exception as e:
+                            log.error(f"Unexpected Error has occured. {e}")
 
 
 def setup(bot: Bot) -> None:

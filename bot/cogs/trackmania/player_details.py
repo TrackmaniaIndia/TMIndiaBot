@@ -119,12 +119,20 @@ class PlayerDetails(commands.Cog):
 
             log.debug("Sending Images to Channel")
             channel = self.bot.get_channel(962961137924726834)
-            image_message = await channel.send(
-                files=[
-                    discord.File("./bot/resources/temp/overall.png"),
-                    discord.File("./bot/resources/temp/primary.png"),
-                ]
-            )
+
+            try:
+                image_message = await channel.send(
+                    files=[
+                        discord.File("./bot/resources/temp/overall.png"),
+                        discord.File("./bot/resources/temp/primary.png"),
+                    ]
+                )
+            except Exception as e:
+                log.error("An Unexpected error has occured: %s", e)
+                await ctx.respond(
+                    "An unexpected error has occured. Contact NottCurious#4351"
+                )
+                return
 
             log.debug("Getting Image URLs")
             url_one = image_message.attachments[0].url
