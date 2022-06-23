@@ -9,6 +9,7 @@ from discord.ext import commands, tasks
 
 import bot.utils.birthdays as birthday
 import bot.utils.checks as checks
+import bot.utils.reminders as reminders
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
@@ -82,6 +83,17 @@ class OnReady(
         log.info("Verifying all Config Files for required fields")
         guilds = os.listdir("./bot/resources/guild_data/")
 
+        # Starting Reminders
+        log.info("Starting COTD Reminders")
+        reminders.main_cotd_reminder.start(self.bot)
+        reminders.first_rerun_cotd_reminder(self.bot)
+        reminders.second_rerun_cotd_reminder(self.bot)
+
+        log.info("Starting Royal Reminders")
+        reminders.main_royal_reminder(self.bot)
+        reminders.second_rerun_royal_reminder(self.bot)
+        reminders.second_rerun_royal_reminder(self.bot)
+
         # Getting all required fields
         with open("./bot/resources/config_fields.txt", "r", encoding="UTF-8") as file:
             fields = file.readlines()
@@ -114,6 +126,14 @@ class OnReady(
             ) as file:
                 json.dump(config_data, file, indent=4)
 
+        # TEMP ------------------------------------
+        reminders.main_cotd_reminder.start(self.bot)
+        reminders.first_rerun_cotd_reminder.start(self.bot)
+        reminders.second_rerun_cotd_reminder.start(self.bot)
+        reminders.main_royal_reminder.start(self.bot)
+        reminders.first_rerun_royal_reminder.start(self.bot)
+        reminders.second_rerun_royal_reminder.start(self.bot)
+
         log.info("Config Verification Finished.")
 
         log.critical("Bot now Usable")
@@ -137,7 +157,7 @@ class OnReady(
             checks.create_trophy_tracking(guild.id)
             checks.create_birthdays(guild.id)
 
-    @tasks.loop(hours=3, seconds=12)
+    @tasks.loop(hours=2, seconds=0)
     async def quote_numbers(self):
         async for guild in self.bot.fetch_guilds():
             log.debug("Checking %s (%s)", guild.name, guild.id)

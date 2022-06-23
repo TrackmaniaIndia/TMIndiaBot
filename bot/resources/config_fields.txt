@@ -14,3 +14,9 @@ birthdays_channel
 trophy_tracking
 trophy_update_channel
 mod_logs_channel
+cotd_one_role
+cotd_two_role
+cotd_three_role
+royal_one_role
+royal_two_role
+royal_three_role

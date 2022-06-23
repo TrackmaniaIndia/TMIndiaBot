@@ -20,13 +20,20 @@ def create_config(guild_id: int):
             "royal_one_reminder": False,
             "royal_two_reminder": False,
             "royal_three_reminder": False,
-            "reminder_channel": 0,
+            "cotd_reminder_channel": 0,
+            "royal_reminder_channel": 0,
             "totd_data": False,
             "totd_channel": 0,
             "birthdays_channel": 0,
             "trophy_tracking": False,
             "trophy_update_channel": 0,
             "mod_logs_channel": 0,
+            "main_cotd_role": 0,
+            "first_rerun_cotd_role": 0,
+            "second_rerun_cotd_role": 0,
+            "main_royal_role": 0,
+            "first_rerun_royal_role": 0,
+            "second_rerun_royal_role": 0,
         }
 
         with open(config_path, "w", encoding="UTF-8") as file:
