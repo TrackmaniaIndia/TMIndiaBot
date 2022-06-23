@@ -46,7 +46,7 @@ class SetupTracking(commands.Cog):
             await send_in_mod_logs(
                 self.bot,
                 ctx.guild.id,
-                f"{ctx.guild.name} has been unsubscribed from Trophy Tracking by {ctx.author.mention}",
+                msg=f"{ctx.guild.name} has been unsubscribed from Trophy Tracking by {ctx.author.mention}",
             )
             await ctx.send(
                 f"Settings Saved!\nYou have unsubscribed from Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
@@ -58,7 +58,7 @@ class SetupTracking(commands.Cog):
             await send_in_mod_logs(
                 self.bot,
                 ctx.guild.id,
-                f"{ctx.guild.name} has been subscribed to trophy tracking by {ctx.author.mention} in {ctx.channel.mention}",
+                msg=f"{ctx.guild.name} has been subscribed to trophy tracking by {ctx.author.mention} in {ctx.channel.mention}",
             )
             await ctx.send(
                 f"Settings Saved!\nYou have subscribed to Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.mention}",
