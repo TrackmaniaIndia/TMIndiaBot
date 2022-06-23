@@ -31,9 +31,15 @@ class RemoveBirthday(commands.Cog):
         mod_log_channel = get_mod_logs_channel(self.bot, ctx.guild.id)
 
         if mod_log_channel is not None:
-            await mod_log_channel.send(
-                f"Requestor: `{ctx.author.name}` is requesting removal of `{id}`'s birthday"
-            )
+
+            try:
+                await mod_log_channel.send(
+                    f"Requestor: `{ctx.author.name}` is requesting removal of `{id}`'s birthday"
+                )
+            except Exception as e:
+                log.error(
+                    "Failed to send message to #mod-logs in %s: %s", ctx.guild.id, e
+                )
 
         log.debug("Removing Birthday")
         success_flag = birthday.remove_birthday(id, ctx.guild.id)

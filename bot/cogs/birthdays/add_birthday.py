@@ -140,7 +140,7 @@ class AddBirthday(commands.Cog):
 
         try:
             await channel.send(embed=create_embed(description=description))
-        except AttributeError:
+        except (AttributeError, Exception):
             pass
 
         await ctx.respond(

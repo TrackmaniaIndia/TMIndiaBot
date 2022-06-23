@@ -217,17 +217,25 @@ class OnReady(
                     for birthday_embed in birthdays_list:
                         log.debug(f"Sending {birthday_embed}")
 
-                        await birthdays_channel.send(
-                            content="Hey Everyone! We have a birthday today!",
-                            embed=birthday_embed,
-                        )
+                        try:
+                            await birthdays_channel.send(
+                                content="Hey Everyone! We have a birthday today!",
+                                embed=birthday_embed,
+                            )
+                        except Exception as e:
+                            log.error(e)
+                            continue
                 else:
                     log.debug("Only one birthday today %s", guild_id)
 
-                    await birthdays_channel.send(
-                        content="Hey Everyone! We have a birthday today!",
-                        embed=birthdays_list[0],
-                    )
+                    try:
+                        await birthdays_channel.send(
+                            content="Hey Everyone! We have a birthday today!",
+                            embed=birthdays_list[0],
+                        )
+                    except Exception as e:
+                        log.error(e)
+
             else:
                 log.debug("No birthday today for %s.", guild_id)
 
