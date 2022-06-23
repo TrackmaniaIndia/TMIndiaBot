@@ -13,9 +13,7 @@ log = get_logger(__name__)
 
 
 @tasks.loop(
-    time=datetime.datetime.time(
-        hour=16, minute=45, second=0, timezone=datetime.timezone.utc
-    )
+    time=datetime.time(hour=16, minute=45, second=0, tzinfo=datetime.timezone.utc)
 )
 async def main_cotd_reminder(bot: Bot):
     log.debug("Starting Main COTD Reminder Task.")
@@ -45,9 +43,7 @@ async def second_rerun_cotd_reminder(bot: Bot):
 
 
 @tasks.loop(
-    time=datetime.datetime.time(
-        hour=17, minute=45, second=0, timezone=datetime.timezone.utc
-    )
+    time=datetime.time(hour=17, minute=45, second=0, tzinfo=datetime.timezone.utc)
 )
 async def main_royal_reminder(bot: Bot):
     log.debug("Starting Main Royal Reminder Task.")
@@ -90,10 +86,12 @@ async def __send_message(
         reminder_channel_name = "royal_reminder_channel"
         reminder_flag_name = f"royal_{type}_reminder"
         competition = "Royal"
+        role_name = f"royal_{type}_role"
     else:
         reminder_channel_name = "cotd_reminder_channel"
         reminder_flag_name = f"cotd_{type}_reminder"
         competition = "COTD"
+        role_name = f"cotd_{type}_role"
 
     reminder_channel_id = config_data.get(reminder_channel_name, 0)
 
@@ -112,7 +110,19 @@ async def __send_message(
         else:
             type = 3
 
+        # Check if the guild owner set a role for the reminder.
         try:
+            guild = bot.get_guild(guild_id)
+            role = guild.get_role(config_data.get(role_name, 0))
+        except:
+            role = None
+
+        try:
+            msg = f"Hey Everyone!\nThere's 15 minutes left for {competition} #{type}!"
+
+            if isinstance(role, discord.Role):
+                msg = f"{role.mention}\n" + msg
+
             await reminder_channel.send(
                 f"Hey Everyone!\nThere's 15 minutes left for {competition} #{type}!"
             )

@@ -28,6 +28,12 @@ def create_config(guild_id: int):
             "trophy_tracking": False,
             "trophy_update_channel": 0,
             "mod_logs_channel": 0,
+            "main_cotd_role": 0,
+            "first_rerun_cotd_role": 0,
+            "second_rerun_cotd_role": 0,
+            "main_royal_role": 0,
+            "first_rerun_royal_role": 0,
+            "second_rerun_royal_role": 0,
         }
 
         with open(config_path, "w", encoding="UTF-8") as file:

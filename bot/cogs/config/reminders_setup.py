@@ -1,6 +1,7 @@
 # To setup COTD and Super Royal reminders for a guild.
 import json
 
+import discord
 from click import confirm
 from discord import ApplicationContext, Option
 from discord.ext import commands
@@ -178,6 +179,112 @@ class SetupReminders(commands.Cog):
                 first_rerun,
                 second_rerun,
             )
+
+    @commands.slash_command(
+        name="set-cotd-reminder-roles",
+        description="Set a custom role that the bot pings for each COTD reminder.",
+    )
+    @commands.has_permissions(manage_guild=True)
+    async def _set_cotd_reminder_roles(
+        self,
+        ctx: ApplicationContext,
+        main_cotd_role: Option(
+            discord.SlashCommandOptionType.role,
+            "Role to be pinged for main cotd. Leave empty for no ping.",
+            name="main-cotd-role",
+            required=False,
+        ),
+        first_rerun_role: Option(
+            discord.SlashCommandOptionType.role,
+            "Role to be pinged for first rerun. Leave empty for no ping.",
+            name="first-rerun-role",
+            required=False,
+        ),
+        second_rerun_role: Option(
+            discord.SlashCommandOptionType.role,
+            "Role to be pinged for second rerun. Leave empty for no ping.",
+            name="second-rerun-role",
+            required=False,
+        ),
+    ):
+        log.info("Saving settings for %s", ctx.guild.name)
+        self.__save_role_settings(
+            ctx.guild.id, main_cotd_role, first_rerun_role, second_rerun_role, False
+        )
+
+        await ctx.respond("Settings Saved Successfully.", delete_after=20)
+
+    @commands.slash_command(
+        name="set-royal-reminder-roles",
+        description="Set a custom role that the bot pings for each Super Royal reminder.",
+    )
+    @commands.has_permissions(manage_guild=True)
+    async def _set_cotd_reminder_roles(
+        self,
+        ctx: ApplicationContext,
+        main_royal_role: Option(
+            discord.SlashCommandOptionType.role,
+            "Role to be pinged for main royal. Leave empty for no ping.",
+            name="main-royal-role",
+            required=False,
+        ),
+        first_rerun_role: Option(
+            discord.SlashCommandOptionType.role,
+            "Role to be pinged for first rerun. Leave empty for no ping.",
+            name="first-rerun-role",
+            required=False,
+        ),
+        second_rerun_role: Option(
+            discord.SlashCommandOptionType.role,
+            "Role to be pinged for second rerun. Leave empty for no ping.",
+            name="second-rerun-role",
+            required=False,
+        ),
+    ):
+        log.info("Saving settings for %s", ctx.guild.name)
+        self.__save_role_settings(
+            ctx.guild.id, main_royal_role, first_rerun_role, second_rerun_role, True
+        )
+
+        await ctx.respond("Settings Saved Successfully.", delete_after=20)
+
+    def __save_role_settings(
+        self,
+        guild_id: int,
+        main_role: discord.Role | None,
+        first_rerun_role: discord.Role | None,
+        second_rerun_role: discord.Role | None,
+        royal: bool = False,
+    ):
+        main_role = main_role.id if main_role is not None else 0
+        first_rerun_role = first_rerun_role.id if first_rerun_role is not None else 0
+        second_rerun_role = second_rerun_role.id if second_rerun_role is not None else 0
+
+        if not royal:
+            main_role_name = "cotd_one_role"
+            first_rerun_role_name = "cotd_two_role"
+            second_rerun_role_name = "cotd_three_role"
+        else:
+            main_role_name = "royal_one_role"
+            first_rerun_role_name = "royal_two_role"
+            second_rerun_role_name = "royal_three_role"
+
+        # Getting data from file.
+        with open(
+            f"./bot/resources/guild_data/{guild_id}/config.json", "r", encoding="UTF-8"
+        ) as file:
+            config_data = json.load(file)
+
+        # Changing values
+        config_data[main_role_name] = main_role
+        config_data[first_rerun_role_name] = first_rerun_role
+        config_data[second_rerun_role_name] = second_rerun_role
+
+        # Dumping to File.
+        with open(
+            f"./bot/resources/guild_data/{guild_id}/config.json", "w", encoding="UTF-8"
+        ) as file:
+            json.dump(config_data, file, indent=4)
 
     def __save_settings(
         self,
