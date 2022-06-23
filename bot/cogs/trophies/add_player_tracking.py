@@ -61,7 +61,7 @@ class AddPlayerTracking(commands.Cog):
 
                     try:
                         await mod_logs_channel.send(
-                            content=f"Requestor: {ctx.author} is adding {username} to trophy player tracking."
+                            content=f"Requestor: {ctx.author.mention} is adding {username} to trophy player tracking."
                         )
                     except Exception as e:
                         log.error("Failed to send message to mod logs channel: %s", e)

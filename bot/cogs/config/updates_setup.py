@@ -1,5 +1,6 @@
 import json
 
+import discord
 from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
 
@@ -29,6 +30,8 @@ class UpdatesSetup(commands.Cog):
         ),
     ):
         log_command(ctx, "set_updates_channel")
+
+        updates_channel: discord.TextChannel = updates_channel
 
         await ctx.defer(ephemeral=True)
 
