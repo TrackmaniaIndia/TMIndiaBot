@@ -6,6 +6,7 @@ from discord.ext import commands
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import Confirmer
+from bot.utils.moderation import send_in_mod_logs
 
 log = get_logger(__name__)
 
@@ -42,6 +43,11 @@ class SetupTracking(commands.Cog):
         elif not confirmer.value:
             log.info("Setup Declined")
             self.__save_settings(False, ctx.guild.id, 0)
+            await send_in_mod_logs(
+                self.bot,
+                ctx.guild.id,
+                f"{ctx.guild.name} has been unsubscribed from Trophy Tracking by {ctx.author.mention}",
+            )
             await ctx.send(
                 f"Settings Saved!\nYou have unsubscribed from Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
                 delete_after=10,
@@ -49,8 +55,13 @@ class SetupTracking(commands.Cog):
         elif confirmer.value:
             log.info("Setup Accepted")
             self.__save_settings(True, ctx.guild.id, ctx.channel.id)
+            await send_in_mod_logs(
+                self.bot,
+                ctx.guild.id,
+                f"{ctx.guild.name} has been subscribed to trophy tracking by {ctx.author.mention} in {ctx.channel.mention}",
+            )
             await ctx.send(
-                f"Settings Saved!\nYou have subscribed to Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
+                f"Settings Saved!\nYou have subscribed to Trophy Tracking.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.mention}",
                 delete_after=10,
             )
 

@@ -9,6 +9,7 @@ from discord.ext import commands
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import Confirmer
+from bot.utils.moderation import send_in_mod_logs
 
 log = get_logger(__name__)
 
@@ -74,6 +75,11 @@ class SetupReminders(commands.Cog):
             self.__save_settings(
                 False, ctx.guild.id, 0, main_cotd, first_rerun, second_rerun, False
             )
+            await send_in_mod_logs(
+                self.bot,
+                ctx.guild.id,
+                f"{ctx.guild.name} has been unsubscribed from COTD reminders by {ctx.author.mention}.",
+            )
             await ctx.send(
                 f"Settings Saved!\nYou have unsubscribed from COTD Reminders.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
                 delete_after=10,
@@ -88,6 +94,11 @@ class SetupReminders(commands.Cog):
                 first_rerun,
                 second_rerun,
                 False,
+            )
+            await send_in_mod_logs(
+                self.bot,
+                ctx.guild.id,
+                f"{ctx.guild.name} has been subsribed from COTD reminders by {ctx.author.mention} Reminders will be sent in {ctx.channel.mention}.\nMain COTD: {main_cotd}\nFirst Rerun: {first_rerun}\nSecond Rerun: {second_rerun}",
             )
             await ctx.send(
                 f"Settings Saved!\nYou have subscribed to COTD Reminders.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
@@ -154,6 +165,11 @@ class SetupReminders(commands.Cog):
             self.__save_settings(
                 False, ctx.guild.id, 0, main_royal, first_rerun, second_rerun, True
             )
+            await send_in_mod_logs(
+                self.bot,
+                ctx.guild.id,
+                f"{ctx.guild.name} has been unsubscribed from Royal reminders by {ctx.author.mention}.",
+            )
             await ctx.send(
                 f"Settings Saved!\nYou have unsubscribed from Royal Reminders.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",
                 delete_after=10,
@@ -168,6 +184,11 @@ class SetupReminders(commands.Cog):
                 first_rerun,
                 second_rerun,
                 True,
+            )
+            await send_in_mod_logs(
+                self.bot,
+                ctx.guild.id,
+                f"{ctx.guild.name} has been subscribed from Royal reminders by {ctx.author.mention} Reminders will be sent in {ctx.channel.mention}.\nMain COTD: {main_royal}\nFirst Rerun: {first_rerun}\nSecond Rerun: {second_rerun}",
             )
             await ctx.send(
                 f"Settings Saved!\nYou have subscribed to Royal Reminders.\nGuild Name: {ctx.guild.name} Channel Name: {ctx.channel.name}",

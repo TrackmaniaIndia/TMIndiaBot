@@ -56,7 +56,7 @@ class SetupBirthday(commands.Cog):
         await send_in_mod_logs(
             self.bot,
             ctx.guild.id,
-            msg=f"Birthdays channel set to {birthday_channel.mention}",
+            msg=f"Birthdays channel set to {birthday_channel.mention} by {ctx.author.mention}",
         )
         await ctx.respond(
             f"Birthday channel has been set to {birthday_channel.mention}",
