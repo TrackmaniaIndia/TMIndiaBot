@@ -82,13 +82,13 @@ class OnReady(
         # Starting Reminders
         log.info("Starting COTD Reminders")
         reminders.main_cotd_reminder.start(self.bot)
-        reminders.first_rerun_cotd_reminder(self.bot)
-        reminders.second_rerun_cotd_reminder(self.bot)
+        reminders.first_rerun_cotd_reminder.start(self.bot)
+        reminders.second_rerun_cotd_reminder.start(self.bot)
 
         log.info("Starting Royal Reminders")
-        reminders.main_royal_reminder(self.bot)
-        reminders.first_rerun_royal_reminder(self.bot)
-        reminders.second_rerun_royal_reminder(self.bot)
+        reminders.main_royal_reminder.start(self.bot)
+        reminders.first_rerun_royal_reminder.start(self.bot)
+        reminders.second_rerun_royal_reminder.start(self.bot)
 
         # Getting all required fields
         with open("./bot/resources/config_fields.txt", "r", encoding="UTF-8") as file:
