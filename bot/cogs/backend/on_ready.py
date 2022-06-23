@@ -51,28 +51,24 @@ class OnReady(
         times_run += 1
 
         # Starting ChangeStatus task
-        log.info("Starting ChangeStatus")
-        self.change_status.start()
-
-        # Deleting the TOTD Image if it exists
-        if os.path.exists("./bot/resources/temp/totd.png"):
-            if int(datetime.datetime.now().hour) >= 23:
-                log.critical("TOTD Image Exists, Deleting")
-                os.remove("./bot/resources/temp/totd.png")
-            else:
-                log.critical("Time is not after 11pm, not deleting TOTD Image")
+        if not self.change_status.is_running():
+            log.info("Starting ChangeStatus")
+            self.change_status.start()
 
         # Starting BirthdayReminder
-        log.info("Starting BirthdayReminder")
-        self.todays_birthday.start()
+        if not self.todays_birthday.is_running():
+            log.info("Starting BirthdayReminder")
+            self.todays_birthday.start()
 
         # Starting File Checker
-        log.info("Starting FileChecker")
-        self.create_files.start()
+        if not self.create_files.is_running():
+            log.info("Starting FileChecker")
+            self.create_files.start()
 
         # Starting QuoteNumbers task
-        log.info("Starting QuoteNumbers")
-        self.quote_numbers.start()
+        if not self.quote_numbers.is_running():
+            log.info("Starting QuoteNumbers")
+            self.quote_numbers.start()
 
         # Printing out the new timesrun value to the file
         log.info("Writing TimesRun to File")
@@ -91,7 +87,7 @@ class OnReady(
 
         log.info("Starting Royal Reminders")
         reminders.main_royal_reminder(self.bot)
-        reminders.second_rerun_royal_reminder(self.bot)
+        reminders.first_rerun_royal_reminder(self.bot)
         reminders.second_rerun_royal_reminder(self.bot)
 
         # Getting all required fields
@@ -125,14 +121,6 @@ class OnReady(
                 f"./bot/resources/guild_data/{guild}/config.json", "w", encoding="UTF-8"
             ) as file:
                 json.dump(config_data, file, indent=4)
-
-        # TEMP ------------------------------------
-        reminders.main_cotd_reminder.start(self.bot)
-        reminders.first_rerun_cotd_reminder.start(self.bot)
-        reminders.second_rerun_cotd_reminder.start(self.bot)
-        reminders.main_royal_reminder.start(self.bot)
-        reminders.first_rerun_royal_reminder.start(self.bot)
-        reminders.second_rerun_royal_reminder.start(self.bot)
 
         log.info("Config Verification Finished.")
 
