@@ -1,10 +1,11 @@
+import math
 from datetime import datetime
 
 from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
 from discord.ext.pages import Paginator
 from prettytable import PrettyTable
-from trackmania import Campaign
+from trackmania import Campaign, CampaignLeaderboard
 from trackmania.config import cache_flush_key
 
 from bot import constants
@@ -52,23 +53,46 @@ class TopCampaign(commands.Cog):
         split_list = split_list_of_lists(top, 20)
         embeds = []
 
+        top_player = split_list[0][0].points
+        log.error(top_player)
+
         log.debug("Creating Embeds")
         for group in split_list:
             scores = []
+            prev_score = 0
 
             for player in group:
+                player: CampaignLeaderboard = player
+
                 pos_data = {}
 
                 pos_data["position"] = player.position
                 pos_data["name"] = player.player_name
                 pos_data["points"] = add_commas(player.points)
 
+                score_diff = add_commas(
+                    abs((player.points - prev_score) if prev_score != 0 else 0)
+                )
+                c_diff = add_commas(abs(top_player - player.points))
+                prev_score = player.points
+
+                pos_data["difference"] = f"+{score_diff}"
+                pos_data["c_difference"] = f"+{c_diff}"
+
                 scores.append(pos_data)
 
-            table = PrettyTable(["Position", "Name", "Score"])
+            table = PrettyTable(["Position", "Name", "Score", "Diff", "C. Diff"])
 
             for score in scores:
-                table.add_row([score["position"], score["name"], score["points"]])
+                table.add_row(
+                    [
+                        score["position"],
+                        score["name"],
+                        score["points"],
+                        score["difference"],
+                        score["c_difference"],
+                    ]
+                )
 
             embed = create_embed(
                 title=f"{position}->{position + 100} of Current Campaign",
