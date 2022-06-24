@@ -240,7 +240,7 @@ class SetupReminders(commands.Cog):
         description="Set a custom role that the bot pings for each Super Royal reminder.",
     )
     @commands.has_permissions(manage_guild=True)
-    async def _set_cotd_reminder_roles(
+    async def _set_royal_reminder_roles(
         self,
         ctx: ApplicationContext,
         main_royal_role: Option(
