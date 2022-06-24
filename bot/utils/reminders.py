@@ -111,21 +111,24 @@ async def __send_message(
             type = 3
 
         # Check if the guild owner set a role for the reminder.
-        try:
+        role_id = config_data.get(role_name, 0)
+
+        if role_id != 0:
             guild = bot.get_guild(guild_id)
-            role = guild.get_role(config_data.get(role_name, 0))
-        except:
+            role = guild.get_role(role_id)
+        else:
             role = None
 
         try:
-            msg = f"Hey Everyone!\nThere's 15 minutes left for {competition} #{type}!"
+            if role is not None:
+                log.debug("Role is set for %s", guild_id)
+                msg = f"Hey {role.mention}!\nThere's 15 minutes left for {competition} #{type}"
+            else:
+                msg = (
+                    f"Hey Everyone!\nThere's 15 minutes left for {competition} #{type}"
+                )
 
-            if isinstance(role, discord.Role):
-                msg = f"{role.mention}\n" + msg
-
-            await reminder_channel.send(
-                f"Hey Everyone!\nThere's 15 minutes left for {competition} #{type}!"
-            )
+            await reminder_channel.send(content=msg)
         except:
             log.error(
                 "Something went wrong sending the message to the channel of %s.\n%s",
