@@ -1,7 +1,8 @@
 from datetime import datetime
 
 import discord
-from trackmania import TOTD, TMXMap
+from prettytable import PrettyTable
+from trackmania import TOTD, Leaderboard, TMXMap
 
 import bot.utils.commons as commons
 from bot import constants
@@ -54,6 +55,13 @@ MAP_TYPE_ENUMS: dict = {
     41: "N/A",
     42: "Educational",
 }
+
+
+def remove_unnecessary_minutes(time: str) -> str:
+    if time.startswith("0"):
+        return time.split(":")[1]
+    else:
+        return time
 
 
 async def parse_totd_data(
@@ -123,3 +131,63 @@ async def parse_totd_data(
     )
 
     return page_one, [map_download_button, tmio_url_button, tmx_button]
+
+
+async def get_totd_leaderboards(
+    year: int,
+    month: str,
+    day: int,
+) -> list[discord.Embed]:
+    month_int = constants.Consts.months.index(month) + 1
+    the_date = datetime(year, month_int, day)
+
+    try:
+        # Getting data
+        totd_data: TOTD = await TOTD.get_totd(the_date)
+        leaderboards = await totd_data.map.get_leaderboard(length=100)
+        map_name = totd_data.map.name
+        first_time = leaderboards[0].time
+    except:
+        return None
+
+    split_list = commons.split_list_of_lists(leaderboards, 20)
+    embeds = []
+    time_format = "%M:%S.%f"
+
+    log.debug("Parsing Groups")
+    for group in split_list:
+        times = []
+        for lb in group:
+            lb: Leaderboard = lb
+            time_data = {}
+
+            time_data["pl_name"] = lb.player_name
+            time_data["position"] = lb.position
+
+            time_formated = commons.format_seconds(lb.time)
+            time_formated_without_zero = remove_unnecessary_minutes(time_formated)
+
+            time_data["time"] = time_formated_without_zero
+
+            tdelta = datetime.strptime(time_formated, time_format) - datetime.strptime(
+                commons.format_seconds(first_time), time_format
+            )
+
+            split = commons.format_time_split(tdelta.total_seconds())
+            time_data["split"] = f"+{split}"
+
+            times.append(time_data)
+
+        lb_table = PrettyTable(["Position", "Username", "Time", "Split"])
+        for time in times:
+            lb_table.add_row(
+                [time["position"], time["pl_name"], time["time"], time["split"]]
+            )
+
+        embed = create_embed(
+            title=f"Top 100 Leaderboards for {map_name}",
+            description=f"**Date**\n{day} {month} {year}\n```{lb_table }```",
+        )
+        embeds.append(embed)
+
+    return embeds
