@@ -3,6 +3,7 @@ from datetime import datetime
 import discord
 from discord import ApplicationContext, Option, SlashCommandOptionType
 from discord.ext import commands
+from discord.ext.pages import Page, PageGroup, Paginator
 from trackmania import TOTD, InvalidTOTDDate, TMXMap
 
 import bot.utils.commons as commons
@@ -10,7 +11,7 @@ from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
 from bot.utils.discord import ViewAdder, create_embed
-from bot.utils.totd import MAP_TYPE_ENUMS, parse_totd_data
+from bot.utils.totd import MAP_TYPE_ENUMS, get_totd_leaderboards, parse_totd_data
 
 log = get_logger(__name__)
 
@@ -31,10 +32,34 @@ class LatestTOTD(commands.Cog):
         log.debug("Getting TOTD Data")
         totd_data = await TOTD.latest_totd()
         log.debug("Parsing Data")
-        page, buttons = await parse_totd_data(totd_data, None)
+        totd_page, buttons = await parse_totd_data(totd_data, None)
 
-        log.debug("Sending Embed")
-        await ctx.respond(embed=page, view=ViewAdder(buttons))
+        _todays_date = datetime.now()
+        year = _todays_date.year
+        month = _todays_date.month
+        day = _todays_date.day - 1
+
+        log.debug("Getting TOTD leaderboards")
+        totd_leaderboard = await get_totd_leaderboards(
+            year, constants.Consts.months[month - 1], day
+        )
+
+        if totd_leaderboard is not None:
+            log.debug("Creating a Paginator")
+            totd_page = Page(embeds=[totd_page], custom_view=ViewAdder(buttons))
+
+            page_groups = [
+                PageGroup(pages=[totd_page], label="TOTD Data"),
+                PageGroup(pages=totd_leaderboard, label="TOTD Leaderboard"),
+            ]
+
+            paginator = Paginator(pages=page_groups, show_menu=True)
+            await paginator.respond(ctx.interaction)
+        else:
+            await ctx.respond(embed=totd_page, view=ViewAdder(buttons))
+
+        # log.debug("Sending Embed")
+        # await ctx.respond(embed=page, view=ViewAdder(buttons))
 
     @commands.slash_command(
         name="totd",
@@ -86,10 +111,27 @@ class LatestTOTD(commands.Cog):
             return
 
         log.debug("Parsing Data")
-        page, buttons = await parse_totd_data(totd_data, month - 1)
+        totd_page, buttons = await parse_totd_data(totd_data, month - 1)
 
-        log.debug("Sending Embed")
-        await ctx.respond(embed=page, view=ViewAdder(buttons))
+        log.debug("Getting TOTD leaderboards")
+        totd_leaderboard = await get_totd_leaderboards(
+            year, constants.Consts.months[month - 1], day
+        )
+
+        if totd_leaderboard is not None:
+            log.debug("Creating a Paginator")
+
+            totd_page = Page(embeds=[totd_page], custom_view=ViewAdder(buttons))
+
+            page_groups = [
+                PageGroup(pages=[totd_page], label="TOTD Data"),
+                PageGroup(pages=totd_leaderboard, label="TOTD Leaderboard"),
+            ]
+
+            paginator = Paginator(pages=page_groups, show_menu=True)
+            await paginator.respond(ctx.interaction)
+        else:
+            await ctx.respond(embed=totd_page, view=ViewAdder(buttons))
 
 
 def setup(bot: Bot):
