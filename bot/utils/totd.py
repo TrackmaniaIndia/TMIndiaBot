@@ -58,12 +58,17 @@ MAP_TYPE_ENUMS: dict = {
 
 async def parse_totd_data(
     totd_data: TOTD,
+    month: int | None,
 ) -> tuple[discord.Embed, list[discord.ui.Button]]:
     log.debug("Parsing Values")
     map_name = totd_data.map.name
     author_name = totd_data.map.author_name
     _todays_date = datetime.now()
-    title_string = f"Track of the Day of {commons.get_ordinal_number(totd_data.month_day)} {constants.Consts.months[_todays_date.month - 1]}"
+
+    if month is None:
+        month = _todays_date.month - 1
+
+    title_string = f"Track of the Day of {commons.get_ordinal_number(totd_data.month_day)} {constants.Consts.months[month]}"
     nadeo_uploaded = f"<t:{int(totd_data.map.uploaded.timestamp())}:R>"
     map_download = totd_data.map.url
     tmio_url = f"https://trackmania.io/#/leaderboard/{totd_data.map.uid}"
