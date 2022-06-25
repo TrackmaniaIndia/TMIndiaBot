@@ -1,9 +1,7 @@
 """Class gotten from python-discord/bot which is licensed under MIT License"""
-import asyncio
-import os
 from functools import partial, partialmethod
 
-from discord.ext import commands
+import discord.ext.commands as commands
 from trackmania import Client
 
 from bot import log, monkey_typing

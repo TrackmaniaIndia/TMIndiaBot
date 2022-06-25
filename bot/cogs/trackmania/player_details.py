@@ -1,10 +1,10 @@
 import country_converter as coco
 import discord
+import discord.ext.commands as commands
 import flag
 import matplotlib.pyplot as plt
 from discord import ApplicationContext, Embed, SlashCommandOptionType
 from discord.commands import Option
-from discord.ext import commands
 from discord.ext.pages import PageGroup, Paginator
 from trackmania import (
     BestCOTDStats,

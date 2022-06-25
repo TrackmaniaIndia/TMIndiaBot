@@ -5,8 +5,9 @@ import os
 from itertools import zip_longest
 
 import discord
+import discord.ext.commands as commands
+import discord.ext.tasks as tasks
 from discord import ApplicationContext
-from discord.ext import commands, tasks
 from discord.ext.commands import is_owner
 from prettytable import PrettyTable
 from trackmania import Player

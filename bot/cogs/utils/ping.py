@@ -1,5 +1,5 @@
+import discord.ext.commands as commands
 from discord import ApplicationContext
-from discord.ext import commands
 
 from bot.bot import Bot
 from bot.utils.discord import create_embed

@@ -1,6 +1,6 @@
 import discord
+import discord.ext.commands as commands
 from discord import ApplicationContext
-from discord.ext import commands
 from discord.ext.pages import Paginator
 
 import bot.utils.birthdays as birthday

@@ -6,7 +6,7 @@ from typing import Optional
 
 import aiohttp
 import discord
-from discord.ext import commands
+import discord.ext.commands as commands
 
 from bot import api, constants
 from bot.log import get_logger

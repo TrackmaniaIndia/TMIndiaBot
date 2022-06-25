@@ -1,6 +1,6 @@
+import discord.ext.commands as commands
 from discord import ApplicationContext, User, slash_command
 from discord.commands import slash_command, user_command
-from discord.ext import commands
 
 import bot.utils.birthdays as birthday
 from bot.bot import Bot

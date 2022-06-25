@@ -1,17 +1,10 @@
-from datetime import datetime
-
+import discord.ext.commands as commands
 from discord import ApplicationContext, Option
-from discord.ext import commands
 from discord.ext.pages import Paginator
-from prettytable import PrettyTable
-from trackmania import TOTD, InvalidTOTDDate, TMIOException
-from trackmania.config import cache_flush_key
 
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import format_seconds, format_time_split, split_list_of_lists
-from bot.utils.discord import create_embed
 from bot.utils.totd import get_totd_leaderboards
 
 log = get_logger(__name__)

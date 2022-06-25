@@ -1,6 +1,6 @@
 import discord
+import discord.ext.commands as commands
 from discord import ApplicationContext
-from discord.ext import commands
 
 from bot.bot import Bot
 from bot.log import get_logger, log_command

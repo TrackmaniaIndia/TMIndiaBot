@@ -1,6 +1,6 @@
+import discord.ext.commands as commands
 from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
-from discord.ext import commands
 
 import bot.utils.commons as commons
 from bot import constants

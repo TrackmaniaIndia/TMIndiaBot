@@ -1,7 +1,7 @@
 from contextlib import suppress
 
+import discord.ext.commands as commands
 from discord import Forbidden, Thread
-from discord.ext import commands
 
 from bot.bot import Bot
 from bot.log import get_logger

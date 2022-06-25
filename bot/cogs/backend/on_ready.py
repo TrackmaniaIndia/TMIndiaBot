@@ -5,7 +5,8 @@ import random
 from itertools import cycle
 
 import discord
-from discord.ext import commands, tasks
+import discord.ext.commands as commands
+import discord.ext.tasks as tasks
 
 import bot.utils.birthdays as birthday
 import bot.utils.checks as checks

@@ -1,5 +1,5 @@
+import discord.ext.commands as commands
 from discord import ApplicationContext
-from discord.ext import commands
 
 import bot.utils.birthdays as birthday
 from bot.bot import Bot

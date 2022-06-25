@@ -1,6 +1,6 @@
 import discord
+import discord.ext.commands as commands
 from discord import ApplicationContext, Option, SlashCommandOptionType
-from discord.ext import commands
 from discord.ext.pages import Paginator
 from trackmania import Player, PlayerZone
 from trackmania.player import PlayerSearchResult

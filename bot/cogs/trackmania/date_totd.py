@@ -1,17 +1,15 @@
 from datetime import datetime
 
-import discord
+import discord.ext.commands as commands
 from discord import ApplicationContext, Option, SlashCommandOptionType
-from discord.ext import commands
 from discord.ext.pages import Page, PageGroup, Paginator
-from trackmania import TOTD, InvalidTOTDDate, TMXMap
+from trackmania import TOTD, InvalidTOTDDate
 
-import bot.utils.commons as commons
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.discord import ViewAdder, create_embed
-from bot.utils.totd import MAP_TYPE_ENUMS, get_totd_leaderboards, parse_totd_data
+from bot.utils.discord import ViewAdder
+from bot.utils.totd import get_totd_leaderboards, parse_totd_data
 
 log = get_logger(__name__)
 

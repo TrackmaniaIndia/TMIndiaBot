@@ -1,9 +1,9 @@
 from datetime import timedelta
 
 import arrow
+import discord.ext.commands as commands
 import regex as re
 from discord import Forbidden, http
-from discord.ext import commands
 
 from bot.log import get_logger
 

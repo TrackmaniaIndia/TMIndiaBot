@@ -1,8 +1,8 @@
 import json
 from itertools import zip_longest
 
+import discord.ext.commands as commands
 from discord import ApplicationContext
-from discord.ext import commands
 from discord.ext.pages import Paginator
 from prettytable import PrettyTable
 

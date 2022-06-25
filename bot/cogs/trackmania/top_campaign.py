@@ -1,22 +1,12 @@
-import math
-from datetime import datetime
-
+import discord.ext.commands as commands
 from discord import ApplicationContext, Option, SlashCommandOptionType
-from discord.ext import commands
 from discord.ext.pages import Paginator
 from prettytable import PrettyTable
 from trackmania import Campaign, CampaignLeaderboard
-from trackmania.config import cache_flush_key
 
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger, log_command
-from bot.utils.commons import (
-    add_commas,
-    format_seconds,
-    format_time_split,
-    split_list_of_lists,
-)
+from bot.utils.commons import add_commas, split_list_of_lists
 from bot.utils.discord import create_embed
 
 log = get_logger(__name__)

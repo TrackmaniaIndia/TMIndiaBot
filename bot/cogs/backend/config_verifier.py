@@ -1,9 +1,9 @@
 from discord.ext.commands import Cog
 
+import bot.utils.scheduling as scheduling
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
-from bot.utils import scheduling
 
 log = get_logger(__name__)
 

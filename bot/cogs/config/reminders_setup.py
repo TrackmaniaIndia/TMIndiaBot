@@ -2,9 +2,8 @@
 import json
 
 import discord
-from click import confirm
+import discord.ext.commands as commands
 from discord import ApplicationContext, Option
-from discord.ext import commands
 
 from bot.bot import Bot
 from bot.log import get_logger, log_command

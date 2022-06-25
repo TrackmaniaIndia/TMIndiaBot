@@ -2,8 +2,8 @@ import functools
 import typing as t
 from enum import Enum
 
+import discord.ext.commands as commands
 from discord import Colour, Embed
-from discord.ext import commands
 from discord.ext.commands import Context, group
 from discord.ext.pages import Paginator
 

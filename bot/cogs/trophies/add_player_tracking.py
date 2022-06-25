@@ -1,8 +1,8 @@
 import json
 
+import discord.ext.commands as commands
 from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
-from discord.ext import commands
 from trackmania import Player
 
 from bot.bot import Bot

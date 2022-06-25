@@ -2,10 +2,8 @@ import datetime
 import json
 import traceback
 
-import discord
-from discord.ext import commands, tasks
+import discord.ext.tasks as tasks
 
-from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
 

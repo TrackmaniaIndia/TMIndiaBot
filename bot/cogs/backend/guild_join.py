@@ -1,7 +1,7 @@
 import os
 
+import discord.ext.commands as commands
 from discord import Guild
-from discord.ext import commands
 
 import bot.utils.checks as checks
 from bot.bot import Bot
