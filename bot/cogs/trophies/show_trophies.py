@@ -42,7 +42,7 @@ class ShowTrophies(commands.Cog):
         )
         pages_needed = len(split_list)
         embeds = [
-            create_embed(f"Trophy Leaderboard for TMI - Page {i + 1}")
+            create_embed(f"Trophy Leaderboard for {ctx.guild.name} - Page {i + 1}")
             for i in range(pages_needed)
         ]
         count = 0
