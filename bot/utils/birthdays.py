@@ -132,17 +132,24 @@ def remove_birthday(id: int, guild_id: int) -> bool:
     with open(
         f"./bot/resources/guild_data/{guild_id}/birthdays.json", "r", encoding="UTF-8"
     ) as file:
-        birthday_list: list = json.load(file)["birthdays"]
+        birthday_list: list = json.load(file).get("birthdays", [])
+
+    removed_flag = False
 
     log.debug("Looping through birthday list")
     for i, birthday in enumerate(birthday_list):
         if int(birthday["ID"]) == id:
             birthday_list.pop(i)
             log.debug("Birthday popped")
-            return True
+            removed_flag = True
 
-    log.debug("Birthday is not saved")
-    return False
+    # Saving back to file
+    with open(
+        f"./bot/resources/guild_data/{guild_id}/birthdays.json", "w", encoding="UTF-8"
+    ) as file:
+        json.dump({"birthdays": birthday_list}, file, indent=4)
+
+    return removed_flag
 
 
 def user_birthday(id: int, guild_id: int) -> discord.Embed | str:
