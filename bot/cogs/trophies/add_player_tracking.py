@@ -31,13 +31,13 @@ class AddPlayerTracking(commands.Cog):
     ):
         log_command(ctx, "add_player_tracking")
 
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         log.debug(f"Searching for Player with the username -> {username}")
         search_result = await Player.search(username)
 
         if search_result is None:
-            await ctx.respond("This player does not exist.")
+            await ctx.respond("This player does not exist.", ephemeral=True)
             return
 
         with open(
@@ -48,7 +48,7 @@ class AddPlayerTracking(commands.Cog):
             if not config_data.get("trophy_tracking", False):
                 await ctx.respond(
                     "Trophy Tracking is not set up for this server. Please use the `/setup-tracking` command to start your setup process.",
-                    delete_after=60,
+                    delete_after=45,
                 )
                 return
 
