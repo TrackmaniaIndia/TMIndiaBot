@@ -42,7 +42,7 @@ pre-commit==2.19.0
 prettytable==3.3.0
 py-cord==2.0.0rc1
 py-tmio==0.5.0rc1
-pycares==4.1.2
+pycares==4.2.0
 pycparser==2.21
 pyparsing==3.0.8
 pyreadline3==3.4.1
