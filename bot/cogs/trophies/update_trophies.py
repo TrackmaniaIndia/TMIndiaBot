@@ -81,17 +81,18 @@ class UpdateTrophies(commands.Cog):
         else:
             # Guild is not given so we get them from the config files.
             guild_ids, channel_ids = [], []
-            for folder in os.listdir("./bot/resources/guild_data/"):
+            # for folder in os.listdir("./bot/resources/guild_data/"):
+            async for guild in self.bot.fetch_guilds():
                 with open(
-                    f"./bot/resources/guild_data/{folder}/config.json",
+                    f"./bot/resources/guild_data/{guild.id}/config.json",
                     "r",
                     encoding="UTF-8",
                 ) as file:
                     config_data = json.load(file)
 
                 if config_data.get("trophy_tracking", False):
-                    log.debug(folder)
-                    guild_ids.extend([folder])
+                    log.debug("Doing Trophy Tracking for %s", guild.id)
+                    guild_ids.extend([guild.id])
                     channel_ids.extend(
                         [config_data.get("trophy_update_channel", 962961137924726834)]
                     )
