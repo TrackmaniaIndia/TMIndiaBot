@@ -140,7 +140,7 @@ class OnReady(
                 log.info("Creating folder for %s", guild.name)
                 os.mkdir(f"./bot/resources/guild_data/{guild.id}")
 
-            log.info("Checking for %s", guild.name)
+            log.debug("Checking for %s", guild.name)
             checks.create_config(guild.id)
             checks.create_quotes(guild.id)
             checks.create_trophy_tracking(guild.id)
