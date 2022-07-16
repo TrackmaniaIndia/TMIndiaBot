@@ -216,7 +216,13 @@ class UpdateTrophies(commands.Cog):
 
                     username = person.get("username", "Unknown/Invalid")
                     score = commons.add_commas(person.get("score", -1))
-                    rank_displacement = displacements.get(username).get("rank", 99999)
+
+                    try:
+                        rank_displacement = displacements.get(username).get(
+                            "rank", 99999
+                        )
+                    except AttributeError:
+                        continue
 
                     if rank_displacement > 0:
                         rank_displacement = f"+{rank_displacement}"
