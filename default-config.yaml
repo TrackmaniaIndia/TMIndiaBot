@@ -116,6 +116,8 @@ style:
 
 Consts:
   months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
+  tm_dedi_server_login: "johndoe@example.com"
+  tm_dedi_server_password: "ExamplePassword123!"
 
 redirect_output:
   delete_delay: 15

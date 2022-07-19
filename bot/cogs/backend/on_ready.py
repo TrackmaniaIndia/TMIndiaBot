@@ -11,6 +11,7 @@ import discord.ext.tasks as tasks
 import bot.utils.birthdays as birthday
 import bot.utils.checks as checks
 import bot.utils.reminders as reminders
+import bot.utils.ubi_api as ubi_api
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
@@ -31,6 +32,9 @@ class OnReady(
     @commands.Cog.listener()
     async def on_ready(self):
         self._set_statuses()
+
+        # Gets the Ubi Access Token
+        await ubi_api.authenticate()
 
         # Changes Precense to the Default Status
         # Default Status is:
