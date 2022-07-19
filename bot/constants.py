@@ -292,6 +292,8 @@ class Consts(metaclass=YAMLGetter):
     section = "Consts"
 
     months: list
+    tm_dedi_server_login: str
+    tm_dedi_server_password: str
 
 
 class TMIAPI(metaclass=YAMLGetter):
