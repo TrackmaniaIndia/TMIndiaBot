@@ -8,10 +8,10 @@ import discord
 import discord.ext.commands as commands
 import discord.ext.tasks as tasks
 
+import bot.utils.api.ubisoft as ubisoft
 import bot.utils.birthdays as birthday
 import bot.utils.checks as checks
 import bot.utils.reminders as reminders
-import bot.utils.ubi_api as ubi_api
 from bot import constants
 from bot.bot import Bot
 from bot.log import get_logger
@@ -34,7 +34,7 @@ class OnReady(
         self._set_statuses()
 
         # Gets the Ubi Access Token
-        await ubi_api.authenticate()
+        await ubisoft.authenticate()
 
         # Changes Precense to the Default Status
         # Default Status is:

@@ -21,18 +21,19 @@ async def authenticate() -> list[str]:
         "Content-Type": "application/json",
         "Ubi-AppId": "86263886-327a-4328-ac69-527f0d20a237",
         "User-Agent": Client.USER_AGENT,
-        "audience": "NadeoLiveServices",
     }
     auth = aiohttp.BasicAuth(
         constants.Consts.tm_dedi_server_login, constants.Consts.tm_dedi_server_password
     )
+    payload = {"audience": "NadeoLiveServices"}  # NadeoLiveServices for trophies.
 
     log.debug("Sending authentication request to Nadeo Servers...")
     authentication_session = aiohttp.ClientSession(
         auth=auth, headers=authentication_headers
     )
     authentication_response = await authentication_session.post(
-        "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic"
+        "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic",
+        data=json.dumps(payload),
     )
 
     log.debug("Closing authentication session")
