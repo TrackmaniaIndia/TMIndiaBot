@@ -12,6 +12,8 @@ from discord.ext.commands import is_owner
 from prettytable import PrettyTable
 from trackmania import Player
 
+import bot.utils.api.nadeo as nadeo
+import bot.utils.api.ubisoft as ubisoft
 import bot.utils.commons as commons
 from bot.bot import Bot
 from bot.log import get_logger
@@ -134,27 +136,32 @@ class UpdateTrophies(commands.Cog):
                     log.error("%s is forbidden", str(guild_id))
                 continue
 
-            for j, player_id in enumerate(player_ids):
-                log.debug(
-                    f"Getting Data for {player_id} - Remaining: {no_of_players - j - 1}"
-                )
+            # for j, player_id in enumerate(player_ids):
+            #     log.debug(
+            #         f"Getting Data for {player_id} - Remaining: {no_of_players - j - 1}"
+            #     )
 
-                player_data = await Player.get_player(player_id)
-                player_name = player_data.name
-                player_id = player_data.player_id
-                score = player_data.trophies.score()
+            #     player_data = await Player.get_player(player_id)
+            #     player_name = player_data.name
+            #     player_id = player_data.player_id
+            #     score = player_data.trophies.score()
 
-                new_player_data.extend(
-                    [
-                        {
-                            "username": player_name,
-                            "player_id": player_id,
-                            "score": score,
-                        }
-                    ]
-                )
+            #     new_player_data.extend(
+            #         [
+            #             {
+            #                 "username": player_name,
+            #                 "player_id": player_id,
+            #                 "score": score,
+            #             }
+            #         ]
+            #     )
 
-                await asyncio.sleep(sleep_time)
+            #     await asyncio.sleep(sleep_time)
+
+            access_token, _ = ubisoft._read_token_file()
+            new_player_data = (await nadeo.get_trophies(access_token, player_ids))[
+                "players"
+            ]
 
             log.debug("Sorting Players based on score")
             new_player_data = sorted(
