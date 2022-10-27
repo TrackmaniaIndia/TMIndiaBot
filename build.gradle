@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "net.dv8tion:JDA:5.0.0-alpha.21"
+    implementation "io.github.cdimascio:dotenv-java:2.2.4"
+    implementation "org.apache.logging.log4j:log4j-api:2.19.0"
+    implementation "org.apache.logging.log4j:log4j-core:2.19.0"
+    implementation "org.json:json:20220924"
+}
+
+test {
+    useJUnitPlatform()
+}
