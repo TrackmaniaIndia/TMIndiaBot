@@ -27,7 +27,7 @@ Developer Updates can be found [here](UPDATES.md)
 
 > Skip this section if you're not developer.
 
-##### Currently we use Python 3.10.x to develop this bot.
+##### Currently we use Python 3.11.x to develop this bot.
 
 ### Windows
 
