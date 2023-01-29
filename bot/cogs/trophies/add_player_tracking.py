@@ -52,6 +52,25 @@ class AddPlayerTracking(commands.Cog):
                 )
                 return
 
+            log.debug("Checking if player has already been added.")
+            # Checking if the player is already in the list.
+            with open(
+                f"./bot/resources/guild_data/{ctx.guild.id}/trophy_tracking.json", "r"
+            ) as file:
+                tracking_data = json.load(file)
+
+                for user in tracking_data.get(
+                    "tracking", []
+                ):  # looping through all the players in the list.
+                    if user.get("username", "").lower() == username.lower():
+                        log.info("Player has already been added to the tracking list.")
+                        await ctx.respond(
+                            "This user has already been added to the tracking list.",
+                            ephemeral=True,
+                        )
+                        # Does not save if player is already in the list.
+                        return
+
             mod_logs_channel_id = config_data.get("mod_logs_channel")
 
             if mod_logs_channel_id != 0:
