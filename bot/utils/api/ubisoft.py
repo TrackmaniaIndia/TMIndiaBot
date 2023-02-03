@@ -1,6 +1,7 @@
 # https://gist.github.com/codecat/4dfd3719e1f8d9e5ef439d639abe0de4
 
 import asyncio
+import base64
 import json
 import sys
 
@@ -15,42 +16,55 @@ log = get_logger(__name__)
 
 
 async def authenticate() -> list[str]:
-    log.info("Authenticating with Nadeo Servers...")
-
-    authentication_headers = {
+    # ----- Authenticating with Ubisoft -----
+    log.info("Authenticating with Ubisoft.")
+    auth_headers = {
         "Content-Type": "application/json",
         "Ubi-AppId": "86263886-327a-4328-ac69-527f0d20a237",
-        "User-Agent": Client.USER_AGENT,
+        "User-Agent": "TMIndia Discord Bot | NottCurious#4351 on Discord.",
+        "audience": "NadeoLiveServices",
     }
-    auth = aiohttp.BasicAuth(
-        constants.Consts.tm_dedi_server_login, constants.Consts.tm_dedi_server_password
-    )
-    payload = {"audience": "NadeoLiveServices"}  # NadeoLiveServices for trophies.
 
-    log.debug("Sending authentication request to Nadeo Servers...")
-    authentication_session = aiohttp.ClientSession(
-        auth=auth, headers=authentication_headers
+    # Creating the aiohttp session.
+    log.debug("Creating the aiohttp session.")
+    auth_session = aiohttp.ClientSession(
+        auth=aiohttp.BasicAuth(
+            constants.Consts.tm_dedi_server_login,
+            constants.Consts.tm_dedi_server_password,
+        ),
+        headers=auth_headers,
     )
-    authentication_response = await authentication_session.post(
+
+    # Making the POST request.
+    log.debug("Making the POST request to Nadeo.")
+    auth_response = await auth_session.request(
+        "POST",
         "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic",
-        data=json.dumps(payload),
+    )
+    auth_response = await auth_session.post(
+        "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic",
+        data=json.dumps({"audience": "NadeoLiveServices"}),
     )
 
-    log.debug("Closing authentication session")
-    await authentication_session.close()
+    # Closing Authentication Session
+    log.debug("Closing Authentication Session.")
+    await auth_session.close()
 
-    log.debug("Parsing authentication data")
-    authentication_json = await authentication_response.json()
+    # Getting the accessToken and refreshToken.
+    log.debug("Getting access and refresh tokens from response.")
+    auth_json = await auth_response.json()
+    access_token = auth_json.get("accessToken")
+    refresh_token = auth_json.get("refreshToken")
 
-    access_token = authentication_json.get("accessToken", None)
-    refresh_token = authentication_json.get("refreshToken", None)
+    log.debug("Received accessToken: %s" % (access_token))
+    log.debug("Received refreshToken: %s" % (refresh_token))
 
-    log.debug("Writing Tokens")
+    # Writing Tokens to Files.
+    log.debug("Writing Tokens to Files.")
     _write_token_file(access_token, refresh_token)
 
-    log.info(
-        "Received access token: %s and refresh token: %s", access_token, refresh_token
-    )
+    # returning tokens
+    log.info("Returning Tokens.")
     return [access_token, refresh_token]
 
 

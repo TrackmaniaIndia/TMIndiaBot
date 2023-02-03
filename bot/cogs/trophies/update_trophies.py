@@ -99,11 +99,11 @@ class UpdateTrophies(commands.Cog):
                         [config_data.get("trophy_update_channel", 962961137924726834)]
                     )
 
-        sleep_time = 15
-
         log.info("Got all Guild and Channel IDs")
         for i, guild_id in enumerate(guild_ids):
             player_ids = []
+            usernames = []
+            ids_and_usernames = {}
 
             log.info(f"Updating for {guild_id}")
             log.debug("Getting all player ids")
@@ -114,8 +114,11 @@ class UpdateTrophies(commands.Cog):
             ) as file:
                 tracking_data = json.load(file)
 
+            # Getting usernames and account_ids.
             for player in tracking_data.get("tracking"):
+                usernames.append(player.get("username"))
                 player_ids.append(player.get("player_id"))
+                ids_and_usernames[player.get("player_id")] = player.get("username")
 
             log.info(f"Getting all Trophy Data for {guild_id}")
             new_player_data = []
@@ -136,32 +139,16 @@ class UpdateTrophies(commands.Cog):
                     log.error("%s is forbidden", str(guild_id))
                 continue
 
-            # for j, player_id in enumerate(player_ids):
-            #     log.debug(
-            #         f"Getting Data for {player_id} - Remaining: {no_of_players - j - 1}"
-            #     )
-
-            #     player_data = await Player.get_player(player_id)
-            #     player_name = player_data.name
-            #     player_id = player_data.player_id
-            #     score = player_data.trophies.score()
-
-            #     new_player_data.extend(
-            #         [
-            #             {
-            #                 "username": player_name,
-            #                 "player_id": player_id,
-            #                 "score": score,
-            #             }
-            #         ]
-            #     )
-
-            #     await asyncio.sleep(sleep_time)
-
             access_token, _ = ubisoft._read_token_file()
             new_player_data = (await nadeo.get_trophies(access_token, player_ids))[
                 "players"
             ]
+
+            # Adding the username of the players to their scores.
+            for i, player in enumerate(new_player_data):
+                new_player_data[i]["username"] = ids_and_usernames[
+                    new_player_data[i]["player_id"]
+                ]
 
             log.debug("Sorting Players based on score")
             new_player_data = sorted(
@@ -201,6 +188,7 @@ class UpdateTrophies(commands.Cog):
             ]
 
             # Updating Table
+            # DO NOT CHANGE
             log.debug("Updating table.")
             for j, plist in enumerate(split_list):
                 log.debug(plist)

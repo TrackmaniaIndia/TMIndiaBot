@@ -20,12 +20,15 @@ async def get_trophies(
     }
 
     log.debug("Creating payload for trophies.")
+    log.critical(account_ids)
     account_list = {"listPlayer": []}
 
+    # Creating a payload with all the account_ids.
     for pid in account_ids:
         account_list["listPlayer"].append({"accountId": pid})
 
     payload = json.dumps(account_list)
+    log.critical(payload)
     log.debug("Created payload: %s", payload)
 
     log.debug("Creating trophy session.")
@@ -38,41 +41,31 @@ async def get_trophies(
     log.debug("Closing trophy session")
     await trophy_session.close()
 
+    log.critical(await trophy_session_response.text())
+
     log.debug("Status Code: %s", trophy_session_response.status)
     trophy_data = await trophy_session_response.json()
 
     player_trophy_data = {"players": []}
 
-    log.debug("Getting usernames")
-    account_ids_string = ",".join(account_ids)
-
-    api_client = APIClient()
-    usernames = await api_client.get(
-        "https://prod.trackmania.core.nadeo.online/accounts/displayNames/?accountIdList="
-        + account_ids_string
-    )
-    await api_client.close()
+    log.critical(trophy_data)
 
     for player in trophy_data.get("rankings", []):
         log.debug("Adding player: %s", player.get("accountId", None))
         account_id = player.get("accountId", None)
         trophy_count = player.get("countPoint", 0)
 
-        for p in usernames:
-            if p.get("accountId", None) == account_id:
-                username = p.get("displayName", None)
-                break
-
-        log.debug("Adding Player %s with Score %s", username, trophy_count)
-
         player_trophy_data["players"].extend(
             [
                 {
-                    "username": username,
+                    "username": None,
                     "player_id": account_id,
                     "score": trophy_count,
                 }
             ]
         )
+
+    for p in player_trophy_data.get("players", []):
+        log.critical(p.get("username", None))
 
     return player_trophy_data
