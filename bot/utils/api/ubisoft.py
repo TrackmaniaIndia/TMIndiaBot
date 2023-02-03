@@ -1,6 +1,7 @@
 # https://gist.github.com/codecat/4dfd3719e1f8d9e5ef439d639abe0de4
 
 import asyncio
+import base64
 import json
 import sys
 
@@ -14,36 +15,60 @@ from bot.log import get_logger
 log = get_logger(__name__)
 
 
-async def authenticate() -> list[str]:
-    log.info("Authenticating with Nadeo Servers...")
+async def deprecated_authentication() -> list[str]:
+    # ----- First Step -----
+    log.info("Authenticating with Ubisoft.")
 
-    authentication_headers = {
+    ubi_auth_headers = {
         "Content-Type": "application/json",
         "Ubi-AppId": "86263886-327a-4328-ac69-527f0d20a237",
         "User-Agent": Client.USER_AGENT,
     }
+
     auth = aiohttp.BasicAuth(
         constants.Consts.tm_dedi_server_login, constants.Consts.tm_dedi_server_password
     )
-    payload = {"audience": "NadeoLiveServices"}  # NadeoLiveServices for trophies.
 
     log.debug("Sending authentication request to Nadeo Servers...")
-    authentication_session = aiohttp.ClientSession(
-        auth=auth, headers=authentication_headers
-    )
+    authentication_session = aiohttp.ClientSession(auth=auth, headers=ubi_auth_headers)
+    # authentication_response = await authentication_session.post(
+    #     "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic"
+    # )
+    # ^ This is for dedicated accounts
+
     authentication_response = await authentication_session.post(
-        "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic",
-        data=json.dumps(payload),
+        "https://public-ubiservices.ubi.com/v3/profiles/sessions"
     )
 
-    log.debug("Closing authentication session")
+    auth_response_json = await authentication_response.json()
+    ticket = auth_response_json.get("ticket")
+    log.critical("Ubisoft Authentication Finished.")
+    log.debug("Closing Ubisoft Authentication Session")
     await authentication_session.close()
 
-    log.debug("Parsing authentication data")
-    authentication_json = await authentication_response.json()
+    # ----- Second Part -----
+    log.critical("Authenticating with Nadeo.")
 
-    access_token = authentication_json.get("accessToken", None)
-    refresh_token = authentication_json.get("refreshToken", None)
+    nadeo_headers = {
+        "Content-Type": "application/json",
+        "User-Agent": Client.USER_AGENT,
+        "Authorization": "ubi_v1 t=" + ticket,
+    }
+
+    nadeo_session = aiohttp.ClientSession(
+        headers=nadeo_headers,
+    )
+
+    nadeo_response = await nadeo_session.post(
+        "https://prod.trackmania.core.nadeo.online/v2/authentication/token/ubiservices",
+    )
+    nadeo_response_json = await nadeo_response.json()
+    log.critical("Authenticated with Nadeo.")
+
+    access_token = nadeo_response_json.get("accessToken", None)
+    refresh_token = nadeo_response_json.get("refreshToken", None)
+
+    await nadeo_session.close()
 
     log.debug("Writing Tokens")
     _write_token_file(access_token, refresh_token)
@@ -51,6 +76,59 @@ async def authenticate() -> list[str]:
     log.info(
         "Received access token: %s and refresh token: %s", access_token, refresh_token
     )
+    return [access_token, refresh_token]
+
+
+async def authenticate() -> list[str]:
+    # ----- Authenticating with Ubisoft -----
+    log.info("Authenticating with Ubisoft.")
+    auth_headers = {
+        "Content-Type": "application/json",
+        "Ubi-AppId": "86263886-327a-4328-ac69-527f0d20a237",
+        "User-Agent": "TMIndia Discord Bot | NottCurious#4351 on Discord.",
+        "audience": "NadeoLiveServices",
+    }
+
+    # Creating the aiohttp session.
+    log.debug("Creating the aiohttp session.")
+    auth_session = aiohttp.ClientSession(
+        auth=aiohttp.BasicAuth(
+            constants.Consts.tm_dedi_server_login,
+            constants.Consts.tm_dedi_server_password,
+        ),
+        headers=auth_headers,
+    )
+
+    # Making the POST request.
+    log.debug("Making the POST request to Nadeo.")
+    auth_response = await auth_session.request(
+        "POST",
+        "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic",
+    )
+    auth_response = await auth_session.post(
+        "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic",
+        data=json.dumps({"audience": "NadeoLiveServices"}),
+    )
+
+    # Closing Authentication Session
+    log.debug("Closing Authentication Session.")
+    await auth_session.close()
+
+    # Getting the accessToken and refreshToken.
+    log.debug("Getting access and refresh tokens from response.")
+    auth_json = await auth_response.json()
+    access_token = auth_json.get("accessToken")
+    refresh_token = auth_json.get("refreshToken")
+
+    log.debug("Received accessToken: %s" % (access_token))
+    log.debug("Received refreshToken: %s" % (refresh_token))
+
+    # Writing Tokens to Files.
+    log.debug("Writing Tokens to Files.")
+    _write_token_file(access_token, refresh_token)
+
+    # returning tokens
+    log.info("Returning Tokens.")
     return [access_token, refresh_token]
 
 
