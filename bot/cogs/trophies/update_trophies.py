@@ -99,8 +99,6 @@ class UpdateTrophies(commands.Cog):
                         [config_data.get("trophy_update_channel", 962961137924726834)]
                     )
 
-        sleep_time = 15
-
         log.info("Got all Guild and Channel IDs")
         for i, guild_id in enumerate(guild_ids):
             player_ids = []
@@ -145,8 +143,6 @@ class UpdateTrophies(commands.Cog):
             new_player_data = (await nadeo.get_trophies(access_token, player_ids))[
                 "players"
             ]
-
-            log.critical(new_player_data)
 
             # Adding the username of the players to their scores.
             for i, player in enumerate(new_player_data):
