@@ -255,7 +255,8 @@ def __format_lst_today(birthdays: list) -> str:
     #   loops through list, adding people
     #   Name:
     #   Birthday: day month
-    #   Turning age_xx in time_yy(using <t::R> discord)
+    #   Turning age_xx - 1 in time_yy(using <t::R> discord)
+    #   Have to subtract 1 from the display.
     #
     # Logic:
     #   get current timestamp -> t1
@@ -273,7 +274,7 @@ def __format_lst_today(birthdays: list) -> str:
             year=year, month=MONTHS.index(person["Month"]) + 1, day=person["Day"]
         )
 
-        age = year - int(person["Year"])
+        age = year - int(person["Year"]) - 1
 
         if t2 - t1 <= 0:
             log.debug("Birthday has passed, adding one year to t2 timestamp")
