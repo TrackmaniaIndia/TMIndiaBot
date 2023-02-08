@@ -16,7 +16,7 @@ class MonthBirthdays(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-        name="birthdays-of-month",
+        name="show-birthdays",
         description="Lists all the birthdays of a specific month saved with the bot!",
     )
     async def _month_birthdays(
