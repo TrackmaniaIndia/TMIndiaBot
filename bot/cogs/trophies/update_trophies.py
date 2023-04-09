@@ -26,7 +26,7 @@ class UpdateTrophies(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-        log.info("Starting TrophyLeaderboardUpdates loop")
+        log.critical("Starting TrophyLeaderboardUpdates loop")
         self._update_trophy_leaderboards.start()
 
     @tasks.loop(
@@ -62,6 +62,8 @@ class UpdateTrophies(commands.Cog):
 
     async def __update_leaderboards(self, ctx: ApplicationContext = None):
         log.info("Updating Trophy Leaderboards")
+        guild_ids = []
+        channel_ids = []
 
         # If the guild is given through the "run-it-for-me" command, we only get the players in that specific guild.
         if ctx is not None:
@@ -82,7 +84,9 @@ class UpdateTrophies(commands.Cog):
             channel_ids = [ctx.channel.id]
         else:
             # Guild is not given so we get them from the config files.
-            guild_ids, channel_ids = [], []
+            # guild_ids, channel_ids = [], []
+            guild_ids = []
+            channel_ids = []
             # for folder in os.listdir("./bot/resources/guild_data/"):
             async for guild in self.bot.fetch_guilds():
                 with open(
@@ -145,9 +149,9 @@ class UpdateTrophies(commands.Cog):
             ]
 
             # Adding the username of the players to their scores.
-            for i, player in enumerate(new_player_data):
-                new_player_data[i]["username"] = ids_and_usernames[
-                    new_player_data[i]["player_id"]
+            for k, player in enumerate(new_player_data):
+                new_player_data[k]["username"] = ids_and_usernames[
+                    new_player_data[k]["player_id"]
                 ]
 
             log.debug("Sorting Players based on score")
@@ -242,7 +246,8 @@ class UpdateTrophies(commands.Cog):
                     continue
             else:
                 try:
-                    channel = self.bot.get_channel(channel_ids[i])
+                    guild = await self.bot.fetch_guild(guild_id)
+                    channel = await guild.fetch_channel(channel_ids[i])
                     await channel.send(embed=embed_list[0])
                 except:
                     continue
