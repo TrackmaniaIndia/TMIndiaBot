@@ -51,8 +51,11 @@ git clone https://github.com/TrackmaniaIndia/TMIndiaBot.git
 (or) git clone git@github.com/TrackmaniaIndia/TMIndiaBot.git
 
 cd TMIndiaBot
-chmod +x pre-run/linux.sh
+chmod u+x pre-run/linux.sh
 source pre-run/linux.sh
+
+# Optional (Removes execute permissions from linux.sh)
+chmod u-x pre-run/linux.sh
 
 python3 -m virtualenv venv
 source venv/bin/activate
