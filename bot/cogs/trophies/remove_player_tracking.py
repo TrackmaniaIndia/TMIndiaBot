@@ -17,7 +17,7 @@ class RemovePlayerTracking(commands.Cog):
 
     @commands.slash_command(
         name="remove-player-tracking",
-        description="Adds a player to the trophy tracking list",
+        description="Removes a player from the trophy tracking list",
     )
     @commands.has_permissions(manage_guild=True)
     async def _remove_player_tracking(
