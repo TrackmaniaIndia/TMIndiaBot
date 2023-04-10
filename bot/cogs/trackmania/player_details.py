@@ -31,7 +31,7 @@ class PlayerDetails(commands.Cog):
 
     @commands.slash_command(
         name="player-details",
-        description="Gets the player details of a specific username",
+        description="Gets the player and COTD details of a specific username",
     )
     @discord.ext.commands.cooldown(1, 15, commands.BucketType.guild)
     async def _player_details(
