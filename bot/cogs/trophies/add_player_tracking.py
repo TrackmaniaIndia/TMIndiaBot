@@ -85,7 +85,15 @@ class AddPlayerTracking(commands.Cog):
                     except Exception as e:
                         log.error("Failed to send message to mod logs channel: %s", e)
 
-        player_id = search_result[0].player_id
+        try:
+            player_id = search_result[0].player_id
+        except IndexError:
+            log.error("IndexError: Invalid username given. No user was found.")
+            errormsg = (
+                "Invalid Username was given. No user was found with this username."
+            )
+            await ctx.respond(errormsg, ephemeral=True)
+            return
 
         log.debug("Getting Trophy Count of Player")
         player_data = await Player.get_player(player_id)
