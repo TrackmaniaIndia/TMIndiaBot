@@ -360,9 +360,9 @@ class PlayerDetails(commands.Cog):
     @staticmethod
     def __create_avg_data_str(data: PlayerCOTD) -> str:
         log.debug("Creating Average Data String")
-        average_rank = round(data.stats.average_rank, 4) * 100
+        average_rank = round(data.stats.average_rank * 100, 2)
         average_div = round(data.stats.average_div, 2)
-        average_div_rank = round(data.stats.average_div_rank, 4) * 100
+        average_div_rank = round(data.stats.average_div_rank * 100, 2)
 
         return f"```Average Rank -> {average_rank}\nAverage Division -> {average_div}\nAverage Division Rank -> {average_div_rank}```"
 
