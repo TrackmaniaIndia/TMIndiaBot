@@ -52,7 +52,7 @@ git clone https://github.com/TrackmaniaIndia/TMIndiaBot.git
 
 cd TMIndiaBot
 chmod u+x pre-run/linux.sh
-source pre-run/linux.sh
+./pre-run/linux.sh
 
 # Optional (Removes execute permissions from linux.sh)
 chmod u-x pre-run/linux.sh
@@ -60,13 +60,13 @@ chmod u-x pre-run/linux.sh
 python3 -m virtualenv venv
 source venv/bin/activate
 
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 ## Developers and Contributors
 
 1. NottCurious (Main Developer)
-2. Artifex (API Developer)
+2. Artifex (Contributor)
 3. Calcium the Penguin (Contributor)
 
 ## Copyright License
@@ -76,7 +76,6 @@ Licensed under [MIT License](https://www.opensource.org/licenses/mit-license.php
 ## Thanks
 
 - Trackmania.io and Openplanet Developer Miss
-- node-trackmania.io developer Greep
 
 ## Statistics
 
