@@ -3,10 +3,12 @@ import json
 import discord.ext.commands as commands
 from discord import ApplicationContext, SlashCommandOptionType
 from discord.commands import Option
+from discord.ext.pages import Paginator
 from trackmania import Player
 
 from bot.bot import Bot
 from bot.log import get_logger, log_command
+from bot.utils.discord import Confirmer, create_embed
 
 log = get_logger(__name__)
 
@@ -85,8 +87,63 @@ class AddPlayerTracking(commands.Cog):
                     except Exception as e:
                         log.error("Failed to send message to mod logs channel: %s", e)
 
+        confirmation_paginator = None
+
         try:
-            player_id = search_result[0].player_id
+            list_len = len(search_result)
+            if list_len > 1:
+                # Multiple users have been found.
+                log.debug("Multiple users have been found.")
+
+                confirmation_prompts: list = []
+
+                for k, indi_search_result in enumerate(
+                    search_result
+                ):  # Only doing first 9 or 10
+                    # Create a confirmation prompt for each player.
+                    embed = create_embed(
+                        "Multiple Search Results Found: "
+                        + str(k + 1)
+                        + "/"
+                        + str(list_len),
+                        "Player Username: "
+                        + indi_search_result.name
+                        + "\nPlayer ID: "
+                        + indi_search_result.player_id,
+                    )
+                    confirmation_prompts.append([embed])
+
+                log.debug("Created confirmation prompts.")
+                log.debug("Creating Paginator.")
+                confirmer = Confirmer()
+                confirmation_paginator = Paginator(
+                    confirmation_prompts, custom_view=confirmer, timeout=30
+                )
+                paginator_respond = await confirmation_paginator.respond(
+                    ctx.interaction, ephemeral=True
+                )
+                await confirmer.wait()
+
+                if confirmer.value is None:
+                    log.debug("Confirmer Timeout.")
+                    await confirmation_paginator.cancel(page="Paginator has timed out.")
+                    confirmer.disable_all_items()
+                    return
+                elif not confirmer.value:
+                    log.debug("Person declined.")
+                    await confirmation_paginator.cancel(
+                        page="Adding a player has been cancelled."
+                    )
+                    confirmer.disable_all_items()
+                    return
+                else:
+                    log.debug("Person confirmed.")
+                    player_id = search_result[
+                        confirmation_paginator.current_page
+                    ].player_id
+                    confirmer.disable_all_items()
+            else:
+                player_id = search_result[0].player_id
         except IndexError:
             log.error("IndexError: Invalid username given. No user was found.")
             errormsg = (
@@ -131,9 +188,15 @@ class AddPlayerTracking(commands.Cog):
         ) as file:
             json.dump(tracking_data, file, indent=4)
 
-        await ctx.respond(
-            f"{username} has been added to the trophy tracking list.", ephemeral=True
-        )
+        if confirmation_paginator is None:
+            await ctx.respond(
+                f"{username} has been added to the trophy tracking list.",
+                ephemeral=True,
+            )
+        else:
+            await confirmation_paginator.cancel(
+                page=f"{username} has been added to the trophy tracking list"
+            )
 
 
 def setup(bot: Bot):
