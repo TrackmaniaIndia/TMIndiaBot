@@ -6,6 +6,10 @@
 
 Discord Bot for the [TM India Discord Server](https://discord.gg/aztYuhWxgU "TM India Discord invite")
 
+
+## Project Sunset
+Hello. After 2 years and a lot of thought, I have decided to end support for Trackmania India Bot and am taking it offline. I am not able to regularly update or develop it anymore due to lack of motivation, decreasing interest in Trackmania as a whole and other more personal reasons. Thanks for all the support the past 2 years. o7
+
 ## Suggestions and Bugs
 
 Feel free to open an issue to report bugs or suggest new features.
